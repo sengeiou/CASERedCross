@@ -6,13 +6,12 @@ import { NavController, ModalController, ToastController, AlertController, NavPa
 import { AppUtil } from '../app.util';
 import { DomSanitizer } from '@angular/platform-browser';
 
-
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  selector: 'app-test',
+  templateUrl: './test.page.html',
+  styleUrls: ['./test.page.scss'],
 })
-export class HomePage extends AppBase {
+export class TestPage  extends AppBase {
 
   constructor(public router: Router,
     public navCtrl: NavController,
@@ -25,18 +24,15 @@ export class HomePage extends AppBase {
     this.headerscroptshow = 480;
       
   }
-  n=1500;
-  list=[{},{}]
+
+  myname="";
+
   onMyLoad(){
     //参数
     this.params;
+    this.myname=this.params.name;
   }
   onMyShow(){
 
   }
-  name="";
-  aa(){
-    this.navigate("phone",{name:this.name});
-  }
-
 }

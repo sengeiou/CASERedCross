@@ -9,3 +9,702 @@
 @import '~@ionic/angular/css/text-alignment.css';
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
+
+
+
+
+ion-toolbar{
+  border-bottom:1px solid  #e6e6e6;
+  background-image:none !important;
+}
+
+ion-header{
+  background-image:none !important;
+}
+$vpx200:10rem;
+$vpx180:9rem;
+$vpx170:8.5rem;
+$vpx160:8rem;
+$vpx150:7.5rem;
+$vpx120:6rem;
+$vpx100:5rem;
+$vpx80:4rem;
+$vpx70:3.5rem;
+$vpx60:3rem;
+$vpx50:2.5rem;
+$vpx48:2.4rem;
+$vpx40:2rem;
+$vpx32:1.6rem;
+$vpx30:1.5rem;
+$vpx28:1.4rem;
+$vpx24:1.2rem;
+$vpx20:1rem;
+$vpx16:0.8rem;
+$vpx15:0.75rem;
+$vpx14:0.7rem;
+$vpx12:0.6rem;
+$vpx10:0.5rem;
+$vpx5:0.25rem;
+$vpx4:0.2rem;
+
+
+
+
+
+
+.flex-row {
+  display: flex;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-center {
+  align-content: center;
+  align-items: center;
+}
+._center{
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-column {
+  align-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.column {
+  align-content: center;
+  flex-direction: column;
+}
+
+.flex-bottom {
+  align-content: baseline;
+  align-items: baseline;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.flex-2 {
+  flex: 2;
+}
+
+.flex-3 {
+  flex: 3;
+}
+
+.flex-4 {
+  flex: 4;
+}
+
+.flex-5 {
+  flex: 5;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.white-block {
+  background: white;
+}
+
+.gray-block {
+  background: #c9c9c9;
+}
+
+.primary-block {
+  background: #2699EC;
+  color: white;
+}
+
+.bg-gray {
+  background: #7e7d7d;
+}
+
+.bg-white {
+  background: white;
+}
+
+.bg-primary {
+  background: #17607D;
+}
+
+.bg-green {
+  background: #23AC38;
+}
+
+.bg-blue {
+  background: #3c78d8;
+}
+
+.bg-orange {
+
+  background: #FBC02D;
+}
+
+.bg-pink {
+
+  background: #fe87a7;
+}
+
+.white_primary {
+  background: #2699EC;
+  color: white;
+  
+}
+
+.border_white_primary {
+  border-bottom: $vpx4 solid #2699EC;
+
+}
+
+.txt-primary {
+  color: #17607D;
+}
+
+.txt-black {
+  color: black ;
+}
+
+.txt-white {
+  color: white;
+}
+
+.txt-gray {
+  color: #84817E;
+}
+
+.txt-blue {
+  color: #3c78d8;
+}
+
+.txt-light {
+  color: #fcfcfc;
+  font-weight: 350;
+}
+
+.txt-red {
+  color: #E51C23;
+}
+
+.txt-green {
+  color: darkgreen;
+}
+
+.txt-pink {
+  color: #FF4681;
+}
+
+.txt-orange {
+  color: orange;
+}
+
+.txt-bold {
+  font-weight: bolder;
+}
+
+.nowrap {
+  word-break: keep-all;
+  /* 不换行 */
+  white-space: nowrap;
+  /* 不换行 */
+  overflow: hidden;
+  /* 内容超出宽度时隐藏超出部分的内容 */
+}
+
+.h1 {
+  font-size: $vpx120 !important;
+}
+
+.h2 {
+  font-size: $vpx80 !important;
+}
+
+.h3 {
+  font-size: $vpx48 !important;
+}
+
+.h4 {
+  font-size: $vpx40 !important;
+}
+
+.h4-5 {
+  font-size: $vpx32 !important;
+}
+
+.h5 {
+  font-size: $vpx28 !important;
+}
+
+.h6 {
+  font-size: $vpx24 !important;
+}
+
+.h7 {
+  font-size: $vpx20 !important;
+}
+
+.h7-5 {
+  font-size: $vpx16 !important;
+}
+
+.h8 {
+  font-size: $vpx12 !important;
+}
+
+.text-underline {
+  text-decoration: underline;
+}
+
+.text-line-through {
+  text-decoration: line-through;
+}
+
+button {
+
+  background-color: transparent;
+  border-color: #2699EC;
+}
+
+.button-hover {
+
+  background-color: #fcfcfc;
+  border-color: #2699EC;
+}
+
+button.button-hover {
+
+  background-color: #fcfcfc;
+  border-color: #2699EC;
+}
+
+button[type=primary] {
+
+  background-color: #FF4081 !important;
+}
+
+button.button-hover[type=primary] {
+
+  background-color: #FF4081 !important;
+}
+
+button[disabled][type=primary] {
+  background-color: #999db4;
+}
+
+
+
+.padding-5 {
+  padding: $vpx5;
+}
+
+.padding-10 {
+  padding: $vpx10;
+}
+
+.padding-15 {
+  padding: $vpx15;
+}
+
+.padding-20 {
+  padding: $vpx20;
+}
+
+.padding-30 {
+  padding: $vpx30;
+}
+
+.padding-40 {
+  padding: $vpx40;
+}
+
+.padding {
+  padding: $vpx10;
+}
+
+.padding-left-5 {
+  padding-left: $vpx5;
+}
+
+.padding-left-10 {
+  padding-left: $vpx10;
+}
+
+.padding-left-15 {
+  padding-left: $vpx15;
+}
+
+.padding-left-20 {
+  padding-left: $vpx20;
+}
+
+.padding-left-30 {
+  padding-left: $vpx30;
+}
+
+.padding-left-40 {
+  padding-left: $vpx40;
+}
+
+.padding-left-50 {
+  padding-left: $vpx50;
+}
+
+.padding-top-5 {
+  padding-top: $vpx5;
+}
+
+.padding-top-10 {
+  padding-top: $vpx10;
+}
+
+.padding-top-15 {
+  padding-top: $vpx15;
+}
+.padding-bottom-15 {
+  padding-bottom: $vpx15;
+}
+.padding-top-40{
+  padding-top: $vpx40;
+}
+.padding-bottom-40{
+  padding-bottom: $vpx40;
+
+}
+
+.padding-top-20 {
+  padding-top: $vpx20;
+}
+
+.padding-top-50 {
+  padding-top: $vpx50;
+}
+
+.padding-top-70 {
+  padding-top: $vpx70;
+}
+
+.padding-bottom-5 {
+    padding-bottom: $vpx5;
+}
+
+.padding-bottom-10 {
+  padding-bottom: $vpx10;
+}
+
+.padding-bottom-20 {
+  padding-bottom: $vpx20;
+}
+
+.padding-bottom-50 {
+  padding-bottom: $vpx50;
+}
+
+.padding-bottom-70 {
+  padding-bottom: $vpx70;
+}
+
+.padding-right-5 {
+  padding-right: $vpx5;
+}
+
+.padding-right-10 {
+  padding-right: $vpx10;
+}
+
+.padding-right-15 {
+  padding-right: $vpx15;
+}
+
+.padding-right-20 {
+  padding-right: $vpx20;
+}
+
+.padding-right-30 {
+  padding-right: $vpx30;
+}
+.margin-5{
+    margin: $vpx5;
+}
+.margin-10 {
+  margin: $vpx10;
+}
+
+.margin-20 {
+  margin: $vpx20;
+}
+
+.margin-40 {
+  margin: $vpx40;
+}
+
+.margin-top-20 {
+  margin-top: $vpx20;
+}
+
+.margin-top {
+  margin-top: $vpx40;
+}
+
+.margin-top-60 {
+  margin-top: $vpx60;
+}
+
+.margin-top-80 {
+  margin-top: $vpx80;
+}
+
+.margin-bottom-10 {
+  margin-bottom: $vpx10;
+}
+
+.margin-bottom-20 {
+  margin-bottom: $vpx20;
+}
+
+.margin-bottom-40 {
+  margin-bottom: $vpx40;
+}
+.margin-top-100 {
+    margin-top: $vpx100;
+  }
+.margin-top-40 {
+  margin-top: $vpx40;
+}
+.margin-top-60 {
+  margin-top: $vpx60;
+}
+
+.margin-top-30 {
+  margin-top: $vpx30;
+}
+
+.margin-top-20 {
+  margin-top: $vpx20;
+}
+
+.margin-top {
+  margin-top: $vpx20;
+}
+
+.margin-top-10 {
+  margin-top: $vpx10;
+}
+
+.margin-top-5 {
+  margin-top: $vpx5;
+}
+
+.margin-left-5 {
+  margin-left: $vpx5;
+}
+
+.margin-left-10 {
+  margin-left: $vpx10;
+}
+
+.margin-right-10 {
+  margin-right: $vpx10;
+}
+
+.margin-right-20 {
+  margin-right: $vpx20;
+}
+
+.margin-right-40 {
+  margin-right: $vpx40;
+}
+
+.margin-left-15 {
+  margin-left: $vpx15;
+}
+
+.margin-left-20 {
+  margin-left: $vpx20;
+}
+
+.margin-left-30 {
+  margin-left: $vpx30;
+}
+
+.margin-left-40 {
+  margin-left: $vpx40;
+}
+
+.margin-left-50 {
+  margin-left: $vpx50;
+}
+
+.margin-right-15 {
+  margin-right: $vpx15;
+}
+
+.margin-left-5 {
+  margin-left: $vpx5;
+}
+
+.margin-right-5 {
+  margin-right: $vpx5;
+}
+
+.margin-left {
+  margin-left: $vpx20;
+}
+
+.margin-right {
+  margin-right: $vpx20;
+}
+
+
+.height-20 {
+  height: $vpx20;
+}
+
+.height-30 {
+  height: $vpx30;
+}
+
+.height-40 {
+  height: $vpx40;
+}
+
+.height-50 {
+  height: $vpx50;
+}
+
+.height-70 {
+  height: $vpx70;
+}
+
+.height-100 {
+  height: $vpx100;
+}
+
+.height-150 {
+  height: $vpx150;
+}
+
+.radius-50 {
+  border-radius: 50%;
+}
+
+.radius-10 {
+  border-radius: 10px;
+}
+
+.radius-5 {
+  border-radius: 5%;
+}
+
+.icon-5 {
+  width: $vpx10;
+  height: $vpx10;
+}
+
+.icon-7_5 {
+  width: $vpx15;
+  height: $vpx15;
+}
+
+.icon-10 {
+  width: $vpx20;
+  height: $vpx20;
+}
+
+.icon-15 {
+  width: $vpx30;
+  height: $vpx30;
+}
+
+.icon-20 {
+  width: $vpx40;
+  height: $vpx40;
+}
+
+.icon-25 {
+  width: $vpx50;
+  height: $vpx50;
+}
+
+.icon-30 {
+  width: $vpx60;
+  height: $vpx60;
+}
+
+.icon-40 {
+  width: $vpx80;
+  height: $vpx80;
+}
+
+.icon-50 {
+  width: $vpx100;
+  height: $vpx100;
+}
+
+.icon-60 {
+  width: $vpx120;
+  height: $vpx120;
+}
+
+.icon-75 {
+  width: $vpx150;
+  height: $vpx150;
+}
+
+.icon-80 {
+  width: $vpx160;
+  height: $vpx160;
+}
+
+.icon-85 {
+  width: $vpx170;
+  height: $vpx170;
+}
+
+.icon-90 {
+  width: $vpx180;
+  height: $vpx180;
+}
+
+.icon-100 {
+  width: $vpx200;
+  height: $vpx200;
+}
+
+.border-raidus-50 {
+  border-radius: 50%;
+}
+
+.line-height-0 {
+  line-height: 0;
+}
+
+.border-black {
+    border: 1px black solid
+  }
+
+.border-gray {
+  border: 3px #c9c9c9 solid
+}
+
+.fixtop {
+  position: fixed;
+  width: 100vw;
+  left: 0px;
+  top: 0px;
+}
+.fixbottom {
+  position: fixed;
+  width: 100vw;
+  left: 0px;
+  bottom: 0px;
+}

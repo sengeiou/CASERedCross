@@ -1,0 +1,41 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-title>
+        <img src="" />香港红十字会
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content>
+  
+  
+    <div class="flex-row">
+      <div class="flex-1"></div>
+      <div class="margin-top-100">
+        <div class="flex-row flex-center margin-top-30 ">
+          <div class="left text-center">义工编号</div>
+          <input [(ngModel)]="number" />
+        </div>
+        <div class="flex-row flex-center margin-top-30 ">
+          <div class="left text-center">密码</div>
+          <input [(ngModel)]="password" class=""/>
+        </div>
+  
+        <div class="flex-row flex-center margin-top-30 ">
+          <div class="left text-center">服务</div>
+          <input [(ngModel)]="name" />
+        </div>
+  
+        <div class="text-center margin-top-60 txt-blue">登入</div>
+        <div class="text-center margin-top-20 txt-blue" (click)='aa();'>忘记密码</div>
+      </div>
+      <div class="flex-1"></div>
+    </div>
+  
+  
+    <!-- <p [class.aa]='name=="aa"' *ngIf="name!='bb'" >{{name}}</p>
+  
+    <p *ngFor="let item of name.split(',');let idx=index;">{{idx}}. {{item}}</p> -->
+  
+  
+  </ion-content>

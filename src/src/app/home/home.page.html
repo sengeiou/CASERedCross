@@ -1,15 +1,125 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Ionic Blank
+      <img src="" />香港红十字会
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div class="ion-padding">
-    The world is your oyster.
-    <p>If you get lost, the <a target="_blank" rel="noopener" href="https://ionicframework.com/docs/">docs</a> will be your guide.</p>
+  <div *ngFor="let item of list;let idx=index;">
+    <div class="title flex-row flex-center padding-left-20 h5">档案编号：wt5969696</div>
+    <div class="flex-row">
+
+      <div class="height h7 flex-row _center bg-gray width text-center border-bottom">探访 <img src="../assets/icon/plus_icon.png" class="icon-15 margin-left-5"/></div>
+      <div class="flex-1">
+        <div class="xgun">
+          <div class="flex-row" style="width: 500px">
+            <div class="padding-10  border-black radius-5 height margin-right-10">
+              <div class="h7-5">预约日期</div>
+              <div class="margin-top-10 h7-5">
+                14-04-2019
+              </div>
+              <div class="margin-top-10 h7-5">已上传</div>
+            </div>
+
+            <div class="padding-10  border-black radius-5 height margin-right-10">
+              <div class="h7-5">预约日期</div>
+              <div class="margin-top-10 h7-5">
+                14-04-2019
+              </div>
+              <div class="margin-top-10 h7-5">已上传</div>
+            </div>
+
+            <div class="padding-10  border-black radius-5 height margin-right-10">
+              <div class="h7-5">预约日期</div>
+              <div class="margin-top-10 h7-5">
+                14-04-2019
+              </div>
+              <div class="margin-top-10 h7-5">已上传</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="flex-row">
+
+      <div class="height h7 flex-row _center bg-gray width text-center border-bottom">电话 <img src="../assets/icon/plus_icon.png" class="icon-15 margin-left-5"/></div>
+      <div class="flex-1">
+        <div class="xgun">
+          <div class="flex-row" style="width: 500px">
+            <div class="padding-10  border-black radius-5 height margin-right-10">
+              <div class="h7-5">预约日期</div>
+              <div class="margin-top-10 h7-5">
+                14-04-2019
+              </div>
+              <div class="margin-top-10 h7-5">已上传</div>
+            </div>
+
+            <div class="padding-10  border-black radius-5 height margin-right-10" (click)='aa();'>
+              <div class="h7-5">预约日期</div>
+              <div class="margin-top-10 h7-5">
+                14-04-2019
+              </div>
+              <div class="margin-top-10 h7-5">已上传</div>
+            </div>
+
+            <div class="padding-10  border-black radius-5 height margin-right-10">
+              <div class="h7-5">预约日期</div>
+              <div class="margin-top-10 h7-5">
+                14-04-2019
+              </div>
+              <div class="margin-top-10 h7-5">已上传</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="flex-row">
+
+      <div class="height h7 flex-row _center bg-gray width text-center border-bottom">活动 <img src="../assets/icon/plus_icon.png" class="icon-15 margin-left-5"/></div>
+      <div class="flex-1">
+        <div class="xgun">
+          <div class="flex-row" style="width: 500px">
+            <div class="padding-10  border-black radius-5 height margin-right-10">
+              <div class="h7-5">预约日期</div>
+              <div class="margin-top-10 h7-5">
+                14-04-2019
+              </div>
+              <div class="margin-top-10 h7-5">已上传</div>
+            </div>
+
+            <div class="padding-10  border-black radius-5 height margin-right-10">
+              <div class="h7-5">预约日期</div>
+              <div class="margin-top-10 h7-5">
+                14-04-2019
+              </div>
+              <div class="margin-top-10 h7-5">已上传</div>
+            </div>
+
+            <div class="padding-10  border-black radius-5 height margin-right-10">
+              <div class="h7-5">预约日期</div>
+              <div class="margin-top-10 h7-5">
+                14-04-2019
+              </div>
+              <div class="margin-top-10 h7-5">已上传</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
+  <div class="margin-bottom-20"></div>
+
+  <!-- <p [class.aa]='name=="aa"' *ngIf="name!='bb'" >{{name}}</p>
+
+  <p *ngFor="let item of name.split(',');let idx=index;">{{idx}}. {{item}}</p> -->
+
 
 </ion-content>
