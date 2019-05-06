@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)='back()'>
+        <div class="txt-blue">返回</div>
+        <!-- <ion-icon slot="icon-only" name="arrow-back"></ion-icon> -->
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="margin-20 h7 txt-bold">
+    <div class="flex-row margin-top-10">
+      <div class="title2">覆診日期:</div>
+      <div class="flex-1 margin-left-40">
+        <input class="radius-2" style="width:100%;" />
+      </div>
+    </div>
+
+    <div class="flex-row margin-top-10">
+      <div class="title2">覆診時間:</div>
+      <div class="flex-1 margin-left-40">
+        <input class="radius-2" style="width:100%;" />
+      </div>
+    </div>
+
+    <div class="flex-row margin-top-10">
+      <div class="title2">診所/醫院:</div>
+      <div class="flex-1 margin-left-40">
+        <input class="radius-2" style="width:100%;" />
+      </div>
+    </div>
+
+    <div class="flex-row margin-top-10">
+      <div class="title2">普通專科門診:</div>
+      <div class="flex-1 margin-left-40">
+        <input class="radius-2" style="width:100%;" />
+      </div>
+    </div>
+
+    <div class=" margin-top-10">
+      <div class="title2">內容(最多250字):</div>
+      <div class="flex-1">
+        <textarea class="textarea2 radius-2" style="width:100%;"></textarea>
+      </div>
+    </div>
+
+    <div class="margin-top-10">
+      <div class="title">狀態:</div>
+      <div class=" margin-top-10 flex-row flex-center">
+        <input type="radio" name="sex" value="male" class="radio " />未到期
+      </div>
+      <div class=" margin-top-10 flex-row flex-center">
+        <input type="radio" name="sex" value="male" class="radio " />已覆診
+      </div>
+      <div class=" margin-top-10 flex-row flex-center">
+        <input type="radio" name="sex" value="male" class="radio " />無覆診
+      </div>
+    </div>
+
+  </div>
+
+  <div class="flex-row flex-center  margin-top-120">
+    <div class="flex-1"></div>
+    <div class="txt-blue margin-right-60">保存</div>
+    <div class="txt-gray">删除</div>
+    <div class="flex-1"></div>
+  </div>
+
+  <div class="flex-row flex-center  margin-top-30">
+      <div class="flex-1"></div>
+      <div class="txt-blue">保存及新增下次覆診記錄</div>
+      <div class="flex-1"></div>
+    </div>
+</ion-content>

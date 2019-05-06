@@ -1,21 +1,26 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>
-      <img src="" />香港红十字会
-    </ion-title>
+    <div class="flex-row spacebetween padding-left-20  padding-right-20" style="width: 100%;" (click)='logout();'>
+      <div class="txt-blue">登出</div>
+      <img src="../assets/icon/download.png" />
+    </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <div class="text-center">
+    <img src="../assets/icon/rsz_logo_chi.png" />
+  </div>
   <div *ngFor="let item of list;let idx=index;">
     <div class="title flex-row flex-center padding-left-20 h5">档案编号：wt5969696</div>
     <div class="flex-row">
 
-      <div class="height h7 flex-row _center bg-gray width text-center border-bottom">探访 <img src="../assets/icon/plus_icon.png" class="icon-15 margin-left-5"/></div>
+      <div class="height h7 flex-row _center bg-gray width text-center border-bottom">探访 <img
+          src="../assets/icon/plus_icon.png" class="icon-15 margin-left-5" /></div>
       <div class="flex-1">
         <div class="xgun">
           <div class="flex-row" style="width: 500px">
-            <div class="padding-10  border-black radius-5 height margin-right-10">
+            <div class="padding-10  border-black radius-5 height margin-right-10" (click)='visit();'>
               <div class="h7-5">预约日期</div>
               <div class="margin-top-10 h7-5">
                 14-04-2019
@@ -46,7 +51,8 @@
 
     <div class="flex-row">
 
-      <div class="height h7 flex-row _center bg-gray width text-center border-bottom">电话 <img src="../assets/icon/plus_icon.png" class="icon-15 margin-left-5"/></div>
+      <div class="height h7 flex-row _center bg-gray width text-center border-bottom">电话 <img
+          src="../assets/icon/plus_icon.png" class="icon-15 margin-left-5" /></div>
       <div class="flex-1">
         <div class="xgun">
           <div class="flex-row" style="width: 500px">
@@ -82,11 +88,12 @@
 
     <div class="flex-row">
 
-      <div class="height h7 flex-row _center bg-gray width text-center border-bottom">活动 <img src="../assets/icon/plus_icon.png" class="icon-15 margin-left-5"/></div>
+      <div class="height h7 flex-row _center bg-gray width text-center border-bottom">活动 <img
+          src="../assets/icon/plus_icon.png" class="icon-15 margin-left-5" /></div>
       <div class="flex-1">
         <div class="xgun">
           <div class="flex-row" style="width: 500px">
-            <div class="padding-10  border-black radius-5 height margin-right-10">
+            <div class="padding-10  border-black radius-5 height margin-right-10" (click)='activity();'>
               <div class="h7-5">预约日期</div>
               <div class="margin-top-10 h7-5">
                 14-04-2019

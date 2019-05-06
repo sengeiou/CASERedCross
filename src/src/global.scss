@@ -46,7 +46,7 @@ $vpx12:0.6rem;
 $vpx10:0.5rem;
 $vpx5:0.25rem;
 $vpx4:0.2rem;
-
+$vpx3:0.15rem;
 
 
 
@@ -84,7 +84,11 @@ $vpx4:0.2rem;
   align-content: baseline;
   align-items: baseline;
 }
-
+.spacebetween{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 .flex-1 {
   flex: 1;
 }
@@ -432,6 +436,15 @@ button[disabled][type=primary] {
 .padding-right-30 {
   padding-right: $vpx30;
 }
+
+.padding-right-40 {
+  padding-right: $vpx40;
+}
+
+.margin-3{
+  margin: $vpx3;
+}
+
 .margin-5{
     margin: $vpx5;
 }
@@ -451,7 +464,7 @@ button[disabled][type=primary] {
   margin-top: $vpx20;
 }
 
-.margin-top {
+.margin-top-40 {
   margin-top: $vpx40;
 }
 
@@ -461,6 +474,14 @@ button[disabled][type=primary] {
 
 .margin-top-80 {
   margin-top: $vpx80;
+}
+
+.margin-top-100 {
+  margin-top: $vpx100;
+}
+
+.margin-top-120 {
+  margin-top: $vpx120;
 }
 
 .margin-bottom-10 {
@@ -512,6 +533,10 @@ button[disabled][type=primary] {
   margin-left: $vpx10;
 }
 
+.margin-right-5 {
+  margin-right: $vpx5;
+}
+
 .margin-right-10 {
   margin-right: $vpx10;
 }
@@ -519,9 +544,15 @@ button[disabled][type=primary] {
 .margin-right-20 {
   margin-right: $vpx20;
 }
-
+.margin-right-30 {
+  margin-right: $vpx30;
+}
 .margin-right-40 {
   margin-right: $vpx40;
+}
+
+.margin-right-60 {
+  margin-right: $vpx60;
 }
 
 .margin-left-15 {

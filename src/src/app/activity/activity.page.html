@@ -1,0 +1,156 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)='back()'>
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>活動</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="bg-l padding-bottom-5">
+    <div class="text-center padding-top-20 txt-black txt-bold">個案資料</div>
+    <div class="margin-20">
+      <div class="flex-row">
+        <div class="title">檔案編號:</div>
+        <div>wx5265262522</div>
+      </div>
+      <div class="flex-row margin-top-10">
+        <div class="title">姓名:</div>
+        <div>nihhhh</div>
+      </div>
+      <div class="flex-row margin-top-10  flex-center">
+        <div class="title">所患疾病:</div>
+        <div class="flex-1">
+          <textarea class="textarea radius-2" style="width:100%;"></textarea>
+        </div>
+
+      </div>
+
+      <div class="flex-row margin-top-10  flex-center">
+        <div class="title">其他疾病:</div>
+        <div class="flex-1">
+          <textarea class="textarea radius-2" style="width:100%;"></textarea>
+        </div>
+      </div>
+      <div class="flex-row margin-top-10  flex-center">
+        <div class="title">照顧計劃:</div>
+        <div class="flex-1">
+          <textarea class="textarea1 radius-2" style="width:100%;"></textarea>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="bg-h padding-bottom-5">
+    <div class="text-center padding-top-20 txt-black txt-bold">活動內容</div>
+    <div class="margin-20">
+      <div class="flex-row">
+        <div class="title2">活動日期:</div>
+        <div class="flex-1">
+          <input class="radius-2" style="width:100%;" />
+        </div>
+
+      </div>
+      <div class="flex-row margin-top-10  flex-center">
+        <div class="title2">活動時間:</div>
+        <div class="flex-1">
+          <input class="input_s radius-2" style="width:100%;" />
+        </div>
+        <div class="margin-5">至</div>
+        <div class="flex-1">
+          <input class="input_s radius-2" style="width:100%;" />
+        </div>
+      </div>
+      <div class="flex-row margin-top-10">
+        <div class="title2">出席義工:</div>
+        <div><img src="../assets/icon/plus_icon.png" class="icon-15 margin-left-30" /></div>
+      </div>
+      <div class=" margin-top-10">
+        <div class="flex-1">
+          <textarea class="textarea2 radius-2" style="width:100%;"></textarea>
+        </div>
+
+      </div>
+
+
+
+      <div class=" margin-top-10  ">
+        <div class="title">活動內容:</div>
+        <div class=" margin-top-10 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " />活動</div>
+        <div class="margin-left-30 margin-right-20">
+
+          <div class="">
+            <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="sex" value="male"
+                class="radio " />參觀病人資源中心</div>
+            <div class=" margin-top-10 flex-row flex-center">活動地點:
+              <div class="flex-1">
+                <input class="radius-2 other-input" placeholder="輸入最多50字" style=" width: 100%;" />
+              </div>
+            </div>
+          </div>
+          <div class="">
+            <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="sex" value="male"
+                class="radio " />出席健康講座</div>
+            <div class=" margin-top-10 flex-row flex-center">講座主題:<div class="flex-1">
+                <input class="radius-2 other-input" placeholder="輸入最多50字" style=" width: 100%;" />
+              </div>
+            </div>
+          </div>
+          <div class="">
+            <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="sex" value="male"
+                class="radio " />出席與運動有關活動</div>
+            <div class=" margin-top-10 flex-row flex-center">活動主題:<div class="flex-1">
+                <input class="radius-2 other-input" placeholder="輸入最多50字" style=" width: 100%;" />
+              </div>
+            </div>
+          </div>
+
+          <div class=" margin-top-10 flex-row flex-center "><input type="radio" name="sex" value="male"
+              class="radio " />出席與健康飲食有關活動 </div>
+          <div class="">
+            <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="sex" value="male"
+                class="radio " />其他</div>
+            <div class=" margin-top-10 flex-row flex-center margin-left-20">
+              <div class="flex-1">
+                <input class="radius-2 other-input" placeholder="輸入最多50字" style=" width: 100%;" />
+              </div>
+            </div>
+          </div>
+
+          <div class="">
+            <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="sex" value="male"
+                class="radio " />其他活動</div>
+            <div class=" margin-top-10 flex-row flex-center">
+              <div class="flex-1">
+                <input class="radius-2 other-input" placeholder="輸入最多250字" style=" width: 100%;" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="title2 margin-top-10">其他補充:</div>
+        <div class=" margin-top-10 margin-right-20">
+          <!-- <textarea class="textarea2 radius-2" placeholder="輸入最多250字"></textarea> -->
+          <div class="flex-1">
+            <input class="radius-2 other-input" placeholder="輸入最多250字" style=" width: 100%;" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="flex-row padding-15 flex-center">
+    <div class="flex-1"></div>
+    <div class="flex-row">
+      <div class="txt-blue margin-right-40">保存</div>
+      <div class="txt-blue">上傳</div>
+    </div>
+    <div class="flex-1"></div>
+  </div>
+
+</ion-content>

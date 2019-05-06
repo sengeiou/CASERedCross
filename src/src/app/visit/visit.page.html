@@ -1,0 +1,546 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)='back()'>
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>探訪</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="bg-l padding-bottom-5">
+    <div class="text-center padding-top-20 txt-black txt-bold">個案資料</div>
+    <div class="text-center padding-top-10">
+        <img src="../assets/icon/camera.png" class="icon-25 margin-3" />
+        <img src="../assets/icon/scan.png" class="icon-25 margin-3" />
+        <img src="../assets/icon/booking.png" class="icon-25 margin-3"  (click)='visitList();'/>
+        <img src="../assets/icon/HEART-BEAT-.png" class="icon-25 margin-3" />
+        <img src="../assets/icon/BLOODPRESSURE_ICON.png" class="icon-25 margin-3" />
+        <img src="../assets/icon/waisthipratio.png" class="icon-25 margin-3" />
+        <img src="../assets/icon/WEIGHT_ICON.png" class="icon-25 margin-3" />
+      </div>
+    <div class="margin-20">
+      <div class="flex-row">
+        <div class="title">檔案編號:</div>
+        <div>wx5265262522</div>
+      </div>
+      <div class="flex-row margin-top-10">
+        <div class="title">姓名:</div>
+        <div>nihhhh</div>
+      </div>
+      <div class="flex-row margin-top-10  flex-center">
+        <div class="title">所患疾病:</div>
+        <div class="flex-1">
+          <textarea class="textarea radius-2" style="width:100%;"></textarea>
+        </div>
+
+      </div>
+
+      <div class="flex-row margin-top-10  flex-center">
+        <div class="title">其他疾病:</div>
+        <div class="flex-1">
+          <textarea class="textarea radius-2" style="width:100%;"></textarea>
+        </div>
+      </div>
+      <div class="flex-row margin-top-10  flex-center">
+        <div class="title">照顧計劃:</div>
+        <div class="flex-1">
+          <textarea class="textarea1 radius-2" style="width:100%;"></textarea>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bg-h1 padding-bottom-5 ">
+    <div class=" padding-top-20 flex-row flex-center padding-right-30">
+      <div class="flex-1"></div>
+      <div class="txt-black txt-bold">預約</div>
+      <div class=" flex-1 h8 txt-blue  aa">保存</div>
+    </div>
+    <div class="padding-20">
+      <div class="flex-row">
+        <div class="title2">預約探訪日期:</div>
+        <div class="flex-1">
+          <input class="radius-2" style="width:100%;" />
+        </div>
+      </div>
+
+      <div class="flex-row margin-top-10 ">
+        <div class="title2">預約探訪時間:</div>
+        <div class="flex-1">
+          <input class="radius-2" style="width:100%;" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-h padding-bottom-5">
+    <div class=" padding-top-20 flex-row flex-center padding-right-40">
+      <div class="flex-1"></div>
+      <div class="txt-black txt-bold">探訪內容</div>
+      <div class=" flex-1 h8 txt-blue  aa">保存</div>
+    </div>
+
+    <div class="margin-20">
+
+      <div class="flex-row">
+        <div class="title2">實際探訪日期:</div>
+        <div class="flex-1">
+          <input class="radius-2" style="width:100%;" />
+        </div>
+      </div>
+      <div class="flex-row margin-top-10  flex-center">
+        <div class="title2">實際探訪時間:</div>
+        <div class="flex-1">
+          <input class="input_s radius-2" style="width:100%;" />
+        </div>
+        <div class="margin-5">至</div>
+        <div class="flex-1">
+          <input class="input_s radius-2" style="width:100%;" />
+        </div>
+      </div>
+      <div class="margin-top-10">
+        <div class="title">面見地點:</div>
+        <div class=" margin-top-10 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " />家中
+        </div>
+        <div class=" margin-top-10 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " />其他
+          <div class="flex-1 margin-left-20">
+            <input class="input_s radius-2" placeholder="輸入最多50字" style="width:100%;" />
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="flex-row margin-top-10">
+          <div class="title2">出席義工:</div>
+          <div><img src="../assets/icon/plus_icon.png" class="icon-15 margin-left-30" /></div>
+        </div>
+        <div class=" ">
+          <div class="flex-1">
+            <textarea class="textarea2 radius-2" style="width:100%;"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="flex-row margin-top-10">
+          <div class="title2">支援義工:</div>
+          <div><img src="../assets/icon/plus_icon.png" class="icon-15 margin-left-30" /></div>
+        </div>
+        <div class=" ">
+          <div class="flex-1">
+            <textarea class="textarea2 radius-2" style="width:100%;"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="margin-top-10">
+        <div class="title">探訪狀況:</div>
+        <div class=" margin-top-10 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " />成功
+        </div>
+        <div class=" margin-top-10 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " />未能
+        </div>
+        <div class="flex-1 margin-top-10">
+          <input class="input_s radius-2" placeholder="輸入最多50字" style="width:100%;" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-h1 padding-bottom-5 ">
+    <div class=" padding-top-20 flex-row flex-center padding-right-40">
+      <div class="flex-1"></div>
+      <div class="txt-black txt-bold">服務內容</div>
+      <div class=" flex-1 h8 txt-blue  aa">保存</div>
+    </div>
+    <div class=" ">
+      <div class="margin-20">
+        <div class="">
+          <div>室內活動:</div>
+          <div class=" margin-top-5 flex-row flex-center"><input type="radio" name="sex" value="male"
+              class="radio " />討論健康目標</div>
+          <div class=" margin-top-5 flex-row flex-center"><input type="radio" name="sex" value="male"
+              class="radio " />教導／討論健康飲食</div>
+          <div class=" margin-top-5 flex-row flex-center"><input type="radio" name="sex" value="male"
+              class="radio " />教導／一起做運動</div>
+          <div class=" margin-top-5 flex-row flex-center"><input type="radio" name="sex" value="male"
+              class="radio " />舒緩情緒／壓力</div>
+          <div class=" margin-top-5 flex-row flex-center"><input type="radio" name="sex" value="male"
+              class="radio " />處理藥物／服藥習慣</div>
+          <div class=" margin-top-5 flex-row flex-center">
+            <input type="radio" name="sex" value="male" class="radio " />其他
+            <div class="flex-1">
+              <input class="radius-2 other-input" placeholder="輸入最多50字" style=" width: 100%;" />
+            </div>
+          </div>
+        </div>
+
+        <div class="margin-top-5 ">
+          <div>室外活動:</div>
+          <div class=" margin-top-5 flex-row flex-center"><input type="radio" name="sex" value="male"
+              class="radio " />護送外出</div>
+          <div class=" margin-top-5 flex-row flex-center"><input type="radio" name="sex" value="male"
+              class="radio " />陪同購物</div>
+          <div class=" margin-top-5 flex-row flex-center"><input type="radio" name="sex" value="male"
+              class="radio " />出外散步</div>
+          <div class=" margin-top-5 flex-row flex-center"><input type="radio" name="sex" value="male"
+              class="radio " />其他
+            <div class="flex-1">
+              <input class="radius-2  other-input" placeholder="輸入最多50字" style=" width: 100%;" />
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="title2 margin-top-10">其他(請註明):</div>
+          <div class=" margin-top-10 ">
+            <div class="flex-1">
+              <input class="radius-2 " placeholder="輸入最多250字" style=" width: 100%;" />
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class=" margin-top-10">是次分享之健康管家手冊項目(如有，請填寫該目錄標題):</div>
+          <div class=" margin-top-10 ">
+            <div class="flex-1 flex-row  margin-top-10 flex-center">
+              <div class="margin-right-10">1.</div><input class="radius-2 " placeholder="輸入最多50字"
+                style=" width: 100%;" />
+            </div>
+            <div class="flex-1 flex-row margin-top-10 flex-center">
+              <div class="margin-right-10">2.</div><input class="radius-2 " placeholder="輸入最多50字"
+                style=" width: 100%;" />
+            </div>
+            <div class="flex-1 flex-row margin-top-10 flex-center">
+              <div class="margin-right-10">3.</div><input class="radius-2 " placeholder="輸入最多50字"
+                style=" width: 100%;" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-h padding-bottom-5">
+    <div class=" padding-top-20 flex-row flex-center padding-right-40">
+      <div class="flex-1"></div>
+      <div class="txt-black txt-bold">健康檢查紀錄</div>
+      <div class=" flex-1 h8 txt-blue  aa">保存</div>
+    </div>
+
+    <div class="margin-20">
+      <div>
+        <div class="flex-row text-center">
+          <div class="flex-1">上血壓(mmHg)</div>
+          <div class="flex-1">下血壓(mmHg)</div>
+          <div class="flex-1">心跳</div>
+        </div>
+        <div class="flex-row">
+          <div>1.</div>
+          <div class="flex-row text-center">
+            <div class="flex-1"><input class="radius-2 margin-left-5" style=" width: 90%;" /></div>
+            <div class="flex-1"><input class="radius-2 margin-left-10" style=" width: 90%;" /></div>
+            <div class="flex-1"><input class="radius-2 margin-left-10" style=" width: 90%;" /></div>
+          </div>
+        </div>
+        <div class="flex-row margin-top-5">
+          <div>2.</div>
+          <div class="flex-row text-center">
+            <div class="flex-1"><input class="radius-2 margin-left-5" style=" width: 90%;" /></div>
+            <div class="flex-1"><input class="radius-2  margin-left-10" style=" width: 90%;" /></div>
+            <div class="flex-1"><input class="radius-2 margin-left-10" style=" width: 90%;" /></div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="flex-row margin-top-10">
+          <div>身高</div>
+          <input class="radius-2 margin-left-20 margin-right-20" style=" width: 30%;" />
+          <div>米</div>
+        </div>
+        <div class="flex-row margin-top-5">
+          <div>體重</div>
+          <input class="radius-2 margin-left-20 margin-right-20" style=" width: 30%;" />
+          <div>公斤</div>
+        </div>
+        <div class="flex-row margin-top-5">
+          <div>BMI</div>
+          <div class="margin-left-20">0.0</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="flex-row margin-top-10">
+          <div>腰圍</div>
+          <input class="radius-2 margin-left-20 margin-right-20" style=" width: 30%;" />
+          <div>厘米</div>
+        </div>
+        <div class="flex-row margin-top-5">
+          <div>臀圍</div>
+          <input class="radius-2 margin-left-20 margin-right-20" style=" width: 30%;" />
+          <div>厘米</div>
+        </div>
+        <div class="flex-row margin-top-5">
+          <div>腰臀比例</div>
+          <div class="margin-left-20">0.0</div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="bg-h1 padding-bottom-5">
+    <div class=" padding-top-20 flex-row flex-center padding-right-40">
+      <div class="flex-1"></div>
+      <div class="txt-black txt-bold">生活習慣評估</div>
+      <div class=" flex-1 h8 txt-blue  aa">保存</div>
+    </div>
+    <div class="margin-20">
+      <div>
+        <div>根據醫生處方服食藥物(包括依時和劑量, 沒有自行服食其他非處方藥物):</div>
+        <div class=" margin-top-5 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " />是
+        </div>
+        <div class=" margin-top-5 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " />否
+        </div>
+      </div>
+
+      <div class="margin-top-10">
+        <div>根據低鈉原則選擇食物(包括低鹽及不吃味精、罐頭及醃製食物等等):</div>
+        <div class=" margin-top-5 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " />是
+        </div>
+        <div class=" margin-top-5 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " />否
+        </div>
+      </div>
+
+      <div class="margin-top-10">
+        <div>按低脂及低膽固醇原則選擇食物(如不吃煎炸食物、肥肉、動物內臟等):</div>
+        <div class=" margin-top-5 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " />是
+        </div>
+        <div class=" margin-top-5 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " />否
+        </div>
+      </div>
+
+      <div class="margin-top-10">
+        <div>根據高纖維原則選擇食物(如新鮮水果、蔬菜、麥片或全麥食品、糙米等):</div>
+        <div class=" margin-top-5 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " />是
+        </div>
+        <div class=" margin-top-5 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " />否
+        </div>
+      </div>
+
+      <div class="margin-top-10">
+        <div>能維持每星期運動至少3次及每次30分鐘:</div>
+        <div class=" margin-top-5 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " />是
+        </div>
+        <div class=" margin-top-5 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " />否
+        </div>
+      </div>
+
+      <div class="margin-top-10">
+        <div>家居環境安全(如地面整潔、沒有隨地擺放雜物等):</div>
+        <div class=" margin-top-5 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " />是
+        </div>
+        <div class=" margin-top-5 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " />否
+        </div>
+      </div>
+
+      <div class="margin-top-10">
+        <div>在家/外出(醫院／診所除外)*量度血糖:</div>
+        <div class=" margin-top-5 flex-row flex-center">
+          <div class="flex-row flex-center"><input type="radio" name="sex" value="male" class="radio " />是</div>
+
+          <div class="flex-row h7-5 flex-1 margin-left-20 flex-center">
+            <div class="" style="width:3.6rem;">地點</div>
+
+            <input class="input_s radius-2" style="width:35%;" />
+
+            <div class="margin-5" style="width:3.6rem;">頻率</div>
+
+            <input class="input_s radius-2" style="width:35%;" />
+
+            <div class="margin-5" style="width:3.6rem;">次數</div>
+
+            <input class="input_s radius-2" style="width:35%;" />
+
+          </div>
+        </div>
+        <div class=" margin-top-5 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " />否
+        </div>
+      </div>
+
+      <div class="margin-top-10">
+        <div>在家/外出(醫院／診所除外)*量度血壓:</div>
+        <div class=" margin-top-5 flex-row flex-center">
+          <div class="flex-row flex-center"><input type="radio" name="sex" value="male" class="radio " />是</div>
+
+          <div class="flex-row h7-5 flex-1 margin-left-20 flex-center">
+            <div class="" style="width:3.6rem;">地點</div>
+
+            <input class="input_s radius-2" style="width:35%;" />
+
+            <div class="margin-5" style="width:3.6rem;">頻率</div>
+
+            <input class="input_s radius-2" style="width:35%;" />
+
+            <div class="margin-5" style="width:3.6rem;">次數</div>
+
+            <input class="input_s radius-2" style="width:35%;" />
+
+          </div>
+        </div>
+        <div class=" margin-top-5 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " />否
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="bg-h padding-bottom-5">
+    <div class=" padding-top-20 flex-row flex-center padding-right-40">
+      <div class="flex-1"></div>
+      <div class="txt-black txt-bold">情緒評估</div>
+      <div class=" flex-1 h8 txt-blue  aa">保存</div>
+    </div>
+    <div class="margin-20">
+      <div class="">
+        <div>情緒評估:</div>
+        <div class=" margin-top-5 flex-row flex-center"><input type="radio" name="sex" value="male" class="radio " />正常
+        </div>
+        <div class=" margin-top-5 flex-row flex-center"><input type="radio" name="sex" value="male" class="radio " />焦慮
+        </div>
+        <div class=" margin-top-5 flex-row flex-center"><input type="radio" name="sex" value="male" class="radio " />抑鬱
+        </div>
+        <div class=" margin-top-5 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " />其他
+          <div class="flex-1">
+            <input class="radius-2 other-input" placeholder="輸入最多50字" style=" width: 100%;" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-h1 padding-bottom-5">
+    <div class=" padding-top-20 flex-row flex-center padding-right-40">
+      <div class="flex-1"></div>
+      <div class="txt-black txt-bold">長者其他狀況補充(自上次探訪後)</div>
+      <div class=" flex-1 h8 txt-blue  aa">保存</div>
+    </div>
+    <div class="margin-20">
+      <div class="margin-top-10">
+        <div>是否因糖尿病曾經入院?</div>
+        <div class=" margin-top-5 flex-row flex-center">
+          <div class="flex-row flex-center"><input type="radio" name="sex" value="male" class="radio " />是</div>
+
+          <div class="flex-row h7-5 flex-1 margin-left-30 flex-center">
+            <input class="input_s radius-2" style="width:35%;" />
+            <div class="margin-5" style="width:3.6rem;">日數</div>
+          </div>
+        </div>
+        <div class=" margin-top-5 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " />否
+        </div>
+      </div>
+
+      <div class="margin-top-10">
+        <div>是否因高血壓曾經入院?</div>
+        <div class=" margin-top-5 flex-row flex-center">
+          <div class="flex-row flex-center"><input type="radio" name="sex" value="male" class="radio " />是</div>
+
+          <div class="flex-row h7-5 flex-1 margin-left-30 flex-center">
+            <input class="input_s radius-2" style="width:35%;" />
+            <div class="margin-5" style="width:3.6rem;">日數</div>
+          </div>
+        </div>
+        <div class=" margin-top-5 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " />否
+        </div>
+      </div>
+
+      <div class="margin-top-10">
+        <div>是否因其他疾病曾經入院?</div>
+        <div class=" margin-top-5 flex-row flex-center">
+          <div class="flex-row flex-center"><input type="radio" name="sex" value="male" class="radio " />是</div>
+
+          <div class="flex-row h7-5 flex-1 margin-left-30 flex-center">
+            <input class="input_s radius-2" style="width:35%;" />
+            <div class="margin-5" style="width:3.6rem;">日數</div>
+          </div>
+        </div>
+        <div class=" margin-top-5 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " />否
+        </div>
+      </div>
+
+      <div class="margin-top-10">
+        <div>是否曾發生突發事件(如發生家居意外,在家跌倒等)</div>
+        <div class=" margin-top-5 flex-row flex-center">
+          <div class="flex-row flex-center"><input type="radio" name="sex" value="male" class="radio " />是</div>
+
+          <div class="flex-row h7-5 flex-1 margin-left-30 flex-center">
+            <input class="input_s radius-2" style="width:35%;" />
+            <div class="margin-5" style="width:3.6rem;">次數</div>
+          </div>
+        </div>
+        <div class=" margin-top-5 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " />否
+        </div>
+      </div>
+
+      <div class="margin-top-10">
+        <div>有否提出特別需要(如送飯, 入住老人院, 家居維修等)</div>
+        <div class=" margin-top-5 flex-row flex-center">
+          <div class="flex-row flex-center"><input type="radio" name="sex" value="male" class="radio " />是</div>
+          <div class="flex-row h7-5 flex-1 margin-left-30 flex-center">
+            <input class="input_s radius-2" placeholder="輸入最多50字" style="width:100%;" />
+          </div>
+        </div>
+        <div class=" margin-top-5 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " />否
+        </div>
+      </div>
+
+      <div class="margin-top-10">
+        <div>其他狀況:</div>
+        <div class="margin-top-5 h7-5">
+          <input class="input_s radius-2" placeholder="輸入最多250字" style="width:100%;" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="flex-row padding-15 flex-center">
+    <div class="flex-1"></div>
+    <div class="flex-row">
+      <div class="txt-blue margin-right-60">保存及離開</div>
+      <div class="txt-blue">上傳</div>
+    </div>
+    <div class="flex-1"></div>
+  </div>
+
+</ion-content>
