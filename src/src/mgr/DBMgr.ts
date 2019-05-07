@@ -16,8 +16,9 @@ export class DBMgr {
                 location: 'default'
             }).then((db) => {
                 this._db = db;
-                //this.execSql("CREATE TABLE  IF NOT EXISTS  RECORD (`sdate` date,`sleeptime` varchar, `ispee` varchar"
+                // this.execSql("CREATE TABLE  IF NOT EXISTS  RECORD (`sdate` date,`sleeptime` varchar, `ispee` varchar"
                 //    + ",`peetime` varchar,`peeml` varchar,`wakeuptime` varchar,`wakeupml` varchar,`operation` varchar,`memo` text,`toilettime` varchar);");
+                this.execSql("CREATE TABLE IF NOT EXISTS  user (`id` INTEGER PRIMARY KEY, `number` varchar,`password` varchar, `latest_login_time` INTEGER);");
             });
         } else {
             this.type = 1;

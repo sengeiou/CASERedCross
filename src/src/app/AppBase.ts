@@ -38,6 +38,8 @@ export class AppBase implements OnInit {
     public scrolltop = 0;
     public headerscroptshow = 0;
 
+    
+
 
     public constructor(
         public router: Router,

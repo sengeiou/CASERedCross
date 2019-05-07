@@ -34,7 +34,11 @@ export class UploadimgPage extends AppBase {
     this.headerscroptshow = 480;
 
   }
-  list = [{}, {}]
+  list = [{
+    img:'../assets/icon/1.jpg',
+  }, {
+    img:'../assets/icon/1.jpg',
+  }]
   onMyLoad() {
     //参数
     this.params;
@@ -47,9 +51,15 @@ export class UploadimgPage extends AppBase {
     this.selectPhoto();
   }
 
+  delimg(e){
+    console.log(e)
+    this.list.splice(e,1);
+    console.log(this.list)
+  }
+
   async selectPhoto() {
     const actionSheet = await this.actionSheetController.create({
-      header: "选择头像",
+      // header: "选择头像",
       buttons: [
         {
           text: "立即自拍",
@@ -66,7 +76,6 @@ export class UploadimgPage extends AppBase {
             this.camera.getPicture(options).then((imagepath) => {
               this.uploadFile(this.transfer, imagepath, "member").then(photo => {
                 
-
               });
             }, (err) => {
               // Handle error

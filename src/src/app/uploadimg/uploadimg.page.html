@@ -14,18 +14,10 @@
 </ion-header>
 
 <ion-content>
-  <div class="flex-row flex-wrap spacebetween">
-    <div class="margin-10" style=" width: 45%;">
-      <img class="img" src="../assets/icon/1.jpg" />
-      <div class="text-center del txt-blue padding-5">删除圖片</div>
-    </div>
-    <div class="margin-10" style=" width: 45%;">
-      <img class="img" src="../assets/icon/1.jpg" />
-      <div class="text-center del txt-blue padding-5">删除圖片</div>
-    </div>
-    <div class="margin-10" style=" width: 45%;">
-      <img class="img" src="../assets/icon/1.jpg" />
-      <div class="text-center del txt-blue padding-5">删除圖片</div>
+  <div class="flex-row flex-wrap spacebetween" >
+    <div class="margin-10" style=" width: 45%;" *ngFor="let item of list;let idx=index;">
+      <img class="img" src="{{item.img}}" />
+      <div class="text-center del txt-blue padding-5" (click)='delimg(id=idx)' id='idx'>删除圖片</div>
     </div>
   </div>
 
