@@ -7,7 +7,11 @@ export class DBMgr {
     private static Instance: DBMgr = null;
     type = 0;
 
+
     Init(http: HTTP, sqlite: SQLite) {
+
+        var dbcreatesql="CREATE TABLE  IF NOT EXISTS  TEST (ID INTEGER PRIMARY KEY AUTOINCREMENT,`sdate` datetime);";
+
         if (this.win.sqlitePlugin) {
             //alert(1);
             this.type = 0;
@@ -16,15 +20,13 @@ export class DBMgr {
                 location: 'default'
             }).then((db) => {
                 this._db = db;
-                //this.execSql("CREATE TABLE  IF NOT EXISTS  RECORD (`sdate` date,`sleeptime` varchar, `ispee` varchar"
-                //    + ",`peetime` varchar,`peeml` varchar,`wakeuptime` varchar,`wakeupml` varchar,`operation` varchar,`memo` text,`toilettime` varchar);");
+                this.execSql(dbcreatesql);
             });
         } else {
             this.type = 1;
             //alert(2);
             this._db = this.win.openDatabase("appdata3.db", '1.0', 'database', 5 * 1024 * 1024);
-            //this.execSql("CREATE TABLE  IF NOT EXISTS  RECORD (`sdate` date,`sleeptime` varchar, `ispee` varchar"
-            //    + ",`peetime` varchar,`peeml` varchar,`wakeuptime` varchar,`wakeupml` varchar,`operation` varchar,`memo` text,`toilettime` varchar);");
+            this.execSql(dbcreatesql);
         }
 
     }

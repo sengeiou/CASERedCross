@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'chartdemo', pathMatch: 'full' },
+  { path: '', redirectTo: 'databasedemo', pathMatch: 'full' },
   { path: 'home', loadChildren: './home/home.module#HomePageModule' },
   { path: 'test', loadChildren: './test/test.module#TestPageModule' },
   { path: 'phone', loadChildren: './phone/phone.module#PhonePageModule' },
@@ -11,6 +11,8 @@ const routes: Routes = [
   { path: 'visilt-list', loadChildren: './visilt-list/visilt-list.module#VisiltListPageModule' },
   { path: 'visit-record', loadChildren: './visit-record/visit-record.module#VisitRecordPageModule' },
   { path: 'chartdemo', loadChildren: './chartdemo/chartdemo.module#ChartdemoPageModule' },
+  { path: 'qrcodescan', loadChildren: './qrcodescan/qrcodescan.module#QrcodescanPageModule' },
+  { path: 'databasedemo', loadChildren: './databasedemo/databasedemo.module#DatabasedemoPageModule' },
 
 
 
