@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)='back()'>
+        <div class="txt-blue">返回</div>
+        <!-- <ion-icon slot="icon-only" name="arrow-back"></ion-icon> -->
+      </ion-button>
+    </ion-buttons>
+
+    <div style="text-align: right; margin-right: 2rem;" (click)='uploadimg()'>
+      <img src="../assets/icon/plus_icon.png" class="icon-15 margin-left-5" />
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="flex-row flex-wrap spacebetween">
+    <div class="margin-10" style=" width: 45%;">
+      <img class="img" src="../assets/icon/1.jpg" />
+      <div class="text-center del txt-blue padding-5">删除圖片</div>
+    </div>
+    <div class="margin-10" style=" width: 45%;">
+      <img class="img" src="../assets/icon/1.jpg" />
+      <div class="text-center del txt-blue padding-5">删除圖片</div>
+    </div>
+    <div class="margin-10" style=" width: 45%;">
+      <img class="img" src="../assets/icon/1.jpg" />
+      <div class="text-center del txt-blue padding-5">删除圖片</div>
+    </div>
+  </div>
+
+</ion-content>

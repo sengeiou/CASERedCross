@@ -9,7 +9,8 @@ const routes: Routes = [
   { path: 'activity', loadChildren: './activity/activity.module#ActivityPageModule' },
   { path: 'visit', loadChildren: './visit/visit.module#VisitPageModule' },
   { path: 'visilt-list', loadChildren: './visilt-list/visilt-list.module#VisiltListPageModule' },
-  { path: 'visit-record', loadChildren: './visit-record/visit-record.module#VisitRecordPageModule' },
+  { path: 'visit-record', loadChildren: './visit-record/visit-record.module#VisitRecordPageModule' },  { path: 'uploadimg', loadChildren: './uploadimg/uploadimg.module#UploadimgPageModule' },
+
 
 
 

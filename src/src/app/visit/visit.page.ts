@@ -36,4 +36,12 @@ export class VisitPage extends AppBase {
   visitList(){
     this.navigate('visilt-list', { id: this.id });
   }
+
+  uploadimg(){
+    this.navigate('uploadimg', { id: this.id });
+  }
+
+  scan(){
+    
+  }
 }
