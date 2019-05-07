@@ -33,11 +33,29 @@ export class TestPage  extends AppBase {
     this.myname=this.params.name;
   }
   onMyShow(){
+    this.number='';
+    this.password='';
+  }
+  number='';
+  password='';
 
-  }
+  
   login(){
-    this.navigate('home')
+    if(!this.number){
+      this.toast('義工編號不能留空');
+      return;
+    }
+    if(!this.password){
+      this.toast('密碼不能留空');
+      return;
+    }
+    if(this.number==this.password){
+      this.navigate('home')
+    }else{
+      this.toast('你的義工編號或密碼不正確');
+    }
   }
+  
   aa(){
     this.presentAlertCheckbox();
   }

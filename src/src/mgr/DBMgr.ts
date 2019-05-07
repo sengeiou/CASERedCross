@@ -21,6 +21,7 @@ export class DBMgr {
             }).then((db) => {
                 this._db = db;
                 this.execSql(dbcreatesql);
+
             });
         } else {
             this.type = 1;

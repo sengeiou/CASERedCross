@@ -35,31 +35,28 @@ export class ChartdemoPage extends AppBase {
     let element = this.chart.nativeElement;
     let myChart = ECharts.init(element);
 
-
-
     var option = {
       title: {
-          text: '未来一周气温变化',
-          subtext: '纯属虚构'
+          text: '心跳統計圖',
       },
       tooltip: {
           trigger: 'axis'
       },
-      legend: {
-          data:['最高气温','最低气温']
-      },
-      toolbox: {
-          show: true,
-          feature: {
-              dataZoom: {
-                  yAxisIndex: 'none'
-              },
-              dataView: {readOnly: false},
-              magicType: {type: ['line', 'bar']},
-              restore: {},
-              saveAsImage: {}
-          }
-      },
+    //   legend: {
+    //       data:['最高气温','最低气温']
+    //   },
+    //   toolbox: {
+    //       show: true,
+    //       feature: {
+    //           dataZoom: {
+    //               yAxisIndex: 'none'
+    //           },
+    //           dataView: {readOnly: false},
+    //           magicType: {type: ['line', 'bar']},
+    //           restore: {},
+    //           saveAsImage: {}
+    //       }
+    //   },
       xAxis:  {
           type: 'category',
           boundaryGap: false,

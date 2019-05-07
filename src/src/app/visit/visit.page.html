@@ -14,10 +14,10 @@
   <div class="bg-l padding-bottom-5">
     <div class="text-center padding-top-20 txt-black txt-bold">個案資料</div>
     <div class="text-center padding-top-10">
-        <img src="../assets/icon/camera.png" class="icon-25 margin-3" />
-        <img src="../assets/icon/scan.png" class="icon-25 margin-3" />
+        <img src="../assets/icon/camera.png" class="icon-25 margin-3" (click)='uploadimg();'/>
+        <img src="../assets/icon/scan.png" class="icon-25 margin-3" (click)='scan();'/>
         <img src="../assets/icon/booking.png" class="icon-25 margin-3"  (click)='visitList();'/>
-        <img src="../assets/icon/HEART-BEAT-.png" class="icon-25 margin-3" />
+        <img src="../assets/icon/HEART-BEAT-.png" class="icon-25 margin-3" (click)='aa()'/>
         <img src="../assets/icon/BLOODPRESSURE_ICON.png" class="icon-25 margin-3" />
         <img src="../assets/icon/waisthipratio.png" class="icon-25 margin-3" />
         <img src="../assets/icon/WEIGHT_ICON.png" class="icon-25 margin-3" />
@@ -106,12 +106,13 @@
       <div class="margin-top-10">
         <div class="title">面見地點:</div>
         <div class=" margin-top-10 flex-row flex-center">
-          <input type="radio" name="sex" value="male" class="radio " />家中
+          <input type="radio"  [(ngModel)]="location" name='location' value="家中" class="radio " />家中
+          <!-- <ion-radio ng-repeat="" ng-value="" ng-model="" class="ion_radio"> 家中</ion-radio>-->
         </div>
         <div class=" margin-top-10 flex-row flex-center">
-          <input type="radio" name="sex" value="male" class="radio " />其他
+          <input type="radio"  [(ngModel)]="location" name='location' value="其他" class="radio " />其他
           <div class="flex-1 margin-left-20">
-            <input class="input_s radius-2" placeholder="輸入最多50字" style="width:100%;" />
+            <input class="input_s radius-2" placeholder="輸入最多50字" [(ngModel)]="otherLocation" maxlength="50"style="width:100%;" />
           </div>
         </div>
       </div>
@@ -143,13 +144,13 @@
       <div class="margin-top-10">
         <div class="title">探訪狀況:</div>
         <div class=" margin-top-10 flex-row flex-center">
-          <input type="radio" name="sex" value="male" class="radio " />成功
+          <input type="radio" [(ngModel)]="visitState" value="成功" name='visitState' class="radio " />成功
         </div>
         <div class=" margin-top-10 flex-row flex-center">
-          <input type="radio" name="sex" value="male" class="radio " />未能
+          <input type="radio" [(ngModel)]="visitState" value="未能" name='visitState' class="radio " />未能
         </div>
         <div class="flex-1 margin-top-10">
-          <input class="input_s radius-2" placeholder="輸入最多50字" style="width:100%;" />
+          <input class="input_s radius-2" placeholder="輸入最多50字" [(ngModel)]="failVisit" name='failVisit' style="width:100%;" />
         </div>
       </div>
     </div>
@@ -165,36 +166,36 @@
       <div class="margin-20">
         <div class="">
           <div>室內活動:</div>
-          <div class=" margin-top-5 flex-row flex-center"><input type="radio" name="sex" value="male"
+          <div class=" margin-top-5 flex-row flex-center"><input type="radio" [(ngModel)]="indoorActivities" name='indoorActivities' value="討論健康目標"
               class="radio " />討論健康目標</div>
-          <div class=" margin-top-5 flex-row flex-center"><input type="radio" name="sex" value="male"
+          <div class=" margin-top-5 flex-row flex-center"><input type="radio" [(ngModel)]="indoorActivities" name='indoorActivities' value="教導／討論健康飲食"
               class="radio " />教導／討論健康飲食</div>
-          <div class=" margin-top-5 flex-row flex-center"><input type="radio" name="sex" value="male"
+          <div class=" margin-top-5 flex-row flex-center"><input type="radio" [(ngModel)]="indoorActivities" name='indoorActivities' value="教導／一起做運動"
               class="radio " />教導／一起做運動</div>
-          <div class=" margin-top-5 flex-row flex-center"><input type="radio" name="sex" value="male"
+          <div class=" margin-top-5 flex-row flex-center"><input type="radio" [(ngModel)]="indoorActivities" name='indoorActivities' value="舒緩情緒／壓力"
               class="radio " />舒緩情緒／壓力</div>
-          <div class=" margin-top-5 flex-row flex-center"><input type="radio" name="sex" value="male"
+          <div class=" margin-top-5 flex-row flex-center"><input type="radio" [(ngModel)]="indoorActivities" name='indoorActivities' value="處理藥物／服藥習慣"
               class="radio " />處理藥物／服藥習慣</div>
           <div class=" margin-top-5 flex-row flex-center">
-            <input type="radio" name="sex" value="male" class="radio " />其他
+            <input type="radio" [(ngModel)]="indoorActivities" name='indoorActivities' value="其他" class="radio " />其他
             <div class="flex-1">
-              <input class="radius-2 other-input" placeholder="輸入最多50字" style=" width: 100%;" />
+              <input class="radius-2 other-input" placeholder="輸入最多50字"  [(ngModel)]="otherIndoorActivities" name='otherIndoorActivities' style="width: 100%;" />
             </div>
           </div>
         </div>
 
         <div class="margin-top-5 ">
           <div>室外活動:</div>
-          <div class=" margin-top-5 flex-row flex-center"><input type="radio" name="sex" value="male"
+          <div class=" margin-top-5 flex-row flex-center"><input type="radio" [(ngModel)]="outdoorActivities" name='outdoorActivities' value="護送外出"
               class="radio " />護送外出</div>
-          <div class=" margin-top-5 flex-row flex-center"><input type="radio" name="sex" value="male"
+          <div class=" margin-top-5 flex-row flex-center"><input type="radio" [(ngModel)]="outdoorActivities" name='outdoorActivities' value="陪同購物"
               class="radio " />陪同購物</div>
-          <div class=" margin-top-5 flex-row flex-center"><input type="radio" name="sex" value="male"
+          <div class=" margin-top-5 flex-row flex-center"><input type="radio" [(ngModel)]="outdoorActivities" name='outdoorActivities' value="出外散步"
               class="radio " />出外散步</div>
-          <div class=" margin-top-5 flex-row flex-center"><input type="radio" name="sex" value="male"
+          <div class=" margin-top-5 flex-row flex-center"><input type="radio" [(ngModel)]="outdoorActivities" name='outdoorActivities' value="其他"
               class="radio " />其他
             <div class="flex-1">
-              <input class="radius-2  other-input" placeholder="輸入最多50字" style=" width: 100%;" />
+              <input class="radius-2  other-input" placeholder="輸入最多50字" [(ngModel)]="otherOutdoorActivities" name='otherOutdoorActivities' style=" width: 100%;" />
             </div>
           </div>
         </div>
@@ -203,7 +204,7 @@
           <div class="title2 margin-top-10">其他(請註明):</div>
           <div class=" margin-top-10 ">
             <div class="flex-1">
-              <input class="radius-2 " placeholder="輸入最多250字" style=" width: 100%;" />
+              <input class="radius-2 " placeholder="輸入最多250字" [(ngModel)]="otherServe" name='otherServe' style=" width: 100%;" />
             </div>
           </div>
         </div>
@@ -212,15 +213,15 @@
           <div class=" margin-top-10">是次分享之健康管家手冊項目(如有，請填寫該目錄標題):</div>
           <div class=" margin-top-10 ">
             <div class="flex-1 flex-row  margin-top-10 flex-center">
-              <div class="margin-right-10">1.</div><input class="radius-2 " placeholder="輸入最多50字"
+              <div class="margin-right-10">1.</div><input class="radius-2 " [(ngModel)]="targetTitle1" name='targetTitle1' placeholder="輸入最多50字"
                 style=" width: 100%;" />
             </div>
             <div class="flex-1 flex-row margin-top-10 flex-center">
-              <div class="margin-right-10">2.</div><input class="radius-2 " placeholder="輸入最多50字"
+              <div class="margin-right-10">2.</div><input class="radius-2 " [(ngModel)]="targetTitle2" name='targetTitle2' placeholder="輸入最多50字"
                 style=" width: 100%;" />
             </div>
             <div class="flex-1 flex-row margin-top-10 flex-center">
-              <div class="margin-right-10">3.</div><input class="radius-2 " placeholder="輸入最多50字"
+              <div class="margin-right-10">3.</div><input class="radius-2 " [(ngModel)]="targetTitle3" name='targetTitle3' placeholder="輸入最多50字"
                 style=" width: 100%;" />
             </div>
           </div>
@@ -239,24 +240,24 @@
     <div class="margin-20">
       <div>
         <div class="flex-row text-center">
-          <div class="flex-1">上血壓(mmHg)</div>
+          <div class="flex-1">上血壓(mmHg)</div> 
           <div class="flex-1">下血壓(mmHg)</div>
           <div class="flex-1">心跳</div>
         </div>
         <div class="flex-row">
           <div>1.</div>
           <div class="flex-row text-center">
-            <div class="flex-1"><input class="radius-2 margin-left-5" style=" width: 90%;" /></div>
-            <div class="flex-1"><input class="radius-2 margin-left-10" style=" width: 90%;" /></div>
-            <div class="flex-1"><input class="radius-2 margin-left-10" style=" width: 90%;" /></div>
+            <div class="flex-1"><input class="radius-2 margin-left-5" style=" width: 90%;"  [(ngModel)]="upperBloodPressure1" name='upperBloodPressure1'/></div>
+            <div class="flex-1"><input class="radius-2 margin-left-10" style=" width: 90%;" [(ngModel)]="lowerBloodPressure1" name='lowerBloodPressure1'/></div>
+            <div class="flex-1"><input class="radius-2 margin-left-10" style=" width: 90%;" [(ngModel)]="MeasurementDate1" name='MeasurementDate1'/></div>
           </div>
         </div>
         <div class="flex-row margin-top-5">
           <div>2.</div>
           <div class="flex-row text-center">
-            <div class="flex-1"><input class="radius-2 margin-left-5" style=" width: 90%;" /></div>
-            <div class="flex-1"><input class="radius-2  margin-left-10" style=" width: 90%;" /></div>
-            <div class="flex-1"><input class="radius-2 margin-left-10" style=" width: 90%;" /></div>
+            <div class="flex-1"><input class="radius-2 margin-left-5" style=" width: 90%;"   [(ngModel)]="upperBloodPressure2" name='upperBloodPressure2'/></div>
+            <div class="flex-1"><input class="radius-2  margin-left-10" style=" width: 90%;" [(ngModel)]="lowerBloodPressure2" name='lowerBloodPressure2'/></div>
+            <div class="flex-1"><input class="radius-2 margin-left-10" style=" width: 90%;" [(ngModel)]="MeasurementDate2" name='MeasurementDate2'/></div>
           </div>
         </div>
       </div>

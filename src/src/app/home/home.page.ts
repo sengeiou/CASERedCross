@@ -34,9 +34,22 @@ export class HomePage extends AppBase {
   onMyShow() {
 
   }
-  logout(){
-    this.navigate('test')
+  logout(){ //退出登录
+    this.showConfirm('你確定要登出嗎？',(e)=>{
+      if(e){
+        this.navigate('test')
+      }
+    })
   }
+
+  upload(){ //上传资料到服务器
+    this.showConfirm('你確定要同步資料嗎？',(e)=>{
+      if(e){
+        
+      }
+    })
+  }
+
   name = "";
   aa() {
     this.navigate("phone", { name: this.name });
