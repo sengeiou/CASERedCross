@@ -268,4 +268,21 @@ export class AppBase implements OnInit {
     tryLogin(){
         this.showModal("MobileloginPage", {});
     }
+
+
+
+
+    getHeader(url,data){
+        var headers = new Headers({
+            type: "POST",
+            'Content-Type': 'application/json',
+            url:url,
+            data:data,
+            dataType: 'json',
+        });
+        return headers;
+    }
+
+
+
 }

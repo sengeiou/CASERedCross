@@ -6,11 +6,13 @@ import { NavController, ModalController, ToastController, AlertController, NavPa
 import { AppUtil } from '../app.util';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DBMgr } from 'src/mgr/DBMgr';
+import { ServiceApi } from 'src/providers/service.api';
 
 @Component({
   selector: 'app-databasedemo',
   templateUrl: './databasedemo.page.html',
   styleUrls: ['./databasedemo.page.scss'],
+  providers:[ServiceApi]
 })
 export class DatabasedemoPage extends AppBase {
 
@@ -20,7 +22,8 @@ export class DatabasedemoPage extends AppBase {
     public toastCtrl: ToastController,
     public alertCtrl: AlertController,
     public activeRoute: ActivatedRoute,
-    public sanitizer: DomSanitizer) {
+    public sanitizer: DomSanitizer,
+    public api:ServiceApi) {
     super(router, navCtrl, modalCtrl, toastCtrl, alertCtrl,activeRoute);
     this.headerscroptshow = 480;
       
@@ -53,5 +56,8 @@ export class DatabasedemoPage extends AppBase {
       console.log(ret);
       this.data=rows;
     });;
+  }
+  login(){
+    this.api.VolunteerLogin("aa","bb");
   }
 }

@@ -4,7 +4,7 @@ import { LoadingController } from '@ionic/angular';
 export class ApiConfig {
 	
     public static getApiUrl() {
-        return "https://cmsdev.app-link.org/alucard263096/zwgz/api/";
+        return "http://localhost:8101/CaseMS_UAT/WebService/AppWebService.asmx";
     }
     public static getUploadPath() {
         return "https://alioss.app-link.org/alucard263096/zwgz/";
@@ -27,13 +27,13 @@ export class ApiConfig {
     public static MDSalt = "";
 
     public static GetHeader(url, postparam) {
-        var sign = "";
-
+        
         var headers = new Headers({
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Sign': sign,
-            'Token': ApiConfig.TOKEN,
-            'UNICODE': ApiConfig.UNICODE
+            type: "POST",
+            'Content-Type': 'application/json',
+            url:url,
+            data:postparam,
+            dataType: 'json',
         });
         return headers;
     }
