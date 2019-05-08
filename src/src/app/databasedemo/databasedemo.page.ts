@@ -57,7 +57,16 @@ export class DatabasedemoPage extends AppBase {
       this.data=rows;
     });;
   }
+  loginid="vol1";
+  password="admin";
   login(){
-    this.api.VolunteerLogin("aa","bb");
+    this.api.VolunteerLogin(this.loginid,this.password).then((ret)=>{
+      //if(ret.)
+      if(ret.Result=="true"){
+        alert("登录成功:"+ret.objUser.UserName);
+      }else{
+        alert("登录失败:"+ret.strMsg);
+      }
+    });;
   }
 }

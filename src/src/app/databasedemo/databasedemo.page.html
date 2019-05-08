@@ -7,6 +7,8 @@
 <ion-content>
   <ion-button (click)="insert()">插入</ion-button>
   <ion-button (click)="select()">显示数据</ion-button>
+  <ion-input [(ngModel)]='loginid' ></ion-input>
+  <ion-input [(ngModel)]='password' ></ion-input>
   <ion-button (click)="login()">调用登录api</ion-button>
   <div>数据长度:{{data.length}}</div>
   <table>

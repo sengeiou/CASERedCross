@@ -3,11 +3,5 @@
   "integrations": {
     "cordova": {}
   },
-  "type": "angular",
-  "proxies": [
-    {
-      "path": "/CaseMS_UAT/WebService/AppWebService.asmx/", 
-      "proxyUrl": "http://202.82.149.248/CaseMS_UAT/WebService/AppWebService.asmx/"
-    }
-  ]
+  "type": "angular"
 }
