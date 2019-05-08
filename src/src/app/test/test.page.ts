@@ -1,17 +1,20 @@
 import { Component, ViewChild } from '@angular/core';
 import { AppBase } from '../AppBase';
 import { Router } from '@angular/router';
-import {  ActivatedRoute, Params } from '@angular/router';
-import { NavController, ModalController, ToastController, AlertController, NavParams,IonSlides } from '@ionic/angular';
+import { ActivatedRoute, Params } from '@angular/router';
+import { NavController, ModalController, ToastController, AlertController, NavParams, IonSlides } from '@ionic/angular';
 import { AppUtil } from '../app.util';
 import { DomSanitizer } from '@angular/platform-browser';
+import { DBMgr } from 'src/mgr/DBMgr';
+import { ServiceApi } from 'src/providers/service.api';
 
 @Component({
   selector: 'app-test',
   templateUrl: './test.page.html',
   styleUrls: ['./test.page.scss'],
+  providers: [ServiceApi]
 })
-export class TestPage  extends AppBase {
+export class TestPage extends AppBase {
 
   constructor(public router: Router,
     public navCtrl: NavController,
@@ -19,47 +22,103 @@ export class TestPage  extends AppBase {
     public toastCtrl: ToastController,
     public alertCtrl: AlertController,
     public activeRoute: ActivatedRoute,
-    public sanitizer: DomSanitizer) {
-    super(router, navCtrl, modalCtrl, toastCtrl, alertCtrl,activeRoute);
+    public sanitizer: DomSanitizer,
+    public api: ServiceApi) {
+    super(router, navCtrl, modalCtrl, toastCtrl, alertCtrl, activeRoute);
     this.headerscroptshow = 480;
-      
+
   }
 
-  myname="";
+  myname = "";
 
-  onMyLoad(){
+  onMyLoad() {
     //参数
     this.params;
-    this.myname=this.params.name;
+    this.myname = this.params.name;
   }
-  onMyShow(){
-    this.number='';
-    this.password='';
+  onMyShow() {
+    this.number = '';
+    this.password = '';
   }
-  number='';
-  password='';
+  number = '';
+  password = '';
+  data = [];
 
-  
-  login(){
-    if(!this.number){
+  insert() {
+    var dbmgr = DBMgr.GetInstance();
+    dbmgr.execSql("insert into USER (number,password,sdate) values (?,?,?)", [this.number, this.password, new Date().getTime()]).then((ret) => {
+      // this.showAlert("影响了"+ret.res.rowsAffected+"行数据");
+    });
+  }
+
+  select() {
+    var dbmgr = DBMgr.GetInstance();
+    dbmgr.execSql("select * from USER where number='" + this.number + "' and password='" + this.password + "'").then((ret) => {
+      var rows = ret.res.rows;
+      console.log(rows);
+      console.log(ret);
+      this.data = rows;
+    });
+  }
+
+  update() {
+    var dbmgr = DBMgr.GetInstance();
+    dbmgr.execSql("update  USER SET sdate="+new Date().getTime()+' where ID='+this.data[0]['ID']).then((ret) => {
+      // this.showAlert("影响了"+ret.res.rowsAffected+"行数据");
+    });
+  }
+
+  loginWeb(){
+    this.api.VolunteerLogin("aa","bb");
+    this.select();
+    if(!this.data){
+      this.insert()
+    }
+  }
+
+  login() {
+    if (!this.number) {
       this.toast('義工編號不能留空');
       return;
     }
-    if(!this.password){
+    if (!this.password) {
       this.toast('密碼不能留空');
       return;
     }
-    if(this.number==this.password){
-      this.navigate('home')
-    }else{
-      this.toast('你的義工編號或密碼不正確');
-    }
+    // this.insert()
+    // this.select();
+    var dbmgr = DBMgr.GetInstance();
+    dbmgr.execSql("select * from USER where number='" + this.number + "' and password='" + this.password + "'").then((ret) => {
+      var rows = ret.res.rows;
+      console.log(rows);
+      console.log(ret);
+      this.data = rows;
+      console.log(new Date().getTime())
+      console.log(this.data[0]['sdate'])
+      var time = new Date().getTime() - this.data[0]['sdate'];
+      console.log(time)
+      if (this.data) {
+        if (time < 24 * 60 * 60*1000) {
+          this.navigate('home')
+          this.update()
+        } else {
+          this.toast('登录已过期');
+          // this.insert()
+        }
+
+      } else {
+        this.toast('你的義工編號或密碼不正確');
+        // this.insert()
+      }
+    });;
+
+
   }
-  
-  aa(){
+
+  aa() {
     this.presentAlertCheckbox();
   }
-  checkbox1='';
+  checkbox1 = '';
 
   async presentAlertCheckbox() {
     const alert = await this.alertCtrl.create({
