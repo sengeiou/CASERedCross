@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'databasedemo', pathMatch: 'full' },
+  { path: '', redirectTo: 'test', pathMatch: 'full' },
   { path: 'home', loadChildren: './home/home.module#HomePageModule' },
   { path: 'test', loadChildren: './test/test.module#TestPageModule' },
   { path: 'phone', loadChildren: './phone/phone.module#PhonePageModule' },

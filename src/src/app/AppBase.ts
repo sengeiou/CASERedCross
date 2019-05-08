@@ -38,8 +38,11 @@ export class AppBase implements OnInit {
     public scrolltop = 0;
     public headerscroptshow = 0;
 
-    
+    public static operationTimg_start=0; //开始操作页面时间
+    public operationTimg_start=0; //开始操作页面时间
 
+    public static operationTimg_end=0; //闲着后时间
+    public operationTimg_end=0; //闲着后时间
 
     public constructor(
         public router: Router,
@@ -281,6 +284,13 @@ export class AppBase implements OnInit {
             dataType: 'json',
         });
         return headers;
+    }
+
+    idle(){
+        var time=this.operationTimg_end-this.operationTimg_start;
+        if(time>30*60*1000){
+            this.navigate('test')
+        }
     }
 
 
