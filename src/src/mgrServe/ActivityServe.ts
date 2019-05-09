@@ -14,6 +14,12 @@ export class ActivityServe {
         return mgr.execSql(sql);
     }
 
+    getAllActivityListCaseId(caseId) {
+        var mgr = DBMgr.GetInstance();
+        var sql = "select LocalID,activityDate,actType from tb_Activity where caseId=?";
+        return mgr.execSql(sql, [caseId]);
+    }
+
     getActivity(id) {
         var mgr = DBMgr.GetInstance();
         var sql = "select * from tb_Activity where id=?";

@@ -1,8 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <div class="flex-row spacebetween padding-left-20  padding-right-20" style="width: 100%;" >
+    <div class="flex-row spacebetween padding-left-20  padding-right-20" style="width: 100%;">
       <div class="txt-blue" (click)='logout();'>登出</div>
-      <img src="../assets/icon/download.png"  (click)='upload()'/>
+      <img src="../assets/icon/download.png" (click)='upload()' />
     </div>
   </ion-toolbar>
 </ion-header>
@@ -11,115 +11,69 @@
   <div class="text-center">
     <img src="../assets/icon/rsz_logo_chi.png" />
   </div>
-  <div *ngFor="let item of list;let idx=index;">
-    <div class="title flex-row flex-center padding-left-20 h5">档案编号：wt5969696</div>
-    <div class="flex-row">
+  <div>
+    <div *ngFor="let item of caselist;let idx=index;">
+      <div class="title flex-row flex-center padding-left-20 h5">档案编号：{{item.CaseNo}}</div>
+      <div class="flex-row">
 
-      <div class="height h7 flex-row _center bg-gray width text-center border-bottom">探访 <img
-          src="../assets/icon/plus_icon.png" class="icon-15 margin-left-5" /></div>
-      <div class="flex-1">
-        <div class="xgun">
-          <div class="flex-row" style="width: 500px">
-            <div class="padding-10  border-black radius-5 height margin-right-10" (click)='visit();'>
-              <div class="h7-5">预约日期</div>
-              <div class="margin-top-10 h7-5">
-                14-04-2019
+        <div class="height h7 flex-row _center bg-gray width text-center border-bottom">探访 <img
+            src="../assets/icon/plus_icon.png" class="icon-15 margin-left-5" (click)='visit(item.id)'/></div>
+        <div class="flex-1">
+          <div class="xgun">
+            <div class="flex-row" style="width: 500px">
+              <div class="padding-10  border-black radius-5 height margin-right-10" *ngFor="let itemVisit of item.visitList;let idx=index;"  (click)='visit(item.id,itemVisit.LocalId);'>
+                <div class="h7-5">预约日期</div>
+                <div class="margin-top-10 h7-5">
+                  {{itemVisit.ScheduleDate}}
+                </div>
+                <div class="margin-top-10 h7-5">已上传</div>
               </div>
-              <div class="margin-top-10 h7-5">已上传</div>
-            </div>
-
-            <div class="padding-10  border-black radius-5 height margin-right-10">
-              <div class="h7-5">预约日期</div>
-              <div class="margin-top-10 h7-5">
-                14-04-2019
-              </div>
-              <div class="margin-top-10 h7-5">已上传</div>
-            </div>
-
-            <div class="padding-10  border-black radius-5 height margin-right-10">
-              <div class="h7-5">预约日期</div>
-              <div class="margin-top-10 h7-5">
-                14-04-2019
-              </div>
-              <div class="margin-top-10 h7-5">已上传</div>
             </div>
           </div>
         </div>
       </div>
 
-    </div>
+      <div class="flex-row">
 
-    <div class="flex-row">
-
-      <div class="height h7 flex-row _center bg-gray width text-center border-bottom">电话 <img
-          src="../assets/icon/plus_icon.png" class="icon-15 margin-left-5" /></div>
-      <div class="flex-1">
-        <div class="xgun">
-          <div class="flex-row" style="width: 500px">
-            <div class="padding-10  border-black radius-5 height margin-right-10">
-              <div class="h7-5">预约日期</div>
-              <div class="margin-top-10 h7-5">
-                14-04-2019
+        <div class="height h7 flex-row _center bg-gray width text-center border-bottom">电话 <img
+            src="../assets/icon/plus_icon.png" class="icon-15 margin-left-5" /></div>
+        <div class="flex-1">
+          <div class="xgun">
+            <div class="flex-row" style="width: 500px">
+              <div class="padding-10  border-black radius-5 height margin-right-10" (click)='aa()'>
+                <div class="h7-5">预约日期</div>
+                <div class="margin-top-10 h7-5">
+                  14-04-2019
+                </div>
+                <div class="margin-top-10 h7-5">已上传</div>
               </div>
-              <div class="margin-top-10 h7-5">已上传</div>
-            </div>
 
-            <div class="padding-10  border-black radius-5 height margin-right-10" (click)='aa();'>
-              <div class="h7-5">预约日期</div>
-              <div class="margin-top-10 h7-5">
-                14-04-2019
-              </div>
-              <div class="margin-top-10 h7-5">已上传</div>
-            </div>
-
-            <div class="padding-10  border-black radius-5 height margin-right-10">
-              <div class="h7-5">预约日期</div>
-              <div class="margin-top-10 h7-5">
-                14-04-2019
-              </div>
-              <div class="margin-top-10 h7-5">已上传</div>
             </div>
           </div>
         </div>
+
       </div>
 
-    </div>
 
+      <div class="flex-row">
 
-    <div class="flex-row">
-
-      <div class="height h7 flex-row _center bg-gray width text-center border-bottom">活动 <img
-          src="../assets/icon/plus_icon.png" class="icon-15 margin-left-5"  (click)='activity();'/></div>
-      <div class="flex-1">
-        <div class="xgun">
-          <div class="flex-row" style="width: 500px">
-            <div class="padding-10  border-black radius-5 height margin-right-10" (click)='activity(id);'>
-              <div class="h7-5">预约日期</div>
-              <div class="margin-top-10 h7-5">
-                14-04-2019
+        <div class="height h7 flex-row _center bg-gray width text-center border-bottom">活动<img
+            src="../assets/icon/plus_icon.png" class="icon-15 margin-left-5" (click)='activity()' /></div>
+        <div class="flex-1">
+          <div class="xgun">
+            <div class="flex-row" style="width: 500px">
+              <div class="padding-10  border-black radius-5 height margin-right-10" (click)="activity(item.id)">
+                <div class="h7-5">预约日期</div>
+                <div class="margin-top-10 h7-5">
+                  14-04-2019
+                </div>
+                <div class="margin-top-10 h7-5">已上传</div>
               </div>
-              <div class="margin-top-10 h7-5">已上传</div>
-            </div>
-
-            <div class="padding-10  border-black radius-5 height margin-right-10">
-              <div class="h7-5">预约日期</div>
-              <div class="margin-top-10 h7-5">
-                14-04-2019
-              </div>
-              <div class="margin-top-10 h7-5">已上传</div>
-            </div>
-
-            <div class="padding-10  border-black radius-5 height margin-right-10">
-              <div class="h7-5">预约日期</div>
-              <div class="margin-top-10 h7-5">
-                14-04-2019
-              </div>
-              <div class="margin-top-10 h7-5">已上传</div>
             </div>
           </div>
         </div>
-      </div>
 
+      </div>
     </div>
   </div>
   <div class="margin-bottom-20"></div>

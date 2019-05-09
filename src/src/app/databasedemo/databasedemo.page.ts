@@ -50,7 +50,7 @@ export class DatabasedemoPage extends AppBase {
   select(){
 
     var dbmgr=DBMgr.GetInstance();
-    dbmgr.execSql("select * from TEST").then((ret)=>{
+    dbmgr.execSql("select * from tb_home_visit").then((ret)=>{
       var rows=ret.res.rows;
       console.log(rows);
       console.log(ret);
@@ -59,5 +59,8 @@ export class DatabasedemoPage extends AppBase {
   }
   login(){
     this.api.VolunteerLogin("aa","bb");
+  }
+  kk(item){
+    alert(item.LocalId);
   }
 }

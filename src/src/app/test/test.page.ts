@@ -7,6 +7,7 @@ import { AppUtil } from '../app.util';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DBMgr } from 'src/mgr/DBMgr';
 import { ServiceApi } from 'src/providers/service.api';
+import { UserServe } from 'src/mgrServe/UserServe';
 
 @Component({
   selector: 'app-test',
@@ -63,17 +64,20 @@ export class TestPage extends AppBase {
 
   update() {
     var dbmgr = DBMgr.GetInstance();
-    dbmgr.execSql("update  USER SET sdate="+new Date().getTime()+' where ID='+this.data[0]['ID']).then((ret) => {
+    dbmgr.execSql("update  USER SET sdate=" + new Date().getTime() + ' where ID=' + this.data[0]['ID']).then((ret) => {
       // this.showAlert("影响了"+ret.res.rowsAffected+"行数据");
     });
   }
 
-  loginWeb(){
-    this.api.VolunteerLogin("aa","bb");
-    this.select();
-    if(!this.data){
-      this.insert()
-    }
+  loginWeb() {
+    this.api.VolunteerLogin("aa", "bb");
+    var userServe = new UserServe();
+    userServe.getUserNumber(this.number).then((e) => {
+      if (!e.res.rows) {
+        this.insert()
+      }
+    })
+
   }
 
   login() {
@@ -85,33 +89,41 @@ export class TestPage extends AppBase {
       this.toast('密碼不能留空');
       return;
     }
-    // this.insert()
-    // this.select();
-    var dbmgr = DBMgr.GetInstance();
-    dbmgr.execSql("select * from USER where number='" + this.number + "' and password='" + this.password + "'").then((ret) => {
-      var rows = ret.res.rows;
-      console.log(rows);
-      console.log(ret);
-      this.data = rows;
-      console.log(new Date().getTime())
-      console.log(this.data[0]['sdate'])
-      var time = new Date().getTime() - this.data[0]['sdate'];
-      console.log(time)
-      if (this.data) {
-        if (time < 24 * 60 * 60*1000) {
-          this.navigate('home')
-          this.update()
-        } else {
-          this.toast('登录已过期');
-          // this.insert()
-        }
-
+    var userServe = new UserServe();
+    userServe.getUserNumber(this.number).then((e) => {
+      // console.log(Array.from(e))
+      console.log(e)
+      if (e.res.rows.length==0) {
+        this.insert()
       } else {
-        this.toast('你的義工編號或密碼不正確');
-        // this.insert()
-      }
-    });;
+        var dbmgr = DBMgr.GetInstance();
+        dbmgr.execSql("select * from USER where number='" + this.number + "' and password='" + this.password + "'").then((ret) => {
+          var rows = ret.res.rows;
+          console.log(rows);
+          console.log(ret);
+          this.data = rows;
+          console.log(new Date().getTime())
+          console.log(this.data[0]['sdate'])
+          var time = new Date().getTime() - this.data[0]['sdate'];
+          console.log(time)
+          if (this.data) {
+            if (time < 24 * 60 * 60 * 1000) {
+              this.navigate('home')
+              this.update()
+            } else {
+              this.toast('登录已过期');
+              // this.insert()
+            }
 
+          } else {
+            this.toast('你的義工編號或密碼不正確');
+            // this.insert()
+          }
+        });
+      }
+    })
+
+    // this.insert()
 
   }
 

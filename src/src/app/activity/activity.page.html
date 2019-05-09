@@ -15,16 +15,19 @@
     <div class="margin-20">
       <div class="flex-row">
         <div class="title">檔案編號:</div>
-        <div>wx5265262522</div>
+        <div>{{casedata.CaseNo}}</div>
       </div>
       <div class="flex-row margin-top-10">
         <div class="title">姓名:</div>
-        <div>nihhhh</div>
+        <div>{{casedata.ChiName_Disply}}</div>
       </div>
       <div class="flex-row margin-top-10  flex-center">
         <div class="title">所患疾病:</div>
         <div class="flex-1">
-          <textarea class="textarea radius-2" style="width:100%;"></textarea>
+          <div class="textarea radius-2 bg-white h7-5 padding-5" style="width:100%;">
+              {{casedata.Illness_Disply}}
+          </div>
+          
         </div>
 
       </div>
@@ -32,13 +35,19 @@
       <div class="flex-row margin-top-10  flex-center">
         <div class="title">其他疾病:</div>
         <div class="flex-1">
-          <textarea class="textarea radius-2" style="width:100%;"></textarea>
+          <div class="textarea radius-2 bg-white h7-5 padding-5" style="width:100%;">
+              {{casedata.OtherIllness_Disply}}
+          </div>
+           
         </div>
       </div>
       <div class="flex-row margin-top-10  flex-center">
         <div class="title">照顧計劃:</div>
         <div class="flex-1">
-          <textarea class="textarea1 radius-2" style="width:100%;"></textarea>
+            <div class="textarea1 radius-2 bg-white h7-5 padding-5" style="width:100%;">
+                {{casedata.CarePlan_Disply}}
+            </div>
+            
         </div>
       </div>
     </div>
@@ -70,7 +79,10 @@
       </div>
       <div class=" margin-top-10">
         <div class="flex-1">
-          <textarea class="textarea2 radius-2" style="width:100%;"></textarea>
+            <div class="textarea2 radius-2 bg-white h7-5 padding-5" style="width:100%;">
+                
+            </div>
+          <!-- <textarea class="textarea2 radius-2" style="width:100%;"></textarea> -->
         </div>
 
       </div>

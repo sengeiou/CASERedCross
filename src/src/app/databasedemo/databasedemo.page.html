@@ -15,9 +15,9 @@
         <th>时间</th>
     </thead>
     <tbody>
-      <tr *ngFor="let item of data">
-        <td>{{item.ID}}</td>
-        <td>{{item.sdate}}</td>
+      <tr *ngFor="let item of data" (click)='kk(item)'>
+        <td>{{item.LocalId}}</td>
+        <td>{{item.CaseId}}</td>
       </tr>
     </tbody>
   </table>
