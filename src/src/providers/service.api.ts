@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, XHRBackend } from '@angular/http';
 import { RequestOptions } from '@angular/http';
 import { ApiConfig } from '../app/api.config'
 @Injectable()
@@ -10,36 +10,31 @@ export class ServiceApi {
     }
 
 
-    public VolunteerLogin(strLoginId,strPwd, showLoadingModal: boolean = true) {
-        var url = ApiConfig.getApiUrl() ;
-        var data={strLoginId,strPwd};
+    public VolunteerLogin(strLoginId, strPwd) {
+
+
+
+        var url = ApiConfig.getApiUrl();
+        var data = { strLoginId, strPwd };
         var headers = ApiConfig.GetHeader(url, data);
         let options = new RequestOptions({ headers: headers });
-        let body = ApiConfig.ParamUrlencoded(data);
-        let loading = null;
-
-        if (showLoadingModal) {
-            loading = ApiConfig.GetLoadingModal();
-        }
+        let body = ApiConfig.GetPostXml("VolunteerLogin", { strLoginId, 
+            strPwd: ApiConfig.MD5(strPwd).toUpperCase() });
 
         return this.http.post(url, body, options).toPromise()
             .then((res) => {
-                if (ApiConfig.DataLoadedHandle('/VolunteerLogin', data, res)) {
-                    if (showLoadingModal) {
-                        ApiConfig.DimissLoadingModal();
-                    }
-                    if (res==null) {
-                        return null;
-                    }
-                    return res.json();
-                } else {
-                    return Promise.reject(res);
-                }
+                console.log(res);
+                var xmlstr=res.text();
+                console.log(xmlstr);
+                var x2js = new X2JS();
+                var jsonObj = x2js.xml_str2json( xmlstr );
+                //输出结果
+                console.log(jsonObj);
+                console.log(jsonObj.Envelope.Body.VolunteerLoginResponse.VolunteerLoginResult);
+
+                return jsonObj.Envelope.Body.VolunteerLoginResponse.VolunteerLoginResult;
             })
             .catch(err => {
-                if (showLoadingModal) {
-                    ApiConfig.DimissLoadingModal();
-                }
                 return ApiConfig.ErrorHandle('/VolunteerLogin', data, err);
             });
     }
