@@ -95,6 +95,9 @@ export class TestPage extends AppBase {
       console.log(e)
       if (e.res.rows.length==0) {
         this.insert()
+        setTimeout(()=>{
+          this.login()
+        },2000);
       } else {
         var dbmgr = DBMgr.GetInstance();
         dbmgr.execSql("select * from USER where number='" + this.number + "' and password='" + this.password + "'").then((ret) => {

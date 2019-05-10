@@ -105,7 +105,7 @@
     <div class=" padding-top-20 flex-row flex-center padding-right-40">
       <div class="flex-1"></div>
       <div class="txt-black txt-bold">探訪內容</div>
-      <div class=" flex-1 h8 txt-blue  aa" (click)='saveNeurou(visit.LocalId)'>保存</div>
+      <div class=" flex-1 h8 txt-blue  aa" (click)='saveVisit_Neurou(visit.LocalId)'>保存</div>
     </div>
 
     <div class="margin-20">
@@ -114,13 +114,11 @@
         <div class="title2">實際探訪日期:</div>
         <div class="flex-1">
           <div class="radius-2" style="width:100%; ">
-            <ion-item *ngIf="!visit.VisitDate">
-              <ion-datetime placeholder="{{visit.VisitDate}}" displayFormat="YYYY/DD/MM " picker-format="YYYY DD MM "
-                max="2050-12-09" done-text='确定' cancel-text='取消' [(ngModel)]="VisitDate"></ion-datetime>
-            </ion-item>
-            <!-- <input *ngIf="!visit.VisitDate" class="radius-2" style="width:100%;" [(ngModel)]='VisitDate'
-              placeholder="{{visit.VisitDate}}" /> -->
-
+            <div *ngIf="!visit.VisitDate" class="bg-white">
+              <ion-datetime placeholder="{{visit.VisitDate}}" style="height:25px;padding:2px;"
+                displayFormat="YYYY/DD/MM " picker-format="YYYY DD MM " max="2050-12-09" done-text='确定' cancel-text='取消'
+                [(ngModel)]="VisitDate"></ion-datetime>
+            </div>
             <div class="input_s radius-2 bg-white padding-left-5" *ngIf="visit.VisitDate" style="width:100%;">
               {{visit.VisitDate}}
             </div>
@@ -130,24 +128,23 @@
       <div class="flex-row margin-top-10  flex-center">
         <div class="title2">實際探訪時間:</div>
         <div class="flex-1">
-          <ion-item *ngIf="!visit.VisitStartTime">
-            <ion-datetime placeholder="{{visit.VisitStartTime}}" displayFormat="HH：MM" picker-format="HH：MM"
-              max="2050-12-09" done-text='确定' cancel-text='取消' [(ngModel)]="VisitStartTime"></ion-datetime>
-          </ion-item>
-          <!-- <input *ngIf="!visit.VisitStartTime " class="input_s radius-2" style="width:100%;"
-            [(ngModel)]="VisitStartTime" placeholder="{{visit.VisitStartTime}}" /> -->
+          <div *ngIf="!visit.VisitStartTime" class="bg-white">
+            <ion-datetime placeholder="{{visit.VisitStartTime}}" style="height:25px;padding:2px;" displayFormat="HH：MM"
+              picker-format="HH：MM" max="2050-12-09" done-text='确定' cancel-text='取消' [(ngModel)]="VisitStartTime">
+            </ion-datetime>
+          </div>
 
           <div class="input_s radius-2 bg-white padding-left-5" *ngIf="visit.VisitStartTime" style="width:100%;">
             {{visit.VisitStartTime}}</div>
         </div>
         <div class="margin-5">至</div>
         <div class="flex-1">
-          <ion-item *ngIf="!visit.VisitEndTime">
-            <ion-datetime placeholder="{{visit.VisitEndTime}}" displayFormat="HH：MM" picker-format="HH：MM "
-              max="2050-12-09" done-text='确定' cancel-text='取消' [(ngModel)]="VisitEndTime"></ion-datetime>
-          </ion-item>
-          <!-- <input *ngIf="!visit.VisitEndTime" class="input_s radius-2" style="width:100%;" [(ngModel)]="VisitEndTime"
-            placeholder="{{visit.VisitEndTime}}" /> -->
+          <div *ngIf="!visit.VisitEndTime" class="bg-white">
+            <ion-datetime placeholder="{{visit.VisitEndTime}}" style="height:25px;padding:2px;" displayFormat="HH：MM"
+              picker-format="HH：MM " max="2050-12-09" done-text='确定' cancel-text='取消' [(ngModel)]="VisitEndTime">
+            </ion-datetime>
+          </div>
+
           <div class="input_s radius-2 bg-white padding-left-5" *ngIf="visit.VisitEndTime" style="width:100%;">
             {{visit.VisitEndTime}}</div>
         </div>
@@ -155,14 +152,16 @@
       <div class="margin-top-10">
         <div class="title">面見地點:</div>
         <div class=" margin-top-10 flex-row flex-center">
-          <input type="radio" [(ngModel)]="Location" name='location' value="1" class="radio " />家中
-          <!-- <ion-radio ng-repeat="" ng-value="" ng-model="" class="ion_radio"> 家中</ion-radio>-->
+          <input type="radio" name='location' checked="{{visit.Location=='1'?'1':''}}" class="radio "
+            (click)="getLocation('1')" />家中
         </div>
         <div class=" margin-top-10 flex-row flex-center">
-          <input type="radio" [(ngModel)]="Location" name='location' value="2" class="radio " />其他
+          <input type="radio" name='location' checked="{{visit.Location=='2'?'1':''}}" class="radio "
+            (click)="getLocation('2')" />其他
           <div class="flex-1 margin-left-20">
-            <input *ngIf="!visit.LocationRemarks" class="input_s radius-2" placeholder="輸入最多50字"
-              [(ngModel)]="LocationRemarks" maxlength="50" style="width:100%;" />
+            <input *ngIf="!visit.LocationRemarks" class="input_s radius-2"
+              placeholder="{{visit.LocationRemarks?visit.LocationRemarks:'輸入最多50字'}}" [(ngModel)]="LocationRemarks"
+              maxlength="50" style="width:100%;" />
             <div class="input_s radius-2 bg-white padding-left-5" *ngIf="visit.LocationRemarks" style="width:100%;">
               {{visit.LocationRemarks}}</div>
           </div>
@@ -172,27 +171,65 @@
       <div>
         <div class="flex-row margin-top-10">
           <div class="title2">出席義工:</div>
-          <div><img src="../assets/icon/plus_icon.png" class="icon-15 margin-left-30" /></div>
+          <div><img src="../assets/icon/plus_icon.png" class="icon-15 margin-left-30" />
+
+            <div style="position:absolute;margin-top:-30px;background:transparent" class="aaa">
+
+              <ion-select multiple="true" [(ngModel)]="presentVolunteer"
+                style="position:absolute;background:transparent">
+                <ion-select-option value="风">风</ion-select-option>
+                <ion-select-option value="55"> 55 </ion-select-option>
+                <ion-select-option value="66"> 66 </ion-select-option>
+              </ion-select>
+            </div>
+
+          </div>
         </div>
         <div class=" ">
           <div class="flex-1">
-            <div class="textarea2 radius-2 bg-white h7-5 padding-5" style="width:100%;">
-
+            <div class="textarea2 radius-2 bg-white h7-5 padding-5" style="width:100%;"
+              *ngIf="visit.presentVolunteer && !presentVolunteer">
+              {{visit.presentVolunteer}}
             </div>
+
+            <div class="textarea2 radius-2 bg-white h7-5 padding-5" style="width:100%;">
+              {{presentVolunteer}}
+            </div>
+
           </div>
         </div>
       </div>
 
+
+
       <div>
         <div class="flex-row margin-top-10">
           <div class="title2">支援義工:</div>
-          <div><img src="../assets/icon/plus_icon.png" class="icon-15 margin-left-30" /></div>
+          <div><img src="../assets/icon/plus_icon.png" class="icon-15 margin-left-30" />
+
+            <div style="position:absolute;margin-top:-30px;background:transparent" class="aaa">
+
+              <ion-select multiple="true" [(ngModel)]="supportVolunteer"
+                style="position:absolute;background:transparent">
+                <ion-select-option value="风">风</ion-select-option>
+                <ion-select-option value="55"> 55 </ion-select-option>
+                <ion-select-option value="66"> 66 </ion-select-option>
+              </ion-select>
+            </div>
+
+          </div>
         </div>
         <div class=" ">
           <div class="flex-1">
-            <div class="textarea2 radius-2 bg-white h7-5 padding-5" style="width:100%;">
-
+            <div class="textarea2 radius-2 bg-white h7-5 padding-5" style="width:100%;"
+              *ngIf="visit.supportVolunteer && !supportVolunteer">
+              {{visit.supportVolunteer}}
             </div>
+
+            <div class="textarea2 radius-2 bg-white h7-5 padding-5" style="width:100%;">
+              {{supportVolunteer}}
+            </div>
+
           </div>
         </div>
       </div>
@@ -200,14 +237,16 @@
       <div class="margin-top-10">
         <div class="title">探訪狀況:</div>
         <div class=" margin-top-10 flex-row flex-center">
-          <input type="radio" [(ngModel)]="VisitStatus" value="1" name='visitState' class="radio " />成功
+          <input type="radio" value="1" name='visitState' class="radio " checked="{{visit.VisitStatus=='1'?'1':''}}"
+            (click)="getVisitStatus('1')" />成功
         </div>
         <div class=" margin-top-10 flex-row flex-center">
-          <input type="radio" [(ngModel)]="VisitStatus" value="2" name='visitState' class="radio " />未能
+          <input type="radio" value="2" name='visitState' class="radio " checked="{{visit.VisitStatus=='2'?'1':''}}"
+            (click)="getVisitStatus('2')" />未能
         </div>
         <div class="flex-1 margin-top-10">
-          <input class="input_s radius-2" placeholder="輸入最多50字" [(ngModel)]="VisitStatusRemarks"
-            name='VisitStatusRemarks' style="width:100%;" />
+          <input class="input_s radius-2" placeholder="{{visit.VisitStatusRemarks?visit.VisitStatusRemarks:'輸入最多50字'}}"
+            [(ngModel)]="VisitStatusRemarks" name='VisitStatusRemarks' style="width:100%;" />
 
         </div>
       </div>
@@ -218,26 +257,27 @@
     <div class=" padding-top-20 flex-row flex-center padding-right-40">
       <div class="flex-1"></div>
       <div class="txt-black txt-bold">服務內容</div>
-      <div class=" flex-1 h8 txt-blue  aa">保存</div>
+      <div class=" flex-1 h8 txt-blue  aa"(click)='saveService_neurou(visit.LocalId)'>保存</div>
     </div>
     <div class=" ">
       <div class="margin-20">
         <div class="">
           <div>室內活動:</div>
-          <div class=" margin-top-5 flex-row flex-center"><input type="radio" [(ngModel)]="indoorActivities"
+          <div class=" margin-top-5 flex-row flex-center"><input type="radio" checked="{{visit.VisitDetailIndoor=='討論健康目標'?'1':''}}" (click)="getVisitDetailIndoor('討論健康目標')"
               name='indoorActivities' value="討論健康目標" class="radio " />討論健康目標</div>
-          <div class=" margin-top-5 flex-row flex-center"><input type="radio" [(ngModel)]="indoorActivities"
+          <div class=" margin-top-5 flex-row flex-center"><input type="radio" checked="{{visit.VisitDetailIndoor=='教導／討論健康飲食'?'1':''}}" (click)="getVisitDetailIndoor('教導／討論健康飲食')"
               name='indoorActivities' value="教導／討論健康飲食" class="radio " />教導／討論健康飲食</div>
-          <div class=" margin-top-5 flex-row flex-center"><input type="radio" [(ngModel)]="indoorActivities"
+          <div class=" margin-top-5 flex-row flex-center"><input type="radio" checked="{{visit.VisitDetailIndoor=='教導／一起做運動'?'1':''}}" (click)="getVisitDetailIndoor('教導／一起做運動')"
               name='indoorActivities' value="教導／一起做運動" class="radio " />教導／一起做運動</div>
-          <div class=" margin-top-5 flex-row flex-center"><input type="radio" [(ngModel)]="indoorActivities"
+          <div class=" margin-top-5 flex-row flex-center"><input type="radio" checked="{{visit.VisitDetailIndoor=='舒緩情緒／壓力'?'1':''}}" (click)="getVisitDetailIndoor('舒緩情緒／壓力')"
               name='indoorActivities' value="舒緩情緒／壓力" class="radio " />舒緩情緒／壓力</div>
-          <div class=" margin-top-5 flex-row flex-center"><input type="radio" [(ngModel)]="indoorActivities"
+          <div class=" margin-top-5 flex-row flex-center"><input type="radio" checked="{{visit.VisitDetailIndoor=='處理藥物／服藥習慣'?'1':''}}" (click)="getVisitDetailIndoor('處理藥物／服藥習慣')"
               name='indoorActivities' value="處理藥物／服藥習慣" class="radio " />處理藥物／服藥習慣</div>
           <div class=" margin-top-5 flex-row flex-center">
-            <input type="radio" [(ngModel)]="indoorActivities" name='indoorActivities' value="其他" class="radio " />其他
+            <input type="radio" name='indoorActivities' value="其他" class="radio " checked="{{visit.VisitDetailIndoor=='其他'?'1':''}}"
+              (click)="getVisitDetailIndoor('其他')" />其他
             <div class="flex-1">
-              <input class="radius-2 other-input" placeholder="輸入最多50字" [(ngModel)]="otherIndoorActivities"
+              <input class="radius-2 other-input" placeholder="{{visit.VisitDetailIndoorRemarks?visit.VisitDetailIndoorRemarks:'輸入最多50字'}}" [(ngModel)]="VisitDetailIndoorRemarks"
                 name='otherIndoorActivities' style="width: 100%;" />
             </div>
           </div>
@@ -245,17 +285,17 @@
 
         <div class="margin-top-5 ">
           <div>室外活動:</div>
-          <div class=" margin-top-5 flex-row flex-center"><input type="radio" [(ngModel)]="outdoorActivities"
+          <div class=" margin-top-5 flex-row flex-center"><input type="radio" checked="{{visit.VisitDetailOutdoor=='護送外出'?'1':''}}" (click)="getVisitDetailOutdoor('護送外出')"
               name='outdoorActivities' value="護送外出" class="radio " />護送外出</div>
-          <div class=" margin-top-5 flex-row flex-center"><input type="radio" [(ngModel)]="outdoorActivities"
+          <div class=" margin-top-5 flex-row flex-center"><input type="radio" checked="{{visit.VisitDetailOutdoor=='陪同購物'?'1':''}}" (click)="getVisitDetailOutdoor('陪同購物')"
               name='outdoorActivities' value="陪同購物" class="radio " />陪同購物</div>
-          <div class=" margin-top-5 flex-row flex-center"><input type="radio" [(ngModel)]="outdoorActivities"
+          <div class=" margin-top-5 flex-row flex-center"><input type="radio" checked="{{visit.VisitDetailOutdoor=='出外散步'?'1':''}}" (click)="getVisitDetailOutdoor('出外散步')"
               name='outdoorActivities' value="出外散步" class="radio " />出外散步</div>
-          <div class=" margin-top-5 flex-row flex-center"><input type="radio" [(ngModel)]="outdoorActivities"
+          <div class=" margin-top-5 flex-row flex-center"><input type="radio" checked="{{visit.VisitDetailOutdoor=='其他'?'1':''}}" (click)="getVisitDetailOutdoor('其他')"
               name='outdoorActivities' value="其他" class="radio " />其他
             <div class="flex-1">
-              <input class="radius-2  other-input" placeholder="輸入最多50字" [(ngModel)]="otherOutdoorActivities"
-                name='otherOutdoorActivities' style=" width: 100%;" />
+              <input class="radius-2  other-input" placeholder="{{visit.VisitDetailOutdoorRemarks?visit.VisitDetailOutdoorRemarks:'輸入最多50字'}}" [(ngModel)]="VisitDetailOutdoorRemarks"
+                name='VisitDetailOutdoorRemarks' style=" width: 100%;" />
             </div>
           </div>
         </div>
@@ -264,7 +304,7 @@
           <div class="title2 margin-top-10">其他(請註明):</div>
           <div class=" margin-top-10 ">
             <div class="flex-1">
-              <input class="radius-2 " placeholder="輸入最多250字" [(ngModel)]="otherServe" name='otherServe'
+              <input class="radius-2 " placeholder="{{visit.VisitDetailOther?visit.VisitDetailOther:'輸入最多250字'}}" [(ngModel)]="VisitDetailOther" name='VisitDetailOther'
                 style=" width: 100%;" />
             </div>
           </div>
@@ -274,16 +314,16 @@
           <div class=" margin-top-10">是次分享之健康管家手冊項目(如有，請填寫該目錄標題):</div>
           <div class=" margin-top-10 ">
             <div class="flex-1 flex-row  margin-top-10 flex-center">
-              <div class="margin-right-10">1.</div><input class="radius-2 " [(ngModel)]="targetTitle1"
-                name='targetTitle1' placeholder="輸入最多50字" style=" width: 100%;" />
+              <div class="margin-right-10">1.</div><input class="radius-2 " [(ngModel)]="CategoryTopic1"
+                name='CategoryTopic1' placeholder="{{visit.CategoryTopic1?visit.CategoryTopic1:'輸入最多50字'}}" style=" width: 100%;" />
             </div>
             <div class="flex-1 flex-row margin-top-10 flex-center">
-              <div class="margin-right-10">2.</div><input class="radius-2 " [(ngModel)]="targetTitle2"
-                name='targetTitle2' placeholder="輸入最多50字" style=" width: 100%;" />
+              <div class="margin-right-10">2.</div><input class="radius-2 " [(ngModel)]="CategoryTopic2"
+                name='CategoryTopic2' placeholder="{{visit.CategoryTopic2?visit.CategoryTopic2:'輸入最多50字'}}" style=" width: 100%;" />
             </div>
             <div class="flex-1 flex-row margin-top-10 flex-center">
-              <div class="margin-right-10">3.</div><input class="radius-2 " [(ngModel)]="targetTitle3"
-                name='targetTitle3' placeholder="輸入最多50字" style=" width: 100%;" />
+              <div class="margin-right-10">3.</div><input class="radius-2 " [(ngModel)]="CategoryTopic3"
+                name='CategoryTopic3' placeholder="{{visit.CategoryTopic3?visit.CategoryTopic3:'輸入最多50字'}}" style=" width: 100%;" />
             </div>
           </div>
         </div>
@@ -295,7 +335,7 @@
     <div class=" padding-top-20 flex-row flex-center padding-right-40">
       <div class="flex-1"></div>
       <div class="txt-black txt-bold">健康檢查紀錄</div>
-      <div class=" flex-1 h8 txt-blue  aa">保存</div>
+      <div class=" flex-1 h8 txt-blue  aa" (click)="saveHeightWeight(visit.LocalId)">保存</div>
     </div>
 
     <div class="margin-20">
@@ -308,23 +348,23 @@
         <div class="flex-row">
           <div>1.</div>
           <div class="flex-row text-center">
-            <div class="flex-1"><input class="radius-2 margin-left-5" style=" width: 90%;"
-                [(ngModel)]="upperBloodPressure1" name='upperBloodPressure1' /></div>
-            <div class="flex-1"><input class="radius-2 margin-left-10" style=" width: 90%;"
-                [(ngModel)]="lowerBloodPressure1" name='lowerBloodPressure1' /></div>
-            <div class="flex-1"><input class="radius-2 margin-left-10" style=" width: 90%;"
-                [(ngModel)]="MeasurementDate1" name='MeasurementDate1' /></div>
+            <div class="flex-1"><input class="radius-2 margin-left-5" style=" width: 90%;" placeholder="{{visit.SYS1?visit.SYS1:''}}"
+                [(ngModel)]="SYS1" name='upperBloodPressure1' /></div>
+            <div class="flex-1"><input class="radius-2 margin-left-10" style=" width: 90%;" placeholder="{{visit.DlA1?visit.DlA1:''}}"
+                [(ngModel)]="DlA1" name='lowerBloodPressure1' /></div>
+            <div class="flex-1"><input class="radius-2 margin-left-10" style=" width: 90%;" placeholder="{{visit.heartBeats1?visit.heartBeats1:''}}"
+                [(ngModel)]="heartBeats1" name='MeasurementDate1' /></div>
           </div>
         </div>
         <div class="flex-row margin-top-5">
           <div>2.</div>
           <div class="flex-row text-center">
-            <div class="flex-1"><input class="radius-2 margin-left-5" style=" width: 90%;"
-                [(ngModel)]="upperBloodPressure2" name='upperBloodPressure2' /></div>
-            <div class="flex-1"><input class="radius-2  margin-left-10" style=" width: 90%;"
-                [(ngModel)]="lowerBloodPressure2" name='lowerBloodPressure2' /></div>
-            <div class="flex-1"><input class="radius-2 margin-left-10" style=" width: 90%;"
-                [(ngModel)]="MeasurementDate2" name='MeasurementDate2' /></div>
+            <div class="flex-1"><input class="radius-2 margin-left-5" style=" width: 90%;" placeholder="{{visit.SYS2?visit.SYS2:''}}"
+                [(ngModel)]="SYS2" name='upperBloodPressure2' /></div>
+            <div class="flex-1"><input class="radius-2  margin-left-10" style=" width: 90%;" placeholder="{{visit.DlA2?visit.DlA2:''}}"
+                [(ngModel)]="DlA2" name='lowerBloodPressure2' /></div>
+            <div class="flex-1"><input class="radius-2 margin-left-10" style=" width: 90%;" placeholder="{{visit.heartBeats2?visit.heartBeats2:''}}"
+                [(ngModel)]="heartBeats2" name='MeasurementDate2' /></div>
           </div>
         </div>
       </div>
@@ -332,34 +372,38 @@
       <div>
         <div class="flex-row margin-top-10">
           <div>身高</div>
-          <input class="radius-2 margin-left-20 margin-right-20" style=" width: 30%;" />
+          <div class="radius-2 margin-left-20 margin-right-20" style=" width: 30%;">1.72</div>
           <div>米</div>
         </div>
         <div class="flex-row margin-top-5">
           <div>體重</div>
-          <input class="radius-2 margin-left-20 margin-right-20" style=" width: 30%;" />
+          <!-- <ion-input  class="radius-2 margin-left-20 margin-right-20 bg-white" style=" width:30%;" name='Weight' ionBlur></ion-input> -->
+          <input class="radius-2 margin-left-20 margin-right-20" style=" width: 30%;" [(ngModel)]="Weight" placeholder="{{visit.Weight?visit.Weight:''}}"/>
           <div>公斤</div>
         </div>
         <div class="flex-row margin-top-5">
           <div>BMI</div>
-          <div class="margin-left-20">0.0</div>
+          <div class="margin-left-20" *ngIf="!visit.Bmi ">{{Bmi}}</div>
+          <div class="margin-left-20" *ngIf="visit.Bmi ">{{visit.Bmi}}</div>
+         
         </div>
       </div>
 
       <div>
         <div class="flex-row margin-top-10">
           <div>腰圍</div>
-          <input class="radius-2 margin-left-20 margin-right-20" style=" width: 30%;" />
+          <input class="radius-2 margin-left-20 margin-right-20" style=" width: 30%;" [(ngModel)]="Waist" placeholder="{{visit.Waist?visit.Waist:''}}"/>
           <div>厘米</div>
         </div>
         <div class="flex-row margin-top-5">
           <div>臀圍</div>
-          <input class="radius-2 margin-left-20 margin-right-20" style=" width: 30%;" />
+          <input class="radius-2 margin-left-20 margin-right-20" style=" width: 30%;" [(ngModel)]="Hip" placeholder="{{visit.Hip?visit.Hip:''}}"/>
           <div>厘米</div>
         </div>
         <div class="flex-row margin-top-5">
           <div>腰臀比例</div>
-          <div class="margin-left-20">0.0</div>
+          <div class="margin-left-20" *ngIf="!visit.WHRatio ">{{WHRatio}}</div>
+          <div class="margin-left-20" *ngIf="visit.WHRatio ">{{visit.WHRatio}}</div>
         </div>
       </div>
 
@@ -371,66 +415,66 @@
     <div class=" padding-top-20 flex-row flex-center padding-right-40">
       <div class="flex-1"></div>
       <div class="txt-black txt-bold">生活習慣評估</div>
-      <div class=" flex-1 h8 txt-blue  aa">保存</div>
+      <div class=" flex-1 h8 txt-blue  aa" (click)='saveLifeHabit(visit.LocalId)'>保存</div>
     </div>
     <div class="margin-20">
       <div>
         <div>根據醫生處方服食藥物(包括依時和劑量, 沒有自行服食其他非處方藥物):</div>
         <div class=" margin-top-5 flex-row flex-center">
-          <input type="radio" name="sex" value="male" class="radio " />是
+          <input type="radio" name="LifeHabit1" value="male" class="radio " checked="{{visit.LifeStyleQuestion1=='1'?'1':''}}" (click)="getLifeHabit1('1')"/>是
         </div>
         <div class=" margin-top-5 flex-row flex-center">
-          <input type="radio" name="sex" value="male" class="radio " />否
+          <input type="radio" name="LifeHabit1" value="male" class="radio " checked="{{visit.LifeStyleQuestion1=='2'?'1':''}}" (click)="getLifeHabit1('2')"/>否
         </div>
       </div>
 
       <div class="margin-top-10">
         <div>根據低鈉原則選擇食物(包括低鹽及不吃味精、罐頭及醃製食物等等):</div>
         <div class=" margin-top-5 flex-row flex-center">
-          <input type="radio" name="sex" value="male" class="radio " />是
+          <input type="radio" name="LifeHabit2" value="male" class="radio " checked="{{visit.LifeStyleQuestion2=='1'?'1':''}}" (click)="getLifeHabit2('1')"/>是
         </div>
         <div class=" margin-top-5 flex-row flex-center">
-          <input type="radio" name="sex" value="male" class="radio " />否
+          <input type="radio" name="LifeHabit2" value="male" class="radio " checked="{{visit.LifeStyleQuestion2=='2'?'1':''}}" (click)="getLifeHabit2('2')"/>否
         </div>
       </div>
 
       <div class="margin-top-10">
         <div>按低脂及低膽固醇原則選擇食物(如不吃煎炸食物、肥肉、動物內臟等):</div>
         <div class=" margin-top-5 flex-row flex-center">
-          <input type="radio" name="sex" value="male" class="radio " />是
+          <input type="radio" name="LifeHabit3" value="male" class="radio " checked="{{visit.LifeStyleQuestion3=='1'?'1':''}}" (click)="getLifeHabit3('1')"/>是
         </div>
         <div class=" margin-top-5 flex-row flex-center">
-          <input type="radio" name="sex" value="male" class="radio " />否
+          <input type="radio" name="LifeHabit3" value="male" class="radio "checked="{{visit.LifeStyleQuestion3=='1'?'1':''}}" (click)="getLifeHabit3('2')" />否
         </div>
       </div>
 
       <div class="margin-top-10">
         <div>根據高纖維原則選擇食物(如新鮮水果、蔬菜、麥片或全麥食品、糙米等):</div>
         <div class=" margin-top-5 flex-row flex-center">
-          <input type="radio" name="sex" value="male" class="radio " />是
+          <input type="radio" name="LifeHabit4" value="male" class="radio " checked="{{visit.LifeStyleQuestion4=='1'?'1':''}}" (click)="getLifeHabit4('1')"/>是
         </div>
         <div class=" margin-top-5 flex-row flex-center">
-          <input type="radio" name="sex" value="male" class="radio " />否
+          <input type="radio" name="LifeHabit4" value="male" class="radio " checked="{{visit.LifeStyleQuestion4=='2'?'1':''}}" (click)="getLifeHabit4('2')"/>否
         </div>
       </div>
 
       <div class="margin-top-10">
         <div>能維持每星期運動至少3次及每次30分鐘:</div>
         <div class=" margin-top-5 flex-row flex-center">
-          <input type="radio" name="sex" value="male" class="radio " />是
+          <input type="radio" name="LifeHabit5" value="male" class="radio " checked="{{visit.LifeStyleQuestion5=='1'?'1':''}}" (click)="getLifeHabit5('1')"/>是
         </div>
         <div class=" margin-top-5 flex-row flex-center">
-          <input type="radio" name="sex" value="male" class="radio " />否
+          <input type="radio" name="LifeHabit5" value="male" class="radio " checked="{{visit.LifeStyleQuestion5=='2'?'1':''}}" (click)="getLifeHabit5('2')"/>否
         </div>
       </div>
 
       <div class="margin-top-10">
         <div>家居環境安全(如地面整潔、沒有隨地擺放雜物等):</div>
         <div class=" margin-top-5 flex-row flex-center">
-          <input type="radio" name="sex" value="male" class="radio " />是
+          <input type="radio" name="LifeHabit6" value="male" class="radio " checked="{{visit.LifeStyleQuestion6=='1'?'1':''}}" (click)="getLifeHabit6('1')"/>是
         </div>
         <div class=" margin-top-5 flex-row flex-center">
-          <input type="radio" name="sex" value="male" class="radio " />否
+          <input type="radio" name="LifeHabit6" value="male" class="radio " checked="{{visit.LifeStyleQuestion6=='2'?'1':''}}" (click)="getLifeHabit6('2')"/>否
         </div>
       </div>
 
@@ -491,21 +535,21 @@
     <div class=" padding-top-20 flex-row flex-center padding-right-40">
       <div class="flex-1"></div>
       <div class="txt-black txt-bold">情緒評估</div>
-      <div class=" flex-1 h8 txt-blue  aa">保存</div>
+      <div class=" flex-1 h8 txt-blue  aa" (click)='saveEmotion(visit.LocalId)'>保存</div>
     </div>
     <div class="margin-20">
       <div class="">
         <div>情緒評估:</div>
-        <div class=" margin-top-5 flex-row flex-center"><input type="radio" name="sex" value="male" class="radio " />正常
+        <div class=" margin-top-5 flex-row flex-center"><input type="radio" name="sex" value="male" class="radio " checked="{{visit.EmotionAssessment=='正常'?'1':''}}" (click)="getEmotion('正常')"/>正常
         </div>
-        <div class=" margin-top-5 flex-row flex-center"><input type="radio" name="sex" value="male" class="radio " />焦慮
+        <div class=" margin-top-5 flex-row flex-center"><input type="radio" name="sex" value="male" class="radio " checked="{{visit.EmotionAssessment=='焦慮'?'1':''}}" (click)="getEmotion('焦慮')"/>焦慮
         </div>
-        <div class=" margin-top-5 flex-row flex-center"><input type="radio" name="sex" value="male" class="radio " />抑鬱
+        <div class=" margin-top-5 flex-row flex-center"><input type="radio" name="sex" value="male" class="radio " checked="{{visit.EmotionAssessment=='抑鬱'?'1':''}}" (click)="getEmotion('抑鬱')"/>抑鬱
         </div>
         <div class=" margin-top-5 flex-row flex-center">
-          <input type="radio" name="sex" value="male" class="radio " />其他
+          <input type="radio" name="sex" value="male" class="radio " checked="{{visit.EmotionAssessment=='其他'?'1':''}}" (click)="getEmotion('其他')"/>其他
           <div class="flex-1">
-            <input class="radius-2 other-input" placeholder="輸入最多50字" style=" width: 100%;" />
+            <input class="radius-2 other-input" placeholder="{{visit.EmotionAssessmentRemarks?visit.EmotionAssessmentRemarks:'輸入最多50字'}}" [(ngModel)]='EmotionAssessmentRemarks' style=" width: 100%;" />
           </div>
         </div>
       </div>

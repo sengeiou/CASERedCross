@@ -9,6 +9,7 @@ import { ActivityServe } from 'src/mgrServe/ActivityServe';
 import { ServiceApi } from 'src/providers/service.api';
 import { CaseServe } from 'src/mgrServe/CaseServe';
 import { VisitServe } from 'src/mgrServe/VisitServe';
+import { PhoneServe } from 'src/mgrServe/PhoneServe';
 
 @Component({
   selector: 'app-home',
@@ -60,15 +61,16 @@ export class HomePage extends AppBase {
     })
   }
 
-  name = "";
-  aa() {
-    this.navigate("phone", { name: this.name });
+  
+  phone(caseID,LocalId) {
+    console.log(caseID,LocalId)
+    this.navigate("phone", {caseID: caseID,LocalId:LocalId });
   }
 
 
-  activity(caseID) {
-    console.log(caseID);
-    this.navigate('activity', { caseID: caseID });
+  activity(caseID,LocalId) {
+    console.log(caseID,LocalId);
+    this.navigate('activity', { caseID: caseID,LocalId:LocalId});
   }
 
   visit(caseID,LocalId) {
@@ -80,16 +82,14 @@ export class HomePage extends AppBase {
 
 
   getActivityList() {
-    var activity = new ActivityServe();
-    activity.getAllActivityList().then((e) => {  
-      console.log(e)
-    });
+    
     // activity.addcase().then((e)=>{
     //   console.log(e)
     // });  
   }
   getCase() {
     var cases = new CaseServe();
+    // cases.addCase();
     cases.getAllCaseList().then((e) => {
       console.log(e);
       console.log(this.caselist);
@@ -105,17 +105,9 @@ export class HomePage extends AppBase {
       var visit = new VisitServe();
       for (var i = 0; i < this.caselist.length; i++) {
         // console.log(this.caselist[i].id)
-        activity.getAllActivityListCaseId(this.caselist[i].id).then((e) => {
-
-          if (e.res.rows.length > 0) {
-
-            var activityList = Array.from(e.res.rows);
-            console.log(activityList);
-            this.caselist[i].activityList = activityList;
-          }
-        });
-
-        this.setK( this.caselist[i]);
+        this.setVisit( this.caselist[i]);
+        this.setPhnoe(this.caselist[i]);
+        this.setActivity(this.caselist[i]);
       }
 
       console.log(this.caselist)
@@ -123,7 +115,7 @@ export class HomePage extends AppBase {
   }
 
 
-  setK(kv){
+  setVisit(kv){
     var visit = new VisitServe();
     visit.getVisitCaseId(kv.id).then((e) => {
       console.log(e);
@@ -132,5 +124,29 @@ export class HomePage extends AppBase {
         kv.visitList = Array.from(e.res.rows);
       }
     });
+  }
+
+  setPhnoe(kv){
+    var phone=new PhoneServe();
+    phone.getPhoneCaseId(kv.id).then((e) => {
+      console.log(e);
+      if (e.res.rows.length > 0) {
+        console.log( e.res.rows);
+        kv.phoneList = Array.from(e.res.rows);
+      }
+    });
+  }
+
+  setActivity(kv){
+
+    var activity = new ActivityServe();
+    activity.getAllActivityListCaseId(kv.id).then((e) => {  
+      console.log(e);
+      if (e.res.rows.length > 0) {
+        console.log( e.res.rows);
+        kv.activityList = Array.from(e.res.rows);
+      }
+    });
+    
   }
 }

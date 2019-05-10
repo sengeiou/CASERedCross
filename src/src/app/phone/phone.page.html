@@ -15,16 +15,18 @@
     <div class="margin-20">
       <div class="flex-row">
         <div class="title">檔案編號:</div>
-        <div>wx5265262522</div>
+        <div>{{casedata.CaseNo}}</div>
       </div>
       <div class="flex-row margin-top-10">
         <div class="title">姓名:</div>
-        <div>nihhhh</div>
+        <div>{{casedata.ChiName_Disply}}</div>
       </div>
       <div class="flex-row margin-top-10  flex-center">
         <div class="title">所患疾病:</div>
         <div class="flex-1">
-          <textarea class="textarea radius-2" style="width:100%;"></textarea>
+          <div class="textarea radius-2 bg-white h7-5 padding-5" style="width:100%;">
+            {{casedata.Illness_Disply}}
+          </div>
         </div>
 
       </div>
@@ -32,13 +34,17 @@
       <div class="flex-row margin-top-10  flex-center">
         <div class="title">其他疾病:</div>
         <div class="flex-1">
-          <textarea class="textarea radius-2" style="width:100%;"></textarea>
+          <div class="textarea radius-2 bg-white h7-5 padding-5" style="width:100%;">
+            {{casedata.OtherIllness_Disply}}
+          </div>
         </div>
       </div>
       <div class="flex-row margin-top-10  flex-center">
         <div class="title">照顧計劃:</div>
         <div class="flex-1">
-          <textarea class="textarea1 radius-2" style="width:100%;"></textarea>
+          <div class="textarea1 radius-2 bg-white h7-5 padding-5" style="width:100%;">
+            {{casedata.CarePlan_Disply}}
+          </div>
         </div>
       </div>
     </div>
@@ -47,63 +53,95 @@
   <div class="bg-h padding-bottom-5">
     <div class="text-center padding-top-20 txt-black txt-bold">慰問內容</div>
     <div class="margin-20">
-      <div class="flex-row">
+      <div class="flex-row flex-center">
         <div class="title2">電話慰問日期:</div>
         <div class="flex-1">
-          <input class="radius-2" style="width:100%;" />
+          <div class="input_s radius-2 bg-white padding-left-5" *ngIf="phone.CallDate" style="width:100%;">
+            {{phone.CallDate}}</div>
+          <div class="" style="width:100%;" *ngIf="!phone.CallDate">
+            <ion-item>
+              <ion-datetime placeholder="" displayFormat="YYYY/DD/MM " picker-format="YYYY DD MM " max="2050-12-09"
+                done-text='确定' cancel-text='取消' [(ngModel)]="CallDate"></ion-datetime>
+            </ion-item>
+          </div>
         </div>
 
       </div>
       <div class="flex-row margin-top-10  flex-center">
         <div class="title2">電話慰問時間:</div>
         <div class="flex-1">
-          <input class="input_s radius-2" style="width:100%;" />
+          <div class="input_s radius-2 bg-white padding-left-5" *ngIf="phone.CallStartTime" style="width:100%;">
+            {{phone.CallStartTime}}</div>
+          <div class="" style="width:100%;" *ngIf="!phone.CallStartTime">
+            <ion-item>
+              <ion-datetime placeholder="" displayFormat="HH：mm" picker-format="HH：mm" max="2050-12-09" done-text='确定'
+                cancel-text='取消' [(ngModel)]="CallStartTime"></ion-datetime>
+            </ion-item>
+          </div>
         </div>
         <div class="margin-5">至</div>
         <div class="flex-1">
-          <input class="input_s radius-2" style="width:100%;" />
+          <div class="input_s radius-2 bg-white padding-left-5" *ngIf="phone.CallEndTime" style="width:100%;">
+            {{phone.CallEndTime}}</div>
+          <div class="" style="width:100%;" *ngIf="!phone.CallEndTime">
+            <ion-item>
+              <ion-datetime placeholder="" displayFormat="HH：mm" picker-format="HH：mm" max="2050-12-09" done-text='确定'
+                cancel-text='取消' [(ngModel)]="CallEndTime"></ion-datetime>
+            </ion-item>
+          </div>
         </div>
       </div>
       <div class="flex-row margin-top-10">
         <div class="title2">負責義工:</div>
-        <div></div>
+        <div class=""></div>
       </div>
 
-      <div class="flex-row margin-top-10">
+      <div class="flex-row margin-top-10 flex-center">
         <div class="title2">下次預約探訪:</div>
-        <div>25-09-2019 10:20</div>
+        <div>
+          10-05-2019 10:20
+        </div>
       </div>
 
       <div class=" margin-top-10  ">
         <div class="title">慰問內容:</div>
         <div>
-          <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="sex" value="male"
-              class="radio " />健康飲食</div>
-          <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="sex" value="male"
-              class="radio " />情緒壓力</div>
-          <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="sex" value="male"
-              class="radio " />運動情況</div>
-          <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="sex" value="male"
-              class="radio " />服藥情況</div>
-          <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="sex" value="male"
-              class="radio " />覆診情況</div>
-          <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="sex" value="male"
-              class="radio " />人際關係</div>
-          <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="sex" value="male"
-              class="radio " />整體健康</div>
-          <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="sex" value="male"
+          <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="Detail" value="健康飲食"
+              checked="{{phone.Detail=='健康飲食'?'1':''}}" (click)="getDetail('健康飲食')" class="radio " />健康飲食</div>
+          <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="Detail" value="情緒壓力"
+              checked="{{phone.Detail=='情緒壓力'?'1':''}}" (click)="getDetail('情緒壓力')" class="radio " />情緒壓力</div>
+          <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="Detail" value="運動情況"
+              checked="{{phone.Detail=='運動情況'?'1':''}}" (click)="getDetail('運動情況')" class="radio " />運動情況</div>
+          <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="Detail" value="服藥情況"
+              checked="{{phone.Detail=='服藥情況'?'1':''}}" (click)="getDetail('服藥情況')" class="radio " />服藥情況</div>
+          <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="Detail" value="覆診情況"
+              checked="{{phone.Detail=='覆診情況'?'1':''}}" (click)="getDetail('覆診情況')" class="radio " />覆診情況</div>
+          <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="Detail" value="人際關係"
+              checked="{{phone.Detail=='人際關係'?'1':''}}" (click)="getDetail('人際關係')" class="radio " />人際關係</div>
+          <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="Detail" value="整體健康"
+              checked="{{phone.Detail=='整體健康'?'1':''}}" (click)="getDetail('整體健康')" class="radio " />整體健康</div>
+          <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="Detail" value="提醒/預約下次探訪日期"
+              checked="{{phone.Detail=='提醒/預約下次探訪日期'?'1':''}}" (click)="getDetail('提醒/預約下次探訪日期')"
               class="radio " />提醒/預約下次探訪日期</div>
-          <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="sex" value="male"
-              class="radio " />其他
+          <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="Detail" value="其他"
+              checked="{{phone.Detail=='其他'?'1':''}}" (click)="getDetail('其他')" class="radio " />其他
             <div class="flex-1">
-              <input class="radius-2 other-input" placeholder="輸入最多50字" style="width:100%;" /></div>
+              <div class="input_s radius-2 bg-white padding-left-5" *ngIf="phone.DetailOther && phone.Detail=='運動情況'"
+                style="width:100%;">
+                {{phone.DetailOther}}</div>
+              <input class="radius-2 other-input" placeholder="輸入最多50字" style="width:100%;" [(ngModel)]='DetailOther'
+                *ngIf="!phone.DetailOther " />
+            </div>
           </div>
         </div>
 
         <div class="title2 margin-top-10">其他補充:</div>
         <div class=" margin-top-10">
           <div class="flex-1">
-            <textarea class="textarea2 radius-2" placeholder="輸入最多250字" style="width:100%;"></textarea>
+            <div class="textarea2 radius-2 bg-white padding-left-5" *ngIf="phone.OtherRemark" style="width:100%;">
+              {{phone.OtherRemark}}</div>
+            <textarea class="textarea2 radius-2" placeholder="輸入最多250字" style="width:100%;" *ngIf="!phone.OtherRemark"
+              [(ngModel)]='OtherRemark'></textarea>
           </div>
 
         </div>
@@ -115,7 +153,7 @@
   <div class="flex-row padding-15 flex-center">
     <div class="flex-1"></div>
     <div class="flex-row">
-      <div class="txt-blue margin-right-40">保存</div>
+      <div class="txt-blue margin-right-40" (click)='savePhone()'>保存</div>
       <div class="txt-blue">上傳</div>
     </div>
     <div class="flex-1"></div>

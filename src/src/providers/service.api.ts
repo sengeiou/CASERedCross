@@ -22,21 +22,21 @@ export class ServiceApi {
             strPwd: ApiConfig.MD5(strPwd).toUpperCase() });
 
         return this.http.post(url, body, options).toPromise()
-            .then((res) => {
-                console.log(res);
-                var xmlstr=res.text();
-                console.log(xmlstr);
-                var x2js = new X2JS();
-                var jsonObj = x2js.xml_str2json( xmlstr );
-                //输出结果
-                console.log(jsonObj);
-                console.log(jsonObj.Envelope.Body.VolunteerLoginResponse.VolunteerLoginResult);
+            // .then((res) => {
+            //     console.log(res);
+            //     var xmlstr=res.text();
+            //     console.log(xmlstr);
+            //     var x2js = new X2JS();
+            //     var jsonObj = x2js.xml_str2json( xmlstr );
+            //     //输出结果
+            //     console.log(jsonObj);
+            //     console.log(jsonObj.Envelope.Body.VolunteerLoginResponse.VolunteerLoginResult);
 
-                return jsonObj.Envelope.Body.VolunteerLoginResponse.VolunteerLoginResult;
-            })
-            .catch(err => {
-                return ApiConfig.ErrorHandle('/VolunteerLogin', data, err);
-            });
+            //     return jsonObj.Envelope.Body.VolunteerLoginResponse.VolunteerLoginResult;
+            // })
+            // .catch(err => {
+            //     return ApiConfig.ErrorHandle('/VolunteerLogin', data, err);
+            // });
     }
 
 
