@@ -21,9 +21,9 @@ export class CaseServe {
         return mgr.execSql(sql);
     }
 
-    addCase() {
+    addCase(CaseNo,QRCode,ChiName_Disply,Illness_Disply,OtherIllness_Disply,CarePlan_Disply,Height) {
         var mgr = DBMgr.GetInstance();
-        var sql = "insert into tb_Case(CaseNo,QRCode,ChiName_Disply,Illness_Disply,OtherIllness_Disply,CarePlan_Disply) values ('WT201905','12555','风','没有病','没有病','天天睡觉')";
-        return mgr.execSql(sql);
+        var sql = "insert into tb_Case(CaseNo,QRCode,ChiName_Disply,Illness_Disply,OtherIllness_Disply,CarePlan_Disply,Height) values (?,?,?,?,?,?,?)";
+        return mgr.execSql(sql,[CaseNo,QRCode,ChiName_Disply,Illness_Disply,OtherIllness_Disply,CarePlan_Disply,Height]);
     }
 } 

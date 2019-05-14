@@ -10,10 +10,7 @@ export class ServiceApi {
 
     }
 
-
     public VolunteerLogin(strLoginId, strPwd) {
-
-
 
         var url = ApiConfig.getApiUrl();
         var data = { strLoginId, strPwd };
@@ -57,21 +54,21 @@ export class ServiceApi {
                 var jsonObj = x2js.xml_str2json( xmlstr );
                 //输出结果
                 console.log(jsonObj);
-                console.log(jsonObj.Envelope.Body.VolunteerLoginResponse.VolunteerLoginResult);
-
-                return jsonObj.Envelope.Body.VolunteerLoginResponse.VolunteerLoginResult;
+               
+                console.log(jsonObj.Envelope.Body.ForgotPasswordResponse.ForgotPasswordResult);
+                return jsonObj.Envelope.Body.ForgotPasswordResponse.ForgotPasswordResult;
             })
             .catch(err => {
                 return ApiConfig.ErrorHandle('/ForgotPassword', data, err);
             });
     }
 
-    public SysnAllResultRecord(strLoginId) {
+    public SysnAllResultRecord(volunteerId) {
         var url = ApiConfig.getApiUrl();
-        var data = { strLoginId};
+        var data = { volunteerId};
         var headers = ApiConfig.GetHeader(url, data);
         let options = new RequestOptions({ headers: headers });
-        let body = ApiConfig.GetPostXml("SysnAllResultRecord", { strLoginId});
+        let body = ApiConfig.GetPostXml("SysnAllResultRecord", { volunteerId});
 
         return this.http.post(url, body, options).toPromise()
             .then((res) => {
@@ -82,12 +79,37 @@ export class ServiceApi {
                 var jsonObj = x2js.xml_str2json( xmlstr );
                 //输出结果
                 console.log(jsonObj);
-                console.log(jsonObj.Envelope.Body.VolunteerLoginResponse.VolunteerLoginResult);
+                console.log(jsonObj.Envelope.Body.SysnAllResultRecordResponse.SysnAllResultRecordResult);
 
-                return jsonObj.Envelope.Body.VolunteerLoginResponse.VolunteerLoginResult;
+                return jsonObj.Envelope.Body.SysnAllResultRecordResponse.SysnAllResultRecordResult;
             })
             .catch(err => {
                 return ApiConfig.ErrorHandle('/SysnAllResultRecord', data, err);
+            });
+    }
+
+    public SavePhoneSupport(SupportId,CaseId,CallDate,CallStartTime,CallEndTime,Detail,DetailOther,OtherRemark,ResponsibleVol,Status) {
+        var url = ApiConfig.getApiUrl();
+        var data = { SupportId,CaseId,CallDate,CallStartTime,CallEndTime,Detail,DetailOther,OtherRemark,ResponsibleVol,Status};
+        var headers = ApiConfig.GetHeader(url, data);
+        let options = new RequestOptions({ headers: headers });
+        let body = ApiConfig.GetPostXml("SavePhoneSupport", {SupportId,CaseId,CallDate,CallStartTime,CallEndTime,Detail,DetailOther,OtherRemark,ResponsibleVol,Status});
+
+        return this.http.post(url, body, options).toPromise()
+            .then((res) => {
+                console.log(res);
+                var xmlstr=res.text();
+                console.log(xmlstr);
+                var x2js = new X2JS();
+                var jsonObj = x2js.xml_str2json( xmlstr);
+                //输出结果
+                console.log(jsonObj);
+                console.log(jsonObj.Envelope.Body.SavePhoneSupportResponse .SavePhoneSupportResult);
+
+                return jsonObj.Envelope.Body.SavePhoneSupportResponse .SavePhoneSupportResult;
+            })
+            .catch(err => {
+                return ApiConfig.ErrorHandle('/SavePhoneSupport', data, err);
             });
     }
 

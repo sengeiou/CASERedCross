@@ -68,12 +68,13 @@ export class TestPage extends AppBase {
       // this.showAlert("影响了"+ret.res.rowsAffected+"行数据");
     });
   }
-
+  VolId=0;
   loginWeb(){
     this.api.VolunteerLogin(this.number,this.password).then((ret)=>{
       // if(ret.)
       if(ret.Result=="true"){
-        alert("登录成功:"+ret.objUser.UserName);
+        this.VolId=ret.objUser.VolId
+        this.navigate('home',{id:this.VolId})
         this.update()
       }else{
         alert("登录失败:"+ret.strMsg);
@@ -96,9 +97,10 @@ export class TestPage extends AppBase {
       this.toast('密碼不能留空');
       return;
     }
+    this.loginWeb()
+
     var userServe = new UserServe();
     userServe.getUserNumber(this.number).then((e) => {
-      // console.log(Array.from(e))
       console.log(e)
       if (e.res.rows.length==0) {
         this.insert()
@@ -118,17 +120,17 @@ export class TestPage extends AppBase {
           console.log(time)
           if (this.data) {
             if (time < 24 * 60 * 60 * 1000) {
-              this.navigate('home',[this.number])
+              this.navigate('home',{id:this.VolId})
               this.update()
               this.toast('登录成功');
+
             } else {
               this.loginWeb()
-              // this.toast('未能連線，無法登入');
+              
             }
 
           } else {
             this.toast('你的義工編號或密碼不正確');
-            // this.insert()
           }
         });
       }
@@ -183,14 +185,14 @@ export class TestPage extends AppBase {
 
   modifyPassword(){
     this.api.ForgotPassword(this.modifyNumber).then((ret)=>{
-      // if(ret.)
-      if(ret.Result=="true"){
+     console.log(ret)
+      if(ret==1){
+  
         this.toast('設置密碼連結會經電郵發送，請查收');
-        // alert("設置密碼連結會經電郵發送，請查收"+ret.objUser.ForgotPasswordResult);
-        // this.update()
+       
       }else{
         // alert("登录失败:"+ret.strMsg);
-        this.toast('');
+        this.toast('系統沒有回應');
       }
     });
   }

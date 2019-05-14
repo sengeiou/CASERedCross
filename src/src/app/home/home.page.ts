@@ -10,6 +10,9 @@ import { ServiceApi } from 'src/providers/service.api';
 import { CaseServe } from 'src/mgrServe/CaseServe';
 import { VisitServe } from 'src/mgrServe/VisitServe';
 import { PhoneServe } from 'src/mgrServe/PhoneServe';
+import { VolunteerServr } from 'src/mgrServe/VolunteerServr';
+import { SpecialtyServe } from 'src/mgrServe/SpecialtyServe';
+import { HosiptalServe } from 'src/mgrServe/HosiptalServe';
 
 @Component({
   selector: 'app-home',
@@ -57,7 +60,7 @@ export class HomePage extends AppBase {
   upload() { //上传资料到服务器
     this.showConfirm('你確定要同步資料嗎？', (e) => {
       if (e) {
-        this.loginWeb()
+        this.SysnAllWeb()
       }
     })
   }
@@ -65,7 +68,7 @@ export class HomePage extends AppBase {
   
   phone(caseID,LocalId) {
     console.log(caseID,LocalId)
-    this.navigate("phone", {caseID: caseID,LocalId:LocalId });
+    this.navigate("phone", {caseID: caseID,PhoneID:LocalId });
   }
 
 
@@ -106,7 +109,6 @@ export class HomePage extends AppBase {
         this.setPhnoe(this.caselist[i]);
         this.setActivity(this.caselist[i]);
       }
-
       console.log(this.caselist)
     })
   }
@@ -143,20 +145,74 @@ export class HomePage extends AppBase {
         kv.activityList = Array.from(e.res.rows);
       }
     });
-    
   }
 
-  loginWeb(){
-    var VolId=this.params[0]
+  Volunteer=[];
+  Specialty=[];
+  Hosp=[];
+  saList=[];
+  SysnAllWeb(){
+    var VolId=this.params.id
     this.api.SysnAllResultRecord(VolId).then((ret)=>{
       console.log(ret)
-      if(ret.Result=="true"){
-        alert("成功:"+ret.objUser.UserName);
-        
+      if(ret.Result=="false"){
+        this.Volunteer=ret.vList.VolunteerApp
+        this.Specialty=ret.msList.objMSpecialtyApp
+        this.Hosp=ret.mhList.objMHospApp
+        this.saList=ret.saList.objSysnAllApp
+        // this.updateData()
       }else{
         alert("失败:"+ret.strMsg);
         this.toast('未能連線，無法登入');
       }
     });
   }
+
+  updateData(){
+    var volunteer = new VolunteerServr();
+    volunteer.deleteVolunteer();
+    var specialtyServe = new SpecialtyServe();
+    specialtyServe.deleteSpecialty()
+    var hosiptalServe = new HosiptalServe();
+    hosiptalServe.deleteHosiptal()
+    for(var i = 0; i < this.Volunteer.length; i++){
+      this.setVolunteer( this.Volunteer[i]);
+    }
+    for(var i = 0; i < this.Specialty.length; i++){
+      this.setSpecialty( this.Specialty[i]);
+    }
+    for(var i = 0; i < this.Hosp.length; i++){
+      this.setHosp( this.Hosp[i]);     
+    }
+    for(var i = 0; i < this.saList.length; i++){
+      this.setCase( this.saList[i].caseObj);    
+    }
+  }
+
+  setVolunteer(kv){
+    var volunteer = new VolunteerServr();
+    volunteer.addVolunteer(kv.VolId,kv.UserName).then((e) => {
+      console.log(e);
+    });
+  }
+  setSpecialty(kv){
+    var specialtyServe = new SpecialtyServe();
+    specialtyServe.addSpecialty(kv.Name).then((e) => {
+      console.log(e);
+    });
+  }
+  setHosp(kv){
+    var hosiptalServe = new HosiptalServe();
+    hosiptalServe.addHosiptal(kv.Name).then((e) => {
+      console.log(e);
+    });
+  }
+  setCase(kv){
+    var caseServe = new CaseServe();
+    caseServe.addCase(kv.CaseNo,kv.QRCode,kv.ChiName_Disply,kv.Illness_Disply,kv.OtherIllness_Disply,kv.CarePlan_Disply,kv.Height).then((e) => {
+      console.log(e);
+    });
+  }
+
+
 }

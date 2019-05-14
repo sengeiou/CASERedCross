@@ -14,11 +14,11 @@ export class DBMgr {
 
         let createActivityTableSQL = "CREATE TABLE IF NOT EXISTS tb_Activity (LocalID integer primary key autoincrement not null,ActivityID int, caseId int, fileNum int, activityDate text, activityStartTime text, activityEndTime text, presentVolunteer text,  actType int, activityDetailType text, remarks1 text, remarks2 text, remarks3 text, remarks4 text, otherActRemarks text, otherContent text, uploadStatus int, save int, supportId int)";
 
-        let createPhoneTableSQL = "CREATE TABLE IF NOT EXISTS tb_Phone (LocalId integer primary key autoincrement not null, SupportId int,CaseId int, CallDate nvarchar(10), CallStartTime nvarchar(10), CallEndTime nvarchar(10),nextVisitDateandTime nvarchar(10), Detail nvarchar(50) ,DetailOther nvarchar(100), UserName nvarchar(100), OtherRemark nvarchar(500), Status int, SavedStatus int DEFAULT '0')";
+        let createPhoneTableSQL = "CREATE TABLE IF NOT EXISTS tb_Phone (LocalId integer primary key autoincrement not null, SupportId int DEFAULT 0, CaseId int, CallDate nvarchar(10), CallStartTime nvarchar(10), CallEndTime nvarchar(10),nextVisitDateandTime nvarchar(10), Detail nvarchar(50) ,DetailOther nvarchar(100), UserName nvarchar(100), OtherRemark nvarchar(500), Status int, SavedStatus int DEFAULT '0')";
 
-        let createHosiptal = "CREATE TABLE IF NOT EXISTS tb_Hosiptal (id int, name text)";
+        let createHosiptal = "CREATE TABLE IF NOT EXISTS tb_Hosiptal (id integer primary key autoincrement not null, Name nvarchar(50))";
 
-        let createSpecality = "CREATE TABLE IF NOT EXISTS tb_Speciality (id int, Speciality text)";
+        let createSpecality = "CREATE TABLE IF NOT EXISTS tb_Speciality (id integer primary key autoincrement not null, Name nvarchar(100))";
 
         let CaseSql = "CREATE TABLE IF NOT EXISTS tb_Case (id integer primary key autoincrement not null,CaseNo nvarchar(50), VolVisitGrpId int,QRCode text, ChiName_Disply nvarchar(50),Illness_Disply nvarchar(1000), OtherIllness_Disply nvarchar(1000), CarePlan_Disply nvarchar(1000),Height double)";
 
@@ -38,7 +38,7 @@ export class DBMgr {
 
         let WHRSQL = "CREATE TABLE IF NOT EXISTS tb_WHR (Ratio double, CaseId int, MeasurementDate text)";
 
-        let createVolunteerSQL = "CREATE TABLE IF NOT EXISTS tb_Volunteer (id integer primary key autoincrement not null, caseid int, voltype int, groupid int, selfid int, name text)";
+        let createVolunteerSQL = "CREATE TABLE IF NOT EXISTS tb_Volunteer (id integer primary key autoincrement not null, VolGrpId int, VolId int, VolunteerName nvarchar(10), VolType int)";
 
 
         let AccessmentSQL = "CREATE TABLE IF NOT EXISTS tb_Assessment (Status int, CarePlan_Disply text, CaseId int)";
@@ -53,7 +53,7 @@ export class DBMgr {
             //alert(1);
             this.type = 0;
             sqlite.create({
-                name: 'appdata8.db',
+                name: 'appdata10.db',
                 location: 'default'
             }).then((db) => {
                 this._db = db;
@@ -80,7 +80,7 @@ export class DBMgr {
         } else {
             this.type = 1;
             //alert(2);
-            this._db = this.win.openDatabase("appdata8.db", '1.0', 'database', 5 * 1024 * 1024);
+            this._db = this.win.openDatabase("appdata10.db", '1.0', 'database', 5 * 1024 * 1024);
             this.execSql(dbcreateUSERsql);
             this.execSql(createActivityTableSQL);
             this.execSql(createPhoneTableSQL);

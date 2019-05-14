@@ -16,6 +16,12 @@ export class VisitServe  {
         return mgr.execSql(sql);
     }
 
+    getAllVisitScheduleDate(CaseId) {
+        var mgr = DBMgr.GetInstance();
+        var sql = "select ScheduleDate,ScheduleTime from tb_home_visit where CaseId=? and ScheduleDate>datetime('now') ORDER BY ScheduleDate asc limit 1";
+        return mgr.execSql(sql,[CaseId]);
+    }
+
     
     getVisitCaseId(CaseId) {
         var mgr = DBMgr.GetInstance();
