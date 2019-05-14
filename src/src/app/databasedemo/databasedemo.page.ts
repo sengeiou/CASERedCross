@@ -61,7 +61,7 @@ export class DatabasedemoPage extends AppBase {
   password="admin";
   login(){
     this.api.VolunteerLogin(this.loginid,this.password).then((ret)=>{
-      //if(ret.)
+      // if(ret.)
       if(ret.Result=="true"){
         alert("登录成功:"+ret.objUser.UserName);
       }else{

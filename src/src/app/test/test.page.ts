@@ -69,17 +69,24 @@ export class TestPage extends AppBase {
     });
   }
 
-  loginWeb() {
-    this.api.VolunteerLogin("aa", "bb");
-    var userServe = new UserServe();
-    userServe.getUserNumber(this.number).then((e) => {
-      if (!e.res.rows) {
-        this.insert()
+  loginWeb(){
+    this.api.VolunteerLogin(this.number,this.password).then((ret)=>{
+      // if(ret.)
+      if(ret.Result=="true"){
+        alert("登录成功:"+ret.objUser.UserName);
+        this.update()
+      }else{
+        alert("登录失败:"+ret.strMsg);
+        this.toast('未能連線，無法登入');
       }
-    })
-
+    });
   }
 
+  // kk(item){
+  //   alert(item.LocalId);
+  // }
+
+ 
   login() {
     if (!this.number) {
       this.toast('義工編號不能留空');
@@ -111,11 +118,12 @@ export class TestPage extends AppBase {
           console.log(time)
           if (this.data) {
             if (time < 24 * 60 * 60 * 1000) {
-              this.navigate('home')
+              this.navigate('home',[this.number])
               this.update()
+              this.toast('登录成功');
             } else {
-              this.toast('登录已过期');
-              // this.insert()
+              this.loginWeb()
+              // this.toast('未能連線，無法登入');
             }
 
           } else {
@@ -126,14 +134,12 @@ export class TestPage extends AppBase {
       }
     })
 
-    // this.insert()
-
   }
 
-  aa() {
+  aa() { //忘记密码
     this.presentAlertCheckbox();
   }
-  checkbox1 = '';
+  modifyNumber = '';
 
   async presentAlertCheckbox() {
     const alert = await this.alertCtrl.create({
@@ -141,7 +147,7 @@ export class TestPage extends AppBase {
       message: '請輸入義工編號',
       inputs: [
         {
-          name: 'checkbox1',
+          name: 'modifyNumber',
           type: 'text',
           label: 'Checkbox 1',
           value: '',
@@ -160,12 +166,32 @@ export class TestPage extends AppBase {
           text: '確定',
           handler: (e) => {
             console.log(e);
-            console.log(e.checkbox1)
+            console.log(e.modifyNumber)
+            this.modifyNumber=e.modifyNumber
+            if (!this.modifyNumber) {
+              this.toast('義工編號不能留空');
+              return;
+            }
+            this.modifyPassword()
           }
         }
       ]
     });
 
     await alert.present();
+  }
+
+  modifyPassword(){
+    this.api.ForgotPassword(this.modifyNumber).then((ret)=>{
+      // if(ret.)
+      if(ret.Result=="true"){
+        this.toast('設置密碼連結會經電郵發送，請查收');
+        // alert("設置密碼連結會經電郵發送，請查收"+ret.objUser.ForgotPasswordResult);
+        // this.update()
+      }else{
+        // alert("登录失败:"+ret.strMsg);
+        this.toast('');
+      }
+    });
   }
 }

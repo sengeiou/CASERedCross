@@ -60,10 +60,10 @@
         <div class="title2">活動日期:</div>
         <div class="flex-1">
           <div class="radius-2" style="width:100%; ">
-            <ion-item *ngIf="!activity.activityDate">
-              <ion-datetime placeholder="{{activity.activityDate}}" displayFormat="YYYY/DD/MM " picker-format="YYYY DD MM "
+            <div class="bg-white" *ngIf="!activity.activityDate">
+              <ion-datetime placeholder="{{activity.activityDate}}" displayFormat="YYYY/MM/DD " picker-format="YYYY MM DD " style="height:25px;padding:2px;"
                 max="2050-12-09" done-text='确定' cancel-text='取消' [(ngModel)]="activityDate"></ion-datetime>
-            </ion-item>
+            </div>
             <div class="input_s radius-2 bg-white padding-left-5" *ngIf="activity.activityDate" style="width:100%;">
               {{activity.activityDate}}
             </div>
@@ -75,19 +75,19 @@
       <div class="flex-row margin-top-10  flex-center">
         <div class="title2">活動時間:</div>
         <div class="flex-1">
-          <ion-item *ngIf="!activity.activityStartTime">
-            <ion-datetime placeholder="{{activity.activityStartTime}}" displayFormat="HH：MM" picker-format="HH：MM"
+          <div class="bg-white" *ngIf="!activity.activityStartTime">
+            <ion-datetime placeholder="{{activity.activityStartTime}}" displayFormat="hh：mm" picker-format="hh：mm" style="height:25px;padding:2px;"
               max="2050-12-09" done-text='确定' cancel-text='取消' [(ngModel)]="activityStartTime"></ion-datetime>
-          </ion-item>
+          </div>
           <div class="input_s radius-2 bg-white padding-left-5" *ngIf="activity.activityStartTime" style="width:100%;">
             {{activity.activityStartTime}}</div>
         </div>
         <div class="margin-5">至</div>
         <div class="flex-1">
-          <ion-item *ngIf="!activity.activityEndTime">
-            <ion-datetime placeholder="{{activity.activityEndTime}}" displayFormat="HH：MM" picker-format="HH：MM"
+          <div class="bg-white" *ngIf="!activity.activityEndTime">
+            <ion-datetime placeholder="{{activity.activityEndTime}}" displayFormat="hh：mm" picker-format="hh：mm" style="height:25px;padding:2px;"
               max="2050-12-09" done-text='确定' cancel-text='取消' [(ngModel)]="activityEndTime"></ion-datetime>
-          </ion-item>
+          </div>
           <div class="input_s radius-2 bg-white padding-left-5" *ngIf="activity.activityEndTime" style="width:100%;">
             {{activity.activityEndTime}}</div>
         </div>

@@ -10,69 +10,84 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content style="height: 100%;">
 
-  <div class="margin-20 h7 txt-bold">
-    <div class="flex-row margin-top-10">
-      <div class="title2">覆診日期:</div>
-      <div class="flex-1 margin-left-40">
-        <input class="radius-2" style="width:100%;" />
+  <div style="background: #EDECF2 ;height: 100%;">
+
+
+
+    <div class="padding-20 h7 txt-bold bg-h">
+      <div class="flex-row margin-top-10">
+        <div class="title2">覆診日期:</div>
+        <div class="flex-1 margin-left-40">
+          <div class="bg-white">
+            <ion-datetime placeholder="{{MedicalRecord.AppointmentDate?MedicalRecord.AppointmentDate:''}}" style="height:25px;padding:2px;" displayFormat="YYYY/MM/DD "
+              picker-format="YYYY MM DD " max="2050-12-09" done-text='确定' cancel-text='取消'
+              [(ngModel)]="AppointmentDate"></ion-datetime>
+          </div>
+        </div>
       </div>
+
+      <div class="flex-row margin-top-10">
+        <div class="title2">覆診時間:</div>
+        <div class="flex-1 margin-left-40">
+          <div class="bg-white">
+            <ion-datetime placeholder="{{MedicalRecord.AppointmentTime?MedicalRecord.AppointmentTime:''}}" style="height:25px;padding:2px;" displayFormat="hh：mm" picker-format="hh：mm"
+              max="2050-12-09" done-text='确定' cancel-text='取消' [(ngModel)]="AppointmentTime">
+            </ion-datetime>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex-row margin-top-10">
+        <div class="title2">診所/醫院:</div>
+        <div class="flex-1 margin-left-40">
+          <input class="radius-2" style="width:100%;" placeholder="{{MedicalRecord.Hosp?MedicalRecord.Hosp:''}}" [(ngModel)]="Hosp" />
+        </div>
+      </div>
+
+      <div class="flex-row margin-top-10">
+        <div class="title2">普通專科門診:</div>
+        <div class="flex-1 margin-left-40">
+          <input class="radius-2" style="width:100%;" placeholder="{{MedicalRecord.Specialty?MedicalRecord.Specialty:''}}" [(ngModel)]="Specialty" />
+        </div>
+      </div>
+
+      <div class=" margin-top-10">
+        <div class="title2">內容(最多250字):</div>
+        <div class="flex-1">
+          <textarea class="textarea2 radius-2" style="width:100%;" placeholder="{{MedicalRecord.Description?MedicalRecord.Description:''}}" [(ngModel)]="Description"></textarea>
+        </div>
+      </div>
+
+      <div class="margin-top-10">
+        <div class="title">狀態:</div>
+        <div class=" margin-top-10 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " checked="{{MedicalRecord.Status=='1'?'true':''}}" (click)='getStatus(1)' />未到期
+        </div>
+        <div class=" margin-top-10 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " checked="{{MedicalRecord.Status=='2'?'true':''}}" (click)='getStatus(2)' />已覆診
+        </div>
+        <div class=" margin-top-10 flex-row flex-center">
+          <input type="radio" name="sex" value="male" class="radio " checked="{{MedicalRecord.Status=='3'?'true':''}}" (click)='getStatus(3)' />無覆診
+        </div>
+      </div>
+
     </div>
 
-    <div class="flex-row margin-top-10">
-      <div class="title2">覆診時間:</div>
-      <div class="flex-1 margin-left-40">
-        <input class="radius-2" style="width:100%;" />
-      </div>
-    </div>
-
-    <div class="flex-row margin-top-10">
-      <div class="title2">診所/醫院:</div>
-      <div class="flex-1 margin-left-40">
-        <input class="radius-2" style="width:100%;" />
-      </div>
-    </div>
-
-    <div class="flex-row margin-top-10">
-      <div class="title2">普通專科門診:</div>
-      <div class="flex-1 margin-left-40">
-        <input class="radius-2" style="width:100%;" />
-      </div>
-    </div>
-
-    <div class=" margin-top-10">
-      <div class="title2">內容(最多250字):</div>
-      <div class="flex-1">
-        <textarea class="textarea2 radius-2" style="width:100%;"></textarea>
-      </div>
-    </div>
-
-    <div class="margin-top-10">
-      <div class="title">狀態:</div>
-      <div class=" margin-top-10 flex-row flex-center">
-        <input type="radio" name="sex" value="male" class="radio " />未到期
-      </div>
-      <div class=" margin-top-10 flex-row flex-center">
-        <input type="radio" name="sex" value="male" class="radio " />已覆診
-      </div>
-      <div class=" margin-top-10 flex-row flex-center">
-        <input type="radio" name="sex" value="male" class="radio " />無覆診
-      </div>
-    </div>
-
-  </div>
-
-  <div class="flex-row flex-center  margin-top-120">
-    <div class="flex-1"></div>
-    <div class="txt-blue margin-right-60">保存</div>
-    <div class="txt-gray">删除</div>
-    <div class="flex-1"></div>
-  </div>
-
-  <div class="flex-row flex-center  margin-top-30">
+    <div class="flex-row flex-center  margin-top-120 bg-h">
       <div class="flex-1"></div>
-      <div class="txt-blue">保存及新增下次覆診記錄</div>
+      <div class="txt-blue margin-right-60" (click)='preserve()'>保存</div>
+      <div class="txt-gray">删除</div>
       <div class="flex-1"></div>
     </div>
+
+    <div class="flex-row flex-center  margin-top-30 bg-h">
+      <div class="flex-1"></div>
+      <div class="txt-blue" (click)='preserve(2)'>保存及新增下次覆診記錄</div>
+      <div class="flex-1"></div>
+    </div>
+
+    
+  </div>
 </ion-content>

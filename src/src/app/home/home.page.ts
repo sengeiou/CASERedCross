@@ -45,6 +45,7 @@ export class HomePage extends AppBase {
     this.getCase()
   }
 
+
   logout() { //退出登录
     this.showConfirm('你確定要登出嗎？', (e) => {
       if (e) {
@@ -56,7 +57,7 @@ export class HomePage extends AppBase {
   upload() { //上传资料到服务器
     this.showConfirm('你確定要同步資料嗎？', (e) => {
       if (e) {
-
+        this.loginWeb()
       }
     })
   }
@@ -79,10 +80,8 @@ export class HomePage extends AppBase {
   }
 
  
-
-
   getActivityList() {
-    
+    console.log(this.params[0])
     // activity.addcase().then((e)=>{
     //   console.log(e)
     // });  
@@ -101,8 +100,6 @@ export class HomePage extends AppBase {
       }
       this.caselist = arr;
  
-      var activity = new ActivityServe();
-      var visit = new VisitServe();
       for (var i = 0; i < this.caselist.length; i++) {
         // console.log(this.caselist[i].id)
         this.setVisit( this.caselist[i]);
@@ -138,7 +135,6 @@ export class HomePage extends AppBase {
   }
 
   setActivity(kv){
-
     var activity = new ActivityServe();
     activity.getAllActivityListCaseId(kv.id).then((e) => {  
       console.log(e);
@@ -148,5 +144,19 @@ export class HomePage extends AppBase {
       }
     });
     
+  }
+
+  loginWeb(){
+    var VolId=this.params[0]
+    this.api.SysnAllResultRecord(VolId).then((ret)=>{
+      console.log(ret)
+      if(ret.Result=="true"){
+        alert("成功:"+ret.objUser.UserName);
+        
+      }else{
+        alert("失败:"+ret.strMsg);
+        this.toast('未能連線，無法登入');
+      }
+    });
   }
 }

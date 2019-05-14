@@ -7,7 +7,7 @@ import { AppUtil } from '../app.util';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CaseServe } from 'src/mgrServe/CaseServe';
 import { PhoneServe } from 'src/mgrServe/PhoneServe';
-import { timingSafeEqual } from 'crypto';
+// import { timingSafeEqual } from 'crypto';
 
 @Component({
   selector: 'app-phone',
@@ -52,7 +52,7 @@ export class PhonePage extends AppBase {
   getCase() {
     var cases = new CaseServe();
     cases.getCaseId(this.params.caseID).then((e) => {
-      console.log(e)
+      // console.log(e)
       var casedata = e.res.rows;
       var data = Array.from(casedata)[0]
       this.casedata = data;

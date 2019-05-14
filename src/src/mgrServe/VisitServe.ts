@@ -86,12 +86,24 @@ export class VisitServe  {
     saveEmotion(visitId,EmotionAssessment,CaseId){
         var mgr = DBMgr.GetInstance();
         if(!visitId){
-            var sql = "insert into tb_home_visit (EmotionAssessment,CaseId) values (?,?,?,?,?,?,?)";
+            var sql = "insert into tb_home_visit (EmotionAssessment,CaseId) values (?,?)";
             return mgr.execSql(sql,[EmotionAssessment,CaseId]);
 
         }else{
             var sql = "update tb_home_visit SET EmotionAssessment=? where LocalId=?";
             return mgr.execSql(sql,[EmotionAssessment,visitId]);
+        }
+    }
+
+    savaOtherSupplement(visitId,OtherHospDisbete,OtherHospDisbeteNoOfDay,OtherHospHighBp,OtherHospHighBpNoOfDay,OtherHospOtherIllness,OtherHospOtherIllnessNoOfDay,OtherAccident,OtherAccidentNoOfDay,OtherSpecialNeed,OtherSpecialNeedService,OtherRemarks,CaseId){
+        var mgr = DBMgr.GetInstance();
+        if(!visitId){
+            var sql = "insert into tb_home_visit (OtherHospDisbete,OtherHospDisbeteNoOfDay,OtherHospHighBp,OtherHospHighBpNoOfDay,OtherHospOtherIllness,OtherHospOtherIllnessNoOfDay,OtherAccident,OtherAccidentNoOfDay,OtherSpecialNeed,OtherSpecialNeedService,OtherRemarks,CaseId) values (?,?,?,?,?,?,?,?,?,?,?,?)";
+            return mgr.execSql(sql,[OtherHospDisbete,OtherHospDisbeteNoOfDay,OtherHospHighBp,OtherHospHighBpNoOfDay,OtherHospOtherIllness,OtherHospOtherIllnessNoOfDay,OtherAccident,OtherAccidentNoOfDay,OtherSpecialNeed,OtherSpecialNeedService,OtherRemarks,CaseId]);
+
+        }else{
+            var sql = "update tb_home_visit SET OtherHospDisbete=?,OtherHospDisbeteNoOfDay=?,OtherHospHighBp=?,OtherHospHighBpNoOfDay=?,OtherHospOtherIllness=?,OtherHospOtherIllnessNoOfDay=?,OtherAccident=?,OtherAccidentNoOfDay=?,OtherSpecialNeed=?,OtherSpecialNeedService=?,OtherRemarks=? where LocalId=?";
+            return mgr.execSql(sql,[OtherHospDisbete,OtherHospDisbeteNoOfDay,OtherHospHighBp,OtherHospHighBpNoOfDay,OtherHospOtherIllness,OtherHospOtherIllnessNoOfDay,OtherAccident,OtherAccidentNoOfDay,OtherSpecialNeed,OtherSpecialNeedService,OtherRemarks,visitId]);
         }
     }
 

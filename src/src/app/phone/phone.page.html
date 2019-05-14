@@ -59,10 +59,10 @@
           <div class="input_s radius-2 bg-white padding-left-5" *ngIf="phone.CallDate" style="width:100%;">
             {{phone.CallDate}}</div>
           <div class="" style="width:100%;" *ngIf="!phone.CallDate">
-            <ion-item>
-              <ion-datetime placeholder="" displayFormat="YYYY/DD/MM " picker-format="YYYY DD MM " max="2050-12-09"
+            <div class="bg-white">
+              <ion-datetime placeholder="" displayFormat="YYYY/MM/DD " picker-format="YYYY MM DD " max="2050-12-09" style="height:25px;padding:2px;"
                 done-text='确定' cancel-text='取消' [(ngModel)]="CallDate"></ion-datetime>
-            </ion-item>
+            </div>
           </div>
         </div>
 
@@ -73,10 +73,10 @@
           <div class="input_s radius-2 bg-white padding-left-5" *ngIf="phone.CallStartTime" style="width:100%;">
             {{phone.CallStartTime}}</div>
           <div class="" style="width:100%;" *ngIf="!phone.CallStartTime">
-            <ion-item>
-              <ion-datetime placeholder="" displayFormat="HH：mm" picker-format="HH：mm" max="2050-12-09" done-text='确定'
+            <div class="bg-white">
+              <ion-datetime placeholder="" displayFormat="hh：mm" picker-format="hh：mm" max="2050-12-09" done-text='确定' style="height:25px;padding:2px;"
                 cancel-text='取消' [(ngModel)]="CallStartTime"></ion-datetime>
-            </ion-item>
+            </div>
           </div>
         </div>
         <div class="margin-5">至</div>
@@ -84,10 +84,10 @@
           <div class="input_s radius-2 bg-white padding-left-5" *ngIf="phone.CallEndTime" style="width:100%;">
             {{phone.CallEndTime}}</div>
           <div class="" style="width:100%;" *ngIf="!phone.CallEndTime">
-            <ion-item>
-              <ion-datetime placeholder="" displayFormat="HH：mm" picker-format="HH：mm" max="2050-12-09" done-text='确定'
+            <div class="bg-white">
+              <ion-datetime placeholder="" displayFormat="hh：mm" picker-format="hh：mm" max="2050-12-09" done-text='确定' style="height:25px;padding:2px;"
                 cancel-text='取消' [(ngModel)]="CallEndTime"></ion-datetime>
-            </ion-item>
+            </div>
           </div>
         </div>
       </div>
