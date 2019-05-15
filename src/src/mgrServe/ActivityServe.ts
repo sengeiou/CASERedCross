@@ -16,7 +16,7 @@ export class ActivityServe {
 
     getAllActivityListCaseId(caseId) {
         var mgr = DBMgr.GetInstance();
-        var sql = "select LocalID,activityDate,actType from tb_Activity where LocalID=?";
+        var sql = "select LocalID,activityDate,actType from tb_Activity where caseId=?";
         return mgr.execSql(sql, [caseId]);
     }
 
@@ -30,13 +30,25 @@ export class ActivityServe {
         var mgr = DBMgr.GetInstance();
         if (activityId) {
             var sql = "update tb_home_visit SET activityDate=?, activityStartTime=?, activityEndTime=?, presentVolunteer=?, actType=?,activityDetailType=?,remarks1=?,remarks2=?,remarks3=?,remarks4=?,otherActRemarks=?,otherContentwhere=? where LocalId=?";
-            return mgr.execSql(sql, [activityDate, activityStartTime, activityEndTime, presentVolunteer, actType, activityDetailType, remarks1, remarks2, remarks3, remarks4, otherActRemarks, otherContent,activityId]);
+            return mgr.execSql(sql, [activityDate, activityStartTime, activityEndTime, presentVolunteer, actType, activityDetailType, remarks1, remarks2, remarks3, remarks4, otherActRemarks, otherContent, activityId]);
         } else {
             var sql = "insert into tb_Activity (caseId,activityDate,activityStartTime,activityEndTime, presentVolunteer, actType,activityDetailType,remarks1,remarks2,remarks3,remarks4,otherActRemarks,otherContent) values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
             return mgr.execSql(sql, [caseId, activityDate, activityStartTime, activityEndTime, presentVolunteer, actType, activityDetailType, remarks1, remarks2, remarks3, remarks4, otherActRemarks, otherContent]);
 
         }
-        
+
+    }
+
+    addActivityWeb(caseId, activityDate, activityStartTime, activityEndTime, presentVolunteer, actType, activityDetailType, remarks1, remarks2, remarks3, remarks4, otherActRemarks, otherContent) {
+        var mgr = DBMgr.GetInstance(); 
+        var sql = "insert into tb_Activity (caseId,activityDate,activityStartTime,activityEndTime, presentVolunteer, actType,activityDetailType,remarks1,remarks2,remarks3,remarks4,otherActRemarks,otherContent) values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        return mgr.execSql(sql, [caseId, activityDate, activityStartTime, activityEndTime, presentVolunteer, actType, activityDetailType, remarks1, remarks2, remarks3, remarks4, otherActRemarks, otherContent]);
+    }
+
+    deleteActivity(){
+        var mgr = DBMgr.GetInstance();
+        var sql = "DELETE FROM tb_Activity";
+        return mgr.execSql(sql);
     }
 
 

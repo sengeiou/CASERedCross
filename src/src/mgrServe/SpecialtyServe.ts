@@ -8,6 +8,12 @@ export class SpecialtyServe {
         return mgr.execSql(sql, [id]);
     }
 
+    getAllSpecialtyList(){
+        var mgr = DBMgr.GetInstance();
+        var sql = "select * from tb_Speciality";
+        return mgr.execSql(sql);
+    }
+
     addSpecialty(Name) {
         var mgr = DBMgr.GetInstance();
         var sql = "insert into tb_Speciality(Name) values (?)";

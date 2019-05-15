@@ -5,7 +5,7 @@ export class CaseServe {
 
     getCaseId(id) {
         var mgr = DBMgr.GetInstance();
-        var sql = "select * from tb_Case where id=?";
+        var sql = "select * from tb_Case where CaseId=?";
         return mgr.execSql(sql, [id]);
     }
 
@@ -21,9 +21,15 @@ export class CaseServe {
         return mgr.execSql(sql);
     }
 
-    addCase(CaseNo,QRCode,ChiName_Disply,Illness_Disply,OtherIllness_Disply,CarePlan_Disply,Height) {
+    addCase(CaseId,CaseNo,QRCode,ChiName_Disply,Illness_Disply,OtherIllness_Disply,CarePlan_Disply,Height) {
         var mgr = DBMgr.GetInstance();
-        var sql = "insert into tb_Case(CaseNo,QRCode,ChiName_Disply,Illness_Disply,OtherIllness_Disply,CarePlan_Disply,Height) values (?,?,?,?,?,?,?)";
-        return mgr.execSql(sql,[CaseNo,QRCode,ChiName_Disply,Illness_Disply,OtherIllness_Disply,CarePlan_Disply,Height]);
+        var sql = "insert into tb_Case(CaseId,CaseNo,QRCode,ChiName_Disply,Illness_Disply,OtherIllness_Disply,CarePlan_Disply,Height) values (?,?,?,?,?,?,?,?)";
+        return mgr.execSql(sql,[CaseId,CaseNo,QRCode,ChiName_Disply,Illness_Disply,OtherIllness_Disply,CarePlan_Disply,Height]);
+    }
+
+    deleteCase(){
+        var mgr = DBMgr.GetInstance();
+        var sql = "DELETE FROM tb_Case"; 
+        return mgr.execSql(sql);
     }
 } 

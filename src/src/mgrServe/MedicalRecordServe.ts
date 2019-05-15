@@ -18,10 +18,10 @@ export class MedicalRecordServe {
         return mgr.execSql(sql,[AppointmentDate,AppointmentTime,Description,Reason,Hosp,Specialty,CaseId]);
     }
 
-    saveMedicalRecord(AppointmentDate,AppointmentTime,Description,Reason,Status,LocalId){
+    saveMedicalRecord(AppointmentDate,AppointmentTime,Hosp,Specialty,Description,Reason,Status,LocalId){
         var mgr = DBMgr.GetInstance();
-        var sql = "update tb_MedicalRecord SET AppointmentDate=?,AppointmentTime=?,Description=?,Reason=?,Status=? where LocalId=?";
-        return mgr.execSql(sql,[AppointmentDate,AppointmentTime,Description,Reason,Status,LocalId]);
+        var sql = "update tb_MedicalRecord SET AppointmentDate=?,AppointmentTime=?,Hosp=?,Specialty=?,Description=?,Reason=?,Status=? where LocalId=?";
+        return mgr.execSql(sql,[AppointmentDate,AppointmentTime,Hosp,Specialty,Description,Reason,Status,LocalId]);
     }
 
     addMedicalRecordHospSpecialty(Hosp,Specialty,CaseId){

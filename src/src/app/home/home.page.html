@@ -17,11 +17,11 @@
       <div class="flex-row">
 
         <div class="height h7 flex-row _center bg-gray width text-center border-bottom">探访 <img
-            src="../assets/icon/plus_icon.png" class="icon-15 margin-left-5" (click)='visit(item.id)'/></div>
+            src="../assets/icon/plus_icon.png" class="icon-15 margin-left-5" (click)='visit(item.CaseId)'/></div>
         <div class="flex-1">
           <div class="xgun">
             <div class="flex-row" style="width: 500px">
-              <div class="padding-10  border-black radius-5 height margin-right-10" *ngFor="let itemVisit of item.visitList;let idx=index;"  (click)='visit(item.id,itemVisit.LocalId);'>
+              <div class="padding-10  border-black radius-5 height margin-right-10" *ngFor="let itemVisit of item.visitList;let idx=index;"  (click)='visit(item.CaseId,itemVisit.LocalId);'>
                 <div class="h7-5">预约日期:</div>
                 <div class="margin-top-10 h7-5">
                   {{itemVisit.ScheduleDate}}
@@ -37,17 +37,17 @@
       <div class="flex-row">
 
         <div class="height h7 flex-row _center bg-gray width text-center border-bottom">电话 <img
-            src="../assets/icon/plus_icon.png" class="icon-15 margin-left-5" (click)='phone(item.id)'/></div>
+            src="../assets/icon/plus_icon.png" class="icon-15 margin-left-5" (click)='phone(item.CaseId)'/></div>
         <div class="flex-1">
           <div class="xgun">
             <div class="flex-row" style="width: 500px">
-              <div class="padding-10  border-black radius-5 height margin-right-10" *ngFor="let itemPhnoe of item.phoneList;let idx=index;" (click)='phone(item.id,itemPhnoe.LocalId);'>
+              <div class="padding-10  border-black radius-5 height margin-right-10" *ngFor="let itemPhnoe of item.phoneList;let idx=index;" (click)='phone(item.CaseId,itemPhnoe.LocalId);'>
                 <div class="h7-5">预约日期:</div>
                 <div class="margin-top-10 h7-5">
                   {{itemPhnoe.CallDate}}
                 </div>
-                <div class="margin-top-10 h7-5" *ngIf="itemPhnoe.SavedStatus!='1'">未上傳</div>
-                <div class="margin-top-10 h7-5" *ngIf="itemPhnoe.SavedStatus=='1'">已上傳</div>
+                <div class="margin-top-10 h7-5" *ngIf="itemPhnoe.SavedStatus!='0'">未上傳</div>
+                <div class="margin-top-10 h7-5" *ngIf="itemPhnoe.SavedStatus=='0'">已上傳</div>
               </div>
 
             </div>
@@ -60,11 +60,11 @@
       <div class="flex-row">
 
         <div class="height h7 flex-row _center bg-gray width text-center border-bottom">活动<img
-            src="../assets/icon/plus_icon.png" class="icon-15 margin-left-5" (click)='activity(item.id)' /></div>
+            src="../assets/icon/plus_icon.png" class="icon-15 margin-left-5" (click)='activity(item.CaseId)' /></div>
         <div class="flex-1">
           <div class="xgun">
             <div class="flex-row" style="width: 500px">
-              <div class="padding-10  border-black radius-5 height margin-right-10" *ngFor="let itemActivity of item.activityList;let idx=index;" (click)="activity(item.id,itemActivity.LocalID)">
+              <div class="padding-10  border-black radius-5 height margin-right-10" *ngFor="let itemActivity of item.activityList;let idx=index;" (click)="activity(item.CaseId,itemActivity.LocalID)">
                 <div class="h7-5">预约日期</div>
                 <div class="margin-top-10 h7-5">
                   {{itemActivity.activityDate}}

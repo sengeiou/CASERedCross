@@ -8,6 +8,12 @@ export class HosiptalServe {
         return mgr.execSql(sql, [id]);
     }
 
+    getAllHosiptalList(){
+        var mgr = DBMgr.GetInstance();
+        var sql = "select * from tb_Hosiptal";
+        return mgr.execSql(sql);
+    }
+
     addHosiptal(Name) {
         var mgr = DBMgr.GetInstance();
         var sql = "insert into tb_Hosiptal(Name) values (?)";

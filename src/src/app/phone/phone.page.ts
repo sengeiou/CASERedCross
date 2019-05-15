@@ -10,6 +10,7 @@ import { PhoneServe } from 'src/mgrServe/PhoneServe';
 // import { timingSafeEqual } from 'crypto';
 import { VisitServe } from 'src/mgrServe/VisitServe';
 import { ServiceApi } from 'src/providers/service.api';
+import { VolunteerServr } from 'src/mgrServe/VolunteerServr';
 
 @Component({
   selector: 'app-phone',
@@ -51,6 +52,8 @@ export class PhonePage extends AppBase {
   onMyShow() {
     this.getCase()
     this.getPhone()
+    this.getVolunteerList()
+    this.getAllVisitScheduleDate()
   }
 
   casedata = {};
@@ -64,7 +67,7 @@ export class PhonePage extends AppBase {
       console.log(data)
     })
   }
-
+  CallDate_show = '';
   getPhone() {
     this.PhoneID = this.params.PhoneID;
     if (this.params.PhoneID > 0) {
@@ -74,18 +77,36 @@ export class PhonePage extends AppBase {
         var data = Array.from(phonedata)[0];
         this.phone = data;
         console.log(data)
+        console.log(data["CallDate"])
+        this.CallDate_show = AppUtil.FormatDate(new Date(data["CallDate"]));
 
-        var visit = new VisitServe();
-        visit.getAllVisitScheduleDate(this.params.caseID).then((e) => {
-          console.log(e);
-          if (e.res.rows.length > 0) {
-            console.log(e.res.rows);
-            var arr = Array.from(e.res.rows)[0];
-            this.phone.VisitDate = arr;
-          }
-        });
+        
+
       })
     }
+  }
+  getAllVisitScheduleDate(){
+    var visit = new VisitServe();
+    visit.getAllVisitScheduleDate(this.params.caseID).then((e) => {
+      console.log(e);
+      if (e.res.rows.length > 0) {
+        console.log(e.res.rows);
+        var arr = Array.from(e.res.rows)[0];
+        this.phone.VisitDate = arr;
+
+      }
+    });
+  }
+  Volunteer = [];
+  getVolunteerList() {
+    var volunteerServr = new VolunteerServr();
+    volunteerServr.getAllVolunteerList().then((e) => {
+      if (e.res.rows.length > 0) {
+        console.log(Array.from(e.res.rows))
+        this.Volunteer = Array.from(e.res.rows)
+      }
+    })
+
   }
 
   getDetail(e) {
@@ -131,15 +152,18 @@ export class PhonePage extends AppBase {
       console.log(e)
       if (this.PhoneID == 0 || this.PhoneID == undefined) {
         this.PhoneID = e.res.insertId;
+        phone.savePhoneCaseId(this.params.caseID, e.res.insertId).then((e) => {
+          console.log(e)
+        })
       }
       if (e) {
-        this.toast('資料提交成功');    
+        this.toast('資料提交成功');
       }
     })
   }
 
   uploadPhoneListWeb() {
-    
+
     if (this.PhoneID == 0) {
       this.showConfirm('资料没有保存？请先保存', (e) => {
 
@@ -148,20 +172,21 @@ export class PhonePage extends AppBase {
       var phone = new PhoneServe();
       phone.getPhoneId(this.PhoneID).then((e) => {
         console.log(e)
-        var datas=Array.from(e.res.rows);
-        
-        var data=datas[0];
-        JSON.stringify( data );
-        console.log(data)
-        // this.api.SavePhoneSupport(data.SupportId,data.CaseId,data.CallDate,data.CallStartTime,data.CallEndTime,data.Detail,data.DetailOther,data.OtherRemark,data.ResponsibleVol,data.Status).then((ret) => {
-     
-        //   if (ret.Result == "true") {
+        var datas = Array.from(e.res.rows);
+        console.log(datas[0])
+        console.log(datas[0]["CaseId"])
+        var data = datas[0];
 
-        //   } else {
+        // if(data["SavedStatus"]!=0){
+        this.api.SavePhoneSupport(data["SupportId"], data["CaseId"], data["CallDate"], data["CallStartTime"], data["CallEndTime"], data["Detail"], data["DetailOther"], data["OtherRemark"], data["ResponsibleVol"], data["Status"], this.params.UserId).then((ret) => {
 
-        //     this.toast('未能連線，無法登入');
-        //   }
-        // });
+          if (ret.Result == "true") {
+          } else {
+            this.toast('未能連線');
+          }
+        });
+        // }
+
       })
 
     }

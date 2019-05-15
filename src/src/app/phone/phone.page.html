@@ -56,11 +56,11 @@
       <div class="flex-row flex-center">
         <div class="title2">電話慰問日期:</div>
         <div class="flex-1">
-          <div class="input_s radius-2 bg-white padding-left-5" *ngIf="phone.CallDate" style="width:100%;">
-            {{phone.CallDate}}</div>
-          <div class="" style="width:100%;" *ngIf="!phone.CallDate">
+          <div class="input_s radius-2 bg-white padding-left-5" *ngIf="phone.SavedStatus==1" style="width:100%;">
+            {{CallDate_show}}</div>
+          <div class="" style="width:100%;" *ngIf="phone.SavedStatus!=1">
             <div class="bg-white">
-              <ion-datetime placeholder="" displayFormat="YYYY/MM/DD " picker-format="YYYY MM DD " max="2050-12-09" style="height:25px;padding:2px;"
+              <ion-datetime placeholder="{{phone.CallDate}}" displayFormat="YYYY/MM/DD " picker-format="YYYY MM DD " max="2050-12-09" style="height:25px;padding:2px;"
                 done-text='确定' cancel-text='取消' [(ngModel)]="CallDate"></ion-datetime>
             </div>
           </div>
@@ -70,22 +70,22 @@
       <div class="flex-row margin-top-10  flex-center">
         <div class="title2">電話慰問時間:</div>
         <div class="flex-1">
-          <div class="input_s radius-2 bg-white padding-left-5" *ngIf="phone.CallStartTime" style="width:100%;">
+          <div class="input_s radius-2 bg-white padding-left-5" *ngIf="phone.SavedStatus==1" style="width:100%;">
             {{phone.CallStartTime}}</div>
-          <div class="" style="width:100%;" *ngIf="!phone.CallStartTime">
+          <div class="" style="width:100%;" *ngIf="phone.SavedStatus!=1">
             <div class="bg-white">
-              <ion-datetime placeholder="" displayFormat="HH：mm" picker-format="HH：mm" max="2050-12-09" done-text='确定' style="height:25px;padding:2px;"
+              <ion-datetime placeholder="{{phone.CallStartTime}}" displayFormat="HH：mm" picker-format="HH：mm" max="2050-12-09" done-text='确定' style="height:25px;padding:2px;"
                 cancel-text='取消' [(ngModel)]="CallStartTime"></ion-datetime>
             </div>
           </div>
         </div>
         <div class="margin-5">至</div>
         <div class="flex-1">
-          <div class="input_s radius-2 bg-white padding-left-5" *ngIf="phone.CallEndTime" style="width:100%;">
+          <div class="input_s radius-2 bg-white padding-left-5" *ngIf="phone.SavedStatus==1" style="width:100%;">
             {{phone.CallEndTime}}</div>
-          <div class="" style="width:100%;" *ngIf="!phone.CallEndTime">
+          <div class="" style="width:100%;" *ngIf="phone.SavedStatus!=1">
             <div class="bg-white">
-              <ion-datetime placeholder="" displayFormat="HH：mm" picker-format="HH：mm" max="2050-12-09" done-text='确定' style="height:25px;padding:2px;"
+              <ion-datetime placeholder="{{phone.CallStartTime}}" displayFormat="HH：mm" picker-format="HH：mm" max="2050-12-09" done-text='确定' style="height:25px;padding:2px;"
                 cancel-text='取消' [(ngModel)]="CallEndTime"></ion-datetime>
             </div>
           </div>
@@ -93,9 +93,11 @@
       </div>
       <div class="flex-row margin-top-10">
         <div class="title2">負責義工:</div>
-        <input class="radius-2 other-input" *ngIf="!phone.UserName " placeholder="{{phone.UserName?phone.UserName:'輸入最多50字'}}" style="width:100%;" [(ngModel)]='UserName'
-                />
-        <div class="bg-white radius-2 padding-left-5" style="width:100%;" *ngIf="phone.UserName " >{{phone.UserName}}</div>
+        <!-- <input class="radius-2 other-input" *ngIf="phone.SavedStatus!=0 " placeholder="{{phone.UserName?phone.UserName:'輸入最多50字'}}" style="width:100%;" [(ngModel)]='UserName'/> -->
+        <ion-select class="bg-white radius-2" *ngIf="phone.SavedStatus!=1 " style="width:100%;height:25px;padding:2px;color:#000;" [(ngModel)]="UserName" placeholder="{{phone.UserName?phone.UserName:''}}">
+          <ion-select-option *ngFor="let item of Volunteer;let idx=index;"   value="{{item.VolunteerName}}">{{item.VolunteerName}}</ion-select-option>
+        </ion-select>
+        <div class="bg-white radius-2 padding-left-5" style="width:100%;" *ngIf="phone.SavedStatus==1" >{{phone.UserName}}</div>
       </div>
 
       <div class="flex-row margin-top-10 flex-center">
@@ -109,30 +111,30 @@
         <div class="title">慰問內容:</div>
         <div>
           <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="Detail" value="健康飲食"
-              checked="{{phone.Detail=='健康飲食'?'1':''}}" (click)="getDetail('健康飲食')" class="radio " />健康飲食</div>
+              checked="{{phone.Detail=='1'?'1':''}}" (click)="getDetail('1')" class="radio " />健康飲食</div>
           <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="Detail" value="情緒壓力"
-              checked="{{phone.Detail=='情緒壓力'?'1':''}}" (click)="getDetail('情緒壓力')" class="radio " />情緒壓力</div>
+              checked="{{phone.Detail=='2'?'1':''}}" (click)="getDetail('2')" class="radio " />情緒壓力</div>
           <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="Detail" value="運動情況"
-              checked="{{phone.Detail=='運動情況'?'1':''}}" (click)="getDetail('運動情況')" class="radio " />運動情況</div>
+              checked="{{phone.Detail=='3'?'1':''}}" (click)="getDetail('3')" class="radio " />運動情況</div>
           <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="Detail" value="服藥情況"
-              checked="{{phone.Detail=='服藥情況'?'1':''}}" (click)="getDetail('服藥情況')" class="radio " />服藥情況</div>
+              checked="{{phone.Detail=='4'?'1':''}}" (click)="getDetail('4')" class="radio " />服藥情況</div>
           <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="Detail" value="覆診情況"
-              checked="{{phone.Detail=='覆診情況'?'1':''}}" (click)="getDetail('覆診情況')" class="radio " />覆診情況</div>
+              checked="{{phone.Detail=='5'?'1':''}}" (click)="getDetail('5')" class="radio " />覆診情況</div>
           <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="Detail" value="人際關係"
-              checked="{{phone.Detail=='人際關係'?'1':''}}" (click)="getDetail('人際關係')" class="radio " />人際關係</div>
+              checked="{{phone.Detail=='6'?'1':''}}" (click)="getDetail('6')" class="radio " />人際關係</div>
           <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="Detail" value="整體健康"
-              checked="{{phone.Detail=='整體健康'?'1':''}}" (click)="getDetail('整體健康')" class="radio " />整體健康</div>
+              checked="{{phone.Detail=='7'?'1':''}}" (click)="getDetail('7')" class="radio " />整體健康</div>
           <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="Detail" value="提醒/預約下次探訪日期"
-              checked="{{phone.Detail=='提醒/預約下次探訪日期'?'1':''}}" (click)="getDetail('提醒/預約下次探訪日期')"
+              checked="{{phone.Detail=='8'?'1':''}}" (click)="getDetail('8')"
               class="radio " />提醒/預約下次探訪日期</div>
           <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="Detail" value="其他"
-              checked="{{phone.Detail=='其他'?'1':''}}" (click)="getDetail('其他')" class="radio " />其他
+              checked="{{phone.Detail=='9'?'1':''}}" (click)="getDetail('9')" class="radio " />其他
             <div class="flex-1">
-              <div class="input_s radius-2 bg-white padding-left-5" *ngIf="phone.DetailOther && phone.Detail=='運動情況'"
+              <div class="input_s radius-2 bg-white padding-left-5" *ngIf="phone.SavedStatus==1"
                 style="width:100%;">
                 {{phone.DetailOther}}</div>
               <input class="radius-2 other-input" placeholder="輸入最多50字" style="width:100%;" [(ngModel)]='DetailOther'
-                *ngIf="!phone.DetailOther " />
+                *ngIf="phone.SavedStatus!=1" />
             </div>
           </div>
         </div>
@@ -140,9 +142,9 @@
         <div class="title2 margin-top-10">其他補充:</div>
         <div class=" margin-top-10">
           <div class="flex-1">
-            <div class="textarea2 radius-2 bg-white padding-left-5" *ngIf="phone.OtherRemark" style="width:100%;">
+            <div class="textarea2 radius-2 bg-white padding-left-5" *ngIf="phone.SavedStatus==1" style="width:100%;">
               {{phone.OtherRemark}}</div>
-            <textarea class="textarea2 radius-2" placeholder="輸入最多250字" style="width:100%;" *ngIf="!phone.OtherRemark"
+            <textarea class="textarea2 radius-2" placeholder="輸入最多250字" style="width:100%;" *ngIf="phone.SavedStatus!=1"
               [(ngModel)]='OtherRemark'></textarea>
           </div>
 

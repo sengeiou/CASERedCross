@@ -48,7 +48,8 @@ export class AppUtil {
         var minute = AppUtil.ten2(date.getMinutes());
         var second = AppUtil.ten2(date.getSeconds());
 
-        var v = year + "/" + month + "/" + datec + " " + hour + ":" + minute + ":" + second;
+        // var v = year + "/" + month + "/" + datec + " " + hour + ":" + minute + ":" + second;
+        var v = year + "/" + month + "/" + datec + " " + hour + ":" + minute;
 
         console.log("FormatDateTime=" + v);
         return v;
