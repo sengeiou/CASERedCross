@@ -13,6 +13,7 @@ import { PhoneServe } from 'src/mgrServe/PhoneServe';
 import { VolunteerServr } from 'src/mgrServe/VolunteerServr';
 import { SpecialtyServe } from 'src/mgrServe/SpecialtyServe';
 import { HosiptalServe } from 'src/mgrServe/HosiptalServe';
+import { BloodPressureServe } from 'src/mgrServe/BloodPressureServe';
 
 @Component({
   selector: 'app-home',
@@ -65,31 +66,31 @@ export class HomePage extends AppBase {
     })
   }
 
-  
-  phone(caseID,LocalId) {
-    console.log(caseID,LocalId)
-    this.navigate("phone", {caseID: caseID,PhoneID:LocalId,UserId: this.params.id});
+
+  phone(caseID, LocalId) {
+    console.log(caseID, LocalId)
+    this.navigate("phone", { caseID: caseID, PhoneID: LocalId, UserId: this.params.id });
   }
 
 
-  activity(caseID,LocalId) {
-    console.log(caseID,LocalId);
-    this.navigate('activity', { caseID: caseID,LocalId:LocalId,UserId: this.params.id});
+  activity(caseID, LocalId) {
+    console.log(caseID, LocalId);
+    this.navigate('activity', { caseID: caseID, LocalId: LocalId, UserId: this.params.id });
   }
 
-  visit(caseID,LocalId) {
-    console.log(caseID,LocalId)
-    this.navigate('visit', { caseID: caseID,LocalId:LocalId ,UserId: this.params.id});
+  visit(caseID, LocalId) {
+    console.log(caseID, LocalId)
+    this.navigate('visit', { caseID: caseID, LocalId: LocalId, UserId: this.params.id });
   }
 
- 
+
   getActivityList() {
     var visit = new VisitServe();
-    visit.getAllVisitList().then((e)=>{
+    visit.getAllVisitList().then((e) => {
       console.log(e)
     })
     var activity = new ActivityServe();
-    activity.getAllActivityList().then((e)=>{
+    activity.getAllActivityList().then((e) => {
       console.log(e)
     })
   }
@@ -106,10 +107,10 @@ export class HomePage extends AppBase {
         arr[i].visitList = [];
       }
       this.caselist = arr;
- 
+
       for (var i = 0; i < this.caselist.length; i++) {
         // console.log(this.caselist[i].id)
-        this.setVisit( this.caselist[i]);
+        this.setVisit(this.caselist[i]);
         this.setPhnoe(this.caselist[i]);
         this.setActivity(this.caselist[i]);
       }
@@ -118,62 +119,76 @@ export class HomePage extends AppBase {
   }
 
 
-  setVisit(kv){
+  setVisit(kv) {
     var visit = new VisitServe();
     visit.getVisitCaseId(kv.CaseId).then((e) => {
       console.log(e);
       if (e.res.rows.length > 0) {
-        console.log( e.res.rows);
+        console.log(e.res.rows);
         kv.visitList = Array.from(e.res.rows);
       }
     });
   }
 
-  setPhnoe(kv){
-    var phone=new PhoneServe();
+  setPhnoe(kv) {
+    var phone = new PhoneServe();
     phone.getPhoneCaseId(kv.CaseId).then((e) => {
       console.log(e);
       if (e.res.rows.length > 0) {
-        console.log( e.res.rows);
+        console.log(e.res.rows);
         kv.phoneList = Array.from(e.res.rows);
         // this.CallDate_show=AppUtil.FormatDate(new Date(data["CallDate"]));
       }
     });
   }
 
-  setActivity(kv){
+  setActivity(kv) {
     var activity = new ActivityServe();
-    activity.getAllActivityListCaseId(kv.CaseId).then((e) => {  
+    activity.getAllActivityListCaseId(kv.CaseId).then((e) => {
       console.log(e);
       if (e.res.rows.length > 0) {
-        console.log( e.res.rows);
+        console.log(e.res.rows);
         kv.activityList = Array.from(e.res.rows);
       }
     });
   }
 
-  Volunteer=[];
-  Specialty=[];
-  Hosp=[];
-  saList=[];
-  SysnAllWeb(){
-    var VolId=this.params.id
-    this.api.SysnAllResultRecord(VolId).then((ret)=>{
+  Volunteer = [];
+  Specialty = [];
+  Hosp = [];
+  saList = [];
+  BloodPressure = [];
+  SysnAllWeb() {
+    var VolId = this.params.id
+    this.api.SysnAllResultRecord(VolId).then((ret) => {
       console.log(ret)
-      if(ret.Result=="false"){
-        this.Volunteer=ret.vList.VolunteerApp
-        this.Specialty=ret.msList.objMSpecialtyApp
-        this.Hosp=ret.mhList.objMHospApp
-        this.saList=ret.saList.objSysnAllApp
-        this.updateData()
-      }else{
-        alert("失败:"+ret.strMsg);
+      if (ret.Result == "false") {
+        this.Volunteer = ret.vList.VolunteerApp
+        this.Specialty = ret.msList.objMSpecialtyApp
+        this.Hosp = ret.mhList.objMHospApp
+        this.saList = ret.saList.objSysnAllApp
+        var saListtype = typeof this.saList;
+        console.log(typeof this.saList)
+        console.log(this.saList.length)
+        if (saListtype == 'object' && this.saList.length == undefined) {
+          var a = [];
+          a.push(this.saList);
+          this.saList = a;
+          
+        }
+
+        
+
+        
+        this.updateData();
+      } else {
+        alert("失败:" + ret.strMsg);
         this.toast('未能連線，無法登入');
       }
     });
   }
 
-  updateData(){
+  updateData() {
     var volunteer = new VolunteerServr();
     volunteer.deleteVolunteer();
     var specialtyServe = new SpecialtyServe();
@@ -184,7 +199,7 @@ export class HomePage extends AppBase {
     cases.deleteCase()
     var visit = new VisitServe();
     visit.deleteVisit()
-    var phone=new PhoneServe();
+    var phone = new PhoneServe();
     phone.deletePhone()
     var activity = new ActivityServe();
     activity.deleteActivity()
@@ -197,8 +212,8 @@ export class HomePage extends AppBase {
     for(var i = 0; i < this.Hosp.length; i++){
       this.setHosp( this.Hosp[i]);     
     }
-    for(var i = 0; i < this.saList.length; i++){
-      this.setCase( this.saList[i].caseObj);  
+    for (var i = 0; i < this.saList.length; i++) {
+      this.setCase(this.saList[i].caseObj);
 
       if(this.saList[i].psaList.objPhoneSupportApp){
         this.setPhone(this.saList[i].psaList.objPhoneSupportApp)
@@ -208,70 +223,85 @@ export class HomePage extends AppBase {
         for(var j = 0; j < this.saList[i].hvList.objHomeVisitApp.length; j++){
           this.setVisitWeb(this.saList[i].hvList.objHomeVisitApp[j])
         }
-       
+
       }
       if(this.saList[i].aList.objActivityApp){
         for(var j = 0; j < this.saList[i].aList.objActivityApp.length; j++){
           this.setActivityWeb(this.saList[i].aList.objActivityApp[j])
         }
-       
+
       }
-      
+      // this.BloodPressure=JSON.parse( this.saList[i].BloodPressureMonthlyList.objChartBP );
+      // if(this.BloodPressure){
+      //   for(var j = 0; j < this.BloodPressure.length; j++){
+      //     this.setBloodPressureWeb(this.BloodPressure[j])
+      //   }
+      // }
+
+      console.log(this.BloodPressure)
     }
-   this.getCase()
+
+    this.getCase()
   }
 
-  setVolunteer(kv){
+  setVolunteer(kv) {
     var volunteer = new VolunteerServr();
-    volunteer.addVolunteer(kv.VolId,kv.UserName).then((e) => {
+    volunteer.addVolunteer(kv.VolId, kv.UserName).then((e) => {
       console.log(e);
     });
   }
-  setSpecialty(kv){
+  setSpecialty(kv) {
     var specialtyServe = new SpecialtyServe();
     specialtyServe.addSpecialty(kv.Name).then((e) => {
       console.log(e);
     });
   }
-  setHosp(kv){
+  setHosp(kv) {
     var hosiptalServe = new HosiptalServe();
     hosiptalServe.addHosiptal(kv.Name).then((e) => {
       console.log(e);
     });
   }
-  setCase(kv){
+  setCase(kv) {
     var caseServe = new CaseServe();
-    caseServe.addCase(kv.CaseId,kv.CaseNo,kv.QRCode,kv.ChiName_Disply,kv.Illness_Disply,kv.OtherIllness_Disply,kv.CarePlan_Disply,kv.Height).then((e) => {
+    caseServe.addCase(kv.CaseId, kv.CaseNo, kv.QRCode, kv.ChiName_Disply, kv.Illness_Disply, kv.OtherIllness_Disply, kv.CarePlan_Disply, kv.Height).then((e) => {
       console.log(e);
     });
   }
 
-  setPhone(kv){
+  setPhone(kv) {
     console.log(kv)
-    var phone=new PhoneServe();
-    if(kv){
-      phone.addPhoneWeb(kv.CallDate,kv.CallEndTime,kv.CallStartTime,kv.CaseId,kv.Detail,kv.DetailOther,kv.OtherRemark,kv.Status,kv.SupportId,kv.UserName).then((e) => {
+    var phone = new PhoneServe();
+    if (kv) {
+      phone.addPhoneWeb(kv.CallDate, kv.CallEndTime, kv.CallStartTime, kv.CaseId, kv.Detail, kv.DetailOther, kv.OtherRemark, kv.Status, kv.SupportId, kv.UserName).then((e) => {
         console.log(e);
       });
     }
-    
+
   }
 
-  setVisitWeb(kv){
+  setVisitWeb(kv) {
     console.log(kv)
     var visit = new VisitServe();
-    visit.addVisit( kv.Bmi, kv.CaseId, kv.CategoryTopic1, kv.CategoryTopic2, kv.CategoryTopic3,  kv.EmotionAssessment, kv.EmotionAssessmentRemarks, kv.Hip,  kv.LifeStyleMeasureBloodPressure, kv.LifeStyleMeasureBloodSuger, kv.LifeStyleMeasureBpLocation, kv.LifeStyleMeasureBpNoOfTime, kv.LifeStyleMeasureBpPeriod, kv.LifeStyleMeasureBsLocation, kv.LifeStyleMeasureBsNoOfTime, kv.LifeStyleMeasureBsPeriod, kv.LifeStyleQuestion1, kv.LifeStyleQuestion2, kv.LifeStyleQuestion3, kv.LifeStyleQuestion4, kv.LifeStyleQuestion5,kv.LifeStyleQuestion6, kv.Location, kv.LocationRemarks, kv.OtherAccident, kv.OtherAccidentNoOfDay, kv.OtherHospDisbete,kv.OtherHospDisbeteNoOfDay,kv.OtherHospHighBp,kv.OtherHospHighBpNoOfDay,kv.OtherHospOtherIllness,kv.OtherHospOtherIllnessNoOfDay,kv.OtherRemarks,kv.OtherSpecialNeed,kv.OtherSpecialNeedService,kv.ScheduleDate,kv.ScheduleTime,kv.Status,kv.TaskId,kv.VisitDate_Disply,kv.VisitDetailIndoor, kv.VisitDetailIndoorRemarks, kv.VisitDetailOther,kv.VisitDetailOutdoor,kv.VisitDetailOutdoorRemarks,kv.VisitEndTime,kv.VisitId,kv.VisitStartTime,kv.VisitStatus,kv.VisitStatusRemarks,kv.WHRatio ,kv.Waist, kv.Weight).then((e)=>[
+    visit.addVisit(kv.Bmi, kv.CaseId, kv.CategoryTopic1, kv.CategoryTopic2, kv.CategoryTopic3, kv.EmotionAssessment, kv.EmotionAssessmentRemarks, kv.Hip, kv.LifeStyleMeasureBloodPressure, kv.LifeStyleMeasureBloodSuger, kv.LifeStyleMeasureBpLocation, kv.LifeStyleMeasureBpNoOfTime, kv.LifeStyleMeasureBpPeriod, kv.LifeStyleMeasureBsLocation, kv.LifeStyleMeasureBsNoOfTime, kv.LifeStyleMeasureBsPeriod, kv.LifeStyleQuestion1, kv.LifeStyleQuestion2, kv.LifeStyleQuestion3, kv.LifeStyleQuestion4, kv.LifeStyleQuestion5, kv.LifeStyleQuestion6, kv.Location, kv.LocationRemarks, kv.OtherAccident, kv.OtherAccidentNoOfDay, kv.OtherHospDisbete, kv.OtherHospDisbeteNoOfDay, kv.OtherHospHighBp, kv.OtherHospHighBpNoOfDay, kv.OtherHospOtherIllness, kv.OtherHospOtherIllnessNoOfDay, kv.OtherRemarks, kv.OtherSpecialNeed, kv.OtherSpecialNeedService, kv.ScheduleDate, kv.ScheduleTime, kv.Status, kv.TaskId, kv.VisitDate_Disply, kv.VisitDetailIndoor, kv.VisitDetailIndoorRemarks, kv.VisitDetailOther, kv.VisitDetailOutdoor, kv.VisitDetailOutdoorRemarks, kv.VisitEndTime, kv.VisitId, kv.VisitStartTime, kv.VisitStatus, kv.VisitStatusRemarks, kv.WHRatio, kv.Waist, kv.Weight).then((e) => [
       console.log(e)
     ])
-    
+
   }
 
-  setActivityWeb(kv){
+  setActivityWeb(kv) {
     console.log(kv)
     //caseId, activityDate, activityStartTime, activityEndTime, presentVolunteer, actType, activityDetailType, remarks1, remarks2, remarks3, remarks4, otherActRemarks, otherContent
     var activity = new ActivityServe();
-    activity.addActivityWeb(kv.CaseId,kv.ActDate,kv.ActStartTime,kv.ActEndTime,kv.ActivityVolList.objActivityVolApp.VolId,kv.ActType,kv.ActDetailType,kv.Remarks1,kv.Remarks2,kv.Remarks3,kv.Remarks4,kv.OtherActRemarks,kv.Remarks).then((e)=>{
+    activity.addActivityWeb(kv.CaseId, kv.ActDate, kv.ActStartTime, kv.ActEndTime, kv.ActivityVolList.objActivityVolApp.VolId, kv.ActType, kv.ActDetailType, kv.Remarks1, kv.Remarks2, kv.Remarks3, kv.Remarks4, kv.OtherActRemarks, kv.Remarks).then((e) => {
 
+    })
+  }
+
+  setBloodPressureWeb(kv) {
+    var bloodPressureServe = new BloodPressureServe();
+    bloodPressureServe.addBloodPressureWeb(kv.CaseId, kv.Upper, kv.Lower, kv.Date).then((e) => {
+      console.log(e)
     })
   }
 

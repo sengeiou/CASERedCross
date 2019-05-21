@@ -14,7 +14,7 @@ export class BloodPressureServe {
         return mgr.execSql(sql);
     }
 
-    addBloodPressure(CaseId,Upper,Lower,MeasurementDate) {
+    addBloodPressureWeb(CaseId,Upper,Lower,MeasurementDate) {
         var mgr = DBMgr.GetInstance();
         var sql = "insert into tb_BloodPressure(CaseId,Upper,Lower,MeasurementDate) values (?,?,?,?)";
         return mgr.execSql(sql,[CaseId,Upper,Lower,MeasurementDate]);

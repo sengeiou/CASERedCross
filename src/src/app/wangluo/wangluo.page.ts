@@ -74,12 +74,12 @@ export class WangluoPage extends AppBase {
   }
 
   check() {
-    console.log(location.hostname);
+    // console.log(location.hostname);
     
-    this.dns.resolve(location.hostname).then(
-        address => console.log('Resolved ' + location.hostname + ' to ' + address),
-        error => console.log('Failed to resolve ' + location.hostname + ': ' + error)
-      );
+    // this.dns.resolve(location.hostname).then(
+    //     address => console.log('Resolved ' + location.hostname + ' to ' + address),
+    //     error => console.log('Failed to resolve ' + location.hostname + ': ' + error)
+    //   );
       
     console.log(this.network.Connection);
   }
