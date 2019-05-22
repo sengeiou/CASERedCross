@@ -271,6 +271,7 @@ export class HomePage extends AppBase {
 
   setPhone(kv) {
     console.log(kv)
+    // var CallDate= AppUtil.FormatDate(new Date(kv.CallDate));
     var phone = new PhoneServe();
     if (kv) {
       phone.addPhoneWeb(kv.CallDate, kv.CallEndTime, kv.CallStartTime, kv.CaseId, kv.Detail, kv.DetailOther, kv.OtherRemark, kv.Status, kv.SupportId, kv.UserName).then((e) => {
