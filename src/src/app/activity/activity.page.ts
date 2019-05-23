@@ -51,7 +51,7 @@ export class ActivityPage extends AppBase {
     this.getCase()
     this.getActivity()
   }
-  casedata = {};
+  casedata = null;
   LocalId = 0;
   activity = null;
   getCase() {
