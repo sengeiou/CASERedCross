@@ -177,9 +177,6 @@ export class HomePage extends AppBase {
           
         }
 
-        
-
-        
         this.updateData();
       } else {
         alert("失败:" + ret.strMsg);
@@ -271,10 +268,10 @@ export class HomePage extends AppBase {
 
   setPhone(kv) {
     console.log(kv)
-    // var CallDate= AppUtil.FormatDate(new Date(kv.CallDate));
+    var CallDate= AppUtil.FormatDate(new Date(kv.CallDate));
     var phone = new PhoneServe();
     if (kv) {
-      phone.addPhoneWeb(kv.CallDate, kv.CallEndTime, kv.CallStartTime, kv.CaseId, kv.Detail, kv.DetailOther, kv.OtherRemark, kv.Status, kv.SupportId, kv.UserName).then((e) => {
+      phone.addPhoneWeb(CallDate, kv.CallEndTime, kv.CallStartTime, kv.CaseId, kv.Detail, kv.DetailOther, kv.OtherRemark, kv.Status, kv.SupportId, kv.UserName).then((e) => {
         console.log(e);
       });
     }
@@ -283,8 +280,9 @@ export class HomePage extends AppBase {
 
   setVisitWeb(kv) {
     console.log(kv)
+    var ScheduleDate= AppUtil.FormatDate(new Date(kv.ScheduleDate));
     var visit = new VisitServe();
-    visit.addVisit(kv.Bmi, kv.CaseId, kv.CategoryTopic1, kv.CategoryTopic2, kv.CategoryTopic3, kv.EmotionAssessment, kv.EmotionAssessmentRemarks, kv.Hip, kv.LifeStyleMeasureBloodPressure, kv.LifeStyleMeasureBloodSuger, kv.LifeStyleMeasureBpLocation, kv.LifeStyleMeasureBpNoOfTime, kv.LifeStyleMeasureBpPeriod, kv.LifeStyleMeasureBsLocation, kv.LifeStyleMeasureBsNoOfTime, kv.LifeStyleMeasureBsPeriod, kv.LifeStyleQuestion1, kv.LifeStyleQuestion2, kv.LifeStyleQuestion3, kv.LifeStyleQuestion4, kv.LifeStyleQuestion5, kv.LifeStyleQuestion6, kv.Location, kv.LocationRemarks, kv.OtherAccident, kv.OtherAccidentNoOfDay, kv.OtherHospDisbete, kv.OtherHospDisbeteNoOfDay, kv.OtherHospHighBp, kv.OtherHospHighBpNoOfDay, kv.OtherHospOtherIllness, kv.OtherHospOtherIllnessNoOfDay, kv.OtherRemarks, kv.OtherSpecialNeed, kv.OtherSpecialNeedService, kv.ScheduleDate, kv.ScheduleTime, kv.Status, kv.TaskId, kv.VisitDate_Disply, kv.VisitDetailIndoor, kv.VisitDetailIndoorRemarks, kv.VisitDetailOther, kv.VisitDetailOutdoor, kv.VisitDetailOutdoorRemarks, kv.VisitEndTime, kv.VisitId, kv.VisitStartTime, kv.VisitStatus, kv.VisitStatusRemarks, kv.WHRatio, kv.Waist, kv.Weight).then((e) => [
+    visit.addVisit(kv.Bmi, kv.CaseId, kv.CategoryTopic1, kv.CategoryTopic2, kv.CategoryTopic3, kv.EmotionAssessment, kv.EmotionAssessmentRemarks, kv.Hip, kv.LifeStyleMeasureBloodPressure, kv.LifeStyleMeasureBloodSuger, kv.LifeStyleMeasureBpLocation, kv.LifeStyleMeasureBpNoOfTime, kv.LifeStyleMeasureBpPeriod, kv.LifeStyleMeasureBsLocation, kv.LifeStyleMeasureBsNoOfTime, kv.LifeStyleMeasureBsPeriod, kv.LifeStyleQuestion1, kv.LifeStyleQuestion2, kv.LifeStyleQuestion3, kv.LifeStyleQuestion4, kv.LifeStyleQuestion5, kv.LifeStyleQuestion6, kv.Location, kv.LocationRemarks, kv.OtherAccident, kv.OtherAccidentNoOfDay, kv.OtherHospDisbete, kv.OtherHospDisbeteNoOfDay, kv.OtherHospHighBp, kv.OtherHospHighBpNoOfDay, kv.OtherHospOtherIllness, kv.OtherHospOtherIllnessNoOfDay, kv.OtherRemarks, kv.OtherSpecialNeed, kv.OtherSpecialNeedService, ScheduleDate, kv.ScheduleTime, kv.Status, kv.TaskId, kv.VisitDate_Disply, kv.VisitDetailIndoor, kv.VisitDetailIndoorRemarks, kv.VisitDetailOther, kv.VisitDetailOutdoor, kv.VisitDetailOutdoorRemarks, kv.VisitEndTime, kv.VisitId, kv.VisitStartTime, kv.VisitStatus, kv.VisitStatusRemarks, kv.WHRatio, kv.Waist, kv.Weight).then((e) => [
       console.log(e)
     ])
 
@@ -292,9 +290,10 @@ export class HomePage extends AppBase {
 
   setActivityWeb(kv) {
     console.log(kv)
+    var ActDate= AppUtil.FormatDate(new Date(kv.ActDate));
     //caseId, activityDate, activityStartTime, activityEndTime, presentVolunteer, actType, activityDetailType, remarks1, remarks2, remarks3, remarks4, otherActRemarks, otherContent
     var activity = new ActivityServe();
-    activity.addActivityWeb(kv.CaseId, kv.ActDate, kv.ActStartTime, kv.ActEndTime, kv.ActivityVolList.objActivityVolApp.VolId, kv.ActType, kv.ActDetailType, kv.Remarks1, kv.Remarks2, kv.Remarks3, kv.Remarks4, kv.OtherActRemarks, kv.Remarks).then((e) => {
+    activity.addActivityWeb(kv.CaseId, ActDate, kv.ActStartTime, kv.ActEndTime, kv.ActivityVolList.objActivityVolApp.VolId, kv.ActType, kv.ActDetailType, kv.Remarks1, kv.Remarks2, kv.Remarks3, kv.Remarks4, kv.OtherActRemarks, kv.Remarks).then((e) => {
 
     })
   }
