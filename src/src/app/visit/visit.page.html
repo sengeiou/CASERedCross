@@ -14,7 +14,7 @@
   <div class="bg-l padding-bottom-5">
     <div class="text-center padding-top-20 txt-black txt-bold">個案資料</div>
     <div class="text-center padding-top-10">
-      <img src="../assets/icon/camera.png" class="icon-25 margin-3" (click)='uploadimg();' />
+      <img src="../assets/icon/camera.png" class="icon-25 margin-3" (click)='uploadimg(0);' />
       <img src="../assets/icon/scan.png" class="icon-25 margin-3" (click)='scan();' />
       <img src="../assets/icon/booking.png" class="icon-25 margin-3" (click)="visitList();" />
       <img src="../assets/icon/HEART-BEAT-.png" class="icon-25 margin-3" (click)='aa()' />
@@ -514,7 +514,7 @@
         <div>在家/外出(醫院／診所除外)*量度血糖:</div>
         <div class=" margin-top-5 flex-row flex-center">
           <div class="flex-row flex-center"><input type="radio" name="sex" value="male" class="radio "
-              (click)="LifeStyleMeasureBsLocation('1')" />是</div>
+              (click)="LifeStyleMeasureBsLocation=1" />是</div>
 
           <div class="flex-row h7-5 flex-1 margin-left-20 flex-center">
             <div class="" style="width:3.6rem;">地點</div>
@@ -543,7 +543,7 @@
           </div>
         </div>
         <div class=" margin-top-5 flex-row flex-center">
-          <input type="radio" name="sex" value="male" class="radio " (click)="LifeStyleMeasureBsLocation('2')" />否
+          <input type="radio" name="sex" value="male" class="radio " (click)="LifeStyleMeasureBsLocation=2" />否
         </div>
       </div>
 
@@ -551,7 +551,7 @@
         <div>在家/外出(醫院／診所除外)*量度血壓:</div>
         <div class=" margin-top-5 flex-row flex-center">
           <div class="flex-row flex-center"><input type="radio" name="sex" value="male" class="radio "
-              (click)="LifeStyleMeasureBloodPressure('1')" />是</div>
+              (click)="LifeStyleMeasureBloodPressure=1" />是</div>
 
           <div class="flex-row h7-5 flex-1 margin-left-20 flex-center">
             <div class="" style="width:3.6rem;">地點</div>
@@ -580,7 +580,7 @@
           </div>
         </div>
         <div class=" margin-top-5 flex-row flex-center">
-          <input type="radio" name="sex" value="male" class="radio " (click)="LifeStyleMeasureBloodPressure('2')" />否
+          <input type="radio" name="sex" value="male" class="radio " (click)="LifeStyleMeasureBloodPressure=2" />否
         </div>
       </div>
 

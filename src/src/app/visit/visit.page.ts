@@ -109,7 +109,7 @@ export class VisitPage extends AppBase {
     this.getVisitId()
   }
   LocalId = 0;
-  casedata = {};
+  casedata = null;
 
 
 
@@ -446,7 +446,7 @@ export class VisitPage extends AppBase {
 
 
 
-  visitList(visitid) {
+  visitList() {
     this.navigate('visilt-list', { caseid: this.params.caseID });
   }
 
@@ -454,8 +454,10 @@ export class VisitPage extends AppBase {
     this.navigate('uploadimg', { visitid: visitid });
   }
 
-  aa(visitid) {
+  aa() {
     this.navigate('heart-rat', { caseid: this.params.caseID });
   }
+  scan(){
 
+  }
 }

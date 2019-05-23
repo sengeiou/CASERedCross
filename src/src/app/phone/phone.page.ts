@@ -56,7 +56,7 @@ export class PhonePage extends AppBase {
     this.getAllVisitScheduleDate()
   }
 
-  casedata = {};
+  casedata = null;
   getCase() {
     var cases = new CaseServe();
     cases.getCaseId(this.params.caseID).then((e) => {
