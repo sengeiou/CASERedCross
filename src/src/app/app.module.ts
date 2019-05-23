@@ -11,6 +11,8 @@ import { AppComponent } from './app.component';
 import { Http, HttpModule } from '@angular/http';
 import { SQLite } from '@ionic-native/sqlite/ngx';
 import { HTTP } from '@ionic-native/http/ngx';
+import { Network } from '@ionic-native/network/ngx';
+import { DNS } from '@ionic-native/dns/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,6 +25,8 @@ import { HTTP } from '@ionic-native/http/ngx';
     SplashScreen,
     HTTP,
     SQLite,
+    Network,
+    DNS,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

@@ -15,11 +15,14 @@
 
 <ion-content>
 
-  <div class="txt-black txt-bold padding-20 h7 border-top" *ngFor="let item of list;let idx=index;" (click)='record()'>
-    <div class="margin-top-20">06-05-2019</div>
-    <div class="margin-top-20">白普理疗养中心</div>
-    <div class="margin-top-20">心胸外科</div>
-    <div class="margin-top-20">已复诊</div>
+  <div class="txt-black txt-bold padding-20 h7 border-top" *ngFor="let item of medicalRecordList;let idx=index;" (click)='record(item.LocalId)'>
+    <div class="margin-top-20">{{item.AppointmentDate}}</div>
+    <div class="margin-top-20">{{item.Hosp}}</div>
+    <div class="margin-top-20" *ngIf="item.Specialty">{{item.Specialty}}</div>
+    <div class="margin-top-20" *ngIf="!item.Specialty">未填写專科</div>
+    <div class="margin-top-20" *ngIf="item.Status=='1'">未到期</div>
+    <div class="margin-top-20" *ngIf="item.Status=='2'">已覆診</div>
+    <div class="margin-top-20" *ngIf="item.Status=='3'">無覆診</div>
   </div>
 
 </ion-content>

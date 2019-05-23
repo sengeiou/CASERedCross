@@ -5,6 +5,7 @@ import {  ActivatedRoute, Params } from '@angular/router';
 import { NavController, ModalController, ToastController, AlertController, NavParams,IonSlides } from '@ionic/angular';
 import { AppUtil } from '../app.util';
 import { DomSanitizer } from '@angular/platform-browser';
+import { MedicalRecordServe } from 'src/mgrServe/MedicalRecordServe';
 
 @Component({
   selector: 'app-visilt-list',
@@ -28,12 +29,26 @@ export class VisiltListPage extends AppBase {
   onMyLoad(){
     //参数
     this.params;
+    console.log(this.params)
   }
   onMyShow(){
-
+    this.getMedicalRecordServeList()
   }
-  id='';
-  record(){
-    this.navigate('visit-record',{id:this.id});
+  medicalRecordList=[]
+  getMedicalRecordServeList(){
+    var medicalRecord=new MedicalRecordServe();
+    medicalRecord.getAllMedicalRecordList(this.params.caseid).then((e)=>{
+      console.log(e)
+      var arr = null;
+      arr = Array.from(e.res.rows);
+      this.medicalRecordList=arr;
+    })
+  }
+
+
+
+
+  record(MedicalRecordId){
+    this.navigate('visit-record',{MedicalRecordId:MedicalRecordId,caseid:this.params.caseid});
   }
 }
