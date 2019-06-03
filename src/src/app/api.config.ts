@@ -4,7 +4,8 @@ import { LoadingController } from '@ionic/angular';
 export class ApiConfig {
 
     public static getApiUrl() {
-        return "http://202.82.149.248/CaseMS_v1/WebService/AppWebService.asmx";
+        // return "http://202.82.149.248/CaseMS_v1/WebService/AppWebService.asmx";
+        return "http://202.82.149.248/CaseMS_UAT/WebService/AppWebService.asmx";
     }
     public static getUploadPath() {
         return "https://alioss.app-link.org/alucard263096/zwgz/";

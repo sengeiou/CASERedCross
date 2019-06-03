@@ -50,7 +50,7 @@ export class AppUtil {
 
         // var v = year + "/" + month + "/" + datec + " " + hour + ":" + minute + ":" + second;
         var v = year + "/" + month + "/" + datec + " " + hour + ":" + minute;
-
+        // var v = datec + "-" + month + "-" + year + hour + ":" + minute;
         console.log("FormatDateTime=" + v);
         return v;
     }
@@ -80,7 +80,7 @@ export class AppUtil {
     //判断当前时间是否在制定时间内
     static checkInOpen(opening) {
         var whedate = false;
-        var mydate=null;
+        var mydate = null;
         mydate = new Date();
         mydate = mydate.getHours() + ":" + mydate.getMinutes();
         var sj = opening.split(",");

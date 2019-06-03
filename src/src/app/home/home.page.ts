@@ -14,6 +14,10 @@ import { VolunteerServr } from 'src/mgrServe/VolunteerServr';
 import { SpecialtyServe } from 'src/mgrServe/SpecialtyServe';
 import { HosiptalServe } from 'src/mgrServe/HosiptalServe';
 import { BloodPressureServe } from 'src/mgrServe/BloodPressureServe';
+import { WeightServe } from 'src/mgrServe/WeightServe';
+import { WHRServe } from 'src/mgrServe/WHRServe';
+import { HeartRateServe } from 'src/mgrServe/HeartRateServe';
+import { MedicalRecordServe } from 'src/mgrServe/MedicalRecordServe';
 
 @Component({
   selector: 'app-home',
@@ -31,8 +35,8 @@ export class HomePage extends AppBase {
     public activeRoute: ActivatedRoute,
     public sanitizer: DomSanitizer,
     public api: ServiceApi,
-    public loadingController:LoadingController
-    ) {
+    public loadingController: LoadingController
+  ) {
     super(router, navCtrl, modalCtrl, toastCtrl, alertCtrl, activeRoute);
     this.headerscroptshow = 480;
 
@@ -70,7 +74,7 @@ export class HomePage extends AppBase {
 
   }
 
-  loading=null;
+  loading = null;
 
 
   async presentLoading() {
@@ -78,11 +82,49 @@ export class HomePage extends AppBase {
       message: '同步中'
     });
     await this.loading.present();
-
+    var phoneList = [];
+    var activityList = [];
+    var visiltList = [];
+    var medicAppointLogList = [];
     console.log('aa')
     // this.SysnAllWeb();
 
-    this.api.SaveAll('aa','aa','aa','aa').then((ret) => {
+    var visit = new VisitServe();
+    visit.getVisit_SavedStatus(1).then((e) => {
+      console.log(e)
+      visiltList = Array.from(e.res.rows)
+    })
+
+    var activity = new ActivityServe();
+    activity.getActivity_SavedStatus(1).then((e) => {
+      console.log(e)
+      activityList = Array.from(e.res.rows)
+    })
+
+    var phone = new PhoneServe();
+    // phone.deletePhone()
+    phone.getPhone_SavedStatus(1).then((e) => {
+      console.log(Array.from(e.res.rows))
+      phoneList = Array.from(e.res.rows)
+      this.SysnAllWeb();
+      this.api.SaveAll(visiltList, phoneList, activityList, medicAppointLogList).then((ret) => {
+        if (ret.Result == 'true') {
+          this.SysnAllWeb();
+        }
+        console.log(ret)
+      })
+    })
+
+    var medicalRecordServe = new MedicalRecordServe();
+    medicalRecordServe.getAllMedicalRecor_SavedStatus(1).then((e) => {
+      console.log(e)
+      medicAppointLogList = Array.from(e.res.rows)
+    })
+
+    this.api.SaveAll(visiltList, phoneList, activityList, medicAppointLogList).then((ret) => {
+      if (ret.Result == 'true') {
+        this.SysnAllWeb();
+      }
       console.log(ret)
     })
 
@@ -174,12 +216,19 @@ export class HomePage extends AppBase {
       }
     });
   }
-
+  Caselist = [];
+  visiltList = [];
+  Phonelist = [];
+  Activitylist = [];
   Volunteer = [];
   Specialty = [];
   Hosp = [];
   saList = [];
-  BloodPressure = [];
+  BloodPressure = []; //血压
+  Weight = []; //重量
+  WHR = []; //腰臀比
+  HeartRate = []; //心跳
+
   SysnAllWeb() {
     var VolId = this.params.id
     this.api.SysnAllResultRecord(VolId).then((ret) => {
@@ -196,10 +245,9 @@ export class HomePage extends AppBase {
           var a = [];
           a.push(this.saList);
           this.saList = a;
-
         }
 
-        this.updateData();
+        this.updateData(); //同步数据到本地数据库
 
         this.loading.dismiss();;
       } else {
@@ -234,30 +282,116 @@ export class HomePage extends AppBase {
       this.setHosp(this.Hosp[i]);
     }
     for (var i = 0; i < this.saList.length; i++) {
+      //案例
+      // if (this.saList[i].caseObj == 'object' && this.saList[i].caseObj.length == undefined) {
+      //   this.Caselist.push(this.saList[i].caseObj);
+      // } else {
+      //   this.Caselist = this.saList[i].caseObj;
+      // }
+      // for (var j = 0; j < this.Caselist.length; j++) {
+      //   this.setCase(this.Caselist[j]);
+      //   console.log(this.Caselist[j])
+      // }
       this.setCase(this.saList[i].caseObj);
 
+
+      //电话
+      var Phonelisttype = typeof this.saList[i].psaList.objPhoneSupportApp;
+      if (Phonelisttype == 'object' && this.saList[i].psaList.objPhoneSupportApp.length == undefined) {
+        this.Phonelist.push(this.saList[i].psaList.objPhoneSupportApp);
+      } else {
+        this.Phonelist = this.saList[i].psaList.objPhoneSupportApp;
+      }
+      console.log(this.Phonelist)
       if (this.saList[i].psaList.objPhoneSupportApp) {
-        this.setPhone(this.saList[i].psaList.objPhoneSupportApp)
+        for (var j = 0; j < this.Phonelist.length; j++) {
+          this.setPhone(this.Phonelist[j])
+          console.log(this.Phonelist[j])
+        }
       }
 
+      //探访
+      var visiltListtype = typeof this.saList[i].hvList.objHomeVisitApp;
+      if (visiltListtype == 'object' && this.saList[i].hvList.objHomeVisitApp.length == undefined) {
+        this.visiltList.push(this.saList[i].hvList.objHomeVisitApp);
+      } else {
+        this.visiltList = this.saList[i].hvList.objHomeVisitApp;
+      }
       if (this.saList[i].hvList.objHomeVisitApp) {
-        for (var j = 0; j < this.saList[i].hvList.objHomeVisitApp.length; j++) {
-          this.setVisitWeb(this.saList[i].hvList.objHomeVisitApp[j])
+        for (var j = 0; j < this.visiltList.length; j++) {
+          this.setVisitWeb(this.visiltList[j])
         }
-
       }
-      if (this.saList[i].aList.objActivityApp) {
-        for (var j = 0; j < this.saList[i].aList.objActivityApp.length; j++) {
-          this.setActivityWeb(this.saList[i].aList.objActivityApp[j])
+
+      //活动
+      var Activitylisttype = typeof this.saList[i].aList.objActivityApp;
+      if (Activitylisttype == 'object' && this.saList[i].aList.objActivityApp.length == undefined) {
+        this.Activitylist.push(this.saList[i].aList.objActivityApp);
+      } else {
+        this.Activitylist = this.saList[i].aList.objActivityApp;
+      }
+      console.log(this.saList[i].aList.objActivityApp.length)
+      console.log(this.saList[i].aList.objActivityApp)
+      if (this.Activitylist) {
+        console.log('555555hhhhh ')
+        for (var j = 0; j < this.Activitylist.length; j++) {
+          console.log('hhhhh ')
+          this.setActivityWeb(this.Activitylist[j])
+          console.log(this.Activitylist[j])
         }
-
       }
-      // this.BloodPressure=JSON.parse( this.saList[i].BloodPressureMonthlyList.objChartBP );
-      // if(this.BloodPressure){
-      //   for(var j = 0; j < this.BloodPressure.length; j++){
-      //     this.setBloodPressureWeb(this.BloodPressure[j])
-      //   }
-      // }
+
+      //血压
+      var BloodPressuretype = typeof this.saList[i].BloodPressureMonthlyList.objChartBPp;
+      if (BloodPressuretype == 'object' && this.saList[i].BloodPressureMonthlyList.objChartBPp.length == undefined) {
+        this.BloodPressure.push(this.saList[i].BloodPressureMonthlyList.objChartBP);
+      } else {
+        this.BloodPressure = this.saList[i].BloodPressureMonthlyList.objChartBP;
+      }
+      if (this.BloodPressure) {
+        for (var j = 0; j < this.BloodPressure.length; j++) {
+          this.setBloodPressureWeb(this.BloodPressure[j])
+        }
+      }
+
+      //体重
+      var Weighttype = typeof this.saList[i].WeightMonthlyList.objChartWeight;
+      if (Weighttype == 'object' && this.saList[i].WeightMonthlyList.objChartWeight.length == undefined) {
+        this.Weight.push(this.saList[i].WeightMonthlyList.objChartWeight)
+      } else {
+        this.Weight = this.saList[i].WeightMonthlyList.objChartWeight;
+      }
+      if (this.Weight) {
+        for (var j = 0; j < this.Weight.length; j++) {
+          this.setWeightWeb(this.Weight[j])
+        }
+      }
+
+      //心跳
+      var HeartRatetype = typeof this.saList[i].HeartRateMonthlyList.objChartHR;
+      if (HeartRatetype == 'object' && this.saList[i].HeartRateMonthlyList.objChartHR.length == undefined) {
+        this.HeartRate.push(this.saList[i].HeartRateMonthlyList.objChartHR)
+      } else {
+        this.HeartRate = this.saList[i].HeartRateMonthlyList.objChartHR;
+      }
+      if (this.HeartRate) {
+        for (var j = 0; j < this.HeartRate.length; j++) {
+          this.setHeartRateWeb(this.HeartRate[j])
+        }
+      }
+
+      //腰臀比
+      var WHRtype = typeof this.saList[i].WaistHipMonthlyList.objChartWHR;
+      if (WHRtype == 'object' && this.saList[i].WaistHipMonthlyList.objChartWHR.length == undefined) {
+        this.WHR.push(this.saList[i].WaistHipMonthlyList.objChartWHR)
+      } else {
+        this.WHR = this.saList[i].WaistHipMonthlyList.objChartWHR;
+      }
+      if (this.WHR) {
+        for (var j = 0; j < this.WHR.length; j++) {
+          this.setWHRWeb(this.WHR[j])
+        }
+      }
 
       console.log(this.BloodPressure)
     }
@@ -318,7 +452,7 @@ export class HomePage extends AppBase {
     var ActDate = AppUtil.FormatDate(new Date(kv.ActDate));
     //caseId, activityDate, activityStartTime, activityEndTime, presentVolunteer, actType, activityDetailType, remarks1, remarks2, remarks3, remarks4, otherActRemarks, otherContent
     var activity = new ActivityServe();
-    activity.addActivityWeb(kv.CaseId, ActDate, kv.ActStartTime, kv.ActEndTime, kv.ActivityVolList.objActivityVolApp.VolId, kv.ActType, kv.ActDetailType, kv.Remarks1, kv.Remarks2, kv.Remarks3, kv.Remarks4, kv.OtherActRemarks, kv.Remarks).then((e) => {
+    activity.addActivityWeb(kv.ActivityId, kv.CaseId, ActDate, kv.ActStartTime, kv.ActEndTime, kv.ActivityVolList.objActivityVolApp.VolId, kv.ActType, kv.ActDetailType, kv.Remarks1, kv.Remarks2, kv.Remarks3, kv.Remarks4, kv.OtherActRemarks, kv.Remarks).then((e) => {
 
     })
   }
@@ -326,6 +460,27 @@ export class HomePage extends AppBase {
   setBloodPressureWeb(kv) {
     var bloodPressureServe = new BloodPressureServe();
     bloodPressureServe.addBloodPressureWeb(kv.CaseId, kv.Upper, kv.Lower, kv.Date).then((e) => {
+      console.log(e)
+    })
+  }
+
+  setWeightWeb(kv) {
+    var weight = new WeightServe();
+    weight.addWeight(kv.CaseId, kv.Weight, kv.date_swift_chart_display).then((e) => {
+      console.log(e)
+    })
+  }
+
+  setWHRWeb(kv) {
+    var WHR = new WHRServe();
+    WHR.addWHR(kv.CaseId, kv.Ratio, kv.date_swift_chart_display).then((e) => {
+      console.log(e)
+    })
+  }
+
+  setHeartRateWeb(kv) {
+    var HeartRate = new HeartRateServe();
+    HeartRate.addHeartRate(kv.CaseId, kv.HeartRate, kv.date_swift_chart_display).then((e) => {
       console.log(e)
     })
   }

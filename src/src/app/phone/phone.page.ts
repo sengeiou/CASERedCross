@@ -32,6 +32,7 @@ export class PhonePage extends AppBase {
     this.headerscroptshow = 480;
 
     this.phone = {};
+    this.casedata={}
   }
 
 
@@ -79,9 +80,6 @@ export class PhonePage extends AppBase {
         console.log(data)
         console.log(data["CallDate"])
         this.CallDate_show = AppUtil.FormatDate(new Date(data["CallDate"]));
-
-        
-
       })
     }
   }
@@ -93,7 +91,6 @@ export class PhonePage extends AppBase {
         console.log(e.res.rows);
         var arr = Array.from(e.res.rows)[0];
         this.phone.VisitDate = arr;
-
       }
     });
   }
@@ -106,7 +103,6 @@ export class PhonePage extends AppBase {
         this.Volunteer = Array.from(e.res.rows)
       }
     })
-
   }
 
   getDetail(e) {

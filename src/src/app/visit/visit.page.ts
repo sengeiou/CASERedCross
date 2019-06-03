@@ -26,6 +26,7 @@ export class VisitPage extends AppBase {
     this.headerscroptshow = 480;
 
     this.visit = {};
+    this.casedata={};
 
   }
   ScheduleDate = '';//计划日期
@@ -107,6 +108,17 @@ export class VisitPage extends AppBase {
   onMyShow() {
     this.getCase()
     this.getVisitId()
+    if(AppBase.LastQrcode!=''){
+      this.qrcodeHandle(AppBase.LastQrcode);
+      AppBase.LastQrcode="";
+      return;
+    }
+  }
+
+  
+
+  qrcodeHandle(code){
+    alert(code);
   }
   LocalId = 0;
   casedata = null;
@@ -458,6 +470,6 @@ export class VisitPage extends AppBase {
     this.navigate('heart-rat', { caseid: this.params.caseID });
   }
   scan(){
-
+    this.navigate("qrcodescan");
   }
 }

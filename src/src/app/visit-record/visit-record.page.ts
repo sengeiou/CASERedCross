@@ -58,23 +58,23 @@ export class VisitRecordPage extends AppBase {
     console.log(this.AppointmentDate, this.AppointmentTime, this.Description, this.Reason, this.Hosp, this.Specialty, this.params.caseid)
     // return;
     if (!this.AppointmentDate) {
-      this.toast('你沒有填寫實際探訪日期');
+      this.toast('你沒有填寫复诊探訪日期');
       return;
     }
     if (!this.AppointmentTime) {
-      this.toast('你沒有填寫實際探訪日期');
+      this.toast('你沒有填寫复诊时间');
       return;
     }
     if (!this.Hosp) {
-      this.toast('你沒有填寫實際探訪日期');
+      this.toast('你沒有填寫一样');
       return;
     }
     if (!this.Specialty) {
-      this.toast('你沒有填寫實際探訪日期');
+      this.toast('你沒有填寫门诊');
       return;
     }
     if (!this.Status) {
-      this.toast('你沒有填寫實際探訪日期');
+      this.toast('你沒有填寫就诊状态');
       return;
     }
     this.AppointmentDate = AppUtil.FormatDate(new Date(this.AppointmentDate));
@@ -126,11 +126,10 @@ export class VisitRecordPage extends AppBase {
   }
 
   addMedicalRecordHospSpecialty() {
-    console.log(this.Hosp, this.Specialty, this.params.caseid)
+    console.log(this.MedicalRecord.Hosp, this.MedicalRecord.Specialty, this.params.caseid)
     // return;
-
     var medicalRecord = new MedicalRecordServe();
-    medicalRecord.addMedicalRecordHospSpecialty(this.Hosp, this.Specialty, this.params.caseid).then((e) => {
+    medicalRecord.addMedicalRecordHospSpecialty(this.MedicalRecord.Hosp, this.MedicalRecord.Specialty, this.params.caseid).then((e) => {
       console.log(e)
       if (e.res.insertId) {
         this.toast('資料提交成功');
@@ -142,23 +141,23 @@ export class VisitRecordPage extends AppBase {
     console.log(this.AppointmentDate, this.AppointmentTime, this.Description, this.Reason, this.Status, this.LocalId)
     // return;
     if (!this.AppointmentDate) {
-      this.toast('你沒有填寫實際探訪日期');
+      this.toast('你沒有填寫复诊探訪日期');
       return;
     }
     if (!this.AppointmentTime) {
-      this.toast('你沒有填寫實際探訪日期');
+      this.toast('你沒有填寫复诊时间');
       return;
     }
     if (!this.Hosp) {
-      this.toast('你沒有填寫實際探訪日期');
+      this.toast('你沒有填寫一样');
       return;
     }
     if (!this.Specialty) {
-      this.toast('你沒有填寫實際探訪日期');
+      this.toast('你沒有填寫门诊');
       return;
     }
     if (!this.Status) {
-      this.toast('你沒有填寫實際探訪日期');
+      this.toast('你沒有填寫就诊状态');
       return;
     }
     
@@ -177,7 +176,7 @@ export class VisitRecordPage extends AppBase {
       this.addMedicalRecord()
       this.addMedicalRecordHospSpecialty()
     } else {
-      if (this.LocalId == 0) {
+      if (this.LocalId != 0) {
         this.saveMedicalRecord()
       } else {
         this.addMedicalRecord()

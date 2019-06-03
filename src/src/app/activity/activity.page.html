@@ -60,12 +60,12 @@
         <div class="title2">活動日期:</div>
         <div class="flex-1">
           <div class="radius-2" style="width:100%; ">
-            <div class="bg-white" *ngIf="!activity.activityDate">
-              <ion-datetime placeholder="{{activity.activityDate}}" displayFormat="YYYY/MM/DD " picker-format="YYYY MM DD " style="height:25px;padding:2px;"
+            <div class="bg-white" *ngIf="activity.SavedStatus==1">
+              <ion-datetime placeholder="{{activity.ActDate}}" displayFormat="YYYY/MM/DD " picker-format="YYYY MM DD " style="height:25px;padding:2px;"
                 max="2050-12-09" done-text='确定' cancel-text='取消' [(ngModel)]="activityDate"></ion-datetime>
             </div>
-            <div class="input_s radius-2 bg-white padding-left-5" *ngIf="activity.activityDate" style="width:100%;">
-              {{activity.activityDate}}
+            <div class="input_s radius-2 bg-white padding-left-5" *ngIf="activity.SavedStatus==0" style="width:100%;">
+              {{activity.ActDate}}
             </div>
 
           </div>
@@ -75,21 +75,21 @@
       <div class="flex-row margin-top-10  flex-center">
         <div class="title2">活動時間:</div>
         <div class="flex-1">
-          <div class="bg-white" *ngIf="!activity.activityStartTime">
-            <ion-datetime placeholder="{{activity.activityStartTime}}" displayFormat="hh：mm" picker-format="hh：mm" style="height:25px;padding:2px;"
+          <div class="bg-white" *ngIf="activity.SavedStatus==1">
+            <ion-datetime placeholder="{{activity.ActStartTime}}" displayFormat="hh：mm" picker-format="hh：mm" style="height:25px;padding:2px;"
               max="2050-12-09" done-text='确定' cancel-text='取消' [(ngModel)]="activityStartTime"></ion-datetime>
           </div>
-          <div class="input_s radius-2 bg-white padding-left-5" *ngIf="activity.activityStartTime" style="width:100%;">
-            {{activity.activityStartTime}}</div>
+          <div class="input_s radius-2 bg-white padding-left-5" *ngIf="activity.SavedStatus==0" style="width:100%;">
+            {{activity.ActStartTime}}</div>
         </div>
         <div class="margin-5">至</div>
         <div class="flex-1">
-          <div class="bg-white" *ngIf="!activity.activityEndTime">
-            <ion-datetime placeholder="{{activity.activityEndTime}}" displayFormat="hh：mm" picker-format="hh：mm" style="height:25px;padding:2px;"
+          <div class="bg-white" *ngIf="activity.SavedStatus==1">
+            <ion-datetime placeholder="{{activity.ActEndTime}}" displayFormat="hh：mm" picker-format="hh：mm" style="height:25px;padding:2px;"
               max="2050-12-09" done-text='确定' cancel-text='取消' [(ngModel)]="activityEndTime"></ion-datetime>
           </div>
-          <div class="input_s radius-2 bg-white padding-left-5" *ngIf="activity.activityEndTime" style="width:100%;">
-            {{activity.activityEndTime}}</div>
+          <div class="input_s radius-2 bg-white padding-left-5" *ngIf="activity.SavedStatus==0" style="width:100%;">
+            {{activity.ActEndTime}}</div>
         </div>
       </div>
       <div class="flex-row margin-top-10">
@@ -98,10 +98,10 @@
       </div>
       <div class=" margin-top-10">
         <div class="flex-1">
-          <div class="textarea2 radius-2 bg-white h7-5 padding-5" style="width:100%;" *ngIf="activity.presentVolunteer">
+          <div class="textarea2 radius-2 bg-white h7-5 padding-5" style="width:100%;" *ngIf="activity.SavedStatus==0">
             {{activity.presentVolunteer}}
           </div>
-          <ion-list *ngIf="!activity.presentVolunteer">
+          <ion-list *ngIf="activity.SavedStatus==1">
             <ion-item>
               <ion-select multiple="true" [(ngModel)]="presentVolunteer">
                 <ion-select-option value="风">风</ion-select-option>
@@ -120,43 +120,43 @@
       <div class=" margin-top-10  ">
         <div class="title">活動內容:</div>
         <div class=" margin-top-10 flex-row flex-center">
-          <input type="radio" name="activity" value="male" class="radio " (click)="getActtype('1')" checked="{{activity.actType=='1'?'1':''}}"/>活動</div>
+          <input type="radio" name="activity" value="male" class="radio " (click)="getActtype('1')" checked="{{activity.ActType=='1'?'1':''}}"/>活動</div>
         <div class="margin-left-30 margin-right-20">
 
           <div class="">
-            <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="sex"  (click)="getActDetail('參觀病人資源中心')" checked="{{activity.activityDetailType=='參觀病人資源中心'?'1':''}}"
+            <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="sex"  (click)="getActDetail('參觀病人資源中心')" checked="{{activity.ActDetailType=='參觀病人資源中心'?'1':''}}"
                 class="radio " />參觀病人資源中心</div>
             <div class=" margin-top-10 flex-row flex-center">活動地點:
               <div class="flex-1">
-                <input class="radius-2 other-input" placeholder="{{activity.remarks1?activity.remarks1:'輸入最多50字'}}" style=" width: 100%;" [(ngModel)]="remarks1"/>
+                <input class="radius-2 other-input" placeholder="{{activity.Remarks1?activity.Remarks1:'輸入最多50字'}}" style=" width: 100%;" [(ngModel)]="remarks1"/>
               </div>
             </div>
           </div>
           <div class="">
-            <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="sex"  (click)="getActDetail('出席健康講座')" checked="{{activity.activityDetailType=='出席健康講座'?'1':''}}"
+            <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="sex"  (click)="getActDetail('出席健康講座')" checked="{{activity.ActDetailType=='出席健康講座'?'1':''}}"
                 class="radio " />出席健康講座</div>
             <div class=" margin-top-10 flex-row flex-center">講座主題:<div class="flex-1">
-                <input class="radius-2 other-input" placeholder="{{activity.remarks2?activity.remarks2:'輸入最多50字'}}" style=" width: 100%;"  [(ngModel)]="remarks2"/>
+                <input class="radius-2 other-input" placeholder="{{activity.Remarks2?activity.Remarks2:'輸入最多50字'}}" style=" width: 100%;"  [(ngModel)]="remarks2"/>
               </div>
             </div>
           </div>
           <div class="">
-            <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="sex"  (click)="getActDetail('出席與運動有關活動')" checked="{{activity.activityDetailType=='出席與運動有關活動'?'1':''}}"
+            <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="sex"  (click)="getActDetail('出席與運動有關活動')" checked="{{activity.ActDetailType=='出席與運動有關活動'?'1':''}}"
                 class="radio " />出席與運動有關活動</div>
             <div class=" margin-top-10 flex-row flex-center">活動主題:<div class="flex-1">
-                <input class="radius-2 other-input" placeholder="{{activity.remarks3?activity.remarks3:'輸入最多50字'}}" style=" width: 100%;" [(ngModel)]="remarks3"/>
+                <input class="radius-2 other-input" placeholder="{{activity.Remarks3?activity.Remarks3:'輸入最多50字'}}" style=" width: 100%;" [(ngModel)]="remarks3"/>
               </div>
             </div>
           </div>
 
-          <div class=" margin-top-10 flex-row flex-center "><input type="radio" name="sex"  (click)="getActDetail('出席與健康飲食有關活動')" checked="{{activity.activityDetailType=='出席與健康飲食有關活動'?'1':''}}"
+          <div class=" margin-top-10 flex-row flex-center "><input type="radio" name="sex"  (click)="getActDetail('出席與健康飲食有關活動')" checked="{{activity.ActDetailType=='出席與健康飲食有關活動'?'1':''}}"
               class="radio " />出席與健康飲食有關活動 </div>
           <div class="">
-            <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="sex"  (click)="getActDetail('其他')" checked="{{activity.activityDetailType=='其他'?'1':''}}"
+            <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="sex"  (click)="getActDetail('其他')" checked="{{activity.OtherActRemarks=='其他'?'1':''}}"
                 class="radio " />其他</div>
             <div class=" margin-top-10 flex-row flex-center margin-left-20">
               <div class="flex-1">
-                <input class="radius-2 other-input" placeholder="{{activity.otherActRemarks?activity.otherActRemarks:'輸入最多50字'}}" style=" width: 100%;" [(ngModel)]="otherActRemarks"/>
+                <input class="radius-2 other-input" placeholder="{{activity.Remarks4?activity.Remarks4:'輸入最多50字'}}" style=" width: 100%;" [(ngModel)]="remarks4"/>
               </div>
             </div>
           </div>
@@ -166,10 +166,10 @@
 
 
         <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="activity" value="male"
-            class="radio " (click)="getActtype('2')" checked="{{activity.actType=='2'?'1':''}}"/>其他活動</div>
+            class="radio " (click)="getActtype('2')" checked="{{activity.ActType=='2'?'1':''}}"/>其他活動</div>
         <div class=" margin-top-10 flex-row flex-center  margin-right-20">
           <div class="flex-1">
-            <input class="radius-2 other-input" placeholder="{{activity.otherContent?activity.otherContent:'輸入最多250字'}}" style=" width: 100%;" [(ngModel)]="otherContent"/>
+            <input class="radius-2 other-input" placeholder="{{activity.OtherActRemarks?activity.OtherActRemarks:'輸入最多250字'}}" style=" width: 100%;" [(ngModel)]="otherContent"/>
           </div>
         </div>
 

@@ -28,6 +28,12 @@ export class PhoneServe  {
         return mgr.execSql(sql);
     }
 
+    getPhone_SavedStatus(SavedStatus) {
+        var mgr = DBMgr.GetInstance();
+        var sql = "select * from tb_Phone where SavedStatus=?";
+        return mgr.execSql(sql,[SavedStatus]);
+    }
+
     deletePhone(){
         var mgr = DBMgr.GetInstance();
         var sql = "DELETE FROM tb_Phone ";
@@ -36,7 +42,7 @@ export class PhoneServe  {
 
     addPhoneWeb(CallDate,CallEndTime,CallStartTime,CaseId,Detail,DetailOther,OtherRemark,Status,SupportId,UserName){
         var mgr = DBMgr.GetInstance();
-        var sql = "insert into tb_Phone (CallDate,CallEndTime,CallStartTime,CaseId,Detail,DetailOther,OtherRemark,Status,SupportId,UserName) values (?,?,?,?,?,?,?,?,?,?)";
+        var sql = "insert into tb_Phone (CallDate,CallEndTime,CallStartTime,CaseId,Detail,DetailOther,OtherRemark,Status,SupportId,UserName,SavedStatus) values (?,?,?,?,?,?,?,?,?,?,0)";
         return mgr.execSql(sql,[CallDate,CallEndTime,CallStartTime,CaseId,Detail,DetailOther,OtherRemark,Status,SupportId,UserName]);
     }
 
