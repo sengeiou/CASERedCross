@@ -13,6 +13,8 @@ import { OnInit } from '@angular/core';
 export class AppBase implements OnInit {
     public needlogin = false;
 
+    static LastQrcode="";
+
     public static TABName = "";
     public static LASTTAB=null;
     public static CurrentRoute: Router = null;
@@ -126,15 +128,21 @@ export class AppBase implements OnInit {
         this.router.navigate([pagename], { queryParams: param });
     }
     async showModal(pageobj, param = {}, callback = null) {
+        console.log(pageobj);
+        console.log(param);
+        console.log(666666);
         var modal = await this.modalCtrl.create({
             component: pageobj,
             componentProps: param
         });
-        await modal.onDidDismiss().then((data)=>{
-            if(callback!=null){
-                callback(data);
+        modal.onDidDismiss().then((data) => {
+            console.log("return data");
+            console.log(data);
+            if (callback != null) {
+                callback(data.data);
             }
-        });
+            this.onMyShow();
+        })
         await modal.present();
     }
 
