@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { AppBase } from '../AppBase';
 import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
-import { NavController, ModalController, ToastController, AlertController, NavParams, IonSlides } from '@ionic/angular';
+import { NavController, ModalController, ToastController, AlertController, NavParams, IonSlides, LoadingController } from '@ionic/angular';
 import { AppUtil } from '../app.util';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivityServe } from 'src/mgrServe/ActivityServe';
@@ -30,7 +30,9 @@ export class HomePage extends AppBase {
     public alertCtrl: AlertController,
     public activeRoute: ActivatedRoute,
     public sanitizer: DomSanitizer,
-    public api: ServiceApi) {
+    public api: ServiceApi,
+    public loadingController:LoadingController
+    ) {
     super(router, navCtrl, modalCtrl, toastCtrl, alertCtrl, activeRoute);
     this.headerscroptshow = 480;
 
@@ -53,7 +55,7 @@ export class HomePage extends AppBase {
   logout() { //退出登录
     this.showConfirm('你確定要登出嗎？', (e) => {
       if (e) {
-        this.navigate('test')
+        this.navCtrl.navigateBack('test');
       }
     })
   }
@@ -61,11 +63,26 @@ export class HomePage extends AppBase {
   upload() { //上传资料到服务器
     this.showConfirm('你確定要同步資料嗎？', (e) => {
       if (e) {
-        this.SysnAllWeb()
+        this.presentLoading();
       }
     })
+
+
   }
 
+  loading=null;
+
+
+  async presentLoading() {
+    this.loading = await this.loadingController.create({
+      message: '同步中'
+    });
+    await this.loading.present();
+
+
+    this.SysnAllWeb();
+
+  }
 
   phone(caseID, LocalId) {
     console.log(caseID, LocalId)
@@ -174,10 +191,12 @@ export class HomePage extends AppBase {
           var a = [];
           a.push(this.saList);
           this.saList = a;
-          
+
         }
 
         this.updateData();
+
+        this.loading.dismiss();;
       } else {
         alert("失败:" + ret.strMsg);
         this.toast('未能連線，無法登入');
@@ -200,30 +219,30 @@ export class HomePage extends AppBase {
     phone.deletePhone()
     var activity = new ActivityServe();
     activity.deleteActivity()
-    for(var i = 0; i < this.Volunteer.length; i++){
-      this.setVolunteer( this.Volunteer[i]);
+    for (var i = 0; i < this.Volunteer.length; i++) {
+      this.setVolunteer(this.Volunteer[i]);
     }
-    for(var i = 0; i < this.Specialty.length; i++){
-      this.setSpecialty( this.Specialty[i]);
+    for (var i = 0; i < this.Specialty.length; i++) {
+      this.setSpecialty(this.Specialty[i]);
     }
-    for(var i = 0; i < this.Hosp.length; i++){
-      this.setHosp( this.Hosp[i]);     
+    for (var i = 0; i < this.Hosp.length; i++) {
+      this.setHosp(this.Hosp[i]);
     }
     for (var i = 0; i < this.saList.length; i++) {
       this.setCase(this.saList[i].caseObj);
 
-      if(this.saList[i].psaList.objPhoneSupportApp){
+      if (this.saList[i].psaList.objPhoneSupportApp) {
         this.setPhone(this.saList[i].psaList.objPhoneSupportApp)
       }
 
-      if(this.saList[i].hvList.objHomeVisitApp){
-        for(var j = 0; j < this.saList[i].hvList.objHomeVisitApp.length; j++){
+      if (this.saList[i].hvList.objHomeVisitApp) {
+        for (var j = 0; j < this.saList[i].hvList.objHomeVisitApp.length; j++) {
           this.setVisitWeb(this.saList[i].hvList.objHomeVisitApp[j])
         }
 
       }
-      if(this.saList[i].aList.objActivityApp){
-        for(var j = 0; j < this.saList[i].aList.objActivityApp.length; j++){
+      if (this.saList[i].aList.objActivityApp) {
+        for (var j = 0; j < this.saList[i].aList.objActivityApp.length; j++) {
           this.setActivityWeb(this.saList[i].aList.objActivityApp[j])
         }
 
@@ -238,7 +257,8 @@ export class HomePage extends AppBase {
       console.log(this.BloodPressure)
     }
 
-    this.getCase()
+    this.getCase();
+
   }
 
   setVolunteer(kv) {
@@ -268,7 +288,7 @@ export class HomePage extends AppBase {
 
   setPhone(kv) {
     console.log(kv)
-    var CallDate= AppUtil.FormatDate(new Date(kv.CallDate));
+    var CallDate = AppUtil.FormatDate(new Date(kv.CallDate));
     var phone = new PhoneServe();
     if (kv) {
       phone.addPhoneWeb(CallDate, kv.CallEndTime, kv.CallStartTime, kv.CaseId, kv.Detail, kv.DetailOther, kv.OtherRemark, kv.Status, kv.SupportId, kv.UserName).then((e) => {
@@ -280,7 +300,7 @@ export class HomePage extends AppBase {
 
   setVisitWeb(kv) {
     console.log(kv)
-    var ScheduleDate= AppUtil.FormatDate(new Date(kv.ScheduleDate));
+    var ScheduleDate = AppUtil.FormatDate(new Date(kv.ScheduleDate));
     var visit = new VisitServe();
     visit.addVisit(kv.Bmi, kv.CaseId, kv.CategoryTopic1, kv.CategoryTopic2, kv.CategoryTopic3, kv.EmotionAssessment, kv.EmotionAssessmentRemarks, kv.Hip, kv.LifeStyleMeasureBloodPressure, kv.LifeStyleMeasureBloodSuger, kv.LifeStyleMeasureBpLocation, kv.LifeStyleMeasureBpNoOfTime, kv.LifeStyleMeasureBpPeriod, kv.LifeStyleMeasureBsLocation, kv.LifeStyleMeasureBsNoOfTime, kv.LifeStyleMeasureBsPeriod, kv.LifeStyleQuestion1, kv.LifeStyleQuestion2, kv.LifeStyleQuestion3, kv.LifeStyleQuestion4, kv.LifeStyleQuestion5, kv.LifeStyleQuestion6, kv.Location, kv.LocationRemarks, kv.OtherAccident, kv.OtherAccidentNoOfDay, kv.OtherHospDisbete, kv.OtherHospDisbeteNoOfDay, kv.OtherHospHighBp, kv.OtherHospHighBpNoOfDay, kv.OtherHospOtherIllness, kv.OtherHospOtherIllnessNoOfDay, kv.OtherRemarks, kv.OtherSpecialNeed, kv.OtherSpecialNeedService, ScheduleDate, kv.ScheduleTime, kv.Status, kv.TaskId, kv.VisitDate_Disply, kv.VisitDetailIndoor, kv.VisitDetailIndoorRemarks, kv.VisitDetailOther, kv.VisitDetailOutdoor, kv.VisitDetailOutdoorRemarks, kv.VisitEndTime, kv.VisitId, kv.VisitStartTime, kv.VisitStatus, kv.VisitStatusRemarks, kv.WHRatio, kv.Waist, kv.Weight).then((e) => [
       console.log(e)
@@ -290,7 +310,7 @@ export class HomePage extends AppBase {
 
   setActivityWeb(kv) {
     console.log(kv)
-    var ActDate= AppUtil.FormatDate(new Date(kv.ActDate));
+    var ActDate = AppUtil.FormatDate(new Date(kv.ActDate));
     //caseId, activityDate, activityStartTime, activityEndTime, presentVolunteer, actType, activityDetailType, remarks1, remarks2, remarks3, remarks4, otherActRemarks, otherContent
     var activity = new ActivityServe();
     activity.addActivityWeb(kv.CaseId, ActDate, kv.ActStartTime, kv.ActEndTime, kv.ActivityVolList.objActivityVolApp.VolId, kv.ActType, kv.ActDetailType, kv.Remarks1, kv.Remarks2, kv.Remarks3, kv.Remarks4, kv.OtherActRemarks, kv.Remarks).then((e) => {

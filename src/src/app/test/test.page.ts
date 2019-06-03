@@ -14,7 +14,7 @@ import { Network } from '@ionic-native/network/ngx';
   selector: 'app-test',
   templateUrl: './test.page.html',
   styleUrls: ['./test.page.scss'],
-  providers: [ServiceApi,Network]
+  providers: [ServiceApi, Network]
 })
 export class TestPage extends AppBase {
 
@@ -33,11 +33,21 @@ export class TestPage extends AppBase {
   }
 
   myname = "";
-
+  connected = true;
   onMyLoad() {
     //参数
     this.params;
     this.myname = this.params.name;
+    let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
+      this.connected = false;
+    });
+
+    let connectSubscription = this.network.onConnect().subscribe(() => {
+      this.connected = true;
+    });
+
+
+
   }
   onMyShow() {
     this.number = '';
@@ -65,7 +75,7 @@ export class TestPage extends AppBase {
 
   // loginWeb() {
   login() {
-    if (!this.number) {
+    if (this.number.trim() == "") {
       this.toast('義工編號不能留空');
       return;
     }
@@ -73,24 +83,61 @@ export class TestPage extends AppBase {
       this.toast('密碼不能留空');
       return;
     }
-    console.log(this.number,this.password)
-    var userServe = new UserServe();
-    // if(this.network.type!=null){
-    this.api.VolunteerLogin(this.number, this.password).then((ret) => {
-      if (ret.Result == "true") {
-        this.VolId = ret.objUser.VolId
-        this.navigate('home', { id: this.VolId });
-        this.update();
-        userServe.getUserNumber(this.number).then((e) => {
-          console.log(e)
-          if (e.res.rows.length == 0) {
-            this.insert()
-          }
-        })
+    console.log(this.number, this.password);
+    if (this.connected == false) {
+      var lastlogininfo = null;
+      lastlogininfo = window.localStorage.getItem("lastlogininfo");
+      if (lastlogininfo == null) {
+        this.toast('你当前处于离线状态，不可登录');
       } else {
-        this.toast('你的義工編號或密碼不正確');
+        lastlogininfo = JSON.parse(lastlogininfo);
+        var logintime = parseInt(lastlogininfo.logintime);
+        var now = (new Date()).getTime();
+        if ((now - logintime) > 1 * 60 * 1000) {
+          if (this.number == lastlogininfo.number && this.password == lastlogininfo.password) {
+
+            this.VolId = lastlogininfo.VolId;
+            this.navigate('home', { id: this.VolId });
+          } else {
+            this.toast('你的義工編號或密碼不正確');
+          }
+        }
       }
-    })
+    } else {
+
+      var userServe = new UserServe();
+      // if(this.network.type!=null){
+      this.api.VolunteerLogin(this.number, this.password).then((ret) => {
+        if (ret.Result == "true") {
+
+          var lastlogininfo = {
+            user: ret.objUser,
+            number: this.number,
+            password: this.password,
+            logintime: (new Date()).getTime()
+          };
+
+          window.localStorage.setItem("lastlogininfo", JSON.stringify(lastlogininfo));
+          this.number = "";
+          this.password = "";
+
+          this.VolId = ret.objUser.VolId;
+
+
+
+          this.navigate('home', { id: this.VolId });
+          this.update();
+          userServe.getUserNumber(this.number).then((e) => {
+            console.log(e)
+            if (e.res.rows.length == 0) {
+              this.insert()
+            }
+          })
+        } else {
+          this.toast('你的義工編號或密碼不正確');
+        }
+      })
+    }
     // }else{
     // var dbmgr = DBMgr.GetInstance();
     // dbmgr.execSql("select * from USER where number='" + this.number + "' and password='" + this.password + "'").then((ret) => {
@@ -224,5 +271,12 @@ export class TestPage extends AppBase {
         this.toast('系統沒有回應');
       }
     });
+  }
+
+  passwordKeyup(e) {
+    console.log(e);
+    if (e.key == 'Enter') {
+      this.login();
+    }
   }
 }

@@ -25,7 +25,7 @@
         <div class="left text-center txt-bold">密碼</div>
         <div class="flex-1 margin-left-10">
           <!-- <input class="radius-2 padding-5 h7-5" [(ngModel)]="password" style="width:100%;" /> -->
-          <ion-input  class="border-1 h-20 radius-2  h7-5 padding-left" [(ngModel)]="password"></ion-input>
+          <ion-input type="password" class="border-1 h-20 radius-2  h7-5 padding-left" [(ngModel)]="password"  (keyup)='passwordKeyup($event)' ></ion-input>
         </div>
       </div>
 
