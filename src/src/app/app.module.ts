@@ -13,6 +13,7 @@ import { SQLite } from '@ionic-native/sqlite/ngx';
 import { HTTP } from '@ionic-native/http/ngx';
 import { Network } from '@ionic-native/network/ngx';
 import { DNS } from '@ionic-native/dns/ngx';
+import { QRScanner } from '@ionic-native/qr-scanner/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,6 +25,7 @@ import { DNS } from '@ionic-native/dns/ngx';
     StatusBar,
     SplashScreen,
     HTTP,
+    QRScanner,
     SQLite,
     Network,
     DNS,

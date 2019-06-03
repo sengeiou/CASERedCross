@@ -9,6 +9,7 @@ import { DBMgr } from 'src/mgr/DBMgr';
 import { ServiceApi } from 'src/providers/service.api';
 import { UserServe } from 'src/mgrServe/UserServe';
 import { Network } from '@ionic-native/network/ngx';
+import { QrcodescanPage } from '../qrcodescan/qrcodescan.page';
 
 @Component({
   selector: 'app-test',
@@ -52,6 +53,12 @@ export class TestPage extends AppBase {
   onMyShow() {
     this.number = '';
     this.password = '';
+
+    if(AppBase.LastQrcode!=''){
+      this.qrcodeHandle(AppBase.LastQrcode);
+      AppBase.LastQrcode="";
+      return;
+    }
   }
   number = '';
   password = '';
@@ -278,5 +285,12 @@ export class TestPage extends AppBase {
     if (e.key == 'Enter') {
       this.login();
     }
+  }
+
+  scan(){
+    this.navigate("qrcodescan");
+  }
+  qrcodeHandle(code){
+    alert(code);
   }
 }

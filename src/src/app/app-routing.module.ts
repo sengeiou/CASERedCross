@@ -13,13 +13,9 @@ const routes: Routes = [
   { path: 'chartdemo', loadChildren: './chartdemo/chartdemo.module#ChartdemoPageModule' },
   { path: 'qrcodescan', loadChildren: './qrcodescan/qrcodescan.module#QrcodescanPageModule' },
   { path: 'databasedemo', loadChildren: './databasedemo/databasedemo.module#DatabasedemoPageModule' },
-  { path: 'uploadimg', loadChildren: './uploadimg/uploadimg.module#UploadimgPageModule' },  { path: 'heart-rat', loadChildren: './heart-rat/heart-rat.module#HeartRatPageModule' },
+  { path: 'uploadimg', loadChildren: './uploadimg/uploadimg.module#UploadimgPageModule' },
+  { path: 'heart-rat', loadChildren: './heart-rat/heart-rat.module#HeartRatPageModule' },
   { path: 'wangluo', loadChildren: './wangluo/wangluo.module#WangluoPageModule' },
-
-
-
-
-
 ];
 
 @NgModule({
