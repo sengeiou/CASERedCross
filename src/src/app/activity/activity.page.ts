@@ -25,6 +25,7 @@ export class ActivityPage extends AppBase {
     super(router, navCtrl, modalCtrl, toastCtrl, alertCtrl, activeRoute);
     this.headerscroptshow = 480;
     this.activity = {};
+    this.casedata={}
   }
 
   activityDate = '';

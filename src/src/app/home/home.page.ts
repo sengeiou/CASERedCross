@@ -79,8 +79,12 @@ export class HomePage extends AppBase {
     });
     await this.loading.present();
 
+    console.log('aa')
+    // this.SysnAllWeb();
 
-    this.SysnAllWeb();
+    this.api.SaveAll('aa','aa','aa','aa').then((ret) => {
+      console.log(ret)
+    })
 
   }
 
@@ -111,6 +115,7 @@ export class HomePage extends AppBase {
       console.log(e)
     })
   }
+
   getCase() {
     var cases = new CaseServe();
     // cases.addCase();
