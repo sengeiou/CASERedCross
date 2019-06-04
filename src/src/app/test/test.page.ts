@@ -82,6 +82,7 @@ export class TestPage extends AppBase {
 
   // loginWeb() {
   login() {
+    // alert('1')
     if (this.number.trim() == "") {
       this.toast('義工編號不能留空');
       return;
@@ -90,13 +91,17 @@ export class TestPage extends AppBase {
       this.toast('密碼不能留空');
       return;
     }
+    // alert('2')
     console.log(this.number, this.password);
     if (this.connected == false) {
+      // alert('3')
       var lastlogininfo = null;
       lastlogininfo = window.localStorage.getItem("lastlogininfo");
       if (lastlogininfo == null) {
+        // alert('3')
         this.toast('你当前处于离线状态，不可登录');
       } else {
+        // alert('4')
         lastlogininfo = JSON.parse(lastlogininfo);
         var logintime = parseInt(lastlogininfo.logintime);
         var now = (new Date()).getTime();
@@ -111,12 +116,12 @@ export class TestPage extends AppBase {
         }
       }
     } else {
-
+      // alert('5')
       var userServe = new UserServe();
       // if(this.network.type!=null){
       this.api.VolunteerLogin(this.number, this.password).then((ret) => {
         if (ret.Result == "true") {
-
+          // alert('6')
           var lastlogininfo = {
             user: ret.objUser,
             number: this.number,
@@ -133,6 +138,7 @@ export class TestPage extends AppBase {
 
 
           this.navigate('home', { id: this.VolId });
+          // alert('7')
           this.update();
           userServe.getUserNumber(this.number).then((e) => {
             console.log(e)
@@ -141,6 +147,7 @@ export class TestPage extends AppBase {
             }
           })
         } else {
+          // alert('999')
           this.toast('你的義工編號或密碼不正確');
         }
       })

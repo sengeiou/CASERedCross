@@ -7,6 +7,7 @@ import { AppUtil } from '../app.util';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CaseServe } from 'src/mgrServe/CaseServe';
 import { ActivityServe } from 'src/mgrServe/ActivityServe';
+import { VolunteerServr } from 'src/mgrServe/VolunteerServr';
 
 @Component({
   selector: 'app-activity',
@@ -51,6 +52,7 @@ export class ActivityPage extends AppBase {
   onMyShow() {
     this.getCase()
     this.getActivity()
+    this.getVolunteerList()
   }
   casedata = null;
   LocalId = 0;
@@ -78,6 +80,17 @@ export class ActivityPage extends AppBase {
         console.log(data);
       })
     }
+  }
+
+  Volunteer = [];
+  getVolunteerList() {
+    var volunteerServr = new VolunteerServr();
+    volunteerServr.getAllVolunteerList().then((e) => {
+      if (e.res.rows.length > 0) {
+        console.log(Array.from(e.res.rows))
+        this.Volunteer = Array.from(e.res.rows)
+      }
+    })
   }
 
   getActtype(e) {

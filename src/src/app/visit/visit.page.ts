@@ -7,6 +7,7 @@ import { AppUtil } from '../app.util';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CaseServe } from 'src/mgrServe/CaseServe';
 import { VisitServe } from 'src/mgrServe/VisitServe';
+import { VolunteerServr } from 'src/mgrServe/VolunteerServr';
 
 @Component({
   selector: 'app-visit',
@@ -104,6 +105,7 @@ export class VisitPage extends AppBase {
   onMyLoad() {
     //参数
     this.params;
+    this.getVolunteerList()
   }
   onMyShow() {
     this.getCase()
@@ -151,6 +153,17 @@ export class VisitPage extends AppBase {
         console.log(data);
       })
     }
+  }
+
+  Volunteer = [];
+  getVolunteerList() {
+    var volunteerServr = new VolunteerServr();
+    volunteerServr.getAllVolunteerList().then((e) => {
+      if (e.res.rows.length > 0) {
+        console.log(Array.from(e.res.rows))
+        this.Volunteer = Array.from(e.res.rows)
+      }
+    })
   }
 
 

@@ -21,7 +21,7 @@
         <div class="flex-1">
           <div class="xgun">
             <div class="flex-row" style="width: 500px">
-              <div class="padding-5  border-black radius-5 height margin-right-10" style="width: 150px" *ngFor="let itemVisit of item.visitList;let idx=index;"  (click)='visit(item.CaseId,itemVisit.LocalId);'>
+              <div class="padding-5  border-black radius-5 height margin-right-10"  *ngFor="let itemVisit of item.visitList;let idx=index;"  (click)='visit(item.CaseId,itemVisit.LocalId);'>
                 <div class="h7-5">预约日期:</div>
                 <div class="margin-top-10 h7-5">
                   {{itemVisit.ScheduleDate}}
@@ -41,7 +41,7 @@
         <div class="flex-1">
           <div class="xgun">
             <div class="flex-row" style="width: 510px">
-              <div class="padding-5  border-black radius-5 height margin-right-10" style="width: 120px" *ngFor="let itemPhnoe of item.phoneList;let idx=index;" (click)='phone(item.CaseId,itemPhnoe.LocalId);'>
+              <div class="padding-5  border-black radius-5 height margin-right-10"  *ngFor="let itemPhnoe of item.phoneList;let idx=index;" (click)='phone(item.CaseId,itemPhnoe.LocalId);'>
                 <div class="h7-5">预约日期:</div>
                 <div class="margin-top-10 h7-5">
                   {{itemPhnoe.CallDate}}

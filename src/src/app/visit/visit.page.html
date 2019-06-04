@@ -176,11 +176,15 @@
 
             <div style="position:absolute;margin-top:-30px;background:transparent" class="aaa">
 
-              <ion-select multiple="true" [(ngModel)]="presentVolunteer"
+              <!-- <ion-select multiple="true" [(ngModel)]="presentVolunteer"
                 style="position:absolute;background:transparent">
                 <ion-select-option value="风">风</ion-select-option>
                 <ion-select-option value="55"> 55 </ion-select-option>
                 <ion-select-option value="66"> 66 </ion-select-option>
+              </ion-select> -->
+
+              <ion-select multiple="true" *ngIf="visit.SavedStatus!=0 " style="position:absolute;background:transparent" [(ngModel)]="presentVolunteer" >
+                <ion-select-option *ngFor="let item of Volunteer;let idx=index;"   value="{{item.VolunteerName}}">{{item.VolunteerName}}</ion-select-option>
               </ion-select>
             </div>
 
@@ -210,11 +214,14 @@
 
             <div style="position:absolute;margin-top:-30px;background:transparent" class="aaa">
 
-              <ion-select multiple="true" [(ngModel)]="supportVolunteer"
+              <!-- <ion-select multiple="true" [(ngModel)]="supportVolunteer"
                 style="position:absolute;background:transparent">
                 <ion-select-option value="风">风</ion-select-option>
                 <ion-select-option value="55"> 55 </ion-select-option>
                 <ion-select-option value="66"> 66 </ion-select-option>
+              </ion-select> -->
+              <ion-select multiple="true" *ngIf="visit.SavedStatus!=0 " style="position:absolute;background:transparent" [(ngModel)]="supportVolunteer" >
+                <ion-select-option *ngFor="let item of Volunteer;let idx=index;"   value="{{item.VolunteerName}}">{{item.VolunteerName}}</ion-select-option>
               </ion-select>
             </div>
 

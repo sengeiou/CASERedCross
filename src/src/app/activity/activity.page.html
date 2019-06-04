@@ -60,7 +60,7 @@
         <div class="title2">活動日期:</div>
         <div class="flex-1">
           <div class="radius-2" style="width:100%; ">
-            <div class="bg-white" *ngIf="activity.SavedStatus==1">
+            <div class="bg-white" *ngIf="activity.SavedStatus!=0">
               <ion-datetime placeholder="{{activity.ActDate}}" displayFormat="YYYY/MM/DD " picker-format="YYYY MM DD " style="height:25px;padding:2px;"
                 max="2050-12-09" done-text='确定' cancel-text='取消' [(ngModel)]="activityDate"></ion-datetime>
             </div>
@@ -75,7 +75,7 @@
       <div class="flex-row margin-top-10  flex-center">
         <div class="title2">活動時間:</div>
         <div class="flex-1">
-          <div class="bg-white" *ngIf="activity.SavedStatus==1">
+          <div class="bg-white" *ngIf="activity.SavedStatus!=0">
             <ion-datetime placeholder="{{activity.ActStartTime}}" displayFormat="hh：mm" picker-format="hh：mm" style="height:25px;padding:2px;"
               max="2050-12-09" done-text='确定' cancel-text='取消' [(ngModel)]="activityStartTime"></ion-datetime>
           </div>
@@ -84,7 +84,7 @@
         </div>
         <div class="margin-5">至</div>
         <div class="flex-1">
-          <div class="bg-white" *ngIf="activity.SavedStatus==1">
+          <div class="bg-white" *ngIf="activity.SavedStatus!=0">
             <ion-datetime placeholder="{{activity.ActEndTime}}" displayFormat="hh：mm" picker-format="hh：mm" style="height:25px;padding:2px;"
               max="2050-12-09" done-text='确定' cancel-text='取消' [(ngModel)]="activityEndTime"></ion-datetime>
           </div>
@@ -95,13 +95,23 @@
       <div class="flex-row margin-top-10">
         <div class="title2">出席義工:</div>
         <div><img src="../assets/icon/plus_icon.png" class="icon-15 margin-left-30" /></div>
+        <div style="position:absolute;margin-left:76px;background:transparent" class="aaa">
+          <ion-select multiple="true" *ngIf="activity.SavedStatus!=0 " style="position:absolute;background:transparent" [(ngModel)]="presentVolunteer" >
+            <ion-select-option *ngFor="let item of Volunteer;let idx=index;"   value="{{item.VolunteerName}}">{{item.VolunteerName}}</ion-select-option>
+          </ion-select>
+        </div>
       </div>
+
       <div class=" margin-top-10">
         <div class="flex-1">
           <div class="textarea2 radius-2 bg-white h7-5 padding-5" style="width:100%;" *ngIf="activity.SavedStatus==0">
             {{activity.presentVolunteer}}
           </div>
-          <ion-list *ngIf="activity.SavedStatus==1">
+
+          <div class="textarea2 radius-2 bg-white h7-5 padding-5" style="width:100%;">
+            {{presentVolunteer}}
+          </div>
+          <!-- <ion-list *ngIf="activity.SavedStatus!=0">
             <ion-item>
               <ion-select multiple="true" [(ngModel)]="presentVolunteer">
                 <ion-select-option value="风">风</ion-select-option>
@@ -109,7 +119,7 @@
                 <ion-select-option value="66"> 66 </ion-select-option>
               </ion-select>
             </ion-item>
-          </ion-list>
+          </ion-list> -->
           <!-- <textarea class="textarea2 radius-2" style="width:100%;"></textarea> -->
         </div>
 

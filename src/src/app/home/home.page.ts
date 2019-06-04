@@ -87,7 +87,7 @@ export class HomePage extends AppBase {
     var visiltList = [];
     var medicAppointLogList = [];
     console.log('aa')
-    // this.SysnAllWeb();
+    this.SysnAllWeb();
 
     var visit = new VisitServe();
     visit.getVisit_SavedStatus(1).then((e) => {
@@ -106,13 +106,13 @@ export class HomePage extends AppBase {
     phone.getPhone_SavedStatus(1).then((e) => {
       console.log(Array.from(e.res.rows))
       phoneList = Array.from(e.res.rows)
-      this.SysnAllWeb();
-      this.api.SaveAll(visiltList, phoneList, activityList, medicAppointLogList).then((ret) => {
-        if (ret.Result == 'true') {
-          this.SysnAllWeb();
-        }
-        console.log(ret)
-      })
+
+      // this.api.SaveAll(visiltList, phoneList, activityList, medicAppointLogList).then((ret) => {
+      //   if (ret.Result == 'true') {
+      //     this.SysnAllWeb();
+      //   }
+      //   console.log(ret)
+      // })
     })
 
     var medicalRecordServe = new MedicalRecordServe();
@@ -121,12 +121,12 @@ export class HomePage extends AppBase {
       medicAppointLogList = Array.from(e.res.rows)
     })
 
-    this.api.SaveAll(visiltList, phoneList, activityList, medicAppointLogList).then((ret) => {
-      if (ret.Result == 'true') {
-        this.SysnAllWeb();
-      }
-      console.log(ret)
-    })
+    // this.api.SaveAll(visiltList, phoneList, activityList, medicAppointLogList).then((ret) => {
+    //   if (ret.Result == 'true') {
+    //     this.SysnAllWeb();
+    //   }
+    //   console.log(ret)
+    // })
 
   }
 
@@ -161,6 +161,7 @@ export class HomePage extends AppBase {
   getCase() {
     var cases = new CaseServe();
     // cases.addCase();
+    var UserId=this.params.id
     cases.getAllCaseList().then((e) => {
       console.log(e);
       console.log(this.caselist);
@@ -219,7 +220,7 @@ export class HomePage extends AppBase {
   Caselist = [];
   visiltList = [];
   Phonelist = [];
-  Activitylist = [];
+  Activitylists = [];
   Volunteer = [];
   Specialty = [];
   Hosp = [];
@@ -283,22 +284,15 @@ export class HomePage extends AppBase {
     }
     for (var i = 0; i < this.saList.length; i++) {
       //案例
-      // if (this.saList[i].caseObj == 'object' && this.saList[i].caseObj.length == undefined) {
-      //   this.Caselist.push(this.saList[i].caseObj);
-      // } else {
-      //   this.Caselist = this.saList[i].caseObj;
-      // }
-      // for (var j = 0; j < this.Caselist.length; j++) {
-      //   this.setCase(this.Caselist[j]);
-      //   console.log(this.Caselist[j])
-      // }
       this.setCase(this.saList[i].caseObj);
 
 
       //电话
       var Phonelisttype = typeof this.saList[i].psaList.objPhoneSupportApp;
       if (Phonelisttype == 'object' && this.saList[i].psaList.objPhoneSupportApp.length == undefined) {
-        this.Phonelist.push(this.saList[i].psaList.objPhoneSupportApp);
+        var data=[];
+        data.push(this.saList[i].psaList.objPhoneSupportApp)
+        this.Phonelist=data;
       } else {
         this.Phonelist = this.saList[i].psaList.objPhoneSupportApp;
       }
@@ -313,7 +307,9 @@ export class HomePage extends AppBase {
       //探访
       var visiltListtype = typeof this.saList[i].hvList.objHomeVisitApp;
       if (visiltListtype == 'object' && this.saList[i].hvList.objHomeVisitApp.length == undefined) {
-        this.visiltList.push(this.saList[i].hvList.objHomeVisitApp);
+        var data=[];
+        data.push(this.saList[i].hvList.objHomeVisitApp);
+        this.visiltList=data;
       } else {
         this.visiltList = this.saList[i].hvList.objHomeVisitApp;
       }
@@ -326,25 +322,28 @@ export class HomePage extends AppBase {
       //活动
       var Activitylisttype = typeof this.saList[i].aList.objActivityApp;
       if (Activitylisttype == 'object' && this.saList[i].aList.objActivityApp.length == undefined) {
-        this.Activitylist.push(this.saList[i].aList.objActivityApp);
+        var data=[];
+        data.push(this.saList[i].aList.objActivityApp);
+        this.Activitylists=data;
       } else {
-        this.Activitylist = this.saList[i].aList.objActivityApp;
+        this.Activitylists = this.saList[i].aList.objActivityApp;
       }
-      console.log(this.saList[i].aList.objActivityApp.length)
-      console.log(this.saList[i].aList.objActivityApp)
-      if (this.Activitylist) {
+      console.log(this.Activitylists)
+      if (this.Activitylists) {
         console.log('555555hhhhh ')
-        for (var j = 0; j < this.Activitylist.length; j++) {
+        for (var j = 0; j < this.Activitylists.length; j++) {
           console.log('hhhhh ')
-          this.setActivityWeb(this.Activitylist[j])
-          console.log(this.Activitylist[j])
+          this.setActivityWeb(this.Activitylists[j])
+          console.log(this.Activitylists[j])
         }
       }
 
       //血压
       var BloodPressuretype = typeof this.saList[i].BloodPressureMonthlyList.objChartBPp;
       if (BloodPressuretype == 'object' && this.saList[i].BloodPressureMonthlyList.objChartBPp.length == undefined) {
-        this.BloodPressure.push(this.saList[i].BloodPressureMonthlyList.objChartBP);
+        var data=[];
+        data.push(this.saList[i].BloodPressureMonthlyList.objChartBP);
+        this.BloodPressure=data;
       } else {
         this.BloodPressure = this.saList[i].BloodPressureMonthlyList.objChartBP;
       }
@@ -420,7 +419,7 @@ export class HomePage extends AppBase {
   }
   setCase(kv) {
     var caseServe = new CaseServe();
-    caseServe.addCase(kv.CaseId, kv.CaseNo, kv.QRCode, kv.ChiName_Disply, kv.Illness_Disply, kv.OtherIllness_Disply, kv.CarePlan_Disply, kv.Height).then((e) => {
+    caseServe.addCase(kv.CaseId, kv.CaseNo, kv.QRCode, kv.ChiName_Disply, kv.Illness_Disply, kv.OtherIllness_Disply, kv.CarePlan_Disply, kv.Height,kv.VolVisitGrpId).then((e) => {
       console.log(e);
     });
   }
