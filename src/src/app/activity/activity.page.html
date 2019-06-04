@@ -96,7 +96,7 @@
         <div class="title2">出席義工:</div>
         <div><img src="../assets/icon/plus_icon.png" class="icon-15 margin-left-30" /></div>
         <div style="position:absolute;margin-left:76px;background:transparent" class="aaa">
-          <ion-select multiple="true" *ngIf="activity.SavedStatus!=0 " style="position:absolute;background:transparent" [(ngModel)]="presentVolunteer" >
+          <ion-select multiple="true" *ngIf="activity.SavedStatus!=0 " style="position:absolute;background:transparent;opacity: 0;" [(ngModel)]="presentVolunteer" >
             <ion-select-option *ngFor="let item of Volunteer;let idx=index;"   value="{{item.VolunteerName}}">{{item.VolunteerName}}</ion-select-option>
           </ion-select>
         </div>

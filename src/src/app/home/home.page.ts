@@ -121,12 +121,12 @@ export class HomePage extends AppBase {
       medicAppointLogList = Array.from(e.res.rows)
     })
 
-    // this.api.SaveAll(visiltList, phoneList, activityList, medicAppointLogList).then((ret) => {
-    //   if (ret.Result == 'true') {
-    //     this.SysnAllWeb();
-    //   }
-    //   console.log(ret)
-    // })
+    this.api.SaveAll(visiltList, phoneList, activityList, medicAppointLogList).then((ret) => {
+      if (ret.Result == 'true') {
+        this.SysnAllWeb();
+      }
+      console.log(ret)
+    })
 
   }
 
@@ -356,7 +356,9 @@ export class HomePage extends AppBase {
       //体重
       var Weighttype = typeof this.saList[i].WeightMonthlyList.objChartWeight;
       if (Weighttype == 'object' && this.saList[i].WeightMonthlyList.objChartWeight.length == undefined) {
-        this.Weight.push(this.saList[i].WeightMonthlyList.objChartWeight)
+        var data=[];
+        data.push(this.saList[i].WeightMonthlyList.objChartWeight);
+        this.Weight=data;
       } else {
         this.Weight = this.saList[i].WeightMonthlyList.objChartWeight;
       }
@@ -369,7 +371,9 @@ export class HomePage extends AppBase {
       //心跳
       var HeartRatetype = typeof this.saList[i].HeartRateMonthlyList.objChartHR;
       if (HeartRatetype == 'object' && this.saList[i].HeartRateMonthlyList.objChartHR.length == undefined) {
-        this.HeartRate.push(this.saList[i].HeartRateMonthlyList.objChartHR)
+        var data=[];
+        data.push(this.saList[i].HeartRateMonthlyList.objChartHR);
+        this.HeartRate=data;
       } else {
         this.HeartRate = this.saList[i].HeartRateMonthlyList.objChartHR;
       }
@@ -382,7 +386,9 @@ export class HomePage extends AppBase {
       //腰臀比
       var WHRtype = typeof this.saList[i].WaistHipMonthlyList.objChartWHR;
       if (WHRtype == 'object' && this.saList[i].WaistHipMonthlyList.objChartWHR.length == undefined) {
-        this.WHR.push(this.saList[i].WaistHipMonthlyList.objChartWHR)
+        var data=[];
+        data.push(this.saList[i].WaistHipMonthlyList.objChartWHR);
+        this.WHR=data;
       } else {
         this.WHR = this.saList[i].WaistHipMonthlyList.objChartWHR;
       }

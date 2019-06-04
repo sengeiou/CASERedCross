@@ -94,7 +94,7 @@
       <div class="flex-row margin-top-10">
         <div class="title2">負責義工:</div>
         <!-- <input class="radius-2 other-input" *ngIf="phone.SavedStatus!=0 " placeholder="{{phone.UserName?phone.UserName:'輸入最多50字'}}" style="width:100%;" [(ngModel)]='UserName'/> -->
-        <ion-select class="bg-white radius-2" *ngIf="phone.SavedStatus!=0 " style="width:100%;height:25px;padding:2px;color:#000;" [(ngModel)]="UserName" placeholder="{{phone.UserName?phone.UserName:''}}">
+        <ion-select class="bg-white radius-2" *ngIf="phone.SavedStatus!=0 " style="width:100%;height:25px;padding:2px;color:#000;" [(ngModel)]="UserName" >
           <ion-select-option *ngFor="let item of Volunteer;let idx=index;"   value="{{item.VolunteerName}}">{{item.VolunteerName}}</ion-select-option>
         </ion-select>
         <div class="bg-white radius-2 padding-left-5" style="width:100%;" *ngIf="phone.SavedStatus==0" >{{phone.UserName}}</div>
