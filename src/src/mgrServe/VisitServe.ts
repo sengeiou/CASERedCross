@@ -5,7 +5,7 @@ export class VisitServe {
 
     getVisitId(id) {
         var mgr = DBMgr.GetInstance();
-        var sql = "select * from tb_home_visit where LocalId=?";
+        var sql = "select * from tb_home_visit where LocalId=? order by ScheduleDate desc";
         // var sql = "DELETE FROM tb_home_visit"; 
         return mgr.execSql(sql, [id]);
     }
@@ -32,7 +32,7 @@ export class VisitServe {
 
     getVisitCaseId(CaseId) {
         var mgr = DBMgr.GetInstance();
-        var sql = "select LocalId,ScheduleDate,SavedStatus from tb_home_visit where CaseId=?";
+        var sql = "select LocalId,ScheduleDate,SavedStatus from tb_home_visit where CaseId=? order by ScheduleDate desc";
         return mgr.execSql(sql, [CaseId]);
     }
 

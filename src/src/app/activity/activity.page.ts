@@ -26,7 +26,7 @@ export class ActivityPage extends AppBase {
     super(router, navCtrl, modalCtrl, toastCtrl, alertCtrl, activeRoute);
     this.headerscroptshow = 480;
     this.activity = {};
-    this.casedata={}
+    this.casedata = {}
   }
 
   activityDate = '';
@@ -42,7 +42,7 @@ export class ActivityPage extends AppBase {
   otherActRemarks = '';
   otherContent = '';
   Remarks = '';
-  
+
 
   onMyLoad() {
     //参数
@@ -103,53 +103,51 @@ export class ActivityPage extends AppBase {
 
   saveActivity() {
     var activity = new ActivityServe();
-    if (!this.activityDate) {
+    if (this.activityDate=='') {
       this.toast('你沒有輸入活動日期');
       return;
     }
-    if (!this.activityStartTime) {
-      this.toast('你沒有輸入活動開始時間');
-      return;
-    }
-    var oDate1 = new Date(this.activityStartTime);
-    var oDate2 = new Date(this.activityEndTime);
-    if (oDate1.getTime() > oDate2.getTime()) {
-      this.toast('開始時間不能遲於結束時間');
-      return;
+    if (this.activityStartTime) {
+      var oDate1 = new Date(this.activityStartTime);
+      var oDate2 = new Date(this.activityEndTime);
+      if (oDate1.getTime() > oDate2.getTime()) {
+        this.toast('開始時間不能遲於結束時間');
+        return;
+      }
+      if (oDate1.getTime() == oDate2.getTime()) {
+        this.toast('開始和結束時間不能一樣');
+        return;
+      }
     }
 
-    if (oDate1.getTime() == oDate2.getTime()) {
-      this.toast('開始和結束時間不能一樣');
-      return;
-    }
-    if (!this.presentVolunteer) {
-      this.toast('你沒有出席義工一欄');
-      return;
-    }
-    if (this.actType == 0) {
-      this.toast('你沒有揀選活動內容');
-      return;
-    }
-    if (this.actType == 1 && !this.otherActRemarks && this.activityDetailType=='其他') {
-      this.toast('你沒有填寫電話其他慰問內容');
-      return;
-    }
-    if (this.actType == 1 && !this.remarks1 && this.activityDetailType=='參觀病人資源中心') {
-      this.toast('你沒有填寫參觀病人資源中心的活動地點');
-      return;
-    }
-    if (this.actType == 1 && !this.remarks2 && this.activityDetailType=='出席健康講座') {
-      this.toast('你沒有填寫健康講座的主題');
-      return;
-    }
-    if (this.actType == 1 && !this.remarks3 && this.activityDetailType=='出席與運動有關活動') {
-      this.toast('你沒有填寫與運動有關活動的活動主題');
-      return;
-    }
-    if (this.actType == 2 && !this.otherContent) {
-      this.toast('你沒有填寫其他的活動內容');
-      return;
-    }
+    // if (!this.presentVolunteer) {
+    //   this.toast('你沒有出席義工一欄');
+    //   return;
+    // }
+    // if (this.actType == 0) {
+    //   this.toast('你沒有揀選活動內容');
+    //   return;
+    // }
+    // if (this.actType == 1 && !this.otherActRemarks && this.activityDetailType=='其他') {
+    //   this.toast('你沒有填寫電話其他慰問內容');
+    //   return;
+    // }
+    // if (this.actType == 1 && !this.remarks1 && this.activityDetailType=='參觀病人資源中心') {
+    //   this.toast('你沒有填寫參觀病人資源中心的活動地點');
+    //   return;
+    // }
+    // if (this.actType == 1 && !this.remarks2 && this.activityDetailType=='出席健康講座') {
+    //   this.toast('你沒有填寫健康講座的主題');
+    //   return;
+    // }
+    // if (this.actType == 1 && !this.remarks3 && this.activityDetailType=='出席與運動有關活動') {
+    //   this.toast('你沒有填寫與運動有關活動的活動主題');
+    //   return;
+    // }
+    // if (this.actType == 2 && !this.otherContent) {
+    //   this.toast('你沒有填寫其他的活動內容');
+    //   return;
+    // }
 
 
     this.activityDate = AppUtil.FormatDate(new Date(this.activityDate));

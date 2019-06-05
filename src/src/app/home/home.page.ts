@@ -18,6 +18,7 @@ import { WeightServe } from 'src/mgrServe/WeightServe';
 import { WHRServe } from 'src/mgrServe/WHRServe';
 import { HeartRateServe } from 'src/mgrServe/HeartRateServe';
 import { MedicalRecordServe } from 'src/mgrServe/MedicalRecordServe';
+import { Network } from '@ionic-native/network/ngx';
 
 @Component({
   selector: 'app-home',
@@ -35,6 +36,7 @@ export class HomePage extends AppBase {
     public activeRoute: ActivatedRoute,
     public sanitizer: DomSanitizer,
     public api: ServiceApi,
+    public network: Network,
     public loadingController: LoadingController
   ) {
     super(router, navCtrl, modalCtrl, toastCtrl, alertCtrl, activeRoute);
@@ -44,6 +46,7 @@ export class HomePage extends AppBase {
   n = 1500;
   list = [{}, {}]
   caselist = [];
+  wangluo = ''
   onMyLoad() {
     //参数
     this.params;
@@ -53,6 +56,8 @@ export class HomePage extends AppBase {
 
     this.getActivityList()
     this.getCase()
+    this.wangluo = this.network.type;
+    console.log(this.network.type)
   }
 
 
@@ -65,6 +70,12 @@ export class HomePage extends AppBase {
   }
 
   upload() { //上传资料到服务器
+    this.wangluo = this.network.type;
+    if (this.wangluo == 'none') {
+      this.showConfirm('流動裝置沒有連接到互聯網', (e) => { })
+      return;
+    }
+
     this.showConfirm('你確定要同步資料嗎？', (e) => {
       if (e) {
         this.presentLoading();
@@ -78,6 +89,7 @@ export class HomePage extends AppBase {
 
 
   async presentLoading() {
+
     this.loading = await this.loadingController.create({
       message: '同步中'
     });
@@ -102,7 +114,6 @@ export class HomePage extends AppBase {
     })
 
     var phone = new PhoneServe();
-    // phone.deletePhone()
     phone.getPhone_SavedStatus(1).then((e) => {
       console.log(Array.from(e.res.rows))
       phoneList = Array.from(e.res.rows)
@@ -146,7 +157,6 @@ export class HomePage extends AppBase {
     this.navigate('visit', { caseID: caseID, LocalId: LocalId, UserId: this.params.id });
   }
 
-
   getActivityList() {
     var visit = new VisitServe();
     visit.getAllVisitList().then((e) => {
@@ -161,7 +171,7 @@ export class HomePage extends AppBase {
   getCase() {
     var cases = new CaseServe();
     // cases.addCase();
-    var UserId=this.params.id
+    var UserId = this.params.id
     cases.getAllCaseList().then((e) => {
       console.log(e);
       console.log(this.caselist);
@@ -290,9 +300,9 @@ export class HomePage extends AppBase {
       //电话
       var Phonelisttype = typeof this.saList[i].psaList.objPhoneSupportApp;
       if (Phonelisttype == 'object' && this.saList[i].psaList.objPhoneSupportApp.length == undefined) {
-        var data=[];
+        var data = [];
         data.push(this.saList[i].psaList.objPhoneSupportApp)
-        this.Phonelist=data;
+        this.Phonelist = data;
       } else {
         this.Phonelist = this.saList[i].psaList.objPhoneSupportApp;
       }
@@ -307,9 +317,9 @@ export class HomePage extends AppBase {
       //探访
       var visiltListtype = typeof this.saList[i].hvList.objHomeVisitApp;
       if (visiltListtype == 'object' && this.saList[i].hvList.objHomeVisitApp.length == undefined) {
-        var data=[];
+        var data = [];
         data.push(this.saList[i].hvList.objHomeVisitApp);
-        this.visiltList=data;
+        this.visiltList = data;
       } else {
         this.visiltList = this.saList[i].hvList.objHomeVisitApp;
       }
@@ -322,9 +332,9 @@ export class HomePage extends AppBase {
       //活动
       var Activitylisttype = typeof this.saList[i].aList.objActivityApp;
       if (Activitylisttype == 'object' && this.saList[i].aList.objActivityApp.length == undefined) {
-        var data=[];
+        var data = [];
         data.push(this.saList[i].aList.objActivityApp);
-        this.Activitylists=data;
+        this.Activitylists = data;
       } else {
         this.Activitylists = this.saList[i].aList.objActivityApp;
       }
@@ -341,9 +351,9 @@ export class HomePage extends AppBase {
       //血压
       var BloodPressuretype = typeof this.saList[i].BloodPressureMonthlyList.objChartBPp;
       if (BloodPressuretype == 'object' && this.saList[i].BloodPressureMonthlyList.objChartBPp.length == undefined) {
-        var data=[];
+        var data = [];
         data.push(this.saList[i].BloodPressureMonthlyList.objChartBP);
-        this.BloodPressure=data;
+        this.BloodPressure = data;
       } else {
         this.BloodPressure = this.saList[i].BloodPressureMonthlyList.objChartBP;
       }
@@ -356,9 +366,9 @@ export class HomePage extends AppBase {
       //体重
       var Weighttype = typeof this.saList[i].WeightMonthlyList.objChartWeight;
       if (Weighttype == 'object' && this.saList[i].WeightMonthlyList.objChartWeight.length == undefined) {
-        var data=[];
+        var data = [];
         data.push(this.saList[i].WeightMonthlyList.objChartWeight);
-        this.Weight=data;
+        this.Weight = data;
       } else {
         this.Weight = this.saList[i].WeightMonthlyList.objChartWeight;
       }
@@ -371,9 +381,9 @@ export class HomePage extends AppBase {
       //心跳
       var HeartRatetype = typeof this.saList[i].HeartRateMonthlyList.objChartHR;
       if (HeartRatetype == 'object' && this.saList[i].HeartRateMonthlyList.objChartHR.length == undefined) {
-        var data=[];
+        var data = [];
         data.push(this.saList[i].HeartRateMonthlyList.objChartHR);
-        this.HeartRate=data;
+        this.HeartRate = data;
       } else {
         this.HeartRate = this.saList[i].HeartRateMonthlyList.objChartHR;
       }
@@ -386,9 +396,9 @@ export class HomePage extends AppBase {
       //腰臀比
       var WHRtype = typeof this.saList[i].WaistHipMonthlyList.objChartWHR;
       if (WHRtype == 'object' && this.saList[i].WaistHipMonthlyList.objChartWHR.length == undefined) {
-        var data=[];
+        var data = [];
         data.push(this.saList[i].WaistHipMonthlyList.objChartWHR);
-        this.WHR=data;
+        this.WHR = data;
       } else {
         this.WHR = this.saList[i].WaistHipMonthlyList.objChartWHR;
       }
@@ -425,7 +435,7 @@ export class HomePage extends AppBase {
   }
   setCase(kv) {
     var caseServe = new CaseServe();
-    caseServe.addCase(kv.CaseId, kv.CaseNo, kv.QRCode, kv.ChiName_Disply, kv.Illness_Disply, kv.OtherIllness_Disply, kv.CarePlan_Disply, kv.Height,kv.VolVisitGrpId).then((e) => {
+    caseServe.addCase(kv.CaseId, kv.CaseNo, kv.QRCode, kv.ChiName_Disply, kv.Illness_Disply, kv.OtherIllness_Disply, kv.CarePlan_Disply, kv.Height, kv.VolVisitGrpId).then((e) => {
       console.log(e);
     });
   }

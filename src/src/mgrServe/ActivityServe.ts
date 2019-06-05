@@ -16,7 +16,7 @@ export class ActivityServe {
 
     getAllActivityListCaseId(caseId) {
         var mgr = DBMgr.GetInstance();
-        var sql = "select LocalID,ActDate,ActType,SavedStatus from tb_Activity where CaseId=?";
+        var sql = "select LocalID,ActDate,ActType,SavedStatus from tb_Activity where CaseId=? order by ActDate desc";
         return mgr.execSql(sql, [caseId]);
     }
 

@@ -12,7 +12,7 @@ export class PhoneServe  {
 
     getPhoneCaseId(CaseId) {
         var mgr = DBMgr.GetInstance();
-        var sql = "select LocalId,CallDate,SavedStatus from tb_Phone where CaseId=?";
+        var sql = "select LocalId,CallDate,SavedStatus from tb_Phone where CaseId=? order by CallDate desc";
         return mgr.execSql(sql, [CaseId]);
     }
 
