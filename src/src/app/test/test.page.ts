@@ -11,6 +11,7 @@ import { UserServe } from 'src/mgrServe/UserServe';
 import { Network } from '@ionic-native/network/ngx';
 import { QrcodescanPage } from '../qrcodescan/qrcodescan.page';
 
+
 @Component({
   selector: 'app-test',
   templateUrl: './test.page.html',
@@ -35,6 +36,7 @@ export class TestPage extends AppBase {
 
   myname = "";
   connected = true;
+  wangluo = '';
   onMyLoad() {
     //参数
     this.params;
@@ -46,13 +48,16 @@ export class TestPage extends AppBase {
     let connectSubscription = this.network.onConnect().subscribe(() => {
       this.connected = true;
     });
-
+    
 
 
   }
   onMyShow() {
     this.number = '';
     this.password = '';
+
+    this.wangluo = this.network.type;
+    console.log(this.network.type)
 
     if(AppBase.LastQrcode!=''){
       this.qrcodeHandle(AppBase.LastQrcode);
@@ -63,7 +68,7 @@ export class TestPage extends AppBase {
   number = '';
   password = '';
   data = [];
-  wangluo = '';
+ 
 
   insert() {
     var dbmgr = DBMgr.GetInstance();
@@ -78,9 +83,9 @@ export class TestPage extends AppBase {
       // this.showAlert("影响了"+ret.res.rowsAffected+"行数据");
     });
   }
+
   VolId = 0;
 
-  // loginWeb() {
   login() {
 
     if (this.number.trim() == "") {
@@ -93,15 +98,12 @@ export class TestPage extends AppBase {
     }
 
     console.log(this.number, this.password);
-    if (this.connected == false) {
-
+    if (this.wangluo == 'none') {
       var lastlogininfo = null;
       lastlogininfo = window.localStorage.getItem("lastlogininfo");
       if (lastlogininfo == null) {
- 
         this.toast('你当前处于离线状态，不可登录');
       } else {
-
         lastlogininfo = JSON.parse(lastlogininfo);
         var logintime = parseInt(lastlogininfo.logintime);
         var now = (new Date()).getTime();
@@ -116,10 +118,10 @@ export class TestPage extends AppBase {
         }
       }
     } else {
-
       var userServe = new UserServe();
-      // if(this.network.type!=null){
       this.api.VolunteerLogin(this.number, this.password).then((ret) => {
+        // console.log(ret);
+        // return;
         if (ret.Result == "true") {
           var lastlogininfo = {
             user: ret.objUser,
@@ -151,53 +153,53 @@ export class TestPage extends AppBase {
   }
 
 
-  login12() {
-    if (!this.number) {
-      this.toast('義工編號不能留空');
-      return;
-    }
-    if (!this.password) {
-      this.toast('密碼不能留空');
-      return;
-    }
-    // this.loginWeb()
+  // login12() {
+  //   if (!this.number) {
+  //     this.toast('義工編號不能留空');
+  //     return;
+  //   }
+  //   if (!this.password) {
+  //     this.toast('密碼不能留空');
+  //     return;
+  //   }
+  //   // this.loginWeb()
 
-    var userServe = new UserServe();
-    userServe.getUserNumber(this.number).then((e) => {
-      console.log(e)
-      if (e.res.rows.length == 0) {
-        this.insert()
-        setTimeout(() => {
-          this.login()
-        }, 2000);
-      } else {
-        var dbmgr = DBMgr.GetInstance();
-        dbmgr.execSql("select * from USER where number='" + this.number + "' and password='" + this.password + "'").then((ret) => {
-          var rows = ret.res.rows;
-          console.log(rows);
-          console.log(ret);
-          this.data = rows;
-          console.log(new Date().getTime())
-          console.log(this.data[0]['sdate'])
-          var time = new Date().getTime() - this.data[0]['sdate'];
-          console.log(time)
-          if (this.data) {
-            if (time < 24 * 60 * 60 * 1000) {
-              this.navigate('home', { id: this.VolId })
-              this.update()
-              this.toast('登录成功');
-            } else {
-              this.toast('未能連線，無法登入');
-            }
+  //   var userServe = new UserServe();
+  //   userServe.getUserNumber(this.number).then((e) => {
+  //     console.log(e)
+  //     if (e.res.rows.length == 0) {
+  //       this.insert()
+  //       setTimeout(() => {
+  //         this.login()
+  //       }, 2000);
+  //     } else {
+  //       var dbmgr = DBMgr.GetInstance();
+  //       dbmgr.execSql("select * from USER where number='" + this.number + "' and password='" + this.password + "'").then((ret) => {
+  //         var rows = ret.res.rows;
+  //         console.log(rows);
+  //         console.log(ret);
+  //         this.data = rows;
+  //         console.log(new Date().getTime())
+  //         console.log(this.data[0]['sdate'])
+  //         var time = new Date().getTime() - this.data[0]['sdate'];
+  //         console.log(time)
+  //         if (this.data) {
+  //           if (time < 24 * 60 * 60 * 1000) {
+  //             this.navigate('home', { id: this.VolId })
+  //             this.update()
+  //             this.toast('登录成功');
+  //           } else {
+  //             this.toast('未能連線，無法登入');
+  //           }
 
-          } else {
-            this.toast('你的義工編號或密碼不正確');
-          }
-        });
-      }
-    })
+  //         } else {
+  //           this.toast('你的義工編號或密碼不正確');
+  //         }
+  //       });
+  //     }
+  //   })
 
-  }
+  // }
 
   aa() { //忘记密码
     this.presentAlertCheckbox();

@@ -9,6 +9,12 @@ export class CaseServe {
         return mgr.execSql(sql, [id]);
     }
 
+    getCaseVolVisitGrpId(VolVisitGrpId) {
+        var mgr = DBMgr.GetInstance();
+        var sql = "select * from tb_Case where VolVisitGrpId=?";
+        return mgr.execSql(sql, [VolVisitGrpId]);
+    }
+
     getAllCaseList() {
         var mgr = DBMgr.GetInstance();
         var sql = "select * from tb_Case  ";

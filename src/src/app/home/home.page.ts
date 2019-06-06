@@ -99,7 +99,7 @@ export class HomePage extends AppBase {
     var visiltList = [];
     var medicAppointLogList = [];
     console.log('aa')
-    this.SysnAllWeb();
+    // this.SysnAllWeb();
 
     var visit = new VisitServe();
     visit.getVisit_SavedStatus(1).then((e) => {
@@ -172,7 +172,7 @@ export class HomePage extends AppBase {
     var cases = new CaseServe();
     // cases.addCase();
     var UserId = this.params.id
-    cases.getAllCaseList().then((e) => {
+    cases.getCaseVolVisitGrpId(UserId).then((e) => {
       console.log(e);
       console.log(this.caselist);
       var arr = null;
@@ -435,7 +435,7 @@ export class HomePage extends AppBase {
   }
   setCase(kv) {
     var caseServe = new CaseServe();
-    caseServe.addCase(kv.CaseId, kv.CaseNo, kv.QRCode, kv.ChiName_Disply, kv.Illness_Disply, kv.OtherIllness_Disply, kv.CarePlan_Disply, kv.Height, kv.VolVisitGrpId).then((e) => {
+    caseServe.addCase(kv.CaseId, kv.CaseNo, kv.QRCode, kv.ChiName_Disply, kv.Illness_Disply, kv.OtherIllness_Disply, kv.CarePlan_Disply, kv.Height,this.params.id ).then((e) => {
       console.log(e);
     });
   }
