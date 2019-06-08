@@ -48,6 +48,16 @@ export class UploadimgPage extends AppBase {
     var imgserver=new ImageServe();
     imgserver.getAllImageList().then(e=>{
       var list = Array.from(e.res.rows);
+      for(var i=0;i<list.length;i++){
+        var item=null;
+        item=list[i];
+        // if(i==0){
+        //   alert(item.Base64ImgString);
+        // }
+        item.Base64ImgString=this.sanitizer.bypassSecurityTrustUrl(item.Base64ImgString);
+
+        list[i]=item;
+      }
       this.list=list;
     });
   }
@@ -82,6 +92,7 @@ export class UploadimgPage extends AppBase {
               this.base64.encodeFile(imagepath).then((code)=>{
                 alert(code);
                 alert("调用addImage的接口加到本地数据库");
+                this.onMyShow();
               });
             }, (err) => {
               // Handle error
@@ -106,6 +117,7 @@ export class UploadimgPage extends AppBase {
               this.base64.encodeFile(imagepath).then((code)=>{
                 alert(code);
                 alert("调用addImage的接口加到本地数据库");
+                this.onMyShow();
               });
               
             }, (err) => {

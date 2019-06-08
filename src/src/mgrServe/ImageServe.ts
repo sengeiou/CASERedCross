@@ -44,7 +44,7 @@ export class ImageServe {
 
         fileTransfer.download(fileurl, file.dataDirectory+ 'f'+ImgId+".jpg").then((entry) => {
             base64Mgr.encodeFile(file.dataDirectory+ 'f'+ImgId+".jpg").then((base64File:string)=>{
-
+                //alert(base64File);
                 var sql = "insert into tb_Image(ImgId,VisitId,ImgName,Base64ImgString) values (?,?,?,?)";
                 return mgr.execSql(sql,[ImgId,VisitId,'',base64File]);
             });
