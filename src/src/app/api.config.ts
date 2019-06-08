@@ -8,7 +8,7 @@ export class ApiConfig {
         return "http://202.82.149.248/CaseMS_UAT/WebService/AppWebService.asmx";
     }
     public static getUploadPath() {
-        return "https://alioss.app-link.org/alucard263096/zwgz/";
+        return "http://202.82.149.248/CaseMS_UAT/";
     }
     public static getFileUploadAPI() {
         return "https://cmsdev.app-link.org/alucard263096/zwgz/fileupload";

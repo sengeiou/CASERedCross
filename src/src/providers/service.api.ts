@@ -71,7 +71,7 @@ export class ServiceApi {
         var data = { volunteerId };
         var headers = ApiConfig.GetHeader(url, data);
         let options = new RequestOptions({ headers: headers });
-        let body = ApiConfig.GetPostXml("SysnAllResultRecord", { volunteerId });
+        let body = ApiConfig.GetPostXml("NewSysnAllResultRecord", { volunteerId });
 
         return this.http.post(url, body, options).toPromise()
             .then((res) => {
@@ -82,12 +82,12 @@ export class ServiceApi {
                 var jsonObj = x2js.xml_str2json(xmlstr);
                 //输出结果
                 console.log(jsonObj);
-                console.log(jsonObj.Envelope.Body.SysnAllResultRecordResponse.SysnAllResultRecordResult);
+                console.log(jsonObj.Envelope.Body.NewSysnAllResultRecordResponse.NewSysnAllResultRecordResult);
 
-                return jsonObj.Envelope.Body.SysnAllResultRecordResponse.SysnAllResultRecordResult;
+                return jsonObj.Envelope.Body.NewSysnAllResultRecordResponse.NewSysnAllResultRecordResult;
             })
             .catch(err => {
-                return ApiConfig.ErrorHandle('/SysnAllResultRecord', data, err);
+                return ApiConfig.ErrorHandle('/NewSysnAllResultRecord', data, err);
             });
     }
 
