@@ -2,10 +2,10 @@ import { DBMgr } from 'src/mgr/DBMgr';
 
 export class HeartRateServe {
 
-    getHeartRateId(id) {
+    getHeartRateId(CaseId) {
         var mgr = DBMgr.GetInstance();
-        var sql = "select * from tb_HeartRate where id=?";
-        return mgr.execSql(sql, [id]);
+        var sql = "select * from tb_HeartRate where CaseId=?";
+        return mgr.execSql(sql, [CaseId]);
     }
 
     getAllHeartRateList(){

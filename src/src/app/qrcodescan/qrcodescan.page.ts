@@ -34,6 +34,7 @@ export class QrcodescanPage extends AppBase {
   onMyLoad() {
     //参数
     this.params;
+    // this.startscan();
   }
   onMyShow() {
     this.startscan();

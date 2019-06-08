@@ -9,9 +9,15 @@ export class CaseServe {
         return mgr.execSql(sql, [id]);
     }
 
+    getCaseVolVisitGrpId(VolVisitGrpId) {
+        var mgr = DBMgr.GetInstance();
+        var sql = "select * from tb_Case where VolVisitGrpId=?";
+        return mgr.execSql(sql, [VolVisitGrpId]);
+    }
+
     getAllCaseList() {
         var mgr = DBMgr.GetInstance();
-        var sql = "select * from tb_Case ";
+        var sql = "select * from tb_Case  ";
         return mgr.execSql(sql);
     }
 
@@ -21,10 +27,10 @@ export class CaseServe {
         return mgr.execSql(sql);
     }
 
-    addCase(CaseId,CaseNo,QRCode,ChiName_Disply,Illness_Disply,OtherIllness_Disply,CarePlan_Disply,Height) {
+    addCase(CaseId,CaseNo,QRCode,ChiName_Disply,Illness_Disply,OtherIllness_Disply,CarePlan_Disply,Height,VolVisitGrpId) {
         var mgr = DBMgr.GetInstance();
-        var sql = "insert into tb_Case(CaseId,CaseNo,QRCode,ChiName_Disply,Illness_Disply,OtherIllness_Disply,CarePlan_Disply,Height) values (?,?,?,?,?,?,?,?)";
-        return mgr.execSql(sql,[CaseId,CaseNo,QRCode,ChiName_Disply,Illness_Disply,OtherIllness_Disply,CarePlan_Disply,Height]);
+        var sql = "insert into tb_Case(CaseId,CaseNo,QRCode,ChiName_Disply,Illness_Disply,OtherIllness_Disply,CarePlan_Disply,Height,VolVisitGrpId) values (?,?,?,?,?,?,?,?,?)";
+        return mgr.execSql(sql,[CaseId,CaseNo,QRCode,ChiName_Disply,Illness_Disply,OtherIllness_Disply,CarePlan_Disply,Height,VolVisitGrpId]);
     }
 
     deleteCase(){

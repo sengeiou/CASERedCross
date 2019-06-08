@@ -11,6 +11,11 @@ export class MedicalRecordServe {
         var sql = "select * from tb_MedicalRecord where CaseId=?";
         return mgr.execSql(sql,[CaseId]);
     }
+    getAllMedicalRecor_SavedStatus(SavedStatus) {
+        var mgr = DBMgr.GetInstance();
+        var sql = "select * from tb_MedicalRecord where SavedStatus=?";
+        return mgr.execSql(sql,[SavedStatus]);
+    }
 
     addMedicalRecord(AppointmentDate,AppointmentTime,Description,Reason,Hosp,Specialty,CaseId){
         var mgr = DBMgr.GetInstance();

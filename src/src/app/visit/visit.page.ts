@@ -7,6 +7,7 @@ import { AppUtil } from '../app.util';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CaseServe } from 'src/mgrServe/CaseServe';
 import { VisitServe } from 'src/mgrServe/VisitServe';
+import { VolunteerServr } from 'src/mgrServe/VolunteerServr';
 
 @Component({
   selector: 'app-visit',
@@ -26,6 +27,7 @@ export class VisitPage extends AppBase {
     this.headerscroptshow = 480;
 
     this.visit = {};
+    this.casedata={};
 
   }
   ScheduleDate = '';//计划日期
@@ -103,10 +105,22 @@ export class VisitPage extends AppBase {
   onMyLoad() {
     //参数
     this.params;
+    this.getVolunteerList()
   }
   onMyShow() {
     this.getCase()
     this.getVisitId()
+    if(AppBase.LastQrcode!=''){
+      this.qrcodeHandle(AppBase.LastQrcode);
+      AppBase.LastQrcode="";
+      return;
+    }
+  }
+
+  
+
+  qrcodeHandle(code){
+    alert(code);
   }
   LocalId = 0;
   casedata = null;
@@ -139,6 +153,17 @@ export class VisitPage extends AppBase {
         console.log(data);
       })
     }
+  }
+
+  Volunteer = [];
+  getVolunteerList() {
+    var volunteerServr = new VolunteerServr();
+    volunteerServr.getAllVolunteerList().then((e) => {
+      if (e.res.rows.length > 0) {
+        console.log(Array.from(e.res.rows))
+        this.Volunteer = Array.from(e.res.rows)
+      }
+    })
   }
 
 
@@ -458,6 +483,6 @@ export class VisitPage extends AppBase {
     this.navigate('heart-rat', { caseid: this.params.caseID });
   }
   scan(){
-
+    this.navigate("qrcodescan");
   }
 }

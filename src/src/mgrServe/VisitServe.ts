@@ -5,9 +5,16 @@ export class VisitServe {
 
     getVisitId(id) {
         var mgr = DBMgr.GetInstance();
-        var sql = "select * from tb_home_visit where LocalId=?";
+        var sql = "select * from tb_home_visit where LocalId=? order by ScheduleDate desc";
         // var sql = "DELETE FROM tb_home_visit"; 
         return mgr.execSql(sql, [id]);
+    }
+
+    getVisit_SavedStatus(SavedStatus){
+        var mgr = DBMgr.GetInstance();
+        var sql = "select * from tb_home_visit where SavedStatus=?";
+     
+        return mgr.execSql(sql, [SavedStatus]);
     }
 
     getAllVisitList() {
@@ -25,7 +32,7 @@ export class VisitServe {
 
     getVisitCaseId(CaseId) {
         var mgr = DBMgr.GetInstance();
-        var sql = "select LocalId,ScheduleDate,SavedStatus from tb_home_visit where CaseId=?";
+        var sql = "select LocalId,ScheduleDate,SavedStatus from tb_home_visit where CaseId=? order by ScheduleDate desc";
         return mgr.execSql(sql, [CaseId]);
     }
 
@@ -44,7 +51,7 @@ export class VisitServe {
     addVisit( Bmi, CaseId, CategoryTopic1, CategoryTopic2, CategoryTopic3,  EmotionAssessment, EmotionAssessmentRemarks, Hip,  LifeStyleMeasureBloodPressure, LifeStyleMeasureBloodSuger, LifeStyleMeasureBpLocation, LifeStyleMeasureBpNoOfTime, LifeStyleMeasureBpPeriod, LifeStyleMeasureBsLocation, LifeStyleMeasureBsNoOfTime, LifeStyleMeasureBsPeriod, LifeStyleQuestion1, LifeStyleQuestion2, LifeStyleQuestion3, LifeStyleQuestion4, LifeStyleQuestion5, LifeStyleQuestion6, Location, LocationRemarks, OtherAccident, OtherAccidentNoOfDay, OtherHospDisbete, OtherHospDisbeteNoOfDay, OtherHospHighBp, OtherHospHighBpNoOfDay, OtherHospOtherIllness, OtherHospOtherIllnessNoOfDay, OtherRemarks, OtherSpecialNeed, OtherSpecialNeedService, ScheduleDate,  ScheduleTime, Status, TaskId,   VisitDate,  VisitDetailIndoor, VisitDetailIndoorRemarks, VisitDetailOther, VisitDetailOutdoor, VisitDetailOutdoorRemarks, VisitEndTime, VisitId, VisitStartTime, VisitStatus, VisitStatusRemarks, WHRatio, Waist, Weight) {
 
         var mgr = DBMgr.GetInstance();
-        var sql = "insert into tb_home_visit ( Bmi, CaseId, CategoryTopic1, CategoryTopic2, CategoryTopic3, EmotionAssessment, EmotionAssessmentRemarks,  Hip, LifeStyleMeasureBloodPressure, LifeStyleMeasureBloodSuger, LifeStyleMeasureBpLocation, LifeStyleMeasureBpNoOfTime, LifeStyleMeasureBpPeriod, LifeStyleMeasureBsLocation, LifeStyleMeasureBsNoOfTime, LifeStyleMeasureBsPeriod, LifeStyleQuestion1, LifeStyleQuestion2, LifeStyleQuestion3, LifeStyleQuestion4, LifeStyleQuestion5,LifeStyleQuestion6,Location, LocationRemarks, OtherAccident, OtherAccidentNoOfDay,  OtherHospDisbete,OtherHospDisbeteNoOfDay,OtherHospHighBp,OtherHospHighBpNoOfDay,OtherHospOtherIllness,OtherHospOtherIllnessNoOfDay,OtherRemarks,OtherSpecialNeed,OtherSpecialNeedService,ScheduleDate,ScheduleTime,Status,TaskId,VisitDate,VisitDetailIndoor, VisitDetailIndoorRemarks, VisitDetailOther,VisitDetailOutdoor,VisitDetailOutdoorRemarks,VisitEndTime,VisitId,VisitStartTime,VisitStatus,VisitStatusRemarks,WHRatio ,Waist, Weight) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        var sql = "insert into tb_home_visit ( Bmi, CaseId, CategoryTopic1, CategoryTopic2, CategoryTopic3, EmotionAssessment, EmotionAssessmentRemarks,  Hip, LifeStyleMeasureBloodPressure, LifeStyleMeasureBloodSuger, LifeStyleMeasureBpLocation, LifeStyleMeasureBpNoOfTime, LifeStyleMeasureBpPeriod, LifeStyleMeasureBsLocation, LifeStyleMeasureBsNoOfTime, LifeStyleMeasureBsPeriod, LifeStyleQuestion1, LifeStyleQuestion2, LifeStyleQuestion3, LifeStyleQuestion4, LifeStyleQuestion5,LifeStyleQuestion6,Location, LocationRemarks, OtherAccident, OtherAccidentNoOfDay,  OtherHospDisbete,OtherHospDisbeteNoOfDay,OtherHospHighBp,OtherHospHighBpNoOfDay,OtherHospOtherIllness,OtherHospOtherIllnessNoOfDay,OtherRemarks,OtherSpecialNeed,OtherSpecialNeedService,ScheduleDate,ScheduleTime,Status,TaskId,VisitDate,VisitDetailIndoor, VisitDetailIndoorRemarks, VisitDetailOther,VisitDetailOutdoor,VisitDetailOutdoorRemarks,VisitEndTime,VisitId,VisitStartTime,VisitStatus,VisitStatusRemarks,WHRatio ,Waist, Weight,SavedStatus) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,0)";
 
         return mgr.execSql(sql, [ Bmi, CaseId, CategoryTopic1, CategoryTopic2, CategoryTopic3, EmotionAssessment, EmotionAssessmentRemarks,  Hip,  LifeStyleMeasureBloodPressure, LifeStyleMeasureBloodSuger, LifeStyleMeasureBpLocation, LifeStyleMeasureBpNoOfTime, LifeStyleMeasureBpPeriod, LifeStyleMeasureBsLocation, LifeStyleMeasureBsNoOfTime, LifeStyleMeasureBsPeriod, LifeStyleQuestion1, LifeStyleQuestion2, LifeStyleQuestion3, LifeStyleQuestion4, LifeStyleQuestion5, LifeStyleQuestion6, Location, LocationRemarks, OtherAccident, OtherAccidentNoOfDay, OtherHospDisbete, OtherHospDisbeteNoOfDay, OtherHospHighBp, OtherHospHighBpNoOfDay, OtherHospOtherIllness, OtherHospOtherIllnessNoOfDay, OtherRemarks, OtherSpecialNeed, OtherSpecialNeedService, ScheduleDate,  ScheduleTime, Status, TaskId,  VisitDate,  VisitDetailIndoor, VisitDetailIndoorRemarks, VisitDetailOther, VisitDetailOutdoor, VisitDetailOutdoorRemarks, VisitEndTime, VisitId, VisitStartTime, VisitStatus, VisitStatusRemarks, WHRatio, Waist, Weight]);
     }
