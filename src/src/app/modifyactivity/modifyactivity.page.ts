@@ -11,12 +11,12 @@ import { VolunteerServr } from 'src/mgrServe/VolunteerServr';
 import { ServiceApi } from 'src/providers/service.api';
 
 @Component({
-  selector: 'app-activity',
-  templateUrl: './activity.page.html',
-  styleUrls: ['./activity.page.scss'],
+  selector: 'app-modifyactivity',
+  templateUrl: './modifyactivity.page.html',
+  styleUrls: ['./modifyactivity.page.scss'],
   providers: [ServiceApi]
 })
-export class ActivityPage extends AppBase {
+export class ModifyactivityPage extends AppBase {
 
   constructor(public router: Router,
     public navCtrl: NavController,
@@ -52,8 +52,10 @@ export class ActivityPage extends AppBase {
   Remarks = '';
   ActTypes = '';
 
+  Volunteerlist = [];
+  Volunteerlist_show = ''
+
   disabled = true;
-  PresentVolunteer_show='';
 
   actDetailTypelist = [{
     actDetailType: false, value: 1
@@ -90,7 +92,6 @@ export class ActivityPage extends AppBase {
       var casedata = e.res.rows;
       var data = Array.from(casedata)[0]
       this.casedata = data;
-      
       console.log(data)
     })
   }
@@ -104,6 +105,49 @@ export class ActivityPage extends AppBase {
         var casedata = e.res.rows;
         var data = Array.from(casedata)[0]
         this.activity = data;
+
+        var Volunteerlist = this.activity.PresentVolunteer.split(',');
+
+        console.log(Volunteerlist)
+        // return
+        var volunteerServr = new VolunteerServr();
+        for (var i = 0; i < Volunteerlist.length; i++) {
+          console.log(Volunteerlist[i])
+          volunteerServr.getVolunteerId(Volunteerlist[i]).then((e) => {
+            console.log(e)
+            var data = Array.from(e.res.rows)[0]
+            console.log(data)
+            if (data) {
+              if (this.Volunteerlist_show == '') {
+                this.Volunteerlist_show = data['VolunteerName'];
+              } else {
+                this.Volunteerlist_show = this.Volunteerlist_show + ',' + data['VolunteerName'];
+              }
+            }
+
+          })
+        }
+
+        var ActDetailTypelist = this.activity.ActDetailType.split(',');
+        for (var i = 0; i < ActDetailTypelist.length; i++) {
+          console.log(ActDetailTypelist[i])
+          if (ActDetailTypelist[i] == 1) {
+            this.actDetailTypelist[0].actDetailType = true;
+          }
+          if (ActDetailTypelist[i] == 2) {
+            this.actDetailTypelist[1].actDetailType = true;
+          }
+          if (ActDetailTypelist[i] == 3) {
+            this.actDetailTypelist[2].actDetailType = true;
+          }
+          if (ActDetailTypelist[i] == 4) {
+            this.actDetailTypelist[3].actDetailType = true;
+          }
+          if (ActDetailTypelist[i] == 5) {
+            this.actDetailTypelist[4].actDetailType = true;
+          }
+        }
+
         console.log(data);
       })
     }
@@ -203,6 +247,25 @@ export class ActivityPage extends AppBase {
   saveActivity() {
     // alert(this.actDetailTypelist[0].actDetailType1);
     // return;
+    this.activityStartTime = AppUtil.FormatTime(new Date(this.activityStartTime));
+    this.activityEndTime = AppUtil.FormatTime(new Date(this.activityEndTime));
+
+    console.log(this.activityStartTime)
+    console.log(this.activityEndTime)
+    // return
+    this.activityDate = this.activityDate ? this.activityDate : this.activity.ActDate
+    this.activityStartTime = this.activityStartTime ? this.activityStartTime : this.activity.ActStartTime
+    this.activityEndTime = this.activityEndTime ? this.activityEndTime : this.activity.ActEndTime
+    this.presentVolunteer = this.presentVolunteer ? this.presentVolunteer : this.activity.ActDetailType
+    this.actType = this.actType ? this.actType : this.activity.ActType
+
+    this.remarks1 = this.remarks1 ? this.remarks1 : this.activity.Remarks1
+    this.remarks2 = this.remarks2 ? this.remarks2 : this.activity.remarks2
+    this.remarks3 = this.remarks3 ? this.remarks3 : this.activity.Remarks3
+    this.remarks4 = this.remarks4 ? this.remarks4 : this.activity.Remarks4
+    this.otherActRemarks = this.otherActRemarks ? this.otherActRemarks : this.activity.OtherActRemarks
+    this.otherContent = this.otherContent ? this.otherContent : this.activity.Remarks
+
     var activity = new ActivityServe();
     if (this.activityDate == '') {
       this.toast('你沒有輸入活動日期');
@@ -221,19 +284,29 @@ export class ActivityPage extends AppBase {
       }
     }
     if (this.actType == 1) {
+
       for (var i = 0; i < this.actDetailTypelist.length; i++) {
         if (this.actDetailTypelist[i].actDetailType == true) {
-          if(this.activityDetailType==''){
-            this.activityDetailType=String(this.actDetailTypelist[i].value)  ;
-          }else{
-            this.activityDetailType = this.activityDetailType+ ',' + this.actDetailTypelist[i].value 
+          if (this.activityDetailType == '') {
+            this.activityDetailType = String(this.actDetailTypelist[i].value);
+          } else {
+            this.activityDetailType = this.activityDetailType + ',' + this.actDetailTypelist[i].value
           }
-         
+
         }
       }
       console.log(this.activityDetailType)
+      this.activityDetailType = this.activityDetailType ? this.activityDetailType : this.activity.ActDetailType
+      this.otherActRemarks = ''
       // return;
+    } else {
+      this.activityDetailType = '';
+      this.remarks1 = ''
+      this.remarks2 = ''
+      this.remarks3 = ''
+      this.remarks4 = ''
     }
+
 
     // if (!this.presentVolunteer) {
     //   this.toast('你沒有出席義工一欄');
@@ -266,23 +339,26 @@ export class ActivityPage extends AppBase {
 
 
     this.activityDate = AppUtil.FormatDate(new Date(this.activityDate));
-    this.activityStartTime = AppUtil.FormatTime(new Date(this.activityStartTime));
-    this.activityEndTime = AppUtil.FormatTime(new Date(this.activityEndTime));
+  
+
     this.LocalId = this.params.LocalId;
-    console.log(this.LocalId, this.params.caseID, this.activityDate, this.activityStartTime, this.activityEndTime, this.presentVolunteer, this.actType, this.activityDetailType, this.remarks1, this.remarks2, this.remarks3, this.remarks4, this.otherActRemarks, this.otherContent)
-    // return;
-    activity.saveActivity(this.LocalId, this.params.caseID, this.activityDate, this.activityStartTime, this.activityEndTime, this.presentVolunteer, this.actType, this.activityDetailType, this.remarks1, this.remarks2, this.remarks3, this.remarks4, this.otherActRemarks, this.otherContent).then((e) => {
+
+
+
+    activity.saveActivity(this.LocalId, this.params.caseID, this.activityDate, this.activityStartTime, this.activityEndTime, this.presentVolunteer, this.actType, this.activityDetailType, this.remarks1, this.remarks2, this.remarks3, this.remarks4, this.otherActRemarks, this.Remarks).then((e) => {
       console.log(e)
       if (e) {
-        this.navigate("home", { id: this.params.UserId });
+        // this.navigate("home", { id: this.params.UserId });
+        // this.back();
         this.toast('資料提交成功');
+        this.back();
       }
     })
   }
 
+
   uploadActiveListWeb() {
-    console.log(this.LocalId)
-    // return
+
     if (this.LocalId == 0 || this.LocalId==undefined) {
       this.showConfirm('资料没有保存？请先保存', (e) => {
 
@@ -305,8 +381,4 @@ export class ActivityPage extends AppBase {
     }
   }
 
-  
-
 }
-
-

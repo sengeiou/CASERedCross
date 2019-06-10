@@ -158,6 +158,11 @@ export class HomePage extends AppBase {
     this.navigate('activity', { caseID: caseID, LocalId: LocalId, UserId: this.params.id });
   }
 
+  modifyactivity(caseID, LocalId) {
+    console.log(caseID, LocalId);
+    this.navigate('modifyactivity', { caseID: caseID, LocalId: LocalId, UserId: this.params.id });
+  }
+
   visit(caseID, LocalId) {
     console.log(caseID, LocalId)
     this.navigate('visit', { caseID: caseID, LocalId: LocalId, UserId: this.params.id });

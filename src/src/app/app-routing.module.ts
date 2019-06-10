@@ -15,7 +15,9 @@ const routes: Routes = [
   { path: 'databasedemo', loadChildren: './databasedemo/databasedemo.module#DatabasedemoPageModule' },
   { path: 'uploadimg', loadChildren: './uploadimg/uploadimg.module#UploadimgPageModule' },
   { path: 'heart-rat', loadChildren: './heart-rat/heart-rat.module#HeartRatPageModule' },
-  { path: 'wangluo', loadChildren: './wangluo/wangluo.module#WangluoPageModule' },
+  { path: 'wangluo', loadChildren: './wangluo/wangluo.module#WangluoPageModule' },  { path: 'modifyactivity', loadChildren: './modifyactivity/modifyactivity.module#ModifyactivityPageModule' },
+  { path: 'modifyphone', loadChildren: './modifyphone/modifyphone.module#ModifyphonePageModule' },
+
 ];
 
 @NgModule({

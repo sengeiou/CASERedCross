@@ -101,7 +101,7 @@
         <div style="position:absolute;margin-left:76px;background:transparent" class="aaa">
           <ion-select multiple="true" *ngIf="activity.SavedStatus!=0 "
             style="position:absolute;background:transparent;opacity: 0;" [(ngModel)]="presentVolunteer">
-            <ion-select-option *ngFor="let item of Volunteer;let idx=index;" value="{{item.VolunteerName}}">
+            <ion-select-option *ngFor="let item of Volunteer;let idx=index;" value="{{item.VolId}}">
               {{item.VolunteerName}}</ion-select-option>
           </ion-select>
         </div>
@@ -110,21 +110,13 @@
       <div class=" margin-top-10">
         <div class="flex-1">
           <div class="textarea2 radius-2 bg-white h7-5 padding-5" style="width:100%;" *ngIf="activity.SavedStatus==0">
-            {{activity.presentVolunteer}}
+            {{activity.presentVolunteers}}
           </div>
 
           <div class="textarea2 radius-2 bg-white h7-5 padding-5" style="width:100%;" *ngIf="activity.SavedStatus!=0 ">
             {{presentVolunteer}}
           </div>
-          <!-- <ion-list *ngIf="activity.SavedStatus!=0">
-            <ion-item>
-              <ion-select multiple="true" [(ngModel)]="presentVolunteer">
-                <ion-select-option value="风">风</ion-select-option>
-                <ion-select-option value="55"> 55 </ion-select-option>
-                <ion-select-option value="66"> 66 </ion-select-option>
-              </ion-select>
-            </ion-item>
-          </ion-list> -->
+          
           <!-- <textarea class="textarea2 radius-2" style="width:100%;"></textarea> -->
         </div>
 
@@ -148,7 +140,7 @@
               <div class=" margin-top-10 flex-row flex-center">
                 <!-- <input type="radio" name="sex"  (click)="getActDetail('參觀病人資源中心')" checked="{{activity.ActDetailType=='參觀病人資源中心'?'1':''}}"
                 class="radio " />參觀病人資源中心 -->
-                <ion-checkbox class="radio " color="secondary" name="sex"  [checked]='actDetailTypelist[0].actDetailType==true' (ionChange)='actDetailTypelist[0].actDetailType1=$event.detail.checked'
+                <ion-checkbox class="radio " color="secondary" name="sex"  [checked]='actDetailTypelist[0].actDetailType==true' (ionChange)='actDetailTypelist[0].actDetailType=$event.detail.checked'
                    disabled='{{disabled}}' ></ion-checkbox> 參觀病人資源中心
 
               </div>
@@ -246,7 +238,7 @@
     <div class="flex-1"></div>
     <div class="flex-row">
       <div class="txt-blue margin-right-40" (click)='saveActivity()'>保存</div>
-      <div class="txt-blue">上傳</div>
+      <div class="txt-blue" (click)='uploadActiveListWeb()'>上傳</div>
     </div>
     <div class="flex-1"></div>
   </div>

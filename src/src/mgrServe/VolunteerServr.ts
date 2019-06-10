@@ -14,6 +14,8 @@ export class VolunteerServr {
         return mgr.execSql(sql, [VolId]);
     }
 
+   
+
     addVolunteer(VolId,VolunteerName) {
         var mgr = DBMgr.GetInstance();
         var sql = "insert into tb_Volunteer(VolId,VolunteerName) values (?,?)";

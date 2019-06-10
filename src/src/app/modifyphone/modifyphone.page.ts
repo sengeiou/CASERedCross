@@ -13,12 +13,11 @@ import { ServiceApi } from 'src/providers/service.api';
 import { VolunteerServr } from 'src/mgrServe/VolunteerServr';
 
 @Component({
-  selector: 'app-phone',
-  templateUrl: './phone.page.html',
-  styleUrls: ['./phone.page.scss'],
-  providers: [ServiceApi]
+  selector: 'app-modifyphone',
+  templateUrl: './modifyphone.page.html',
+  styleUrls: ['./modifyphone.page.scss'],
 })
-export class PhonePage extends AppBase {
+export class ModifyphonePage extends AppBase {
 
   constructor(public router: Router,
     public navCtrl: NavController,
@@ -124,11 +123,6 @@ export class PhonePage extends AppBase {
   getDetail(e) {
     console.log(e)
     this.Detail = e;
-  }
-
-  getLiaison(e){
-    console.log(e)
-    this.CannotContact=e;
   }
 
   savePhone() {

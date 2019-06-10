@@ -87,7 +87,7 @@ export class TestPage extends AppBase {
   VolId = 0;
 
   login() {
-
+    // alert('开始了')
     if (this.number.trim() == "") {
       this.toast('義工編號不能留空');
       return;
@@ -99,6 +99,7 @@ export class TestPage extends AppBase {
 
     console.log(this.number, this.password);
     if (this.wangluo == 'none') {
+      // alert('离线登录')
       var lastlogininfo = null;
       lastlogininfo = window.localStorage.getItem("lastlogininfo");
       if (lastlogininfo == null) {
@@ -118,6 +119,7 @@ export class TestPage extends AppBase {
         }
       }
     } else {
+      // alert('在线登录')
       var userServe = new UserServe();
       this.api.VolunteerLogin(this.number, this.password).then((ret) => {
         // console.log(ret);

@@ -73,12 +73,12 @@
             <div class="flex-row" style="width: 500px">
               <div class="padding-5  border-black radius-5 height margin-right-10"
                 *ngFor="let itemActivity of item.activityList;let idx=index;"
-                (click)="activity(item.CaseId,itemActivity.LocalId)">
+                (click)="modifyactivity(item.CaseId,itemActivity.LocalId)">
                 <div class="h7-5">預約日期</div>
                 <div class="margin-top-10 h7-5">
                   {{itemActivity.ActDate}}
                 </div>
-                <div class="margin-top-10 h7-5" *ngIf="itemActivity.SavedStatus=='1'">未上傳</div>
+                <div class="margin-top-10 h7-5" *ngIf="itemActivity.SavedStatus!='0'">未上傳</div>
                 <div class="margin-top-10 h7-5" *ngIf="itemActivity.SavedStatus=='0'">已上傳</div>
               </div>
             </div>
