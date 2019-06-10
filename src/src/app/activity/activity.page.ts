@@ -47,6 +47,7 @@ export class ActivityPage extends AppBase {
   otherActRemarks = '';
   otherContent = '';
   Remarks = '';
+  ActTypes = '';
 
   disabled = true;
 
@@ -179,7 +180,7 @@ export class ActivityPage extends AppBase {
       this.actDetailTypelist[2].actDetailType = false;
     } else {
       this.actDetailType3 = true;
-      this.actDetailTypelist[2].actDetailType= true;
+      this.actDetailTypelist[2].actDetailType = true;
     }
 
   }
@@ -214,10 +215,10 @@ export class ActivityPage extends AppBase {
         return;
       }
     }
-    if(this.actType==1){
-      for(var i=0;i<this.actDetailTypelist.length;i++){
-        if(this.actDetailTypelist[i].actDetailType==true){
-          // this.actType=+this.actDetailTypelist[i].actDetailType
+    if (this.actType == 1) {
+      for (var i = 0; i < this.actDetailTypelist.length; i++) {
+        if (this.actDetailTypelist[i].actDetailType == true) {
+          this.ActTypes = this.actDetailTypelist[i].value + ','
         }
       }
     }
