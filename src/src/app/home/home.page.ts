@@ -19,12 +19,16 @@ import { WHRServe } from 'src/mgrServe/WHRServe';
 import { HeartRateServe } from 'src/mgrServe/HeartRateServe';
 import { MedicalRecordServe } from 'src/mgrServe/MedicalRecordServe';
 import { Network } from '@ionic-native/network/ngx';
+import { ImageServe } from 'src/mgrServe/ImageServe';
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import { File } from '@ionic-native/file/ngx';
+import { Base64 } from '@ionic-native/base64/ngx';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  providers: [ServiceApi]
+  providers: [ServiceApi,FileTransfer,File,Base64]
 })
 export class HomePage extends AppBase {
 
@@ -37,7 +41,9 @@ export class HomePage extends AppBase {
     public sanitizer: DomSanitizer,
     public api: ServiceApi,
     public network: Network,
-    public loadingController: LoadingController
+    public loadingController: LoadingController,
+    private transfer: FileTransfer, private file: File,
+    private base64: Base64
   ) {
     super(router, navCtrl, modalCtrl, toastCtrl, alertCtrl, activeRoute);
     this.headerscroptshow = 480;
@@ -283,6 +289,8 @@ export class HomePage extends AppBase {
     phone.deletePhone()
     var activity = new ActivityServe();
     activity.deleteActivity()
+    var imageServe = new ImageServe();
+    imageServe.deleteImage();
     for (var i = 0; i < this.Volunteer.length; i++) {
       this.setVolunteer(this.Volunteer[i]);
     }
@@ -435,7 +443,7 @@ export class HomePage extends AppBase {
   }
   setCase(kv) {
     var caseServe = new CaseServe();
-    caseServe.addCase(kv.CaseId, kv.CaseNo, kv.QRCode, kv.ChiName_Disply, kv.Illness_Disply, kv.OtherIllness_Disply, kv.CarePlan_Disply, kv.Height,this.params.id ).then((e) => {
+    caseServe.addCase(kv.CaseId, kv.CaseNo, kv.QRCode, kv.ChiName_Disply, kv.Illness_Disply, kv.OtherIllness_Disply, kv.CarePlan_Disply, kv.Height, this.params.id).then((e) => {
       console.log(e);
     });
   }
@@ -456,10 +464,38 @@ export class HomePage extends AppBase {
     console.log(kv)
     var ScheduleDate = AppUtil.FormatDate(new Date(kv.ScheduleDate));
     var visit = new VisitServe();
-    visit.addVisit(kv.Bmi, kv.CaseId, kv.CategoryTopic1, kv.CategoryTopic2, kv.CategoryTopic3, kv.EmotionAssessment, kv.EmotionAssessmentRemarks, kv.Hip, kv.LifeStyleMeasureBloodPressure, kv.LifeStyleMeasureBloodSuger, kv.LifeStyleMeasureBpLocation, kv.LifeStyleMeasureBpNoOfTime, kv.LifeStyleMeasureBpPeriod, kv.LifeStyleMeasureBsLocation, kv.LifeStyleMeasureBsNoOfTime, kv.LifeStyleMeasureBsPeriod, kv.LifeStyleQuestion1, kv.LifeStyleQuestion2, kv.LifeStyleQuestion3, kv.LifeStyleQuestion4, kv.LifeStyleQuestion5, kv.LifeStyleQuestion6, kv.Location, kv.LocationRemarks, kv.OtherAccident, kv.OtherAccidentNoOfDay, kv.OtherHospDisbete, kv.OtherHospDisbeteNoOfDay, kv.OtherHospHighBp, kv.OtherHospHighBpNoOfDay, kv.OtherHospOtherIllness, kv.OtherHospOtherIllnessNoOfDay, kv.OtherRemarks, kv.OtherSpecialNeed, kv.OtherSpecialNeedService, ScheduleDate, kv.ScheduleTime, kv.Status, kv.TaskId, kv.VisitDate_Disply, kv.VisitDetailIndoor, kv.VisitDetailIndoorRemarks, kv.VisitDetailOther, kv.VisitDetailOutdoor, kv.VisitDetailOutdoorRemarks, kv.VisitEndTime, kv.VisitId, kv.VisitStartTime, kv.VisitStatus, kv.VisitStatusRemarks, kv.WHRatio, kv.Waist, kv.Weight).then((e) => [
-      console.log(e)
-    ])
+    visit.addVisit(kv.Bmi, kv.CaseId, kv.CategoryTopic1, kv.CategoryTopic2,
+      kv.CategoryTopic3, kv.EmotionAssessment, kv.EmotionAssessmentRemarks,
+      kv.Hip, kv.LifeStyleMeasureBloodPressure, kv.LifeStyleMeasureBloodSuger,
+      kv.LifeStyleMeasureBpLocation, kv.LifeStyleMeasureBpNoOfTime, kv.LifeStyleMeasureBpPeriod,
+      kv.LifeStyleMeasureBsLocation, kv.LifeStyleMeasureBsNoOfTime, kv.LifeStyleMeasureBsPeriod,
+      kv.LifeStyleQuestion1, kv.LifeStyleQuestion2, kv.LifeStyleQuestion3, kv.LifeStyleQuestion4,
+      kv.LifeStyleQuestion5, kv.LifeStyleQuestion6, kv.Location, kv.LocationRemarks, kv.OtherAccident,
+      kv.OtherAccidentNoOfDay, kv.OtherHospDisbete, kv.OtherHospDisbeteNoOfDay, kv.OtherHospHighBp,
+      kv.OtherHospHighBpNoOfDay, kv.OtherHospOtherIllness, kv.OtherHospOtherIllnessNoOfDay,
+      kv.OtherRemarks, kv.OtherSpecialNeed, kv.OtherSpecialNeedService, ScheduleDate, kv.ScheduleTime,
+      kv.Status, kv.TaskId, kv.VisitDate_Disply, kv.VisitDetailIndoor, kv.VisitDetailIndoorRemarks,
+      kv.VisitDetailOther, kv.VisitDetailOutdoor, kv.VisitDetailOutdoorRemarks, kv.VisitEndTime,
+      kv.VisitId, kv.VisitStartTime, kv.VisitStatus, kv.VisitStatusRemarks, kv.WHRatio, kv.Waist,
+      kv.Weight).then((e) => {
+        console.log(e);
+      });
 
+    var objHomeVisitUploadImgAppInfoList = kv.UploadImgInfoList.objHomeVisitUploadImgAppInfo;
+    //console.error(objHomeVisitUploadImgAppInfoList);
+    var imgserve = new ImageServe();
+    if (objHomeVisitUploadImgAppInfoList != undefined
+    ) {
+      if (Array.isArray(objHomeVisitUploadImgAppInfoList)) {
+        for (let item of objHomeVisitUploadImgAppInfoList) {
+          imgserve.addImage(item.ImgId, item.VisitId, item.ImgPath,this.transfer,this.file,this.base64);
+        }
+      } else {
+        imgserve.addImage(objHomeVisitUploadImgAppInfoList.ImgId,
+          objHomeVisitUploadImgAppInfoList.VisitId,
+          objHomeVisitUploadImgAppInfoList.ImgPath,this.transfer,this.file,this.base64);
+      }
+    }
   }
 
   setActivityWeb(kv) {

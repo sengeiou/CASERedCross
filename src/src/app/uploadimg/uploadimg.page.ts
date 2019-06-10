@@ -7,7 +7,10 @@ import { AppUtil } from '../app.util';
 import { ActionSheetController } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
-import { FileTransfer } from '@ionic-native/file-transfer/ngx';
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import { File } from '@ionic-native/file/ngx';
+import { ImageServe } from 'src/mgrServe/ImageServe';
+import { Base64 } from '@ionic-native/base64/ngx';
 
 
 
@@ -15,7 +18,7 @@ import { FileTransfer } from '@ionic-native/file-transfer/ngx';
   selector: 'app-uploadimg',
   templateUrl: './uploadimg.page.html',
   styleUrls: ['./uploadimg.page.scss'],
-  providers: [Camera,FileTransfer]
+  providers: [Camera,FileTransfer,File,Base64]
 })
 export class UploadimgPage extends AppBase {
 
@@ -28,23 +31,35 @@ export class UploadimgPage extends AppBase {
     public actionSheetController: ActionSheetController,
     public camera:Camera,
     public transfer:FileTransfer,
-    public sanitizer: DomSanitizer) {
+    public sanitizer: DomSanitizer,
+    public base64:Base64
+    ) {
     super(router, navCtrl, modalCtrl, toastCtrl, alertCtrl, activeRoute);
     
     this.headerscroptshow = 480;
 
   }
-  list = [{
-    img:'../assets/icon/1.jpg',
-  }, {
-    img:'../assets/icon/1.jpg',
-  }]
+  list = []
   onMyLoad() {
     //参数
     this.params;
   }
   onMyShow() {
+    var imgserver=new ImageServe();
+    imgserver.getAllImageList().then(e=>{
+      var list = Array.from(e.res.rows);
+      for(var i=0;i<list.length;i++){
+        var item=null;
+        item=list[i];
+        // if(i==0){
+        //   alert(item.Base64ImgString);
+        // }
+        item.Base64ImgString=this.sanitizer.bypassSecurityTrustUrl(item.Base64ImgString);
 
+        list[i]=item;
+      }
+      this.list=list;
+    });
   }
 
   uploadimg() {
@@ -74,8 +89,10 @@ export class UploadimgPage extends AppBase {
               encodingType: this.camera.EncodingType.JPEG
             };
             this.camera.getPicture(options).then((imagepath) => {
-              this.uploadFile(this.transfer, imagepath, "member").then(photo => {
-                
+              this.base64.encodeFile(imagepath).then((code)=>{
+                alert(code);
+                alert("调用addImage的接口加到本地数据库");
+                this.onMyShow();
               });
             }, (err) => {
               // Handle error
@@ -96,9 +113,13 @@ export class UploadimgPage extends AppBase {
             };
 
             this.camera.getPicture(options).then((imagepath) => {
-              this.uploadFile(this.transfer, imagepath, "member").then(photo => {
-                
+              
+              this.base64.encodeFile(imagepath).then((code)=>{
+                alert(code);
+                alert("调用addImage的接口加到本地数据库");
+                this.onMyShow();
               });
+              
             }, (err) => {
               // Handle error
             });
@@ -107,6 +128,13 @@ export class UploadimgPage extends AppBase {
       ]
     });
     await actionSheet.present();
+  }
+
+  checkdata(){
+    var imgservice=new ImageServe();
+    imgservice.getAllImageList().then((res)=>{
+      console.log(res);
+    });
   }
 
 }
