@@ -476,6 +476,12 @@ export class VisitPage extends AppBase {
   }
 
   uploadimg(visitid) {
+    console.log(visitid)
+    // return
+    if(visitid<0){
+      this.toast('資料没有保存，请先保存!');
+      return;
+    }
     this.navigate('uploadimg', { visitid: visitid });
   }
 
