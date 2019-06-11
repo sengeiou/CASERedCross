@@ -64,8 +64,6 @@ export class AppUtil {
         var minute = AppUtil.ten2(date.getMinutes());
         var second = AppUtil.ten2(date.getSeconds());
 
-        // var v = year + "/" + month + "/" + datec + " " + hour + ":" + minute + ":" + second;
-        // var v = year + "/" + month + "/" + datec + " " + hour + ":" + minute;
         var v = datec + "-" + month + "-" + year + hour + ":" + minute;
         console.log("FormatDateTime=" + v);
         return v;
@@ -82,6 +80,11 @@ export class AppUtil {
 
     static FormatDate(val) {
         var date = AppUtil.FormatDateTime(val);
+        return date.substring(0, 10);
+    }
+
+    static FormatDate2(val) {
+        var date = AppUtil.FormatDateTime2(val);
         return date.substring(0, 10);
     }
     static FormatTime(val) {

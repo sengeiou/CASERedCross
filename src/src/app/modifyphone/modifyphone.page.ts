@@ -112,7 +112,7 @@ export class ModifyphonePage extends AppBase {
     var volunteerServr = new VolunteerServr();
     volunteerServr.getVolunteerId(this.params.UserId).then((e) => {
       console.log(e)
-      var data={}
+      var data = {}
       data = Array.from(e.res.rows)[0]
       console.log(data)
       this.Volunteer = data['VolId'];
@@ -184,18 +184,23 @@ export class ModifyphonePage extends AppBase {
       phone.getPhoneId(this.PhoneID).then((e) => {
         console.log(e)
         var datas = Array.from(e.res.rows);
-        console.log(datas[0])
-        console.log(datas[0]["CaseId"])
-        var data = datas[0];
+        var  hvLogList=[];
+        var activityLogList =[];
+        var phoneSupportLogList=datas;
+        var medicAppointLogList=[];
 
-        // if(data["SavedStatus"]!=0){
-        this.api.SavePhoneSupport(data["SupportId"], data["CaseId"], data["CallDate"], data["CallStartTime"], data["CallEndTime"], data["Detail"], data["DetailOther"], data["OtherRemark"], data["ResponsibleVol"], data["Status"], this.params.UserId).then((ret) => {
-
-          if (ret.Result == "true") {
-          } else {
-            this.toast('未能連線');
-          }
-        });
+        // if (datas["SavedStatus"] != 0) {
+          this.api.SaveAll(hvLogList,phoneSupportLogList,activityLogList,medicAppointLogList,this.params.UserId).then((ret) => {
+            if (ret.Result == 'true') {
+              this.api.ExecuteWorkingSet(ret.WorkingSetID, this.params.caseID, this.params.UserId).then(e => {
+                console.log(e)
+                if (e.Result== 'true') {
+                  this.toast('資料提交成功');
+                  this.back();
+                }
+              })
+            }
+          })
         // }
 
       })

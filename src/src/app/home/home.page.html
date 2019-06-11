@@ -30,7 +30,7 @@
               <div class="padding-5  border-black radius-5 height margin-right-10"
                 *ngFor="let itemVisit of item.visitList;let idx=index;" (click)='visit(item.CaseId,itemVisit.LocalId);'>
                 <div class="h7-5">預約日期:</div>
-                <div class="margin-top-10 h7-5">
+                <div class="margin-top-10 h7-5" style="width: 73px;">
                   {{itemVisit.ScheduleDate}}
                 </div>
                 <div class="margin-top-10 h7-5" *ngIf="itemVisit.SavedStatus=='1'">未上傳</div>
@@ -47,11 +47,11 @@
             src="../assets/icon/plus_icon.png" class="icon-15 margin-left-5" (click)='phone(item.CaseId)' /></div>
         <div class="flex-1">
           <div class="xgun">
-            <div class="flex-row" style="width: 510px">
-              <div class="padding-5  border-black radius-5 height margin-right-10"
+            <div class="flex-row" >
+              <div class="padding-5  border-black radius-5 height margin-right-10" 
                 *ngFor="let itemPhnoe of item.phoneList;let idx=index;" (click)='phone(item.CaseId,itemPhnoe.LocalId);'>
                 <div class="h7-5">預約日期:</div>
-                <div class="margin-top-10 h7-5">
+                <div class="margin-top-10 h7-5" style="width: 73px;">
                   {{itemPhnoe.CallDate}}
                 </div>
                 <div class="margin-top-10 h7-5" *ngIf="itemPhnoe.SavedStatus=='1'">未上傳</div>
@@ -75,7 +75,7 @@
                 *ngFor="let itemActivity of item.activityList;let idx=index;"
                 (click)="modifyactivity(item.CaseId,itemActivity.LocalId)">
                 <div class="h7-5">預約日期</div>
-                <div class="margin-top-10 h7-5">
+                <div class="margin-top-10 h7-5" style="width: 73px;">
                   {{itemActivity.ActDate}}
                 </div>
                 <div class="margin-top-10 h7-5" *ngIf="itemActivity.SavedStatus!='0'">未上傳</div>

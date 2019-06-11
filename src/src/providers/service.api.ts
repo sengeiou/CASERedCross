@@ -4,6 +4,7 @@ import { RequestOptions } from '@angular/http';
 import { ApiConfig } from '../app/api.config';
 import { X2JS } from 'src/mgr/X2JS';
 import { Network } from '@ionic-native/network/ngx';
+import { AppUtil } from '../app/app.util';
 @Injectable()
 export class ServiceApi {
 
@@ -255,7 +256,7 @@ export class ServiceApi {
             });
     }
 
-    public SaveAll(hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList) {
+    public SaveAll(hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList,userId) {
         var url = ApiConfig.getApiUrl();
         var data = { hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList };
         var headers = ApiConfig.GetHeader(url, data);
@@ -330,15 +331,33 @@ export class ServiceApi {
         // soapMessage += "<hvNewImgQty>0</hvNewImgQty>";
         // soapMessage += "</objAppHomeVisit>";
         for (var i = 0; i < hvLogList.length; i++) {
+            if(hvLogList[i].VisitDate){
+                var VisitDate= AppUtil.FormatDate2(new Date(hvLogList[i].VisitDate));
+            }else{
+                var VisitDate=''
+            }
+
+            if(hvLogList[i].VisitDate){
+                var VisitDate= AppUtil.FormatDate2(new Date(hvLogList[i].VisitDate));
+            }
+            
+            console.log(VisitDate)
+            var UlnarLength=0;
+            var DeletePicString='';
+            var hvImgKeepListStr=''
+            var hvNewImgQty=0
+            var ServHrs=0;
+            var hvuilList=[]
             soapMessage += "<objAppHomeVisit>";
-            soapMessage += "<ClientId>" + hvLogList[i].ClientId + "</ClientId>";
+            soapMessage += "<ClientId>" + userId + "</ClientId>";
             soapMessage += "<CaseId>" + hvLogList[i].CaseId + "</CaseId>";
             soapMessage += "<TaskId>" + hvLogList[i].TaskId + "</TaskId>";
             soapMessage += "<VisitId>" + hvLogList[i].VisitId + "</VisitId>";
-            soapMessage += "<VisitDate>" + hvLogList[i].VisitDate + "</VisitDate>";
+            // soapMessage += "<VisitDate>" + hvLogList[i].VisitDate + "</VisitDate>";
+            soapMessage += "<VisitDate>" + VisitDate + "</VisitDate>";
             soapMessage += "<VisitStartTime>" + hvLogList[i].VisitStartTime + "</VisitStartTime>";
             soapMessage += "<VisitEndTime>" + hvLogList[i].VisitEndTime + "</VisitEndTime>";
-            soapMessage += "<ServHrs>" + hvLogList[i].ServHrs + "</ServHrs>";
+            soapMessage += "<ServHrs>" + ServHrs + "</ServHrs>";
             soapMessage += "<Location>" + hvLogList[i].Location + "</Location>";
             soapMessage += "<LocationRemarks>" + hvLogList[i].LocationRemarks + "</LocationRemarks>";
             soapMessage += "<VisitStatus>" + hvLogList[i].VisitStatus + "</VisitStatus>";
@@ -351,7 +370,7 @@ export class ServiceApi {
             soapMessage += "<CategoryTopic1>" + hvLogList[i].CategoryTopic1 + "</CategoryTopic1>";
             soapMessage += "<CategoryTopic2>" + hvLogList[i].CategoryTopic2 + "</CategoryTopic2>";
             soapMessage += "<CategoryTopic3>" + hvLogList[i].CategoryTopic3 + "</CategoryTopic3>";
-            soapMessage += "<UlnarLength>" + hvLogList[i].UlnarLength + "</UlnarLength>";
+            soapMessage += "<UlnarLength>" + UlnarLength + "</UlnarLength>";
             soapMessage += "<Height>" + hvLogList[i].Height + "</Height>";
             soapMessage += "<Weight>" + hvLogList[i].Weight + "</Weight>";
             soapMessage += "<Bmi>" + hvLogList[i].Bmi + "</Bmi>";
@@ -386,21 +405,24 @@ export class ServiceApi {
             soapMessage += "<OtherSpecialNeedService>" + hvLogList[i].OtherSpecialNeedService + "</OtherSpecialNeedService>";
             soapMessage += "<OtherRemarks>" + hvLogList[i].OtherRemarks + "</OtherRemarks>";
             soapMessage += "<Status>" + hvLogList[i].Status + "</Status>";
-            soapMessage += "<DeletePicString>" + hvLogList[i].DeletePicString + "</DeletePicString>";
+            soapMessage += "<DeletePicString>" + DeletePicString + "</DeletePicString>";
             soapMessage += "<NeedsContent>" + hvLogList[i].NeedsContent + "</NeedsContent>";
-            soapMessage += "<hvuilList>" + hvLogList[i].hvuilList + "</hvuilList>";
-            soapMessage += "<hvImgKeepListStr>" + hvLogList[i].hvImgKeepListStr + "</hvImgKeepListStr>";
-            soapMessage += "<hvNewImgQty>" + hvLogList[i].hvNewImgQty + "</hvNewImgQty>";
+            soapMessage += "<hvuilList>" + hvuilList + "</hvuilList>";
+            soapMessage += "<hvImgKeepListStr>" + hvImgKeepListStr + "</hvImgKeepListStr>";
+            soapMessage += "<hvNewImgQty>" + hvNewImgQty + "</hvNewImgQty>";
             soapMessage += "</objAppHomeVisit>";
         }
         soapMessage += "</hvLogList>";
 
         soapMessage += "<activityLogList>";
         for (var i = 0; i < activityLogList.length; i++) {
+            var ActDate= AppUtil.FormatDate2(new Date(activityLogList[i].ActDate));
+            console.log(ActDate)
             soapMessage += "<tb_acticve_log_temp>";
             soapMessage += "<ActivityId>" + activityLogList[i].ActivityId + "</ActivityId>";
             soapMessage += "<CaseId>" + activityLogList[i].CaseId + "</CaseId>";
-            soapMessage += "<ActDate>11-06-2019</ActDate>";
+            // soapMessage += "<ActDate>" + activityLogList[i].ActDate + "</ActDate>";
+            soapMessage += "<ActDate>" + ActDate + "</ActDate>";
             soapMessage += "<ActStartTime>" + activityLogList[i].ActStartTime + "</ActStartTime>";
             soapMessage += "<ActEndTime>" + activityLogList[i].ActEndTime + "</ActEndTime>";
             soapMessage += "<ActType>" + activityLogList[i].ActType + "</ActType>";
@@ -436,10 +458,12 @@ export class ServiceApi {
 
         soapMessage += "<phoneSupportLogList>";
         for (var i = 0; i < phoneSupportLogList.length; i++) {
+            var CallDate= AppUtil.FormatDate2(new Date(phoneSupportLogList[i].CallDate));
+            console.log(CallDate)
             soapMessage += "<tb_phone_support_log_temp>";
             soapMessage += "<SupportId>" + phoneSupportLogList[i].SupportId + "</SupportId>";
             soapMessage += "<CaseId>" + phoneSupportLogList[i].CaseId + "</CaseId>";
-            soapMessage += "<CallDate>" + phoneSupportLogList[i].CallDate + "</CallDate>";
+            soapMessage += "<CallDate>03-06-2019</CallDate>";
             soapMessage += "<CallStartTime>" + phoneSupportLogList[i].CallStartTime + "</CallStartTime>";
             soapMessage += "<CallEndTime>" + phoneSupportLogList[i].CallEndTime + "</CallEndTime>";
             soapMessage += "<Detail>" + phoneSupportLogList[i].Detail + "</Detail>";
@@ -472,12 +496,13 @@ export class ServiceApi {
 
         soapMessage += "<medicAppointLogList>";
         for (var i = 0; i < medicAppointLogList.length; i++) {
+            var AppointmentDate= AppUtil.FormatDate2(new Date(medicAppointLogList[i].AppointmentDate));
             soapMessage += "<tb_medical_appointment_log_temp>";
             soapMessage += "<AppointmentId>" + medicAppointLogList[i].AppointmentId + "</AppointmentId>";
             soapMessage += "<Hosp>" + medicAppointLogList[i].Hosp + "</Hosp>";
             soapMessage += "<Specialty>" + medicAppointLogList[i].Specialty + "</Specialty>";
             soapMessage += "<Description>" + medicAppointLogList[i].Description + "</Description>";
-            soapMessage += "<AppointmentDate>" + medicAppointLogList[i].AppointmentDate + "</AppointmentDate>";
+            soapMessage += "<AppointmentDate>" + AppointmentDate + "</AppointmentDate>";
             soapMessage += "<AppointmentTime>" + medicAppointLogList[i].AppointmentTime + "</AppointmentTime>";
             soapMessage += "<Status>" + medicAppointLogList[i].Reason + "</Reason>";
             soapMessage += "<Reason>" + medicAppointLogList[i].Reason + "</Reason>";
@@ -501,7 +526,81 @@ export class ServiceApi {
         soapMessage += "</soap12:Body>";
         soapMessage += "</soap12:Envelope>";
         // let body = ApiConfig.GetPostXml("SavePhoneSupport",{"obj":{SupportId,CaseId}});
+
+        // soapMessage="<?xml version='1.0' encoding='utf-8'?>";
+        // soapMessage += "<soap12:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:soap12='http://www.w3.org/2003/05/soap-envelope'><soap12:Body><SaveAll xmlns='http://tempuri.org/'>";
+        // soapMessage += "<objSaveAll>";
+        // soapMessage += "<hvLogList>";
+        // soapMessage += "<objAppHomeVisit>";
+        // soapMessage += "<ClientId>38</ClientId>";
+        // soapMessage += "<CaseId>26</CaseId>";
+        // soapMessage += "<TaskId>0</TaskId>";
+        // soapMessage += "<VisitId>0</VisitId>";
+        // soapMessage += "<VisitDate>11-06-2019</VisitDate>";
+        // soapMessage += "<VisitStartTime></VisitStartTime>";
+        // soapMessage += "<VisitEndTime></VisitEndTime>";
+        // soapMessage += "<ServHrs>0</ServHrs>"; 
+        // soapMessage += "<Location>0</Location>";
+        // soapMessage += "<LocationRemarks></LocationRemarks>";
+        // soapMessage += "<VisitStatus>0</VisitStatus>";
+        // soapMessage += "<VisitStatusRemarks></VisitStatusRemarks>";
+        // soapMessage += "<VisitDetailIndoor></VisitDetailIndoor>";
+        // soapMessage += "<VisitDetailIndoorRemarks></VisitDetailIndoorRemarks>";
+        // soapMessage += "<VisitDetailOutdoor></VisitDetailOutdoor>";
+        // soapMessage += "<VisitDetailOutdoorRemarks></VisitDetailOutdoorRemarks>";
+        // soapMessage += "<VisitDetailOther></VisitDetailOther>";
+        // soapMessage += "<CategoryTopic1></CategoryTopic1>";
+        // soapMessage += "<CategoryTopic2></CategoryTopic2>";
+        // soapMessage += "<CategoryTopic3></CategoryTopic3>";
+        // soapMessage += "<UlnarLength>0</UlnarLength>";
+        // soapMessage += "<Height>1.59</Height>";
+        // soapMessage += "<Weight>0</Weight>";
+        // soapMessage += "<Bmi>0</Bmi>";
+        // soapMessage += "<Waist>0</Waist>";
+        // soapMessage += "<Hip>0</Hip>";
+        // soapMessage += "<WHRatio>0</WHRatio>";
+        // soapMessage += "<LifeStyleQuestion1>0</LifeStyleQuestion1>";
+        // soapMessage += "<LifeStyleQuestion2>0</LifeStyleQuestion2>";
+        // soapMessage += "<LifeStyleQuestion3>0</LifeStyleQuestion3>";
+        // soapMessage += "<LifeStyleQuestion4>0</LifeStyleQuestion4>";
+        // soapMessage += "<LifeStyleQuestion5>0</LifeStyleQuestion5>";
+        // soapMessage += "<LifeStyleQuestion6>0</LifeStyleQuestion6>";
+        // soapMessage += "<LifeStyleMeasureBloodSuger>0</LifeStyleMeasureBloodSuger>";
+        // soapMessage += "<LifeStyleMeasureBsLocation>0</LifeStyleMeasureBsLocation>";
+        // soapMessage += "<LifeStyleMeasureBsPeriod>0</LifeStyleMeasureBsPeriod>";
+        // soapMessage += "<LifeStyleMeasureBsNoOfTime>0</LifeStyleMeasureBsNoOfTime>";
+        // soapMessage += "<LifeStyleMeasureBloodPressure>0</LifeStyleMeasureBloodPressure>";
+        // soapMessage += "<LifeStyleMeasureBpLocation>0</LifeStyleMeasureBpLocation>";
+        // soapMessage += "<LifeStyleMeasureBpPeriod>0</LifeStyleMeasureBpPeriod>";
+        // soapMessage += "<LifeStyleMeasureBpNoOfTime>0</LifeStyleMeasureBpNoOfTime>";
+        // soapMessage += "<EmotionAssessment></EmotionAssessment>";
+        // soapMessage += "<EmotionAssessmentRemarks></EmotionAssessmentRemarks>";
+        // soapMessage += "<OtherHospDisbete>0</OtherHospDisbete>";
+        // soapMessage += "<OtherHospDisbeteNoOfDay>0</OtherHospDisbeteNoOfDay>";
+        // soapMessage += "<OtherHospHighBp>0</OtherHospHighBp>";
+        // soapMessage += "<OtherHospHighBpNoOfDay>0</OtherHospHighBpNoOfDay>";
+        // soapMessage += "<OtherHospOtherIllness>0</OtherHospOtherIllness>";
+        // soapMessage += "<OtherHospOtherIllnessNoOfDay>0</OtherHospOtherIllnessNoOfDay>";
+        // soapMessage += "<OtherAccident>0</OtherAccident>";
+        // soapMessage += "<OtherAccidentNoOfDay>0</OtherAccidentNoOfDay>";
+        // soapMessage += "<OtherSpecialNeed>0</OtherSpecialNeed>";
+        // soapMessage += "<OtherSpecialNeedService></OtherSpecialNeedService>";
+        // soapMessage += "<OtherRemarks></OtherRemarks>";
+        // soapMessage += "<Status>1</Status>";
+        // soapMessage += "<DeletePicString></DeletePicString>";
+        // soapMessage += "<NeedsContent></NeedsContent>";
+        // soapMessage += "<hvuilList></hvuilList>";
+        // soapMessage += "<hvImgKeepListStr></hvImgKeepListStr>";
+        // soapMessage += "<hvNewImgQty>0</hvNewImgQty>";
+        // soapMessage += "</objAppHomeVisit>";
+        // soapMessage += "</hvLogList>";
+        // soapMessage += "<activityLogList>";
+        // soapMessage += "</activityLogList>";
+        // soapMessage += "<phoneSupportLogList>";
+        // soapMessage += "</phoneSupportLogList>";
+        // soapMessage += "<medicAppointLogList></medicAppointLogList></objSaveAll></SaveAll></soap12:Body></soap12:Envelope>";
         let body = soapMessage;
+
         console.log(body);
         return this.http.post(url, body, options).toPromise()
             .then((res) => {

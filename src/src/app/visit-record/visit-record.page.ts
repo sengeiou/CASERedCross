@@ -132,7 +132,8 @@ export class VisitRecordPage extends AppBase {
     medicalRecord.addMedicalRecordHospSpecialty(this.MedicalRecord.Hosp, this.MedicalRecord.Specialty, this.params.caseid).then((e) => {
       console.log(e)
       if (e.res.insertId) {
-        this.toast('資料提交成功');
+        this.navigate("visit-record", { MedicalRecordId: e.res.insertId });
+        this.toast('保存提交成功');
       }
     })
   }

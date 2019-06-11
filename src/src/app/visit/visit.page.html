@@ -73,7 +73,7 @@
         <div class="flex-1">
           <div class="radius-2" style="width:100%; " class="bg-white">
             <div *ngIf="!visit.ScheduleDate">
-              <ion-datetime displayFormat="YYYY/MM/DD" picker-format="YYYY MM DD  " max="2050-12-09" done-text='确定'
+              <ion-datetime displayFormat="MM/DD/YYYY" picker-format="MM/DD/YYYY  " max="2050-12-09" done-text='确定'
                 style="height:25px;padding:2px;" cancel-text='取消' [(ngModel)]="ScheduleDate"></ion-datetime>
             </div>
 
@@ -154,11 +154,11 @@
         <div class="title">面見地點:</div>
         <div class=" margin-top-10 flex-row flex-center">
           <input type="radio" name='location' checked="{{visit.Location=='1'?'1':''}}" class="radio "
-            (click)="getLocation('1')" />家中
+            (click)="getLocation(1)" />家中
         </div>
         <div class=" margin-top-10 flex-row flex-center">
           <input type="radio" name='location' checked="{{visit.Location=='2'?'1':''}}" class="radio "
-            (click)="getLocation('2')" />其他
+            (click)="getLocation(2)" />其他
           <div class="flex-1 margin-left-20">
             <input *ngIf="!visit.LocationRemarks" class="input_s radius-2"
               placeholder="{{visit.LocationRemarks?visit.LocationRemarks:'輸入最多50字'}}" [(ngModel)]="LocationRemarks"
@@ -742,8 +742,8 @@
   <div class="flex-row padding-15 flex-center">
     <div class="flex-1"></div>
     <div class="flex-row">
-      <div class="txt-blue margin-right-60">保存及離開</div>
-      <div class="txt-blue">上傳</div>
+      <div class="txt-blue margin-right-60" (click)='addVisit()'>保存及離開</div>
+      <div class="txt-blue" (click)='uploadVisitListWeb()'>上傳</div>
     </div>
     <div class="flex-1"></div>
   </div>

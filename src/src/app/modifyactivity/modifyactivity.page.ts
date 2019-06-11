@@ -247,9 +247,13 @@ export class ModifyactivityPage extends AppBase {
   saveActivity() {
     // alert(this.actDetailTypelist[0].actDetailType1);
     // return;
-    this.activityStartTime = AppUtil.FormatTime(new Date(this.activityStartTime));
-    this.activityEndTime = AppUtil.FormatTime(new Date(this.activityEndTime));
-
+    if(this.activityStartTime){
+      this.activityStartTime = AppUtil.FormatTime(new Date(this.activityStartTime));
+    }
+    if(this.activityEndTime){
+      this.activityEndTime = AppUtil.FormatTime(new Date(this.activityEndTime));
+    }
+    
     console.log(this.activityStartTime)
     console.log(this.activityEndTime)
     // return
@@ -364,14 +368,13 @@ export class ModifyactivityPage extends AppBase {
 
       })
     } else {
-
       var  hvLogList=[];
       var activityLogList =[];
       activityLogList.push(this.activity)
       var phoneSupportLogList=[];
       var medicAppointLogList=[]
       if (activityLogList["SavedStatus"] != 0) {
-        this.api.SaveAll(hvLogList,phoneSupportLogList,activityLogList,medicAppointLogList).then((ret) => {
+        this.api.SaveAll(hvLogList,phoneSupportLogList,activityLogList,medicAppointLogList,this.params.UserId).then((ret) => {
           console.log(ret)
           if(ret.Result=='true'){
             this.api.ExecuteWorkingSet(ret.WorkingSetID,this.params.caseID,this.params.UserId).then(e=>{

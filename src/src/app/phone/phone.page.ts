@@ -113,7 +113,7 @@ export class PhonePage extends AppBase {
     var volunteerServr = new VolunteerServr();
     volunteerServr.getVolunteerId(this.params.UserId).then((e) => {
       console.log(e)
-      var data={}
+      var data = {}
       data = Array.from(e.res.rows)[0]
       console.log(data)
       this.Volunteer = data['VolId'];
@@ -126,9 +126,9 @@ export class PhonePage extends AppBase {
     this.Detail = e;
   }
 
-  getLiaison(e){
+  getLiaison(e) {
     console.log(e)
-    this.CannotContact=e;
+    this.CannotContact = e;
   }
 
   savePhone() {
@@ -175,6 +175,7 @@ export class PhonePage extends AppBase {
       }
       if (e) {
         this.toast('資料提交成功');
+        this.back();
       }
     })
   }
@@ -190,21 +191,30 @@ export class PhonePage extends AppBase {
       phone.getPhoneId(this.PhoneID).then((e) => {
         console.log(e)
         var datas = Array.from(e.res.rows);
-        
 
-        var  hvLogList=[];
-        var activityLogList =[];
-        var phoneSupportLogList=datas;
-        var medicAppointLogList=[]
+        datas[0]['ResponsibleVol'] = this.params.UserId;
+        console.log(datas[0])
+        // return
+
+        var hvLogList = [];
+        var activityLogList = [];
+        var phoneSupportLogList = datas;
+        var medicAppointLogList = []
         if (phoneSupportLogList["SavedStatus"] != 0) {
-          this.api.SaveAll(hvLogList,phoneSupportLogList,activityLogList,medicAppointLogList).then((ret) => {
+          this.api.SaveAll(hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList, this.params.UserId).then((ret) => {
             console.log(ret)
-            this.api.ExecuteWorkingSet(ret.WorkingSetID,this.params.caseID,this.params.UserId).then(e=>{
-              console.log(e)
-            })
+            if (ret.Result == 'true') {
+              this.api.ExecuteWorkingSet(ret.WorkingSetID, this.params.caseID, this.params.UserId).then(e => {
+                console.log(e)
+                if (e.Result == 'true') {
+                  this.toast('資料提交成功');
+                  this.back();
+                }
+              })
+            }
           });
         }
-  
+
 
       })
 

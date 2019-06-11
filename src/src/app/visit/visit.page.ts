@@ -38,9 +38,9 @@ export class VisitPage extends AppBase {
   VisitDate = ''; //实际日期
   VisitStartTime = '';//实际开始时间
   VisitEndTime = '';//实际结束时间
-  Location = ''; //面见地点
+  Location = 0; //面见地点
   LocationRemarks = '';//其他地点输入
-  VisitStatus = '';//探访状况
+  VisitStatus = 0;//探访状况
   VisitStatusRemarks = '';//未能探访输入
   presentVolunteer = ''; //出席义工
   supportVolunteer = ''; //支援义工
@@ -81,6 +81,7 @@ export class VisitPage extends AppBase {
   LifeStyleQuestion4 = 0;
   LifeStyleQuestion5 = 0;
   LifeStyleQuestion6 = 0;
+  LifeStyleMeasureBloodSuger=0;
   LifeStyleMeasureBsLocation = 0;
   LifeStyleMeasureBsPeriod = 0;
   LifeStyleMeasureBsNoOfTime = 0;
@@ -92,17 +93,18 @@ export class VisitPage extends AppBase {
   EmotionAssessment = '';
   EmotionAssessmentRemarks = '';
 
-  OtherHospDisbete = '';
-  OtherHospDisbeteNoOfDay = '';
-  OtherHospHighBp = '';
-  OtherHospHighBpNoOfDay = '';
-  OtherHospOtherIllness = '';
-  OtherHospOtherIllnessNoOfDay = '';
-  OtherAccident = '';
-  OtherAccidentNoOfDay = '';
-  OtherSpecialNeed = '';
-  OtherSpecialNeedService = '';
+  OtherHospDisbete = 0;
+  OtherHospDisbeteNoOfDay = 0;
+  OtherHospHighBp = 0;
+  OtherHospHighBpNoOfDay = 0;
+  OtherHospOtherIllness = 0;
+  OtherHospOtherIllnessNoOfDay = 0;
+  OtherAccident = 0;
+  OtherAccidentNoOfDay = 0;
+  OtherSpecialNeed = 0;
+  OtherSpecialNeedService = 0;
   OtherRemarks = '';
+  NeedsContent=0;
 
 
   onMyLoad() {
@@ -222,7 +224,7 @@ export class VisitPage extends AppBase {
       this.toast('你沒有填寫探訪狀況');
       return;
     }
-    if (this.VisitStatus == '2' && !this.VisitStatusRemarks) {
+    if (this.VisitStatus == 2 && !this.VisitStatusRemarks) {
       this.toast('你沒有填寫未能探訪的原因');
       return;
     }
@@ -415,7 +417,7 @@ export class VisitPage extends AppBase {
       this.toast('你沒有填滿長者其他狀況補充1');
       return;
     }
-    if (this.OtherHospDisbete == '1' && !this.OtherHospDisbeteNoOfDay) {
+    if (this.OtherHospDisbete == 1 && !this.OtherHospDisbeteNoOfDay) {
       this.toast('你沒有填滿長者其他狀況補充2');
       return;
     }
@@ -424,7 +426,7 @@ export class VisitPage extends AppBase {
       this.toast('你沒有填滿長者其他狀況補充3');
       return;
     }
-    if (this.OtherHospHighBp == '1' && !this.OtherHospHighBpNoOfDay) {
+    if (this.OtherHospHighBp == 1 && !this.OtherHospHighBpNoOfDay) {
       this.toast('你沒有填滿長者其他狀況補充4');
       return;
     }
@@ -433,7 +435,7 @@ export class VisitPage extends AppBase {
       this.toast('你沒有填滿長者其他狀況補充5');
       return;
     }
-    if (this.OtherHospOtherIllness == '1' && !this.OtherHospOtherIllnessNoOfDay) {
+    if (this.OtherHospOtherIllness == 1 && !this.OtherHospOtherIllnessNoOfDay) {
       this.toast('你沒有填滿長者其他狀況補充6');
       return;
     }
@@ -442,7 +444,7 @@ export class VisitPage extends AppBase {
       this.toast('你沒有填滿長者其他狀況補充7');
       return;
     }
-    if (this.OtherAccident == '1' && !this.OtherAccidentNoOfDay) {
+    if (this.OtherAccident == 1 && !this.OtherAccidentNoOfDay) {
       this.toast('你沒有填滿長者其他狀況補充8');
       return;
     }
@@ -451,7 +453,7 @@ export class VisitPage extends AppBase {
       this.toast('你沒有填滿長者其他狀況補充9');
       return;
     }
-    if (this.OtherSpecialNeed == '1' && !this.OtherSpecialNeedService) {
+    if (this.OtherSpecialNeed == 1 && !this.OtherSpecialNeedService) {
       this.toast('你沒有填滿長者其他狀況補充10');
       return;
     }
@@ -466,6 +468,36 @@ export class VisitPage extends AppBase {
       }
       this.toast('資料提交成功');
       this.getVisitId()
+    })
+  }
+
+  addVisit() {
+    var visit = new VisitServe();
+    if(this.ScheduleDate){
+      this.ScheduleDate = AppUtil.FormatDate(new Date(this.ScheduleDate));
+      this.ScheduleTime = AppUtil.FormatTime(new Date(this.ScheduleTime));
+    }
+    if(this.ScheduleDate==''){
+      this.toast('你沒有選擇探訪日期');
+      return;
+    }
+    var VisitId=0;
+    var Status=1;
+    var TaskId=0;
+  
+    visit.addVisit(this.Bmi, this.params.caseID, this.CategoryTopic1, this.CategoryTopic2, this.CategoryTopic3, this.EmotionAssessment, this.EmotionAssessmentRemarks, 
+      this.Hip, this.LifeStyleMeasureBloodPressure, this.LifeStyleMeasureBloodSuger, this.LifeStyleMeasureBpLocation, this.LifeStyleMeasureBpNoOfTime,
+       this.LifeStyleMeasureBpPeriod, this.LifeStyleMeasureBsLocation, this.LifeStyleMeasureBsNoOfTime, this.LifeStyleMeasureBsPeriod, this.LifeStyleQuestion1,
+        this.LifeStyleQuestion2, this.LifeStyleQuestion3, this.LifeStyleQuestion4, this.LifeStyleQuestion5, this.LifeStyleQuestion6, this.Location, this.LocationRemarks,
+         this.OtherAccident, this.OtherAccidentNoOfDay, this.OtherHospDisbete, this.OtherHospDisbeteNoOfDay, this.OtherHospHighBp, this.OtherHospHighBpNoOfDay, 
+         this.OtherHospOtherIllness, this.OtherHospOtherIllnessNoOfDay, this.OtherRemarks, this.OtherSpecialNeed, this.OtherSpecialNeedService, this.ScheduleDate,
+          this.ScheduleTime, Status, TaskId, this.VisitDate, this.VisitDetailIndoor, this.VisitDetailIndoorRemarks, this.VisitDetailOther, this.VisitDetailOutdoor, 
+          this.VisitDetailOutdoorRemarks, this.VisitEndTime, VisitId,this.VisitStartTime, this.VisitStatus, this.VisitStatusRemarks, this.WHRatio, this.Waist, this.Weight,this.NeedsContent).then(e => {
+      if (e.res.insertId) {
+        this.toast('資料保存成功');
+        this.back();
+      }
+
     })
   }
 
@@ -509,7 +541,7 @@ export class VisitPage extends AppBase {
     this.navigate('weight', { caseid: this.params.caseID });
   }
 
-  
+
   uploadVisitListWeb() {
 
     if (this.LocalId == 0 || this.LocalId == undefined) {
@@ -517,18 +549,28 @@ export class VisitPage extends AppBase {
 
       })
     } else {
-
       var hvLogList = [];
       hvLogList.push(this.visit);
+      hvLogList[0]['Height']=this.casedata.Height;
+      console.log(hvLogList)
+      // return
       var activityLogList = [];
       var phoneSupportLogList = [];
       var medicAppointLogList = []
       if (activityLogList["SavedStatus"] != 0) {
-        this.api.SaveAll(hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList).then((ret) => {
+        this.api.SaveAll(hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList,this.params.UserId).then((ret) => {
           console.log(ret)
-          this.api.ExecuteWorkingSet(ret.WorkingSetID, this.params.caseID, this.params.UserId).then(e => {
-            console.log(e)
-          })
+          if (ret.Result == 'true') {
+            this.api.ExecuteWorkingSet(ret.WorkingSetID, this.params.caseID, this.params.UserId).then(e => {
+              if (e.Result) {
+                this.toast('資料提交成功');
+                this.back();
+              }else{
+                this.toast('資料提交失敗');
+              }
+            })
+          }
+
         });
       }
 

@@ -123,13 +123,6 @@ export class HomePage extends AppBase {
     phone.getPhone_SavedStatus(1).then((e) => {
       console.log(Array.from(e.res.rows))
       phoneList = Array.from(e.res.rows)
-
-      // this.api.SaveAll(visiltList, phoneList, activityList, medicAppointLogList).then((ret) => {
-      //   if (ret.Result == 'true') {
-      //     this.SysnAllWeb();
-      //   }
-      //   console.log(ret)
-      // })
     })
 
     var medicalRecordServe = new MedicalRecordServe();
@@ -138,9 +131,18 @@ export class HomePage extends AppBase {
       medicAppointLogList = Array.from(e.res.rows)
     })
 
-    this.api.SaveAll(visiltList, phoneList, activityList, medicAppointLogList).then((ret) => {
+    this.api.SaveAll(visiltList, phoneList, activityList, medicAppointLogList,this.params.UserId).then((ret) => {
       if (ret.Result == 'true') {
+
         this.SysnAllWeb();
+
+        this.api.ExecuteWorkingSet(ret.WorkingSetID,this.params.caseID,this.params.UserId).then(e=>{
+          console.log(e)
+          if(e.Result == 'true'){
+            // this.SysnAllWeb();
+            this.toast('資料同步成功');
+          }
+        })
       }
       console.log(ret)
     })
@@ -457,7 +459,7 @@ export class HomePage extends AppBase {
 
   setPhone(kv) {
     console.log(kv)
-    var CallDate = AppUtil.FormatDate(new Date(kv.CallDate));
+    var CallDate = AppUtil.FormatDate2(new Date(kv.CallDate));
     var phone = new PhoneServe();
     if (kv) {
       phone.addPhoneWeb(CallDate, kv.CallEndTime, kv.CallStartTime, kv.CaseId, kv.Detail, kv.DetailOther, kv.OtherRemark, kv.Status, kv.SupportId, kv.UserName).then((e) => {
@@ -469,9 +471,9 @@ export class HomePage extends AppBase {
 
   setVisitWeb(kv) {
     console.log(kv)
-    var ScheduleDate = AppUtil.FormatDate(new Date(kv.ScheduleDate));
+    var ScheduleDate = AppUtil.FormatDate2(new Date(kv.ScheduleDate));
     var visit = new VisitServe();
-    visit.addVisit(kv.Bmi, kv.CaseId, kv.CategoryTopic1, kv.CategoryTopic2,
+    visit.addVisitWeb(kv.Bmi, kv.CaseId, kv.CategoryTopic1, kv.CategoryTopic2,
       kv.CategoryTopic3, kv.EmotionAssessment, kv.EmotionAssessmentRemarks,
       kv.Hip, kv.LifeStyleMeasureBloodPressure, kv.LifeStyleMeasureBloodSuger,
       kv.LifeStyleMeasureBpLocation, kv.LifeStyleMeasureBpNoOfTime, kv.LifeStyleMeasureBpPeriod,
@@ -507,7 +509,7 @@ export class HomePage extends AppBase {
 
   setActivityWeb(kv) {
     console.log(kv)
-    var ActDate = AppUtil.FormatDate(new Date(kv.ActDate));
+    var ActDate = AppUtil.FormatDate2(new Date(kv.ActDate));
     //caseId, activityDate, activityStartTime, activityEndTime, presentVolunteer, actType, activityDetailType, remarks1, remarks2, remarks3, remarks4, otherActRemarks, otherContent
     if (kv.ActivityVolList) {
       var ActivityVolList = [];
