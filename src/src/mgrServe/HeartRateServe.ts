@@ -8,10 +8,10 @@ export class HeartRateServe {
         return mgr.execSql(sql, [CaseId]);
     }
 
-    getAllHeartRateList(){
+    getAllHeartRateList(CaseId){
         var mgr = DBMgr.GetInstance();
-        var sql = "select * from tb_HeartRate";
-        return mgr.execSql(sql);
+        var sql = "select * from tb_HeartRate where CaseId=?";
+        return mgr.execSql(sql,[CaseId]);
     }
 
     addHeartRate(CaseId,RatePerMin,MeasurementDate) {
