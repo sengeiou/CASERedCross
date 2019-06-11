@@ -32,6 +32,7 @@ export class TestPage extends AppBase {
     super(router, navCtrl, modalCtrl, toastCtrl, alertCtrl, activeRoute);
     this.headerscroptshow = 480;
 
+    this.needcheck=false;
   }
 
   myname = "";

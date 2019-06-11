@@ -59,15 +59,36 @@ export class AppBase implements OnInit {
             this.params=params;
         });
 
+
+
     }
     setStatusBar() {
         //  this.statusBar.styleLightContent();
     }
+    needcheck=true;
+     timer=null;
+     opmin=0;
     ngOnInit() {
 
         ApiConfig.SetUnicode(AppBase.UNICODE);
         this.onMyLoad();
         this.setStatusBar();
+
+        if(this.needcheck){
+            this.timer=setInterval(()=>{
+                this.opmin++;
+                if(this.opmin>5){
+                    this.router.navigateByUrl("/test");
+                    clearInterval(this.timer);
+                }
+            },60*1000);
+        }
+    }
+
+    ionViewDidLeave(){
+        if(this.timer!=null){
+            clearInterval(this.timer);
+        }
     }
     onMyLoad() {
     }
@@ -81,6 +102,9 @@ export class AppBase implements OnInit {
         this.onMyShow();
 
         this.firseonshow = false;
+
+
+
     }
     onMyShow() {
 
