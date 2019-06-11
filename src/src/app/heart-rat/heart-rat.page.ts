@@ -34,22 +34,31 @@ export class HeartRatPage extends AppBase {
         this.getRat()
     }
     onMyShow() {
+
+        var heartRateServe=new HeartRateServe();
+        heartRateServe.getAllHeartRateList(this.params.caseid).then((e)=>{
+            var list = Array.from(e.res.rows);
+
+            var xdata=[];
+            var ydata=[];
+            for(var i=0;i<list.length;i++){
+                xdata.push(list[i]["MeasurementDate"]);
+                ydata.push(list[i]["RatePerMin"]);
+            }
+
+
         let element = this.chart.nativeElement;
         let myChart = ECharts.init(element);
-        // console.log(myChart)
+        // console.log(myChart);
         var option = {
-            title: {
-                text: '心跳統計圖',
-            },
             tooltip: {
                 trigger: 'axis'
             },
             xAxis: {
-                type: 'category',
-                boundaryGap: false,
-                data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                data: xdata
             },
             yAxis: {
+                name: '心跳(每分鐘)',
                 type: 'value',
                 axisLabel: {
                     formatter: '{value}'
@@ -58,57 +67,23 @@ export class HeartRatPage extends AppBase {
             },
             series: [
                 {
-                    name: '最高气温',
+                    name: '心率数据',
                     type: 'line',
-                    data: [11, 11, 15, 13, 12, 13, 10],
+                    data: ydata,
                     markPoint: {
                         data: [
-                            { type: 'max', name: '最大值' },
-                            { type: 'min', name: '最小值' }
-                        ]
-                    },
-                    markLine: {
-                        data: [
-                            { type: 'average', name: '平均值' }
+                            { type: 'max', name: 'max' },
+                            { type: 'min', name: 'min' }
                         ]
                     }
                 },
-                //   {
-                //       name:'最低气温',
-                //       type:'line',
-                //       data:[1, -2, 2, 5, 3, 2, 0],
-                //       markPoint: {
-                //           data: [
-                //               {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}
-                //           ]
-                //       },
-                //       markLine: {
-                //           data: [
-                //               {type: 'average', name: '平均值'},
-                //               [{
-                //                   symbol: 'none',
-                //                   x: '90%',
-                //                   yAxis: 'max'
-                //               }, {
-                //                   symbol: 'circle',
-                //                   label: {
-                //                       normal: {
-                //                           position: 'start',
-                //                           formatter: '最大值'
-                //                       }
-                //                   },
-                //                   type: 'max',
-                //                   name: '最高点'
-                //               }]
-                //           ]
-                //       }
-                //   }
             ]
         };
 
 
 
         myChart.setOption(option);
+    });
     }
 
     getRat() {
