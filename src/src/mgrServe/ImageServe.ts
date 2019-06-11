@@ -78,11 +78,9 @@ export class ImageServe {
 
 
 
-
-
-    deleteImage() {
+    deleteImage(id) {
         var mgr = DBMgr.GetInstance();
-        var sql = "DELETE FROM tb_Image";
-        return mgr.execSql(sql);
+        var sql = "DELETE FROM tb_Image where LocalId=?";
+        return mgr.execSql(sql,[id]);
     }
 }

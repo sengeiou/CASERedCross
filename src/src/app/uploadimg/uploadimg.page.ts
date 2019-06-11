@@ -45,9 +45,11 @@ export class UploadimgPage extends AppBase {
     this.params;
   }
   onMyShow() {
+    console.log(this.params.visitid)
     var imgserver=new ImageServe();
-    imgserver.getImageList(this.params.VisitId).then(e=>{
+    imgserver.getImageList(this.params.visitid).then(e=>{
       var list = Array.from(e.res.rows);
+      console.log(list)
       for(var i=0;i<list.length;i++){
         var item=null;
         item=list[i];
@@ -68,8 +70,18 @@ export class UploadimgPage extends AppBase {
 
   delimg(e){
     console.log(e)
-    this.list.splice(e,1);
-    console.log(this.list)
+    // this.list.splice(e,1);
+    // console.log(this.list)
+    this.showConfirm('確定要刪除圖片', (e) => {
+      if(e){
+        var imgserver=new ImageServe();
+        imgserver.deleteImage(e).then(e=>{
+          this.onMyShow()
+        })
+      }
+      
+    })
+    
   }
 
   async selectPhoto() {
@@ -93,7 +105,7 @@ export class UploadimgPage extends AppBase {
               this.base64.encodeFile(imagepath).then((code)=>{
                 // alert(code);
                 // alert("调用addImage的接口加到本地数据库");
-                imgserver.addImage2(0,this.params.VisitId,code).then(e=>{
+                imgserver.addImage2(0,this.params.visitid,code).then(e=>{
                     console.log(e)
                 })
                 this.onMyShow();
@@ -121,7 +133,7 @@ export class UploadimgPage extends AppBase {
               this.base64.encodeFile(imagepath).then((code)=>{
                 // alert(code);
                 // alert("调用addImage的接口加到本地数据库");
-                imgserver.addImage2(0,this.params.VisitId,code).then(e=>{
+                imgserver.addImage2(0,this.params.visitid,code).then(e=>{
                   console.log(e)
               })
                 this.onMyShow();

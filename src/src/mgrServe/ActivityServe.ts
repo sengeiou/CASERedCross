@@ -38,7 +38,7 @@ export class ActivityServe {
             var sql = "update tb_Activity SET ActDate=?, ActStartTime=?, ActEndTime=?, presentVolunteer=?, ActType=?,ActDetailType=?,Remarks1=?,Remarks2=?,Remarks3=?,Remarks4=?,OtherActRemarks=?,Remarks=? where LocalId=?";
             return mgr.execSql(sql, [ActDate, ActStartTime, ActEndTime, presentVolunteer, ActType, ActDetailType, Remarks1, Remarks2, Remarks3, Remarks4, OtherActRemarks, Remarks, ActivityId]);
         } else {
-            var sql = "insert into tb_Activity (CaseId,ActDate,ActStartTime,ActEndTime, presentVolunteer, ActType,ActDetailType,Remarks1,Remarks2,Remarks3,Remarks4,OtherActRemarks,Remarks,Status) values (?,?,?,?,?,?,?,?,?,?,?,?,?,2)";
+            var sql = "insert into tb_Activity (CaseId,ActDate,ActStartTime,ActEndTime, presentVolunteer, ActType,ActDetailType,Remarks1,Remarks2,Remarks3,Remarks4,OtherActRemarks,Remarks,Status,SavedStatus,ActivityId) values (?,?,?,?,?,?,?,?,?,?,?,?,?,2,1,0)";
             return mgr.execSql(sql, [CaseId, ActDate, ActStartTime, ActEndTime, presentVolunteer, ActType, ActDetailType, Remarks1, Remarks2, Remarks3, Remarks4, OtherActRemarks, Remarks]);
 
         }
@@ -48,6 +48,12 @@ export class ActivityServe {
         var mgr = DBMgr.GetInstance(); 
         var sql = "insert into tb_Activity (ActivityId,CaseId,ActDate,ActStartTime,ActEndTime, presentVolunteer, ActType,ActDetailType,Remarks1,Remarks2,Remarks3,Remarks4,OtherActRemarks,Remarks,SavedStatus) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,0)";
         return mgr.execSql(sql, [ActivityId,CaseId, ActDate, ActStartTime, ActEndTime, presentVolunteer, ActType, ActDetailType, Remarks1, Remarks2, Remarks3, Remarks4, OtherActRemarks, Remarks]);
+    }
+
+    sevaActivitySavedStatus(id){
+        var mgr = DBMgr.GetInstance();
+        var sql = "update  tb_Activity SET SavedStatus=0,Status=0  where LocalID=?";
+        return mgr.execSql(sql,[id]);
     }
 
     deleteActivity(){

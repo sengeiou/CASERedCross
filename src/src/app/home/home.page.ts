@@ -28,7 +28,7 @@ import { Base64 } from '@ionic-native/base64/ngx';
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  providers: [ServiceApi,FileTransfer,File,Base64]
+  providers: [ServiceApi, FileTransfer, File, Base64]
 })
 export class HomePage extends AppBase {
 
@@ -294,8 +294,7 @@ export class HomePage extends AppBase {
     phone.deletePhone()
     var activity = new ActivityServe();
     activity.deleteActivity()
-    var imageServe = new ImageServe();
-    imageServe.deleteImage();
+    
     for (var i = 0; i < this.Volunteer.length; i++) {
       this.setVolunteer(this.Volunteer[i]);
     }
@@ -356,7 +355,10 @@ export class HomePage extends AppBase {
         console.log('555555hhhhh ')
         for (var j = 0; j < this.Activitylists.length; j++) {
           console.log('hhhhh ')
-          this.setActivityWeb(this.Activitylists[j])
+          if (this.Activitylists[j]) {
+            this.setActivityWeb(this.Activitylists[j])
+          }
+
           console.log(this.Activitylists[j])
         }
       }
@@ -493,12 +495,12 @@ export class HomePage extends AppBase {
     ) {
       if (Array.isArray(objHomeVisitUploadImgAppInfoList)) {
         for (let item of objHomeVisitUploadImgAppInfoList) {
-          imgserve.addImage(item.ImgId, item.VisitId, item.ImgPath,this.transfer,this.file,this.base64);
+          imgserve.addImage(item.ImgId, item.VisitId, item.ImgPath, this.transfer, this.file, this.base64);
         }
       } else {
         imgserve.addImage(objHomeVisitUploadImgAppInfoList.ImgId,
           objHomeVisitUploadImgAppInfoList.VisitId,
-          objHomeVisitUploadImgAppInfoList.ImgPath,this.transfer,this.file,this.base64);
+          objHomeVisitUploadImgAppInfoList.ImgPath, this.transfer, this.file, this.base64);
       }
     }
   }
@@ -507,8 +509,26 @@ export class HomePage extends AppBase {
     console.log(kv)
     var ActDate = AppUtil.FormatDate(new Date(kv.ActDate));
     //caseId, activityDate, activityStartTime, activityEndTime, presentVolunteer, actType, activityDetailType, remarks1, remarks2, remarks3, remarks4, otherActRemarks, otherContent
+    if (kv.ActivityVolList) {
+      var ActivityVolList = [];
+      var listtype = typeof kv.ActivityVolList.objActivityVolApp;
+      if (listtype == 'object' && kv.ActivityVolList.objActivityVolApp.length == undefined) {
+        ActivityVolList.push(kv.ActivityVolList.objActivityVolApp);
+      } else {
+        ActivityVolList = kv.ActivityVolList.objActivityVolApp;
+      }
+      var presentVolunteer = ''
+      for (var i = 0; i < ActivityVolList.length; i++) {
+        if (presentVolunteer == '') {
+          presentVolunteer = ActivityVolList[i].VolId
+        } else {
+          presentVolunteer = presentVolunteer + ',' + ActivityVolList[i].VolId
+        }
+
+      }
+    }
     var activity = new ActivityServe();
-    activity.addActivityWeb(kv.ActivityId, kv.CaseId, ActDate, kv.ActStartTime, kv.ActEndTime, kv.ActivityVolList.objActivityVolApp.VolId, kv.ActType, kv.ActDetailType, kv.Remarks1, kv.Remarks2, kv.Remarks3, kv.Remarks4, kv.OtherActRemarks, kv.Remarks).then((e) => {
+    activity.addActivityWeb(kv.ActivityId, kv.CaseId, ActDate, kv.ActStartTime, kv.ActEndTime, presentVolunteer, kv.ActType, kv.ActDetailType, kv.Remarks1, kv.Remarks2, kv.Remarks3, kv.Remarks4, kv.OtherActRemarks, kv.Remarks).then((e) => {
 
     })
   }

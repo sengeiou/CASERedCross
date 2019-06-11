@@ -49,7 +49,7 @@ export class PhoneServe  {
     addPhone(PhoneID,CaseId,CallDate,CallStartTime,CallEndTime,Detail,DetailOther,UserName,OtherRemark){
         var mgr = DBMgr.GetInstance();
         if(!PhoneID){
-            var sql = "insert into tb_Phone (CaseId,CallDate,CallStartTime,CallEndTime,Detail,DetailOther,UserName,OtherRemark,Status) values (?,?,?,?,?,?,?,?,0)";
+            var sql = "insert into tb_Phone (CaseId,CallDate,CallStartTime,CallEndTime,Detail,DetailOther,UserName,OtherRemark,Status,SavedStatus) values (?,?,?,?,?,?,?,?,2,1)";
             return mgr.execSql(sql,[CaseId,CallDate,CallStartTime,CallEndTime,Detail,DetailOther,UserName,OtherRemark]);
 
         }else{

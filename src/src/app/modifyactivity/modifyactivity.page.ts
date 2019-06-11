@@ -350,7 +350,7 @@ export class ModifyactivityPage extends AppBase {
       if (e) {
         // this.navigate("home", { id: this.params.UserId });
         // this.back();
-        this.toast('資料提交成功');
+        this.toast('資料保存成功');
         this.back();
       }
     })
@@ -364,22 +364,32 @@ export class ModifyactivityPage extends AppBase {
 
       })
     } else {
-      //ActivityId, CaseId, ActDate, ActStartTime, ActEndTime, ActType, ActDetailType, Remarks1, Remarks2, Remarks3, Remarks4, OtherActRemarks, Remarks, Status, UserId
-      
-      var data = this.activity
-      // var ActDate = AppUtil.FormatDate(new Date(data["ActDate"]));
-      var ActDate='11/06/2019'
-      if (data["SavedStatus"] != 0) {
-        this.api.SaveActive1(data["LocalId"], data["CaseId"], ActDate, data["ActStartTime"], data["ActEndTime"], data["ActType"], data["ActDetailType"], data["Remarks1"], data["Remarks2"], data["Remarks3"], data["Remarks4"], data["OtherActRemarks"], data["Remarks"], data["Status"], this.params.UserId).then((ret) => {
 
-          if (ret.Result == "true") {
-          } else {
-            this.toast('未能連線');
+      var  hvLogList=[];
+      var activityLogList =[];
+      activityLogList.push(this.activity)
+      var phoneSupportLogList=[];
+      var medicAppointLogList=[]
+      if (activityLogList["SavedStatus"] != 0) {
+        this.api.SaveAll(hvLogList,phoneSupportLogList,activityLogList,medicAppointLogList).then((ret) => {
+          console.log(ret)
+          if(ret.Result=='true'){
+            this.api.ExecuteWorkingSet(ret.WorkingSetID,this.params.caseID,this.params.UserId).then(e=>{
+              console.log(e)
+              if(e.Result){
+                var activity = new ActivityServe();
+                
+                activity.sevaActivitySavedStatus(this.LocalId).then(e=>{
+
+                })
+                this.toast('資料提交成功');
+                this.back();
+              }
+            })
           }
+          
         });
       }
-
-
 
     }
   }

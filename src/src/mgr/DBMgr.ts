@@ -24,7 +24,7 @@ export class DBMgr {
 
         let createVisittableSQL = "CREATE TABLE IF NOT EXISTS tb_home_visit (LocalId integer primary key autoincrement not null,CaseId int,TaskId int,VisitId int,ScheduleDate nvarchar(10),ScheduleTime nvarchar(10),VisitDate nvarchar(10),VisitStartTime nvarchar(10),VisitEndTime nvarchar(10),presentVolunteer nvarchar(100),supportVolunteer nvarchar(100),Location int,LocationRemarks nvarchar(100),VisitStatus int,VisitStatusRemarks nvarchar(100),VisitDetailIndoor nvarchar(50),VisitDetailIndoorRemarks nvarchar(100),VisitDetailOutdoor nvarchar(50),VisitDetailOutdoorRemarks nvarchar(100),VisitDetailOther nvarchar(500),CategoryTopic1 nvarchar(500),CategoryTopic2 nvarchar(500),CategoryTopic3 nvarchar(500),Weight Double,Bmi Double,Waist Double,Hip Double,WHRatio Double,SYS1 Double,DlA1 Double,SYS2 Double,DlA2 Double,heartBeats1 Double,heartBeats2 Double,LifeStyleQuestion1 int,LifeStyleQuestion2 int,LifeStyleQuestion3 int,LifeStyleQuestion4 int,LifeStyleQuestion5 int,LifeStyleQuestion6 int,LifeStyleMeasureBloodSuger int,LifeStyleMeasureBsLocation int,LifeStyleMeasureBsPeriod int,LifeStyleMeasureBsNoOfTime int,LifeStyleMeasureBloodPressure int,LifeStyleMeasureBpLocation int,LifeStyleMeasureBpPeriod int,LifeStyleMeasureBpNoOfTime int,EmotionAssessment nvarchar(50),EmotionAssessmentRemarks nvarchar(100),OtherHospDisbete int,OtherHospDisbeteNoOfDay int,OtherHospHighBp int,OtherHospHighBpNoOfDay int,OtherHospOtherIllness int,OtherAccident int,OtherHospOtherIllnessNoOfDay int,OtherSpecialNeed int,OtherAccidentNoOfDay int,OtherSpecialNeedService nvarchar(100),OtherRemarks nvarchar(500),DeletePicString nvarchar(100),Status int,SavedStatus int DEFAULT '1');";
  
-        let CreateImgSQL = "CREATE TABLE IF NOT EXISTS tb_Image (LocalId int, ImgId int DEFAULT '0', VisitId int, ImgName nvarchar(100), Base64ImgString BLOB)";
+        let CreateImgSQL = "CREATE TABLE IF NOT EXISTS tb_Image (LocalId integer primary key autoincrement not null, ImgId int DEFAULT '0', VisitId int, ImgName nvarchar(100), Base64ImgString BLOB)";
 
         let recordSQL = "CREATE TABLE IF NOT EXISTS tb_Record (appointmentId int, medId integer primary key autoincrement not null, caseId int, medicalLocation int, kinds int, medicalStatus int, content text,  medicalDate text, medicalStatusRemark text, save int, medicalTime text, canDelete int)";
 
@@ -54,7 +54,7 @@ export class DBMgr {
             //alert(1);
             this.type = 0;
             sqlite.create({
-                name: 'appdata14.db',
+                name: 'appdata15.db',
                 location: 'default'
             }).then((db) => {
                 this._db = db;
@@ -81,7 +81,7 @@ export class DBMgr {
         } else {
             this.type = 1;
             //alert(2);
-            this._db = this.win.openDatabase("appdata14.db", '1.0', 'database', 5 * 1024 * 1024);
+            this._db = this.win.openDatabase("appdata15.db", '1.0', 'database', 5 * 1024 * 1024);
             this.execSql(dbcreateUSERsql);
             this.execSql(createActivityTableSQL);
             this.execSql(createPhoneTableSQL);

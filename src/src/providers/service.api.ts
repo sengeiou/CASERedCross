@@ -147,6 +147,48 @@ export class ServiceApi {
             });
     }
 
+    public ExecuteWorkingSet(WorkingSetID,CaseId,UserId){
+        var url = ApiConfig.getApiUrl();
+        var data = { WorkingSetID,CaseId,UserId };
+        var headers = ApiConfig.GetHeader(url, data);
+        let options = new RequestOptions({ headers: headers });
+
+        var soapMessage = "<?xml version='1.0' encoding='utf-8'?>";
+        soapMessage += "<soap12:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap12='http://www.w3.org/2003/05/soap-envelope'>";
+        soapMessage += "<soap12:Body>";
+        soapMessage += "<ExecuteWorkingSet xmlns=\"http://tempuri.org/\">";
+        soapMessage += "<WorkingSetID>" + WorkingSetID + "</WorkingSetID>";
+        soapMessage += "<AppHeader>";
+        soapMessage += "<CaseId>" + CaseId + "</CaseId>";
+        soapMessage += "<UserId>" + UserId + "</UserId>";
+        soapMessage += "<DeviceType>" + 2 + "</DeviceType>";
+        soapMessage += "<ActionType>" + 1 + "</ActionType>";
+        soapMessage += "<DetailActionType>" + 1 + "</DetailActionType>";
+        soapMessage += "<IpAddress>" + '10.56.189.44' + "</IpAddress>";
+        soapMessage += "</AppHeader>";
+        soapMessage += "</ExecuteWorkingSet>";
+        soapMessage += "</soap12:Body>";
+        soapMessage += "</soap12:Envelope>";
+        let body = soapMessage;
+        console.log(body);
+        return this.http.post(url, body, options).toPromise()
+            .then((res) => {
+                console.log(res);
+                var xmlstr = res.text();
+                console.log(xmlstr);
+                var x2js = new X2JS();
+                var jsonObj = x2js.xml_str2json(xmlstr);
+                //输出结果
+                console.log(jsonObj);
+                console.log(jsonObj.Envelope.Body.ExecuteWorkingSetResponse.ExecuteWorkingSetResult);
+
+                return jsonObj.Envelope.Body.ExecuteWorkingSetResponse.ExecuteWorkingSetResult;
+            })
+            .catch(err => {
+                return ApiConfig.ErrorHandle('/ExecuteWorkingSet', data, err);
+            });
+    }
+
 
     public SaveActive1(ActivityId, CaseId, ActDate, ActStartTime, ActEndTime, ActType, ActDetailType, Remarks1, Remarks2, Remarks3, Remarks4, OtherActRemarks, Remarks, Status, UserId) {
         var url = ApiConfig.getApiUrl();
@@ -154,43 +196,6 @@ export class ServiceApi {
         var headers = ApiConfig.GetHeader(url, data);
         let options = new RequestOptions({ headers: headers });
 
-        // var soapMessage = "<?xml version='1.0' encoding='utf-8'?>";
-        // soapMessage += "<soap12:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:soap12='http://www.w3.org/2003/05/soap-envelope'>";
-        // soapMessage += "<soap12:Body>";
-        // soapMessage += "<SavePhoneSupport xmlns=\"http://tempuri.org/\">";
-        // soapMessage += "<obj>";
-        // soapMessage += "<alObj>";
-        // soapMessage += "<ActivityId>" + ActivityId + "</ActivityId>";
-        // soapMessage += "<CaseId>" + CaseId + "</CaseId>";
-        // soapMessage += "<ActDate>" + ActDate + "</ActDate>";
-        // soapMessage += "<ActStartTime>" + ActStartTime + "</ActStartTime>";
-        // soapMessage += "<ActEndTime>" + ActEndTime + "</ActEndTime>";
-        // soapMessage += "<ActType>" + ActType + "</ActType>";
-        // soapMessage += "<ActDetailType>" + ActDetailType + "</ActDetailType>";
-        // soapMessage += "<Remarks1>" + Remarks1 + "</Remarks1>";
-        // soapMessage += "<Remarks2>" + Remarks2 + "</Remarks2>";
-        // soapMessage += "<Remarks3>" + Remarks3 + "</Remarks3>";
-        // soapMessage += "<Remarks4>" + Remarks4 + "</Remarks4>";
-        // soapMessage += "<OtherActRemarks>" + OtherActRemarks + "</OtherActRemarks>";
-        // soapMessage += "<Remarks>" + Remarks + "</Remarks>";
-        // soapMessage += "<Status>" + Status + "</Status>";
-        // soapMessage += "<alvList>";
-        // soapMessage += "<tb_activity_vol_temp xsi:nil=" + true + " />";
-        // soapMessage += "<tb_activity_vol_temp xsi:nil=" + true + " />";
-        // soapMessage += "</alvList>";
-        // soapMessage += "</alObj>";
-        // soapMessage += "<ahObj>";
-        // soapMessage += "<CaseId>" + CaseId + "</CaseId>";
-        // soapMessage += "<UserId>" + UserId + "</UserId>";
-        // soapMessage += "<DeviceType>" + 2 + "</DeviceType>";
-        // soapMessage += "<ActionType>" + 1 + "</ActionType>";
-        // soapMessage += "<DetailActionType>" + 1 + "</DetailActionType>";
-        // soapMessage += "<IpAddress>" + '10.56.189.44' + "</IpAddress>";
-        // soapMessage += "</ahObj>";
-        // soapMessage += "</obj>";
-        // soapMessage += "</SavePhoneSupport>";
-        // soapMessage += "</soap12:Body>";
-        // soapMessage += "</soap12:Envelope>";
 
         var soapMessage = "<?xml version='1.0' encoding='utf-8'?>";
         soapMessage += "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">";
@@ -206,12 +211,12 @@ export class ServiceApi {
         soapMessage += "<ActType>" + ActType + "</ActType>";
         soapMessage += "<ActDetailType>" + ActDetailType + "</ActDetailType>";
         soapMessage += "<Remarks1>" + Remarks1 + "</Remarks1>";
-        soapMessage += "<Remarks2>" + Remarks2 + "</Remarks2>";
+        soapMessage += "<Remarks2></Remarks2>";
         soapMessage += "<Remarks3>" + Remarks3 + "</Remarks3>";
         soapMessage += "<Remarks4>" + Remarks4 + "</Remarks4>";
         soapMessage += "<OtherActRemarks>" + OtherActRemarks + "</OtherActRemarks>";
         soapMessage += "<Remarks>" + Remarks + "</Remarks>";
-        soapMessage += "<Status>" + Status + "</Status>";
+        soapMessage += "<Status>1</Status>";
         soapMessage += "<alvList>";
         soapMessage += "<tb_activity_vol_temp xsi:nil=\"true\" />";
         soapMessage += "<tb_activity_vol_temp xsi:nil=\"true\" />";
@@ -395,7 +400,7 @@ export class ServiceApi {
             soapMessage += "<tb_acticve_log_temp>";
             soapMessage += "<ActivityId>" + activityLogList[i].ActivityId + "</ActivityId>";
             soapMessage += "<CaseId>" + activityLogList[i].CaseId + "</CaseId>";
-            soapMessage += "<ActDate>" + activityLogList[i].ActDate + "</ActDate>";
+            soapMessage += "<ActDate>11-06-2019</ActDate>";
             soapMessage += "<ActStartTime>" + activityLogList[i].ActStartTime + "</ActStartTime>";
             soapMessage += "<ActEndTime>" + activityLogList[i].ActEndTime + "</ActEndTime>";
             soapMessage += "<ActType>" + activityLogList[i].ActType + "</ActType>";
@@ -407,7 +412,7 @@ export class ServiceApi {
             soapMessage += "<OtherActRemarks>" + activityLogList[i].OtherActRemarks + "</OtherActRemarks>";
             soapMessage += "<Remarks>" + activityLogList[i].Remarks + "</Remarks>";
             soapMessage += "<Status>" + activityLogList[i].Status + "</Status>";
-            soapMessage += "<alvList xsi:nil=" + true + "/>";
+            soapMessage += "<alvList xsi:nil=\"true \"/>";
             soapMessage += "</tb_acticve_log_temp>";
         }
         // soapMessage += "<tb_acticve_log_temp>";
@@ -440,10 +445,10 @@ export class ServiceApi {
             soapMessage += "<Detail>" + phoneSupportLogList[i].Detail + "</Detail>";
             soapMessage += "<DetailOther>" + phoneSupportLogList[i].DetailOther + "</DetailOther>";
             soapMessage += "<OtherRemark>" + phoneSupportLogList[i].OtherRemark + "</OtherRemark>";
-            soapMessage += "<ResponsibleVol>5</ResponsibleVol>";
-            soapMessage += "<CannotContact>5</CannotContact>";
-            soapMessage += "<NextPhoneDate>03-06-2019</NextPhoneDate>";
-            soapMessage += "<NextPhoneTime>17:10</NextPhoneTime>";
+            soapMessage += "<ResponsibleVol>" + phoneSupportLogList[i].ResponsibleVol + "</ResponsibleVol>";
+            soapMessage += "<CannotContact>" + phoneSupportLogList[i].CannotContact + "</CannotContact>";
+            soapMessage += "<NextPhoneDate>" + phoneSupportLogList[i].NextPhoneDate + "</NextPhoneDate>";
+            soapMessage += "<NextPhoneTime>" + phoneSupportLogList[i].NextPhoneTime + "</NextPhoneTime>";
             soapMessage += "<Status>" + phoneSupportLogList[i].Status + "</Status>";
             soapMessage += "</tb_phone_support_log_temp>";
             // soapMessage += "<tb_phone_support_log_temp>";

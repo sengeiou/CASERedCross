@@ -8,11 +8,13 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { CaseServe } from 'src/mgrServe/CaseServe';
 import { VisitServe } from 'src/mgrServe/VisitServe';
 import { VolunteerServr } from 'src/mgrServe/VolunteerServr';
+import { ServiceApi } from 'src/providers/service.api';
 
 @Component({
   selector: 'app-visit',
   templateUrl: './visit.page.html',
   styleUrls: ['./visit.page.scss'],
+  providers: [ServiceApi]
 })
 export class VisitPage extends AppBase {
 
@@ -21,13 +23,14 @@ export class VisitPage extends AppBase {
     public modalCtrl: ModalController,
     public toastCtrl: ToastController,
     public alertCtrl: AlertController,
+    public api: ServiceApi,
     public activeRoute: ActivatedRoute,
     public sanitizer: DomSanitizer) {
     super(router, navCtrl, modalCtrl, toastCtrl, alertCtrl, activeRoute);
     this.headerscroptshow = 480;
 
     this.visit = {};
-    this.casedata={};
+    this.casedata = {};
 
   }
   ScheduleDate = '';//计划日期
@@ -72,35 +75,35 @@ export class VisitPage extends AppBase {
   heartBeats1 = 0;
   heartBeats2 = 0;
 
-  LifeStyleQuestion1=0;
-  LifeStyleQuestion2=0;
-  LifeStyleQuestion3=0;
-  LifeStyleQuestion4=0;
-  LifeStyleQuestion5=0;
-  LifeStyleQuestion6=0;
-  LifeStyleMeasureBsLocation=0;
-  LifeStyleMeasureBsPeriod=0;
-  LifeStyleMeasureBsNoOfTime=0;
-  LifeStyleMeasureBloodPressure=0;
-  LifeStyleMeasureBpLocation=0;
-  LifeStyleMeasureBpPeriod=0;
-  LifeStyleMeasureBpNoOfTime=0;
+  LifeStyleQuestion1 = 0;
+  LifeStyleQuestion2 = 0;
+  LifeStyleQuestion3 = 0;
+  LifeStyleQuestion4 = 0;
+  LifeStyleQuestion5 = 0;
+  LifeStyleQuestion6 = 0;
+  LifeStyleMeasureBsLocation = 0;
+  LifeStyleMeasureBsPeriod = 0;
+  LifeStyleMeasureBsNoOfTime = 0;
+  LifeStyleMeasureBloodPressure = 0;
+  LifeStyleMeasureBpLocation = 0;
+  LifeStyleMeasureBpPeriod = 0;
+  LifeStyleMeasureBpNoOfTime = 0;
 
-  EmotionAssessment='';
-  EmotionAssessmentRemarks='';
+  EmotionAssessment = '';
+  EmotionAssessmentRemarks = '';
 
-  OtherHospDisbete='';
-  OtherHospDisbeteNoOfDay='';
-  OtherHospHighBp='';
-  OtherHospHighBpNoOfDay='';
-  OtherHospOtherIllness='';
-  OtherHospOtherIllnessNoOfDay='';
-  OtherAccident='';
-  OtherAccidentNoOfDay='';
-  OtherSpecialNeed='';
-  OtherSpecialNeedService='';
-  OtherRemarks='';
-  
+  OtherHospDisbete = '';
+  OtherHospDisbeteNoOfDay = '';
+  OtherHospHighBp = '';
+  OtherHospHighBpNoOfDay = '';
+  OtherHospOtherIllness = '';
+  OtherHospOtherIllnessNoOfDay = '';
+  OtherAccident = '';
+  OtherAccidentNoOfDay = '';
+  OtherSpecialNeed = '';
+  OtherSpecialNeedService = '';
+  OtherRemarks = '';
+
 
   onMyLoad() {
     //参数
@@ -110,16 +113,16 @@ export class VisitPage extends AppBase {
   onMyShow() {
     this.getCase()
     this.getVisitId()
-    if(AppBase.LastQrcode!=''){
+    if (AppBase.LastQrcode != '') {
       this.qrcodeHandle(AppBase.LastQrcode);
-      AppBase.LastQrcode="";
+      AppBase.LastQrcode = "";
       return;
     }
   }
 
-  
 
-  qrcodeHandle(code){
+
+  qrcodeHandle(code) {
     alert(code);
   }
   LocalId = 0;
@@ -180,7 +183,7 @@ export class VisitPage extends AppBase {
         console.log(e)
         if (this.LocalId == 0 || this.LocalId == undefined) {
           this.LocalId = e.res.insertId;
-          visit.saveVisitCaseId(this.params.caseID,e.res.insertId).then((e)=>{
+          visit.saveVisitCaseId(this.params.caseID, e.res.insertId).then((e) => {
             console.log(e)
           })
         }
@@ -234,7 +237,7 @@ export class VisitPage extends AppBase {
         console.log(e)
         if (this.LocalId == 0 || this.LocalId == undefined) {
           this.LocalId = e.res.insertId;
-          visit.saveVisitCaseId(this.params.caseID,e.res.insertId).then((e)=>{
+          visit.saveVisitCaseId(this.params.caseID, e.res.insertId).then((e) => {
             console.log(e)
           })
         }
@@ -276,7 +279,7 @@ export class VisitPage extends AppBase {
     visit.saveService_neurou(visitId, this.VisitDetailIndoor, this.VisitDetailIndoorRemarks, this.VisitDetailOutdoor, this.VisitDetailOutdoorRemarks, this.VisitDetailOther, this.CategoryTopic1, this.CategoryTopic2, this.CategoryTopic3, this.params.caseID).then((e) => {
       if (this.LocalId == 0 || this.LocalId == undefined) {
         this.LocalId = e.res.insertId;
-        visit.saveVisitCaseId(this.params.caseID,e.res.insertId).then((e)=>{
+        visit.saveVisitCaseId(this.params.caseID, e.res.insertId).then((e) => {
           console.log(e)
         })
       }
@@ -309,7 +312,7 @@ export class VisitPage extends AppBase {
     visit.saveHeightWeight(visitId, this.Weight, this.Bmi, this.Waist, this.Hip, this.WHRatio, this.SYS1, this.DlA1, this.SYS2, this.DlA2, this.heartBeats1, this.heartBeats2, this.params.caseID).then((e) => {
       if (this.LocalId == 0 || this.LocalId == undefined) {
         this.LocalId = e.res.insertId;
-        visit.saveVisitCaseId(this.params.caseID,e.res.insertId).then((e)=>{
+        visit.saveVisitCaseId(this.params.caseID, e.res.insertId).then((e) => {
           console.log(e)
         })
       }
@@ -343,15 +346,15 @@ export class VisitPage extends AppBase {
     this.LifeStyleQuestion6 = e;
   }
 
-  saveLifeHabit(visitId){
-    console.log(visitId, this.LifeStyleQuestion1,this.LifeStyleQuestion2,this.LifeStyleQuestion3,this.LifeStyleQuestion4,this.LifeStyleQuestion5,this.LifeStyleQuestion6, this.params.caseID)
+  saveLifeHabit(visitId) {
+    console.log(visitId, this.LifeStyleQuestion1, this.LifeStyleQuestion2, this.LifeStyleQuestion3, this.LifeStyleQuestion4, this.LifeStyleQuestion5, this.LifeStyleQuestion6, this.params.caseID)
     this.WHRatio = this.Waist / this.Hip;
     this.Bmi = this.Weight / (1.72 * 1.72)
     var visit = new VisitServe();
-    visit.saveLifeHabit(visitId, this.LifeStyleQuestion1,this.LifeStyleQuestion2,this.LifeStyleQuestion3,this.LifeStyleQuestion4,this.LifeStyleQuestion5,this.LifeStyleQuestion6, this.params.caseID).then((e) => {
+    visit.saveLifeHabit(visitId, this.LifeStyleQuestion1, this.LifeStyleQuestion2, this.LifeStyleQuestion3, this.LifeStyleQuestion4, this.LifeStyleQuestion5, this.LifeStyleQuestion6, this.params.caseID).then((e) => {
       if (this.LocalId == 0 || this.LocalId == undefined) {
         this.LocalId = e.res.insertId;
-        visit.saveVisitCaseId(this.params.caseID,e.res.insertId).then((e)=>{
+        visit.saveVisitCaseId(this.params.caseID, e.res.insertId).then((e) => {
           console.log(e)
         })
       }
@@ -360,20 +363,20 @@ export class VisitPage extends AppBase {
     })
   }
 
-  getEmotion(e){
+  getEmotion(e) {
     console.log(e)
     this.EmotionAssessment = e;
   }
 
-  saveEmotion(visitId){
-    console.log(visitId, this.EmotionAssessment,this.params.caseID)
+  saveEmotion(visitId) {
+    console.log(visitId, this.EmotionAssessment, this.params.caseID)
     this.WHRatio = this.Waist / this.Hip;
     this.Bmi = this.Weight / (1.72 * 1.72)
     var visit = new VisitServe();
     visit.saveEmotion(visitId, this.EmotionAssessment, this.params.caseID).then((e) => {
       if (this.LocalId == 0 || this.LocalId == undefined) {
         this.LocalId = e.res.insertId;
-        visit.saveVisitCaseId(e.res.insertId,e.res.insertId).then((e)=>{
+        visit.saveVisitCaseId(e.res.insertId, e.res.insertId).then((e) => {
           console.log(e)
         })
       }
@@ -382,82 +385,82 @@ export class VisitPage extends AppBase {
     })
   }
 
-  getOtherHospDisbete(e){
+  getOtherHospDisbete(e) {
     console.log(e)
-    this.OtherHospDisbete=e
+    this.OtherHospDisbete = e
   }
 
-  getOtherHospHighBp(e){
+  getOtherHospHighBp(e) {
     console.log(e)
-    this.OtherHospHighBp=e
+    this.OtherHospHighBp = e
   }
 
-  getOtherHospOtherIllness(e){
+  getOtherHospOtherIllness(e) {
     console.log(e)
-    this.OtherHospOtherIllness=e
+    this.OtherHospOtherIllness = e
   }
 
-  getOtherAccident(e){
+  getOtherAccident(e) {
     console.log(e)
-    this.OtherAccident=e
+    this.OtherAccident = e
   }
 
-  getOtherSpecialNeed(e){
+  getOtherSpecialNeed(e) {
     console.log(e)
-    this.OtherSpecialNeed=e
+    this.OtherSpecialNeed = e
   }
 
-  OtherSupplement(visitId){
-    if (!this.OtherHospDisbete  ) {
+  OtherSupplement(visitId) {
+    if (!this.OtherHospDisbete) {
       this.toast('你沒有填滿長者其他狀況補充1');
       return;
     }
-    if (this.OtherHospDisbete=='1' && !this.OtherHospDisbeteNoOfDay  ) {
+    if (this.OtherHospDisbete == '1' && !this.OtherHospDisbeteNoOfDay) {
       this.toast('你沒有填滿長者其他狀況補充2');
       return;
     }
 
-    if (!this.OtherHospHighBp  ) {
+    if (!this.OtherHospHighBp) {
       this.toast('你沒有填滿長者其他狀況補充3');
       return;
     }
-    if (this.OtherHospHighBp=='1' && !this.OtherHospHighBpNoOfDay  ) {
+    if (this.OtherHospHighBp == '1' && !this.OtherHospHighBpNoOfDay) {
       this.toast('你沒有填滿長者其他狀況補充4');
       return;
     }
 
-    if (!this.OtherHospOtherIllness  ) {
+    if (!this.OtherHospOtherIllness) {
       this.toast('你沒有填滿長者其他狀況補充5');
       return;
     }
-    if (this.OtherHospOtherIllness=='1' && !this.OtherHospOtherIllnessNoOfDay  ) {
+    if (this.OtherHospOtherIllness == '1' && !this.OtherHospOtherIllnessNoOfDay) {
       this.toast('你沒有填滿長者其他狀況補充6');
       return;
     }
 
-    if (!this.OtherAccident  ) {
+    if (!this.OtherAccident) {
       this.toast('你沒有填滿長者其他狀況補充7');
       return;
     }
-    if (this.OtherAccident=='1' && !this.OtherAccidentNoOfDay  ) {
+    if (this.OtherAccident == '1' && !this.OtherAccidentNoOfDay) {
       this.toast('你沒有填滿長者其他狀況補充8');
       return;
     }
 
-    if (!this.OtherSpecialNeed  ) {
+    if (!this.OtherSpecialNeed) {
       this.toast('你沒有填滿長者其他狀況補充9');
       return;
     }
-    if (this.OtherSpecialNeed=='1' && !this.OtherSpecialNeedService  ) {
+    if (this.OtherSpecialNeed == '1' && !this.OtherSpecialNeedService) {
       this.toast('你沒有填滿長者其他狀況補充10');
       return;
     }
 
     var visit = new VisitServe();
-    visit.savaOtherSupplement(visitId,this.OtherHospDisbete,this.OtherHospDisbeteNoOfDay,this.OtherHospHighBp,this.OtherHospHighBpNoOfDay,this.OtherHospOtherIllness,this.OtherHospOtherIllnessNoOfDay,this.OtherAccident,this.OtherAccidentNoOfDay,this.OtherSpecialNeed,this.OtherSpecialNeedService,this.OtherRemarks,this.params.caseID).then((e)=>{
+    visit.savaOtherSupplement(visitId, this.OtherHospDisbete, this.OtherHospDisbeteNoOfDay, this.OtherHospHighBp, this.OtherHospHighBpNoOfDay, this.OtherHospOtherIllness, this.OtherHospOtherIllnessNoOfDay, this.OtherAccident, this.OtherAccidentNoOfDay, this.OtherSpecialNeed, this.OtherSpecialNeedService, this.OtherRemarks, this.params.caseID).then((e) => {
       if (this.LocalId == 0 || this.LocalId == undefined) {
         this.LocalId = e.res.insertId;
-        visit.saveVisitCaseId(e.res.insertId,e.res.insertId).then((e)=>{
+        visit.saveVisitCaseId(e.res.insertId, e.res.insertId).then((e) => {
           console.log(e)
         })
       }
@@ -478,31 +481,61 @@ export class VisitPage extends AppBase {
   uploadimg(visitid) {
     console.log(visitid)
     // return
-    if(visitid<0){
+    if (visitid < 0) {
       this.toast('資料没有保存，请先保存!');
       return;
     }
     this.navigate('uploadimg', { visitid: visitid });
   }
 
+
+
   aa() {
     this.navigate('heart-rat', { caseid: this.params.caseID });
   }
-  scan(){
+  scan() {
     this.navigate("qrcodescan");
   }
 
-  bloodPressure(){
+  bloodPressure() {
     this.navigate('bloodpressure', { caseid: this.params.caseID });
   }
 
-  whr(){
+  whr() {
     this.navigate('whr', { caseid: this.params.caseID });
   }
 
-  weight(){
+  weight() {
     this.navigate('weight', { caseid: this.params.caseID });
   }
 
   
+  uploadVisitListWeb() {
+
+    if (this.LocalId == 0 || this.LocalId == undefined) {
+      this.showConfirm('资料没有保存？请先保存', (e) => {
+
+      })
+    } else {
+
+      var hvLogList = [];
+      hvLogList.push(this.visit);
+      var activityLogList = [];
+      var phoneSupportLogList = [];
+      var medicAppointLogList = []
+      if (activityLogList["SavedStatus"] != 0) {
+        this.api.SaveAll(hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList).then((ret) => {
+          console.log(ret)
+          this.api.ExecuteWorkingSet(ret.WorkingSetID, this.params.caseID, this.params.UserId).then(e => {
+            console.log(e)
+          })
+        });
+      }
+
+    }
+  }
+
+
+
+
 }

@@ -190,19 +190,21 @@ export class PhonePage extends AppBase {
       phone.getPhoneId(this.PhoneID).then((e) => {
         console.log(e)
         var datas = Array.from(e.res.rows);
-        console.log(datas[0])
-        console.log(datas[0]["CaseId"])
-        var data = datas[0];
+        
 
-        // if(data["SavedStatus"]!=0){
-        this.api.SavePhoneSupport(data["SupportId"], data["CaseId"], data["CallDate"], data["CallStartTime"], data["CallEndTime"], data["Detail"], data["DetailOther"], data["OtherRemark"], data["ResponsibleVol"], data["Status"], this.params.UserId).then((ret) => {
-
-          if (ret.Result == "true") {
-          } else {
-            this.toast('未能連線');
-          }
-        });
-        // }
+        var  hvLogList=[];
+        var activityLogList =[];
+        var phoneSupportLogList=datas;
+        var medicAppointLogList=[]
+        if (phoneSupportLogList["SavedStatus"] != 0) {
+          this.api.SaveAll(hvLogList,phoneSupportLogList,activityLogList,medicAppointLogList).then((ret) => {
+            console.log(ret)
+            this.api.ExecuteWorkingSet(ret.WorkingSetID,this.params.caseID,this.params.UserId).then(e=>{
+              console.log(e)
+            })
+          });
+        }
+  
 
       })
 
