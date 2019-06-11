@@ -91,7 +91,5 @@ export class HeartRatPage extends AppBase {
         heartRateServe.getHeartRateId(this.params.caseid).then((e) => {
             console.log(e)
         })
-
-
     }
 }

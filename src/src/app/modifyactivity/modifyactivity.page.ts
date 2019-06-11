@@ -339,7 +339,7 @@ export class ModifyactivityPage extends AppBase {
 
 
     this.activityDate = AppUtil.FormatDate(new Date(this.activityDate));
-  
+
 
     this.LocalId = this.params.LocalId;
 
@@ -359,24 +359,27 @@ export class ModifyactivityPage extends AppBase {
 
   uploadActiveListWeb() {
 
-    if (this.LocalId == 0 || this.LocalId==undefined) {
+    if (this.LocalId == 0 || this.LocalId == undefined) {
       this.showConfirm('资料没有保存？请先保存', (e) => {
 
       })
     } else {
       //ActivityId, CaseId, ActDate, ActStartTime, ActEndTime, ActType, ActDetailType, Remarks1, Remarks2, Remarks3, Remarks4, OtherActRemarks, Remarks, Status, UserId
-      var data=this.activity
-        // if(data["SavedStatus"]!=0){
-        this.api.SaveActive(data["LocalId"], data["CaseId"], data["ActDate"], data["ActStartTime"], data["ActEndTime"], data["ActType"], data["ActDetailType"], data["Remarks1"], data["Remarks2"], data["Remarks3"],data["Remarks4"],data["OtherActRemarks"],data["Remarks"],data["Status"],this.params.UserId).then((ret) => {
+      
+      var data = this.activity
+      // var ActDate = AppUtil.FormatDate(new Date(data["ActDate"]));
+      var ActDate='11/06/2019'
+      if (data["SavedStatus"] != 0) {
+        this.api.SaveActive1(data["LocalId"], data["CaseId"], ActDate, data["ActStartTime"], data["ActEndTime"], data["ActType"], data["ActDetailType"], data["Remarks1"], data["Remarks2"], data["Remarks3"], data["Remarks4"], data["OtherActRemarks"], data["Remarks"], data["Status"], this.params.UserId).then((ret) => {
 
           if (ret.Result == "true") {
           } else {
             this.toast('未能連線');
           }
         });
-        // }
+      }
 
-      
+
 
     }
   }

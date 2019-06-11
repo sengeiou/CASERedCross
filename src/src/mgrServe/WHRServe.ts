@@ -8,10 +8,10 @@ export class WHRServe {
         return mgr.execSql(sql, [id]);
     }
 
-    getAllWHRList(){
+    getAllWHRList(CaseId){
         var mgr = DBMgr.GetInstance();
-        var sql = "select * from tb_WHR";
-        return mgr.execSql(sql);
+        var sql = "select * from tb_WHR where CaseId=?";
+        return mgr.execSql(sql,[CaseId]);
     }
 
     addWHR(CaseId,Ratio,MeasurementDate) {

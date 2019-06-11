@@ -55,6 +55,22 @@ export class AppUtil {
         return v;
     }
 
+    static FormatDateTime2(date) {
+        console.log("FormatDateTime" + date);
+        var year = AppUtil.ten2(date.getFullYear());
+        var month = AppUtil.ten2(date.getMonth() + 1);
+        var datec = AppUtil.ten2(date.getDate());
+        var hour = AppUtil.ten2(date.getHours());
+        var minute = AppUtil.ten2(date.getMinutes());
+        var second = AppUtil.ten2(date.getSeconds());
+
+        // var v = year + "/" + month + "/" + datec + " " + hour + ":" + minute + ":" + second;
+        // var v = year + "/" + month + "/" + datec + " " + hour + ":" + minute;
+        var v = datec + "-" + month + "-" + year + hour + ":" + minute;
+        console.log("FormatDateTime=" + v);
+        return v;
+    }
+
     static ten2(i) {
         i = parseInt(i);
         if (i > 9) {

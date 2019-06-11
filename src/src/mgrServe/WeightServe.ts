@@ -8,10 +8,10 @@ export class WeightServe {
         return mgr.execSql(sql, [id]);
     }
 
-    getAllWeightList(){
+    getAllWeightList(CaseId){
         var mgr = DBMgr.GetInstance();
-        var sql = "select * from tb_Weight";
-        return mgr.execSql(sql);
+        var sql = "select * from tb_Weight where CaseId=?";
+        return mgr.execSql(sql,[CaseId]);
     }
 
     addWeight(CaseId,Weight,MeasurementDate) {

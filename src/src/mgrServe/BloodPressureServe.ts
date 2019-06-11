@@ -8,10 +8,22 @@ export class BloodPressureServe {
         return mgr.execSql(sql, [id]);
     }
 
-    getAllBloodPressureList(){
+    getAllBloodPressureList(CaseId){
         var mgr = DBMgr.GetInstance();
-        var sql = "select * from tb_BloodPressure";
-        return mgr.execSql(sql);
+        var sql = "select * from tb_BloodPressure where CaseId=?";
+        return mgr.execSql(sql,[CaseId]);
+    }
+
+    getAllBloodPressureList_Lower(CaseId){
+        var mgr = DBMgr.GetInstance();
+        var sql = "select Lower,MeasurementDate,CaseId from tb_BloodPressure where CaseId=?";
+        return mgr.execSql(sql,[CaseId]);
+    }
+
+    getAllBloodPressureList_Upper(CaseId){
+        var mgr = DBMgr.GetInstance();
+        var sql = "select Upper,MeasurementDate,CaseId from tb_BloodPressure where CaseId=?";
+        return mgr.execSql(sql,[CaseId]);
     }
 
     addBloodPressureWeb(CaseId,Upper,Lower,MeasurementDate) {

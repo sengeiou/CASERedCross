@@ -291,7 +291,7 @@ export class ActivityPage extends AppBase {
       //ActivityId, CaseId, ActDate, ActStartTime, ActEndTime, ActType, ActDetailType, Remarks1, Remarks2, Remarks3, Remarks4, OtherActRemarks, Remarks, Status, UserId
       var data=this.activity
         // if(data["SavedStatus"]!=0){
-        this.api.SaveActive(data["LocalId"], data["CaseId"], data["ActDate"], data["ActStartTime"], data["ActEndTime"], data["ActType"], data["ActDetailType"], data["Remarks1"], data["Remarks2"], data["Remarks3"],data["Remarks4"],data["OtherActRemarks"],data["Remarks"],data["Status"],this.params.UserId).then((ret) => {
+        this.api.SaveActive1(data["LocalId"], data["CaseId"], data["ActDate"], data["ActStartTime"], data["ActEndTime"], data["ActType"], data["ActDetailType"], data["Remarks1"], data["Remarks2"], data["Remarks3"],data["Remarks4"],data["OtherActRemarks"],data["Remarks"],data["Status"],this.params.UserId).then((ret) => {
 
           if (ret.Result == "true") {
           } else {

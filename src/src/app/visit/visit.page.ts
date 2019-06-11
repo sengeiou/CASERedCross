@@ -491,4 +491,18 @@ export class VisitPage extends AppBase {
   scan(){
     this.navigate("qrcodescan");
   }
+
+  bloodPressure(){
+    this.navigate('bloodpressure', { caseid: this.params.caseID });
+  }
+
+  whr(){
+    this.navigate('whr', { caseid: this.params.caseID });
+  }
+
+  weight(){
+    this.navigate('weight', { caseid: this.params.caseID });
+  }
+
+  
 }

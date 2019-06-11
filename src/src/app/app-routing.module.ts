@@ -17,6 +17,9 @@ const routes: Routes = [
   { path: 'heart-rat', loadChildren: './heart-rat/heart-rat.module#HeartRatPageModule' },
   { path: 'wangluo', loadChildren: './wangluo/wangluo.module#WangluoPageModule' },  { path: 'modifyactivity', loadChildren: './modifyactivity/modifyactivity.module#ModifyactivityPageModule' },
   { path: 'modifyphone', loadChildren: './modifyphone/modifyphone.module#ModifyphonePageModule' },
+  { path: 'bloodpressure', loadChildren: './bloodpressure/bloodpressure.module#BloodpressurePageModule' },
+  { path: 'whr', loadChildren: './whr/whr.module#WhrPageModule' },
+  { path: 'weight', loadChildren: './weight/weight.module#WeightPageModule' },
 
 ];
 
