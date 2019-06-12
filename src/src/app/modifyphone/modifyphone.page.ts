@@ -16,6 +16,7 @@ import { VolunteerServr } from 'src/mgrServe/VolunteerServr';
   selector: 'app-modifyphone',
   templateUrl: './modifyphone.page.html',
   styleUrls: ['./modifyphone.page.scss'],
+  providers: [ServiceApi]
 })
 export class ModifyphonePage extends AppBase {
 
@@ -48,6 +49,27 @@ export class ModifyphonePage extends AppBase {
   VolunteerName = '';
   PhoneID = 0;
   phone = null;
+
+  DetailList = [{
+    DetailType: false, value: 1
+  }, {
+    DetailType: false, value: 2
+  }, {
+    DetailType: false, value: 3
+  }, {
+    DetailType: false, value: 4
+  }, {
+    DetailType: false, value: 5
+  }, {
+    DetailType: false, value: 6
+  }, {
+    DetailType: false, value: 7
+  }, {
+    DetailType: false, value: 8
+  }, {
+    DetailType: false, value: 9
+  }
+  ]
   onMyLoad() {
     //参数
     this.params;
@@ -83,6 +105,38 @@ export class ModifyphonePage extends AppBase {
         console.log(data)
         console.log(data["CallDate"])
         this.CallDate_show = AppUtil.FormatDate(new Date(data["CallDate"]));
+
+        var DetailTypelist = this.phone.Detail.split(',');
+        for (var i = 0; i < DetailTypelist.length; i++) {
+          console.log(DetailTypelist[i])
+          if (DetailTypelist[i] == 1) {
+            this.DetailList[0].DetailType = true;
+          }
+          if (DetailTypelist[i] == 2) {
+            this.DetailList[1].DetailType = true;
+          }
+          if (DetailTypelist[i] == 3) {
+            this.DetailList[2].DetailType = true;
+          }
+          if (DetailTypelist[i] == 4) {
+            this.DetailList[3].DetailType = true;
+          }
+          if (DetailTypelist[i] == 5) {
+            this.DetailList[4].DetailType = true;
+          }
+          if (DetailTypelist[i] == 6) {
+            this.DetailList[5].DetailType = true;
+          }
+          if (DetailTypelist[i] == 7) {
+            this.DetailList[6].DetailType = true;
+          }
+          if (DetailTypelist[i] == 8) {
+            this.DetailList[7].DetailType = true;
+          }
+          if (DetailTypelist[i] == 9) {
+            this.DetailList[8].DetailType = true;
+          }
+        }
       })
     }
   }
@@ -125,8 +179,66 @@ export class ModifyphonePage extends AppBase {
     this.Detail = e;
   }
 
-  savePhone() {
+  getLiaison(e) {
+    console.log(e)
+    this.CannotContact = e;
+    if(e==1){
+      this.DetailList = [{
+        DetailType: false, value: 1
+      }, {
+        DetailType: false, value: 2
+      }, {
+        DetailType: false, value: 3
+      }, {
+        DetailType: false, value: 4
+      }, {
+        DetailType: false, value: 5
+      }, {
+        DetailType: false, value: 6
+      }, {
+        DetailType: false, value: 7
+      }, {
+        DetailType: false, value: 8
+      }, {
+        DetailType: false, value: 9
+      }
+      ];
+      this.DetailOther='';
+      this.OtherRemark='';
+      this.NextPhoneDate='';
+      this.NextPhoneTime='';
+    }
+  }
+
+  savePhone(e) {
+    if (e == 0) {
+      this.toast('已上傳過的的資料，無法修改');
+      return;
+    }
     var phone = new PhoneServe();
+    if(this.CallDate!=''){
+      this.CallDate = AppUtil.FormatDate(new Date(this.CallDate));
+    }
+    if(this.CallStartTime!=''){
+      this.CallStartTime = AppUtil.FormatTime(new Date(this.CallStartTime));
+    }
+    if(this.CallEndTime!=''){
+      this.CallEndTime = AppUtil.FormatTime(new Date(this.CallEndTime));
+    }
+    
+    this.CallDate= this.CallDate!=''?this.CallDate:this.phone.CallDate
+    this.CallStartTime= this.CallStartTime!=''?this.CallStartTime:this.phone.CallStartTime
+    this.CallEndTime= this.CallEndTime!=''?this.CallEndTime:this.phone.CallEndTime
+    
+    this.DetailOther= this.DetailOther!=''?this.DetailOther:this.phone.DetailOther
+    this.UserName= this.UserName!=''?this.UserName:this.phone.UserName
+    this.OtherRemark= this.OtherRemark!=''?this.OtherRemark:this.phone.OtherRemark
+    this.CannotContact= this.CannotContact!=0?this.CannotContact:this.phone.CannotContact
+    this.NextPhoneDate= this.NextPhoneDate!=''?this.NextPhoneDate:this.phone.NextPhoneDate
+    this.NextPhoneTime= this.NextPhoneTime!=''?this.NextPhoneTime:this.phone.NextPhoneTime
+    
+
+
     if (!this.CallDate) {
       this.toast('你沒有輸入電話慰問日期');
       return;
@@ -147,19 +259,25 @@ export class ModifyphonePage extends AppBase {
       return;
     }
 
-    // if (!this.Detail) {
-    //   this.toast('你沒有填寫電話慰問內容');
-    //   return;
-    // }
-    // if (this.Detail == '其他' && !this.DetailOther) {
-    //   this.toast('你沒有填寫電話其他慰問內容');
-    //   return;
-    // }
-    this.CallDate = AppUtil.FormatDate(new Date(this.CallDate));
-    this.CallStartTime = AppUtil.FormatTime(new Date(this.CallStartTime));
-    this.CallEndTime = AppUtil.FormatTime(new Date(this.CallEndTime));
+    if (this.CannotContact !=1) {
+      for (var i = 0; i < this.DetailList.length; i++) {
+        if (this.DetailList[i].DetailType == true) {
+          if (this.Detail == '') {
+            this.Detail = String(this.DetailList[i].value);
+          } else {
+            this.Detail = this.Detail + ',' + this.DetailList[i].value
+          }
+        }
+      }
+      this.Detail= this.Detail!=''?this.Detail:this.phone.Detail
+    }else{
+      this.Detail='';
+    }
+
+    
+
     this.PhoneID = this.params.PhoneID;
-    phone.addPhone(this.PhoneID, this.params.caseID, this.CallDate, this.CallStartTime, this.CallEndTime, this.Detail, this.DetailOther, this.UserName, this.OtherRemark).then((e) => {
+    phone.addPhone(this.PhoneID, this.params.caseID, this.CallDate, this.CallStartTime, this.CallEndTime, this.Detail, this.DetailOther, this.UserName, this.OtherRemark, this.CannotContact, this.NextPhoneDate, this.NextPhoneTime).then((e) => {
       console.log(e)
       if (this.PhoneID == 0 || this.PhoneID == undefined) {
         this.PhoneID = e.res.insertId;
@@ -168,13 +286,17 @@ export class ModifyphonePage extends AppBase {
         })
       }
       if (e) {
-        this.toast('資料提交成功');
+        this.back();
+        this.toast('資料保存成功');
       }
     })
   }
 
-  uploadPhoneListWeb() {
-
+  uploadPhoneListWeb(e) {
+    if (e == 0) {
+      this.toast('已上傳過的的資料，無需上傳');
+      return;
+    }
     if (this.PhoneID == 0) {
       this.showConfirm('资料没有保存？请先保存', (e) => {
 
@@ -184,23 +306,28 @@ export class ModifyphonePage extends AppBase {
       phone.getPhoneId(this.PhoneID).then((e) => {
         console.log(e)
         var datas = Array.from(e.res.rows);
-        var  hvLogList=[];
-        var activityLogList =[];
-        var phoneSupportLogList=datas;
-        var medicAppointLogList=[];
+        var hvLogList = [];
+        var activityLogList = [];
+        var phoneSupportLogList = datas;
+        var medicAppointLogList = [];
 
         // if (datas["SavedStatus"] != 0) {
-          this.api.SaveAll(hvLogList,phoneSupportLogList,activityLogList,medicAppointLogList,this.params.UserId).then((ret) => {
-            if (ret.Result == 'true') {
-              this.api.ExecuteWorkingSet(ret.WorkingSetID, this.params.caseID, this.params.UserId).then(e => {
-                console.log(e)
-                if (e.Result== 'true') {
-                  this.toast('資料提交成功');
-                  this.back();
-                }
-              })
-            }
-          })
+        this.api.SaveAll(hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList, this.params.UserId).then((ret) => {
+          if (ret.Result == 'true') {
+            this.api.ExecuteWorkingSet(ret.WorkingSetID, this.params.caseID, this.params.UserId).then(e => {
+              console.log(e)
+              if (e.Result == 'true') {
+               
+                
+                phone.sevaPhoneSavedStatus(this.PhoneID).then(e=>{
+
+                })
+                this.toast('資料提交成功');
+                this.back();
+              }
+            })
+          }
+        })
         // }
 
       })

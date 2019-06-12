@@ -17,9 +17,15 @@ export class MedicalRecordServe {
         return mgr.execSql(sql,[SavedStatus]);
     }
 
-    addMedicalRecord(AppointmentDate,AppointmentTime,Description,Reason,Hosp,Specialty,CaseId){
+    addMedicalRecord(AppointmentDate,AppointmentTime,Description,Reason,Hosp,Specialty,CaseId,Status){
         var mgr = DBMgr.GetInstance();
-        var sql = "insert into tb_MedicalRecord(AppointmentDate,AppointmentTime,Description,Reason,Hosp,Specialty,CaseId,Status) values (?,?,?,?,?,?,?,1)";
+        var sql = "insert into tb_MedicalRecord(AppointmentDate,AppointmentTime,Description,Reason,Hosp,Specialty,CaseId,Status,SavedStatus,AppointmentId) values (?,?,?,?,?,?,?,?,1,0)";
+        return mgr.execSql(sql,[AppointmentDate,AppointmentTime,Description,Reason,Hosp,Specialty,CaseId,Status]);
+    }
+
+    addMedicalRecordWeb(AppointmentDate,AppointmentTime,Description,Reason,Hosp,Specialty,CaseId){
+        var mgr = DBMgr.GetInstance();
+        var sql = "insert into tb_MedicalRecord(AppointmentDate,AppointmentTime,Description,Reason,Hosp,Specialty,CaseId,Status,SavedStatus) values (?,?,?,?,?,?,?,1,0)";
         return mgr.execSql(sql,[AppointmentDate,AppointmentTime,Description,Reason,Hosp,Specialty,CaseId]);
     }
 
@@ -33,6 +39,12 @@ export class MedicalRecordServe {
         var mgr = DBMgr.GetInstance();
         var sql = "insert into tb_MedicalRecord(Hosp,Specialty,CaseId,Status) values (?,?,?,1)";
         return mgr.execSql(sql,[Hosp,Specialty,CaseId]);
+    }
+
+    deleteMedicalRecord(){
+        var mgr = DBMgr.GetInstance();
+        var sql = "DELETE FROM tb_MedicalRecord";
+        return mgr.execSql(sql,);
     }
 
 }

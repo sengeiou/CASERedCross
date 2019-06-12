@@ -34,7 +34,7 @@ export class VisitRecordPage extends AppBase {
   Reason = '';
   Hosp = '';
   Specialty = '';
-  Status = 0;
+  Status = 1;
   onMyLoad() {
     //参数
     this.params;
@@ -57,14 +57,7 @@ export class VisitRecordPage extends AppBase {
   addMedicalRecord() {
     console.log(this.AppointmentDate, this.AppointmentTime, this.Description, this.Reason, this.Hosp, this.Specialty, this.params.caseid)
     // return;
-    if (!this.AppointmentDate) {
-      this.toast('你沒有填寫复诊探訪日期');
-      return;
-    }
-    if (!this.AppointmentTime) {
-      this.toast('你沒有填寫复诊时间');
-      return;
-    }
+    
     if (!this.Hosp) {
       this.toast('你沒有填寫一样');
       return;
@@ -73,14 +66,17 @@ export class VisitRecordPage extends AppBase {
       this.toast('你沒有填寫门诊');
       return;
     }
-    if (!this.Status) {
-      this.toast('你沒有填寫就诊状态');
-      return;
+    if(this.AppointmentDate!=''){
+      this.AppointmentDate = AppUtil.FormatDate(new Date(this.AppointmentDate));
     }
-    this.AppointmentDate = AppUtil.FormatDate(new Date(this.AppointmentDate));
-    this.AppointmentTime = AppUtil.FormatTime(new Date(this.AppointmentTime));
+   
+    if(this.AppointmentTime!=''){
+      this.AppointmentTime = AppUtil.FormatDate(new Date(this.AppointmentTime));
+    }
+    
+
     var medicalRecord = new MedicalRecordServe();
-    medicalRecord.addMedicalRecord(this.AppointmentDate, this.AppointmentTime, this.Description, this.Reason, this.Hosp, this.Specialty, this.params.caseid).then((e) => {
+    medicalRecord.addMedicalRecord(this.AppointmentDate, this.AppointmentTime, this.Description, this.Reason, this.Hosp, this.Specialty, this.params.caseid,this.Status).then((e) => {
       console.log(e)
       if (e.res.insertId) {
         this.toast('資料提交成功');
@@ -98,9 +94,29 @@ export class VisitRecordPage extends AppBase {
         arr = Array.from(e.res.rows)[0];
         console.log(arr)
         this.MedicalRecord = arr;
+        this.getSpecialty()
+        this.gethosiptal()
       })
     }
 
+  }
+
+  getSpecialty() {
+    var secialtyServe = new SpecialtyServe();
+    secialtyServe.getSpecialtyId(this.MedicalRecord.Specialty).then(e => {
+      
+      var data = Array.from(e.res.rows)[0];
+      this.MedicalRecord.Specialty_name = data['Name'];
+    })
+  }
+
+  gethosiptal(){
+    var hosiptalServe = new HosiptalServe()
+    hosiptalServe.getHosiptalId(this.MedicalRecord.Hosp).then(e => {
+
+      var data = Array.from(e.res.rows)[0];
+      this.MedicalRecord.Hosp_name = data['Name'];
+    })
   }
 
   getAllHosiptalList() {

@@ -165,7 +165,7 @@ export class PhonePage extends AppBase {
     this.CallStartTime = AppUtil.FormatTime(new Date(this.CallStartTime));
     this.CallEndTime = AppUtil.FormatTime(new Date(this.CallEndTime));
     this.PhoneID = this.params.PhoneID;
-    phone.addPhone(this.PhoneID, this.params.caseID, this.CallDate, this.CallStartTime, this.CallEndTime, this.Detail, this.DetailOther, this.UserName, this.OtherRemark).then((e) => {
+    phone.addPhone(this.PhoneID, this.params.caseID, this.CallDate, this.CallStartTime, this.CallEndTime, this.Detail, this.DetailOther, this.UserName, this.OtherRemark,this.CannotContact,this.NextPhoneDate,this.NextPhoneTime).then((e) => {
       console.log(e)
       if (this.PhoneID == 0 || this.PhoneID == undefined) {
         this.PhoneID = e.res.insertId;

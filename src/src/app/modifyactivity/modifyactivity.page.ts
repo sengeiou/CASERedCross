@@ -107,9 +107,7 @@ export class ModifyactivityPage extends AppBase {
         this.activity = data;
 
         var Volunteerlist = this.activity.PresentVolunteer.split(',');
-
         console.log(Volunteerlist)
-        // return
         var volunteerServr = new VolunteerServr();
         for (var i = 0; i < Volunteerlist.length; i++) {
           console.log(Volunteerlist[i])

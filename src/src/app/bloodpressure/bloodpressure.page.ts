@@ -37,7 +37,7 @@ export class BloodpressurePage extends AppBase {
 
     var bloodPressureServe = new BloodPressureServe();
     bloodPressureServe.getAllBloodPressureList(this.params.caseid).then((e) => {
-      console.log(e)
+      console.log(e.res.rows)
       var list = Array.from(e.res.rows);
 
       var xdata = [];

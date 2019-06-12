@@ -10,7 +10,7 @@ export class DBMgr {
 
     Init(http: HTTP, sqlite: SQLite) {
 
-        var dbcreateUSERsql = "CREATE TABLE  IF NOT EXISTS  USER (ID INTEGER PRIMARY KEY AUTOINCREMENT,`number` nvarchar(25),`password` nvarchar(100),`sdate` int(15));";
+        var dbcreateUSERsql = "CREATE TABLE  IF NOT EXISTS  USER (ID INTEGER PRIMARY KEY AUTOINCREMENT,`number` nvarchar(25),`password` nvarchar(100),`sdate` int(15),VolId int);";
 
         let createActivityTableSQL = "CREATE TABLE IF NOT EXISTS tb_Activity (LocalId integer primary key autoincrement not null,ActivityId int, CaseId int, ActDate nvarchar(10), ActStartTime nvarchar(10), ActEndTime nvarchar(10), ActType int,  ActDetailType nvarchar(50), Remarks1 nvarchar(100), Remarks2 nvarchar(100),Remarks3 nvarchar(100),Remarks4 nvarchar(100), OtherActRemarks nvarchar(100), Remarks nvarchar(1000), Status int, SavedStatus int, PresentVolunteer nvarchar(1000))";
 
@@ -54,7 +54,7 @@ export class DBMgr {
             //alert(1);
             this.type = 0;
             sqlite.create({
-                name: 'appdata18.db',
+                name: 'appdata19.db',
                 location: 'default'
             }).then((db) => {
                 this._db = db;
@@ -81,7 +81,7 @@ export class DBMgr {
         } else {
             this.type = 1;
             //alert(2);
-            this._db = this.win.openDatabase("appdata18.db", '1.0', 'database', 5 * 1024 * 1024);
+            this._db = this.win.openDatabase("appdata19.db", '1.0', 'database', 5 * 1024 * 1024);
             this.execSql(dbcreateUSERsql);
             this.execSql(createActivityTableSQL);
             this.execSql(createPhoneTableSQL);

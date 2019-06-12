@@ -11,12 +11,12 @@ import { VolunteerServr } from 'src/mgrServe/VolunteerServr';
 import { ServiceApi } from 'src/providers/service.api';
 
 @Component({
-  selector: 'app-visit',
-  templateUrl: './visit.page.html',
-  styleUrls: ['./visit.page.scss'],
+  selector: 'app-modifyvisit',
+  templateUrl: './modifyvisit.page.html',
+  styleUrls: ['./modifyvisit.page.scss'],
   providers: [ServiceApi]
 })
-export class VisitPage extends AppBase {
+export class ModifyvisitPage extends AppBase {
 
   constructor(public router: Router,
     public navCtrl: NavController,
@@ -104,9 +104,11 @@ export class VisitPage extends AppBase {
   OtherSpecialNeed = 0;
   OtherSpecialNeedService = 0;
   OtherRemarks = '';
-  NeedsContent=0;
+  NeedsContent='';
 
   DeletePicString=''
+
+  presentVolunteer_show=''
 
 
   onMyLoad() {
@@ -123,8 +125,6 @@ export class VisitPage extends AppBase {
       return;
     }
   }
-
-
 
   qrcodeHandle(code) {
     alert(code);
@@ -158,6 +158,26 @@ export class VisitPage extends AppBase {
         var data = Array.from(casedata)[0]
         this.visit = data;
         console.log(data);
+
+        var Volunteerlist = this.visit.presentVolunteer.split(',');
+        console.log(Volunteerlist)
+        var volunteerServr = new VolunteerServr();
+
+        for (var i = 0; i < Volunteerlist.length; i++) {
+          console.log(Volunteerlist[i])
+          volunteerServr.getVolunteerId(Volunteerlist[i]).then((e) => {
+            console.log(e)
+            var data = Array.from(e.res.rows)[0]
+            console.log(data)
+            if (data) {
+              if (this.presentVolunteer_show == '') {
+                this.presentVolunteer_show = data['VolunteerName'];
+              } else {
+                this.presentVolunteer_show = this.presentVolunteer_show + ',' + data['VolunteerName'];
+              }
+            }
+          })
+        }
       })
     }
   }
@@ -176,13 +196,12 @@ export class VisitPage extends AppBase {
 
   saveYuyue(visitId) {
 
-    // console.log(visitId, this.ScheduleDate, this.ScheduleTime, this.params.caseID)
+    console.log(visitId, this.ScheduleDate, this.ScheduleTime, this.params.caseID)
     // this.ScheduleDate = AppUtil.FormatDate(new Date(this.ScheduleDate));
     // this.ScheduleTime = AppUtil.FormatTime(new Date(this.ScheduleTime));
     // console.log(this.ScheduleDate)
     // if (!this.visit.ScheduleDate) {
     //   var visit = new VisitServe();
-    //   // AppUtil.FormatDate()
     //   visit.addVisit_yuyue(visitId, this.ScheduleDate, this.ScheduleTime, this.params.caseID).then((e) => {
     //     console.log(e)
     //     if (this.LocalId == 0 || this.LocalId == undefined) {
@@ -193,6 +212,7 @@ export class VisitPage extends AppBase {
     //     }
     //     this.getVisitId()
     //   })
+     
     // }
     this.addVisit()
 
@@ -210,7 +230,7 @@ export class VisitPage extends AppBase {
 
   saveVisit_Neurou(visitId) {
     console.log(visitId, this.VisitDate, this.VisitStartTime, this.VisitEndTime, this.presentVolunteer, this.supportVolunteer, this.Location, this.LocationRemarks, this.VisitStatus, this.VisitStatusRemarks, this.params.caseID)
-
+    // return;
     // if (!this.VisitDate) {
     //   this.toast('你沒有填寫實際探訪日期');
     //   return;
@@ -231,27 +251,26 @@ export class VisitPage extends AppBase {
     //   this.toast('你沒有填寫未能探訪的原因');
     //   return;
     // }
-
-    // if (!this.visit.VisitDate) {
-    //   var visit = new VisitServe();
-    //   this.VisitDate = AppUtil.FormatDate(new Date(this.VisitDate));
-    //   this.VisitStartTime = AppUtil.FormatTime(new Date(this.VisitStartTime));
-    //   this.VisitEndTime = AppUtil.FormatTime(new Date(this.VisitEndTime));
-    //   // console.log(this.presentVolunteer, this.supportVolunteer)
-    //   visit.addVisit_neurou(visitId, this.VisitDate, this.VisitStartTime, this.VisitEndTime, this.presentVolunteer, this.supportVolunteer, this.Location, this.LocationRemarks, this.VisitStatus, this.VisitStatusRemarks, this.params.caseID).then((e) => {
-    //     console.log(e)
-    //     if (this.LocalId == 0 || this.LocalId == undefined) {
-    //       this.LocalId = e.res.insertId;
-    //       visit.saveVisitCaseId(this.params.caseID, e.res.insertId).then((e) => {
-    //         console.log(e)
-    //       })
-    //     }
-    //     this.toast('資料提交成功');
-    //     this.getVisitId()
-    //   })
-    // }
-
     this.addVisit()
+    // if (!this.visit.VisitDate) {
+      // var visit = new VisitServe();
+      // this.VisitDate = AppUtil.FormatDate(new Date(this.VisitDate));
+      // this.VisitStartTime = AppUtil.FormatTime(new Date(this.VisitStartTime));
+      // this.VisitEndTime = AppUtil.FormatTime(new Date(this.VisitEndTime));
+      // console.log(this.presentVolunteer, this.supportVolunteer)
+      // visit.addVisit_neurou(visitId, this.VisitDate, this.VisitStartTime, this.VisitEndTime, this.presentVolunteer, this.supportVolunteer, this.Location, this.LocationRemarks, this.VisitStatus, this.VisitStatusRemarks, this.params.caseID).then((e) => {
+      //   console.log(e)
+      //   if (this.LocalId == 0 || this.LocalId == undefined) {
+      //     this.LocalId = e.res.insertId;
+      //     visit.saveVisitCaseId(this.params.caseID, e.res.insertId).then((e) => {
+      //       console.log(e)
+      //     })
+      //   }
+      //   this.toast('資料提交成功');
+      //   this.getVisitId()
+      // })
+      // this.addVisit()
+    // }
   }
 
   getVisitDetailIndoor(e) {
@@ -281,7 +300,7 @@ export class VisitPage extends AppBase {
     //   this.toast('你沒有填寫室外活動的其他項目');
     //   return;
     // }
-
+   
     // var visit = new VisitServe();
     // visit.saveService_neurou(visitId, this.VisitDetailIndoor, this.VisitDetailIndoorRemarks, this.VisitDetailOutdoor, this.VisitDetailOutdoorRemarks, this.VisitDetailOther, this.CategoryTopic1, this.CategoryTopic2, this.CategoryTopic3, this.params.caseID).then((e) => {
     //   if (this.LocalId == 0 || this.LocalId == undefined) {
@@ -293,6 +312,7 @@ export class VisitPage extends AppBase {
     //   this.toast('資料提交成功');
     //   this.getVisitId()
     // })
+
     this.addVisit()
   }
 
@@ -316,8 +336,6 @@ export class VisitPage extends AppBase {
     console.log(visitId, this.Weight, this.Bmi, this.Waist, this.Hip, this.WHRatio, this.SYS1, this.DlA1, this.SYS2, this.DlA2, this.heartBeats1, this.heartBeats2, this.params.caseID)
     this.WHRatio = this.Waist / this.Hip;
     this.Bmi = this.Weight / (1.72 * 1.72)
-
-    this.addVisit()
     // var visit = new VisitServe();
     // visit.saveHeightWeight(visitId, this.Weight, this.Bmi, this.Waist, this.Hip, this.WHRatio, this.SYS1, this.DlA1, this.SYS2, this.DlA2, this.heartBeats1, this.heartBeats2, this.params.caseID).then((e) => {
     //   if (this.LocalId == 0 || this.LocalId == undefined) {
@@ -329,6 +347,7 @@ export class VisitPage extends AppBase {
     //   this.toast('資料提交成功');
     //   this.getVisitId()
     // })
+    this.addVisit()
   }
 
   getLifeHabit1(e) {
@@ -360,8 +379,6 @@ export class VisitPage extends AppBase {
     console.log(visitId, this.LifeStyleQuestion1, this.LifeStyleQuestion2, this.LifeStyleQuestion3, this.LifeStyleQuestion4, this.LifeStyleQuestion5, this.LifeStyleQuestion6, this.params.caseID)
     this.WHRatio = this.Waist / this.Hip;
     this.Bmi = this.Weight / (1.72 * 1.72)
-
-    this.addVisit()
     // var visit = new VisitServe();
     // visit.saveLifeHabit(visitId, this.LifeStyleQuestion1, this.LifeStyleQuestion2, this.LifeStyleQuestion3, this.LifeStyleQuestion4, this.LifeStyleQuestion5, this.LifeStyleQuestion6, this.params.caseID).then((e) => {
     //   if (this.LocalId == 0 || this.LocalId == undefined) {
@@ -373,6 +390,7 @@ export class VisitPage extends AppBase {
     //   this.toast('資料提交成功');
     //   this.getVisitId()
     // })
+    this.addVisit()
   }
 
   getEmotion(e) {
@@ -425,6 +443,51 @@ export class VisitPage extends AppBase {
   }
 
   OtherSupplement(visitId) {
+    // if (!this.OtherHospDisbete) {
+    //   this.toast('你沒有填滿長者其他狀況補充1');
+    //   return;
+    // }
+    // if (this.OtherHospDisbete == 1 && !this.OtherHospDisbeteNoOfDay) {
+    //   this.toast('你沒有填滿長者其他狀況補充2');
+    //   return;
+    // }
+
+    // if (!this.OtherHospHighBp) {
+    //   this.toast('你沒有填滿長者其他狀況補充3');
+    //   return;
+    // }
+    // if (this.OtherHospHighBp == 1 && !this.OtherHospHighBpNoOfDay) {
+    //   this.toast('你沒有填滿長者其他狀況補充4');
+    //   return;
+    // }
+
+    // if (!this.OtherHospOtherIllness) {
+    //   this.toast('你沒有填滿長者其他狀況補充5');
+    //   return;
+    // }
+    // if (this.OtherHospOtherIllness == 1 && !this.OtherHospOtherIllnessNoOfDay) {
+    //   this.toast('你沒有填滿長者其他狀況補充6');
+    //   return;
+    // }
+
+    // if (!this.OtherAccident) {
+    //   this.toast('你沒有填滿長者其他狀況補充7');
+    //   return;
+    // }
+    // if (this.OtherAccident == 1 && !this.OtherAccidentNoOfDay) {
+    //   this.toast('你沒有填滿長者其他狀況補充8');
+    //   return;
+    // }
+
+    // if (!this.OtherSpecialNeed) {
+    //   this.toast('你沒有填滿長者其他狀況補充9');
+    //   return;
+    // }
+    // if (this.OtherSpecialNeed == 1 && !this.OtherSpecialNeedService) {
+    //   this.toast('你沒有填滿長者其他狀況補充10');
+    //   return;
+    // }
+
     this.addVisit()
 
     // var visit = new VisitServe();
@@ -441,29 +504,97 @@ export class VisitPage extends AppBase {
   }
 
   addVisit() {
+    if (this.visit.SavedStatus == 0) {
+      this.toast('已上傳過的的資料，無法修改');
+      return;
+    }
     var visit = new VisitServe();
-    if(this.ScheduleDate){
+    if(this.ScheduleDate!=''){
       this.ScheduleDate = AppUtil.FormatDate(new Date(this.ScheduleDate));
+    }
+
+    if(this.ScheduleTime!=''){
       this.ScheduleTime = AppUtil.FormatTime(new Date(this.ScheduleTime));
     }
+    
+    var VisitId=0;
+    var Status=1;
+    var TaskId=0;
+
+    this.Bmi=this.Bmi!=0?this.Bmi:this.visit.Bmi
+    this.CategoryTopic1=this.CategoryTopic1!=''?this.Bmi:this.visit.CategoryTopic1
+    this.CategoryTopic2=this.CategoryTopic2!=''?this.Bmi:this.visit.CategoryTopic2
+    this.CategoryTopic3=this.CategoryTopic3!=''?this.CategoryTopic3:this.visit.CategoryTopic3
+    this.EmotionAssessment=this.EmotionAssessment!=''?this.Bmi:this.visit.EmotionAssessment
+    this.EmotionAssessmentRemarks=this.EmotionAssessmentRemarks!=''?this.Bmi:this.visit.EmotionAssessmentRemarks
+    this.Hip=this.Hip!=0?this.Hip:this.visit.Hip
+    this.LifeStyleMeasureBpPeriod=this.LifeStyleMeasureBpPeriod!=0?this.LifeStyleMeasureBpPeriod:this.visit.LifeStyleMeasureBpPeriod
+    this.LifeStyleMeasureBloodSuger=this.LifeStyleMeasureBloodSuger!=0?this.LifeStyleMeasureBloodSuger:this.visit.LifeStyleMeasureBloodSuger
+    this.LifeStyleMeasureBpLocation=this.LifeStyleMeasureBpLocation!=0?this.LifeStyleMeasureBpLocation:this.visit.LifeStyleMeasureBpLocation
+    this.LifeStyleMeasureBpNoOfTime=this.LifeStyleMeasureBpNoOfTime!=0?this.LifeStyleMeasureBpNoOfTime:this.visit.LifeStyleMeasureBpNoOfTime
+    this.LifeStyleMeasureBloodPressure=this.LifeStyleMeasureBloodPressure!=0?this.LifeStyleMeasureBloodPressure:this.visit.LifeStyleMeasureBloodPressure
+    this.LifeStyleMeasureBsLocation=this.LifeStyleMeasureBsLocation!=0?this.LifeStyleMeasureBsLocation:this.visit.LifeStyleMeasureBsLocation
+    this.LifeStyleMeasureBsNoOfTime=this.LifeStyleMeasureBsNoOfTime!=0?this.LifeStyleMeasureBsNoOfTime:this.visit.LifeStyleMeasureBsNoOfTime
+    this.LifeStyleMeasureBsPeriod=this.LifeStyleMeasureBsPeriod!=0?this.LifeStyleMeasureBsPeriod:this.visit.LifeStyleMeasureBsPeriod
+    this.LifeStyleQuestion1=this.LifeStyleQuestion1!=0?this.LifeStyleQuestion1:this.visit.LifeStyleQuestion1
+    this.LifeStyleQuestion2=this.LifeStyleQuestion2!=0?this.LifeStyleQuestion2:this.visit.LifeStyleQuestion2
+    this.LifeStyleQuestion3=this.LifeStyleQuestion3!=0?this.LifeStyleQuestion3:this.visit.LifeStyleQuestion3
+    this.LifeStyleQuestion4=this.LifeStyleQuestion4!=0?this.LifeStyleQuestion4:this.visit.LifeStyleQuestion4
+    this.LifeStyleQuestion5=this.LifeStyleQuestion5!=0?this.LifeStyleQuestion5:this.visit.LifeStyleQuestion5
+    this.LifeStyleQuestion6=this.LifeStyleQuestion6!=0?this.LifeStyleQuestion6:this.visit.LifeStyleQuestion6
+    this.Location=this.Location!=0?this.Location:this.visit.Location
+    this.LocationRemarks=this.LocationRemarks!=''?this.LocationRemarks:this.visit.LocationRemarks
+    this.OtherAccident=this.OtherAccident!=0?this.OtherAccident:this.visit.OtherAccident
+    this.OtherAccidentNoOfDay=this.OtherAccidentNoOfDay!=0?this.OtherAccidentNoOfDay:this.visit.OtherAccidentNoOfDay
+    this.OtherHospDisbete=this.OtherHospDisbete!=0?this.OtherHospDisbete:this.visit.OtherHospDisbete
+    this.OtherHospDisbeteNoOfDay=this.OtherHospDisbeteNoOfDay!=0?this.OtherHospDisbeteNoOfDay:this.visit.OtherHospDisbeteNoOfDay
+    this.OtherHospHighBp=this.OtherHospHighBp!=0?this.OtherHospHighBp:this.visit.OtherHospHighBp
+    this.OtherHospHighBpNoOfDay=this.OtherHospHighBpNoOfDay!=0?this.OtherHospHighBpNoOfDay:this.visit.OtherHospHighBpNoOfDay
+    this.OtherHospOtherIllness=this.OtherHospOtherIllness!=0?this.OtherHospOtherIllness:this.visit.OtherHospOtherIllness
+    this.OtherRemarks=this.OtherRemarks!=''?this.OtherRemarks:this.visit.OtherRemarks
+    this.OtherSpecialNeed=this.OtherSpecialNeed!=0?this.OtherSpecialNeed:this.visit.OtherSpecialNeed
+    this.OtherSpecialNeedService=this.OtherSpecialNeedService!=0?this.OtherSpecialNeedService:this.visit.OtherSpecialNeedService
+    this.ScheduleDate=this.ScheduleDate!=''?this.ScheduleDate:this.visit.ScheduleDate
+    this.ScheduleTime=this.ScheduleTime!=''?this.ScheduleTime:this.visit.ScheduleTime
+    this.VisitDate=this.VisitDate!=''?this.VisitDate:this.visit.VisitDate
+    this.VisitDetailIndoor=this.VisitDetailIndoor!=''?this.VisitDetailIndoor:this.visit.VisitDetailIndoor
+    this.VisitDetailIndoorRemarks=this.VisitDetailIndoorRemarks!=''?this.VisitDetailIndoorRemarks:this.visit.VisitDetailIndoorRemarks
+    this.VisitDetailOther=this.VisitDetailOther!=''?this.VisitDetailOther:this.visit.VisitDetailOther
+    this.VisitDetailOutdoor=this.VisitDetailOutdoor!=''?this.VisitDetailOutdoor:this.visit.VisitDetailOutdoor
+    this.VisitDetailOutdoorRemarks=this.VisitDetailOutdoorRemarks!=''?this.VisitDetailOutdoorRemarks:this.visit.VisitDetailOutdoorRemarks
+    this.VisitEndTime=this.VisitEndTime!=''?this.VisitEndTime:this.visit.VisitEndTime
+    this.VisitStartTime=this.VisitStartTime!=''?this.VisitStartTime:this.visit.VisitStartTime
+    this.VisitStatus=this.VisitStatus!=0?this.VisitStatus:this.visit.VisitStatus
+    this.VisitStatusRemarks=this.VisitStatusRemarks!=''?this.VisitStatusRemarks:this.visit.VisitStatusRemarks
+    this.WHRatio=this.WHRatio!=0?this.WHRatio:this.visit.WHRatio
+    this.Waist=this.Waist!=0?this.Waist:this.visit.Waist
+    this.Weight=this.Weight!=0?this.Weight:this.visit.Weight
+    this.NeedsContent=this.NeedsContent!=''?this.NeedsContent:this.visit.NeedsContent
+    this.SYS1=this.SYS1!=0?this.SYS1:this.visit.SYS1
+    this.DlA1=this.DlA1!=0?this.DlA1:this.visit.DlA1 
+    this.SYS2=this.SYS2!=0?this.SYS2:this.visit.SYS2 
+    this.DlA2=this.DlA2!=0?this.DlA2:this.visit.DlA2
+    this.heartBeats1=this.heartBeats1!=0?this.heartBeats1:this.visit.heartBeats1
+    this.heartBeats2=this.heartBeats2!=0?this.heartBeats2:this.visit.heartBeats2
+    this.presentVolunteer=this.presentVolunteer!=''?this.presentVolunteer:this.visit.presentVolunteer
+    this.supportVolunteer=this.supportVolunteer!=''?this.supportVolunteer:this.visit.supportVolunteer
+
+
+  
     if(this.ScheduleDate==''){
       this.toast('你沒有選擇探訪日期');
       return;
     }
-    var VisitId=0;
-    var Status=1;
-    var TaskId=0;
-  
-    visit.addVisit(this.Bmi, this.params.caseID, this.CategoryTopic1, this.CategoryTopic2, this.CategoryTopic3, this.EmotionAssessment, this.EmotionAssessmentRemarks, 
+    visit.saveVisit(this.visit.LocalId,this.Bmi, this.params.caseID, this.CategoryTopic1, this.CategoryTopic2, this.CategoryTopic3, this.EmotionAssessment, this.EmotionAssessmentRemarks, 
       this.Hip, this.LifeStyleMeasureBloodPressure, this.LifeStyleMeasureBloodSuger, this.LifeStyleMeasureBpLocation, this.LifeStyleMeasureBpNoOfTime,
        this.LifeStyleMeasureBpPeriod, this.LifeStyleMeasureBsLocation, this.LifeStyleMeasureBsNoOfTime, this.LifeStyleMeasureBsPeriod, this.LifeStyleQuestion1,
         this.LifeStyleQuestion2, this.LifeStyleQuestion3, this.LifeStyleQuestion4, this.LifeStyleQuestion5, this.LifeStyleQuestion6, this.Location, this.LocationRemarks,
          this.OtherAccident, this.OtherAccidentNoOfDay, this.OtherHospDisbete, this.OtherHospDisbeteNoOfDay, this.OtherHospHighBp, this.OtherHospHighBpNoOfDay, 
          this.OtherHospOtherIllness, this.OtherHospOtherIllnessNoOfDay, this.OtherRemarks, this.OtherSpecialNeed, this.OtherSpecialNeedService, this.ScheduleDate,
           this.ScheduleTime, Status, TaskId, this.VisitDate, this.VisitDetailIndoor, this.VisitDetailIndoorRemarks, this.VisitDetailOther, this.VisitDetailOutdoor, 
-          this.VisitDetailOutdoorRemarks, this.VisitEndTime, VisitId,this.VisitStartTime, this.VisitStatus, this.VisitStatusRemarks, this.WHRatio, this.Waist, this.Weight,this.NeedsContent,
-          this.SYS1, this.DlA1, this.SYS2, this.DlA2, this.heartBeats1, this.heartBeats2,this.presentVolunteer, this.supportVolunteer,this.DeletePicString).then(e => {
-      if (e.res.insertId) {
+          this.VisitDetailOutdoorRemarks, this.VisitEndTime, VisitId,this.VisitStartTime, this.VisitStatus, this.VisitStatusRemarks, this.WHRatio, this.Waist, this.Weight,
+          this.NeedsContent,this.SYS1, this.DlA1, this.SYS2, this.DlA2, this.heartBeats1, this.heartBeats2, this.presentVolunteer, this.supportVolunteer,this.DeletePicString).then(e => {
+      if (e) {
         this.toast('資料保存成功');
         this.back();
       }
@@ -511,8 +642,11 @@ export class VisitPage extends AppBase {
   }
 
 
-  uploadVisitListWeb() {
-
+  uploadVisitListWeb(e) {
+    if (e == 0) {
+      this.toast('已上傳過的的資料，無需上傳');
+      return;
+    }
     if (this.LocalId == 0 || this.LocalId == undefined) {
       this.showConfirm('资料没有保存？请先保存', (e) => {
 
@@ -531,7 +665,12 @@ export class VisitPage extends AppBase {
           console.log(ret)
           if (ret.Result == 'true') {
             this.api.ExecuteWorkingSet(ret.WorkingSetID, this.params.caseID, this.params.UserId).then(e => {
-              if (e.Result) {
+              if (e.Result== 'true') {
+
+                var visit = new VisitServe();
+                visit.sevaVisitSavedStatus(this.LocalId).then(e=>{
+
+                })
                 this.toast('資料提交成功');
                 this.back();
               }else{

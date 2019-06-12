@@ -73,7 +73,7 @@
         <div class="flex-1">
           <div class="radius-2" style="width:100%; " class="bg-white">
             <div *ngIf="!visit.ScheduleDate">
-              <ion-datetime displayFormat="MM/DD/YYYY" picker-format="MM/DD/YYYY  " max="2050-12-09" done-text='确定'
+              <ion-datetime displayFormat="DD-MM-YYYY " picker-format="DD MM YYYY   " max="2050-12-09" done-text='确定'
                 style="height:25px;padding:2px;" cancel-text='取消' [(ngModel)]="ScheduleDate"></ion-datetime>
             </div>
 
@@ -117,7 +117,7 @@
           <div class="radius-2" style="width:100%; ">
             <div *ngIf="!visit.VisitDate" class="bg-white">
               <ion-datetime placeholder="{{visit.VisitDate}}" style="height:25px;padding:2px;"
-                displayFormat="YYYY/MM/DD " picker-format="YYYY MM DD" max="2050-12-09" done-text='确定' cancel-text='取消'
+                displayFormat="DD-MM-YYYY  " picker-format="DD/MM/YYYY " max="2050-12-09" done-text='确定' cancel-text='取消'
                 [(ngModel)]="VisitDate"></ion-datetime>
             </div>
             <div class="input_s radius-2 bg-white padding-left-5" *ngIf="visit.VisitDate" style="width:100%;">
@@ -175,16 +175,8 @@
           <div><img src="../assets/icon/plus_icon.png" class="icon-15 margin-left-30" />
 
             <div style="position:absolute;margin-top:-30px;background:transparent" class="aaa">
-
-              <!-- <ion-select multiple="true" [(ngModel)]="presentVolunteer"
-                style="position:absolute;background:transparent">
-                <ion-select-option value="风">风</ion-select-option>
-                <ion-select-option value="55"> 55 </ion-select-option>
-                <ion-select-option value="66"> 66 </ion-select-option>
-              </ion-select> -->
-
               <ion-select multiple="true" *ngIf="visit.SavedStatus!=0 " style="position:absolute;background:transparent;opacity: 0;" [(ngModel)]="presentVolunteer" >
-                <ion-select-option *ngFor="let item of Volunteer;let idx=index;"   value="{{item.VolunteerName}}">{{item.VolunteerName}}</ion-select-option>
+                <ion-select-option *ngFor="let item of Volunteer;let idx=index;"   value="{{item.VolunteerName}}">{{item.VolId}}</ion-select-option>
               </ion-select>
             </div>
 

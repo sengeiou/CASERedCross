@@ -26,10 +26,10 @@ export class BloodPressureServe {
         return mgr.execSql(sql,[CaseId]);
     }
 
-    addBloodPressureWeb(CaseId,Upper,Lower,MeasurementDate) {
+    addBloodPressureWeb(CaseId,Upper,Lower,date_swift_chart_display) {
         var mgr = DBMgr.GetInstance();
         var sql = "insert into tb_BloodPressure(CaseId,Upper,Lower,MeasurementDate) values (?,?,?,?)";
-        return mgr.execSql(sql,[CaseId,Upper,Lower,MeasurementDate]);
+        return mgr.execSql(sql,[CaseId,Upper,Lower,date_swift_chart_display]);
     }
     
     deleteBloodPressure(){

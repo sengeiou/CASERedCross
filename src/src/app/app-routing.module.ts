@@ -20,6 +20,7 @@ const routes: Routes = [
   { path: 'bloodpressure', loadChildren: './bloodpressure/bloodpressure.module#BloodpressurePageModule' },
   { path: 'whr', loadChildren: './whr/whr.module#WhrPageModule' },
   { path: 'weight', loadChildren: './weight/weight.module#WeightPageModule' },
+  { path: 'modifyvisit', loadChildren: './modifyvisit/modifyvisit.module#ModifyvisitPageModule' },
 
 ];
 

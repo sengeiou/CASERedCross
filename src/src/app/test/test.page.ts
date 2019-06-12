@@ -54,8 +54,10 @@ export class TestPage extends AppBase {
 
   }
   onMyShow() {
-    this.number = 'andriod';
-    this.password = 'a29543949';
+    // this.number = 'andriod';
+    // this.password = 'a29543949';
+    this.number = '';
+    this.password = '';
 
     this.wangluo = this.network.type;
     console.log(this.network.type)
@@ -73,7 +75,7 @@ export class TestPage extends AppBase {
 
   insert() {
     var dbmgr = DBMgr.GetInstance();
-    dbmgr.execSql("insert into USER (number,password,sdate) values (?,?,?)", [this.number, this.password, new Date().getTime()]).then((ret) => {
+    dbmgr.execSql("insert into USER (number,password,sdate,VolId) values (?,?,?,?)", [this.number, this.password, new Date().getTime(),this.VolId]).then((ret) => {
       // this.showAlert("影响了"+ret.res.rowsAffected+"行数据");
     });
   }
@@ -88,30 +90,50 @@ export class TestPage extends AppBase {
   VolId = 0;
 
   login() {
-    // alert('开始了')
     if (this.number.trim() == "") {
       this.toast('義工編號不能留空');
       return;
     }
-    if (!this.password) {
+    if (this.password=='') {
       this.toast('密碼不能留空');
       return;
     }
 
     console.log(this.number, this.password);
+    console.log(this.wangluo)
     if (this.wangluo == 'none') {
-      // alert('离线登录')
       var lastlogininfo = null;
       lastlogininfo = window.localStorage.getItem("lastlogininfo");
       if (lastlogininfo == null) {
-        this.toast('你当前处于离线状态，不可登录');
+        var userServe=new UserServe()
+        userServe.getUser(this.number, this.password).then(ret=>{
+          var rows = ret.res.rows;
+          console.log(rows);
+          this.data = rows;
+         
+          if (this.data) {
+            var time = new Date().getTime() - this.data[0]['sdate'];
+            if (time < 24 * 60 * 60 * 1000) {
+              this.navigate('home', { id: rows.VolId })
+              this.update()
+              this.toast('登录成功');
+            } else {
+              this.toast('你当前处于离线状态，不可登录');
+            }
+
+          } else {
+            this.toast('你的義工編號或密碼不正確');
+            
+          }
+        })
+        
       } else {
+
         lastlogininfo = JSON.parse(lastlogininfo);
         var logintime = parseInt(lastlogininfo.logintime);
         var now = (new Date()).getTime();
         if ((now - logintime) > 1 * 60 * 1000) {
           if (this.number == lastlogininfo.number && this.password == lastlogininfo.password) {
-
             this.VolId = lastlogininfo.VolId;
             this.navigate('home', { id: this.VolId });
           } else {
@@ -123,8 +145,6 @@ export class TestPage extends AppBase {
       // alert('在线登录')
       var userServe = new UserServe();
       this.api.VolunteerLogin(this.number, this.password).then((ret) => {
-        // console.log(ret);
-        // return;
         if (ret.Result == "true") {
           var lastlogininfo = {
             user: ret.objUser,
@@ -156,53 +176,52 @@ export class TestPage extends AppBase {
   }
 
 
-  // login12() {
-  //   if (!this.number) {
-  //     this.toast('義工編號不能留空');
-  //     return;
-  //   }
-  //   if (!this.password) {
-  //     this.toast('密碼不能留空');
-  //     return;
-  //   }
-  //   // this.loginWeb()
+  login12() {
+    if (!this.number) {
+      this.toast('義工編號不能留空');
+      return;
+    }
+    if (!this.password) {
+      this.toast('密碼不能留空');
+      return;
+    }
+ 
+    var userServe = new UserServe();
+    userServe.getUserNumber(this.number).then((e) => {
+      console.log(e)
+      if (e.res.rows.length == 0) {
+        this.insert()
+        setTimeout(() => {
+          this.login()
+        }, 2000);
+      } else {
+        var dbmgr = DBMgr.GetInstance();
+        dbmgr.execSql("select * from USER where number='" + this.number + "' and password='" + this.password + "'").then((ret) => {
+          var rows = ret.res.rows;
+          console.log(rows);
+          console.log(ret);
+          this.data = rows;
+          console.log(new Date().getTime())
+          console.log(this.data[0]['sdate'])
+          var time = new Date().getTime() - this.data[0]['sdate'];
+          console.log(time)
+          if (this.data) {
+            if (time < 24 * 60 * 60 * 1000) {
+              this.navigate('home', { id: this.VolId })
+              this.update()
+              this.toast('登录成功');
+            } else {
+              this.toast('未能連線，無法登入');
+            }
 
-  //   var userServe = new UserServe();
-  //   userServe.getUserNumber(this.number).then((e) => {
-  //     console.log(e)
-  //     if (e.res.rows.length == 0) {
-  //       this.insert()
-  //       setTimeout(() => {
-  //         this.login()
-  //       }, 2000);
-  //     } else {
-  //       var dbmgr = DBMgr.GetInstance();
-  //       dbmgr.execSql("select * from USER where number='" + this.number + "' and password='" + this.password + "'").then((ret) => {
-  //         var rows = ret.res.rows;
-  //         console.log(rows);
-  //         console.log(ret);
-  //         this.data = rows;
-  //         console.log(new Date().getTime())
-  //         console.log(this.data[0]['sdate'])
-  //         var time = new Date().getTime() - this.data[0]['sdate'];
-  //         console.log(time)
-  //         if (this.data) {
-  //           if (time < 24 * 60 * 60 * 1000) {
-  //             this.navigate('home', { id: this.VolId })
-  //             this.update()
-  //             this.toast('登录成功');
-  //           } else {
-  //             this.toast('未能連線，無法登入');
-  //           }
+          } else {
+            this.toast('你的義工編號或密碼不正確');
+          }
+        });
+      }
+    })
 
-  //         } else {
-  //           this.toast('你的義工編號或密碼不正確');
-  //         }
-  //       });
-  //     }
-  //   })
-
-  // }
+  }
 
   aa() { //忘记密码
     this.presentAlertCheckbox();

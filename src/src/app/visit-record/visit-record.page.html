@@ -43,8 +43,8 @@
         <div class="title2">診所/醫院:</div>
         <div class="flex-1 margin-left-40">
          
-          <ion-select class="bg-white radius-2" style="width:100%;height:25px;padding:2px;color:#000;" [(ngModel)]="Hosp" placeholder="{{MedicalRecord.Hosp?MedicalRecord.Hosp:''}}">
-            <ion-select-option *ngFor="let item of Hosiptal;let idx=index;"   value="{{item.Name}}">{{item.Name}}</ion-select-option>
+          <ion-select class="bg-white radius-2" style="width:100%;height:25px;padding:2px;color:#000;" [(ngModel)]="Hosp" placeholder="{{MedicalRecord.Hosp?MedicalRecord.Hosp_name:''}}">
+            <ion-select-option *ngFor="let item of Hosiptal;let idx=index;"   value="{{item.id}}">{{item.Name}}</ion-select-option>
             
           </ion-select>
         </div>
@@ -54,8 +54,8 @@
         <div class="title2">普通專科門診:</div>
         <div class="flex-1 margin-left-40">
          
-          <ion-select class="bg-white radius-2" style="width:100%;height:25px;padding:2px; color:#000;" [(ngModel)]="Specialty" placeholder="{{MedicalRecord.Specialty?MedicalRecord.Specialty:''}}">
-            <ion-select-option *ngFor="let item of Specialtyl;let idx=index;"   value="{{item.Name}}">{{item.Name}}</ion-select-option>
+          <ion-select class="bg-white radius-2" style="width:100%;height:25px;padding:2px; color:#000;" [(ngModel)]="Specialty" placeholder="{{MedicalRecord.Specialty?MedicalRecord.Specialty_name:''}}">
+            <ion-select-option *ngFor="let item of Specialtyl;let idx=index;"   value="{{item.id}}">{{item.Name}}</ion-select-option>
             
           </ion-select>
         </div>

@@ -20,5 +20,11 @@ export class UserServe  {
         return mgr.execSql(sql);
     }
 
+
+    getCaseAll(){
+        var mgr = DBMgr.GetInstance();
+        var sql = "select * from USER ";
+    }
+
     
 } 
