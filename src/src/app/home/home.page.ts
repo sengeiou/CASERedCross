@@ -107,48 +107,68 @@ export class HomePage extends AppBase {
     console.log('aa')
     // this.SysnAllWeb();
 
-    var visit = new VisitServe();
-    visit.getVisit_SavedStatus(1).then((e) => {
-      console.log(e)
-      visiltList = Array.from(e.res.rows)
-    })
+    // var visit = new VisitServe();
+    // visit.getVisit_SavedStatus(1).then((e) => {
+    //   console.log(e)
+    //   visiltList = Array.from(e.res.rows)
+    // })
 
-    var activity = new ActivityServe();
-    activity.getActivity_SavedStatus(1).then((e) => {
-      console.log(e)
-      activityList = Array.from(e.res.rows)
-    })
+    // var activity = new ActivityServe();
+    // activity.getActivity_SavedStatus(1).then((e) => {
+    //   console.log(e)
+    //   activityList = Array.from(e.res.rows)
+    // })
 
-    var phone = new PhoneServe();
-    phone.getPhone_SavedStatus(1).then((e) => {
-      console.log(Array.from(e.res.rows))
-      phoneList = Array.from(e.res.rows)
-    })
+    // var phone = new PhoneServe();
+    // phone.getPhone_SavedStatus(1).then((e) => {
+    //   console.log(Array.from(e.res.rows))
+    //   phoneList = Array.from(e.res.rows)
+    // })
 
-    var medicalRecordServe = new MedicalRecordServe();
-    medicalRecordServe.getAllMedicalRecor_SavedStatus(1).then((e) => {
-      console.log(e)
-      medicAppointLogList = Array.from(e.res.rows)
-      console.log(Array.from(e.res.rows))
-      // return;
-      var visiltList = []
-      var phoneList = []
-      var activityList = []
-      this.api.SaveAll(visiltList, phoneList, activityList, medicAppointLogList, this.params.id).then((ret) => {
-        if (ret.Result == 'true') {
-          this.api.ExecuteWorkingSet(ret.WorkingSetID, this.params.caseID, this.params.id).then(e => {
-            console.log(e)
-            if (e.Result == 'true') {
-              // this.SysnAllWeb();
-              this.toast('資料同步成功');
-            }
-          })
-        }
-        console.log(ret)
-      })
-    })
+    // var medicalRecordServe = new MedicalRecordServe();
+    // medicalRecordServe.getAllMedicalRecor_SavedStatus(1).then((e) => {
+    //   console.log(e)
+    //   medicAppointLogList = Array.from(e.res.rows)
+    //   console.log(Array.from(e.res.rows))
+    //   // return;
+    //   var visiltList = []
+    //   var phoneList = []
+    //   var activityList = []
+    //   this.api.SaveAll(visiltList, phoneList, activityList, medicAppointLogList, this.params.id).then((ret) => {
+    //     if (ret.Result == 'true') {
+    //       this.api.ExecuteWorkingSet(ret.WorkingSetID, this.params.caseID, this.params.id).then(e => {
+    //         console.log(e)
+    //         if (e.Result == 'true') {
+    //           // this.SysnAllWeb();
+    //           this.toast('資料同步成功');
+    //         }
+    //       })
+    //     }
+    //     console.log(ret)
+    //   })
+    // })
+    for(var i=0;i<this.caselist.length;i++){
+        this.SaveAll(this.caselist[i])
+    }
 
   }
+
+  SaveAll(kv){
+    this.api.SaveAll(kv.visitList, kv.phoneList, kv.activityList, kv.medicAppointLogList, this.params.id).then((ret) => {
+      if (ret.Result == 'true') {
+        this.api.ExecuteWorkingSet(ret.WorkingSetID, kv.CaseId, this.params.id).then(e => {
+          console.log(e)
+          if (e.Result == 'true') {
+            this.SysnAllWeb();
+            this.toast('資料同步成功');
+          }
+        })
+      }
+      console.log(ret)
+    })
+  }
+
+
 
   phone(caseID, LocalId) {
     console.log(caseID, LocalId)
@@ -204,6 +224,8 @@ export class HomePage extends AppBase {
       for (var i = 0; i < arr.length; i++) {
         arr[i].activityList = [];
         arr[i].visitList = [];
+        arr[i].phoneList = [];
+        arr[i].medicAppointLogList = [];
       }
       this.caselist = arr;
 
@@ -263,6 +285,7 @@ export class HomePage extends AppBase {
       }
     });
   }
+
   Caselist = [];
   visiltList = [];
   Phonelist = [];
