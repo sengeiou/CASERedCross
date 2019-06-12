@@ -147,22 +147,6 @@ export class HomePage extends AppBase {
         console.log(ret)
       })
     })
-    
-    // this.SysnAllWeb();
-    // return;
-    // this.api.SaveAll(visiltList, phoneList, activityList, medicAppointLogList, this.params.UserId).then((ret) => {
-    //   if (ret.Result == 'true') {
-    //     this.SysnAllWeb();
-    //     this.api.ExecuteWorkingSet(ret.WorkingSetID, this.params.caseID, this.params.UserId).then(e => {
-    //       console.log(e)
-    //       if (e.Result == 'true') {
-    //         this.SysnAllWeb();
-    //         this.toast('資料同步成功');
-    //       }
-    //     })
-    //   }
-    //   console.log(ret)
-    // })
 
   }
 
@@ -198,9 +182,7 @@ export class HomePage extends AppBase {
 
   getActivityList() {
     var visit = new VisitServe();
-    visit.getAllVisitList().then((e) => {
-      console.log(e)
-    })
+  
     var activity = new ActivityServe();
     activity.getAllActivityList().then((e) => {
       console.log(e)
@@ -209,6 +191,9 @@ export class HomePage extends AppBase {
 
   getCase() {
     var cases = new CaseServe();
+    cases.getCaseAll().then(e=>{
+      console.log(e)
+    });
     // cases.addCase();
     var UserId = this.params.id
     cases.getCaseVolVisitGrpId(UserId).then((e) => {
@@ -227,6 +212,7 @@ export class HomePage extends AppBase {
         this.setVisit(this.caselist[i]);
         this.setPhnoe(this.caselist[i]);
         this.setActivity(this.caselist[i]);
+        this.getAllMedicalRecordList(this.caselist[i]);
       }
       console.log(this.caselist)
     })
@@ -266,6 +252,17 @@ export class HomePage extends AppBase {
       }
     });
   }
+
+  getAllMedicalRecordList(kv){
+    var medicalRecordServe = new MedicalRecordServe();
+    medicalRecordServe.getAllMedicalRecordList(kv.CaseId).then((e) => {
+      console.log(e);
+      if (e.res.rows.length > 0) {
+        console.log(e.res.rows);
+        kv.medicAppointLogList = Array.from(e.res.rows);
+      }
+    });
+  }
   Caselist = [];
   visiltList = [];
   Phonelist = [];
@@ -297,7 +294,7 @@ export class HomePage extends AppBase {
           this.saList = a;
         }
 
-        // this.updateData(); //同步数据到本地数据库
+        this.updateData(); //同步数据到本地数据库
 
         this.loading.dismiss();;
       } else {
