@@ -51,8 +51,9 @@ export class VisiltListPage extends AppBase {
       var secialtyServe = new SpecialtyServe();
      
       for (var i = 0; i < this.medicalRecordList.length; i++) {
+        var AppointmentDate_Display = AppUtil.FormatDate2(new Date(this.medicalRecordList[i].AppointmentDate));
         console.log(this.medicalRecordList[i])
-  
+        this.medicalRecordList[i].AppointmentDate_Display=AppointmentDate_Display
         this.getSpecialty(this.medicalRecordList[i].Specialty, i)
         this.gethosiptal(this.medicalRecordList[i].Hosp, i)
       }

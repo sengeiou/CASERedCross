@@ -51,17 +51,17 @@
 
   </div>
 
-  <div class="bg-h padding-bottom-5" *ngIf="phone.SavedStatus!=0">
+  <div class="bg-h padding-bottom-5" *ngIf="phone.Status==2">
     <div class="text-center padding-top-20 txt-black txt-bold">慰問內容</div>
     <div class="margin-20">
       <div class="flex-row flex-center">
         <div class="title2">電話慰問日期:</div>
         <div class="flex-1">
           <div class="input_s radius-2 bg-white padding-left-5" *ngIf="phone.SavedStatus==0" style="width:100%;">
-            {{phone.CallDate}}</div>
+            {{phone.CallDate_Display}}</div>
           <div class="" style="width:100%;" *ngIf="phone.SavedStatus!=0">
             <div class="bg-white">
-              <ion-datetime placeholder="{{phone.CallDate}}" displayFormat="YYYY/MM/DD " picker-format="YYYY MM DD "
+              <ion-datetime placeholder="{{phone.CallDate_Display}}" displayFormat="DD-MM-YYYY " picker-format="DD MM YYYY  "
                 max="2050-12-09" style="height:25px;padding:2px;" done-text='确定' cancel-text='取消'
                 [(ngModel)]="CallDate"></ion-datetime>
             </div>
@@ -97,12 +97,7 @@
       </div>
       <div class="flex-row margin-top-10">
         <div class="title2">負責義工:</div>
-        <!-- <input class="radius-2 other-input" *ngIf="phone.SavedStatus!=0 " placeholder="{{phone.UserName?phone.UserName:'輸入最多50字'}}" style="width:100%;" [(ngModel)]='UserName'/> -->
-        <!-- <ion-select class="bg-white radius-2" *ngIf="phone.SavedStatus!=0 "
-          style="width:100%;height:25px;padding:2px;color:#000;" [(ngModel)]="UserName">
-          <ion-select-option *ngFor="let item of Volunteer;let idx=index;" value="{{item.VolunteerName}}">
-            {{item.VolunteerName}}</ion-select-option>
-        </ion-select> -->
+
         <div class=" radius-2 padding-left-5" style="width:100%;">
           {{VolunteerName}}</div>
       </div>
@@ -110,7 +105,7 @@
       <div class="flex-row margin-top-10 flex-center">
         <div class="title2">下次預約探訪:</div>
         <div class=" radius-2 padding-left-5" *ngIf="phone.VisitDate" style="width:60%;">
-          {{phone.VisitDate.ScheduleDate}} {{phone.VisitDate.ScheduleTime}}
+          {{phone.VisitDate.ScheduleDate_Display}} {{phone.VisitDate.ScheduleTime}}
         </div>
       </div>
 
@@ -134,24 +129,6 @@
       <div class=" margin-top-10  ">
         <div class="title">慰問內容:</div>
         <div>
-          <!-- <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="Detail" value="健康飲食"
-              checked="{{phone.Detail=='1'?'1':''}}" (click)="getDetail('1')" class="radio " />健康飲食</div> -->
-          
-          <!-- <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="Detail" value="情緒壓力"
-              checked="{{phone.Detail=='2'?'1':''}}" (click)="getDetail('2')" class="radio " />情緒壓力</div>
-          <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="Detail" value="運動情況"
-              checked="{{phone.Detail=='3'?'1':''}}" (click)="getDetail('3')" class="radio " />運動情況</div>
-          <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="Detail" value="服藥情況"
-              checked="{{phone.Detail=='4'?'1':''}}" (click)="getDetail('4')" class="radio " />服藥情況</div>
-          <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="Detail" value="覆診情況"
-              checked="{{phone.Detail=='5'?'1':''}}" (click)="getDetail('5')" class="radio " />覆診情況</div>
-          <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="Detail" value="人際關係"
-              checked="{{phone.Detail=='6'?'1':''}}" (click)="getDetail('6')" class="radio " />人際關係</div>
-          <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="Detail" value="整體健康"
-              checked="{{phone.Detail=='7'?'1':''}}" (click)="getDetail('7')" class="radio " />整體健康</div>
-          <div class=" margin-top-10 flex-row flex-center"><input type="radio" name="Detail" value="提醒/預約下次探訪日期"
-              checked="{{phone.Detail=='8'?'1':''}}" (click)="getDetail('8')" class="radio " />提醒/預約下次探訪日期</div> -->
-
           <div class=" margin-top-10 flex-row flex-center">
             <ion-checkbox class="radio " color="secondary" [checked]='DetailList[0].DetailType==true'
               (ionChange)='DetailList[0].DetailType=$event.detail.checked'
@@ -228,14 +205,12 @@
 
           </div>
           <div class=" margin-top-10 flex-row flex-center">
-            <!-- <input type="radio" name="Detail" value="其他"
-              checked="{{phone.Detail=='9'?'1':''}}" (click)="getDetail('9')" class="radio " />其他 -->
+
             <ion-checkbox class="radio " color="secondary" [checked]='DetailList[8].DetailType==true'
               (ionChange)='DetailList[8].DetailType=$event.detail.checked'
               disabled='{{CannotContact==1?disabled:false}}'></ion-checkbox>其他
             <div class="flex-1" *ngIf='DetailList[8].DetailType==true'>
-              <!-- <div class="input_s radius-2 bg-white padding-left-5" *ngIf="phone.SavedStatus==1" style="width:100%;">
-                {{phone.DetailOther}}</div> -->
+         
               <input class="radius-2 other-input" placeholder="輸入最多50字" style="width:100%;" [(ngModel)]='DetailOther'
                 *ngIf="phone.SavedStatus==1" />
             </div>
@@ -257,7 +232,7 @@
     </div>
   </div>
 
-  <div class="bg-h padding-bottom-5" *ngIf="phone.SavedStatus==0">
+  <div class="bg-h padding-bottom-5" *ngIf="phone.Status!=2">
     <div class="text-center padding-top-20 txt-black txt-bold">慰問內容</div>
     <div class="margin-20">
       <div class="flex-row flex-center">
@@ -426,7 +401,7 @@
     </div>
   </div>
 
-  <div class="flex-row padding-15 flex-center">
+  <div class="flex-row padding-15 flex-center" *ngIf='phone.Status==2'>
     <div class="flex-1"></div>
     <div class="flex-row">
       <div class="txt-blue margin-right-40" (click)='savePhone(phone.SavedStatus)'>保存</div>

@@ -100,7 +100,7 @@
         <div class="title2">出席義工:</div>
         <div><img src="../assets/icon/plus_icon.png" class="icon-15 margin-left-30" /></div>
         <div style="position:absolute;margin-left:76px;background:transparent" class="aaa">
-          <ion-select multiple="true" *ngIf="activity.SavedStatus!=0 "
+          <ion-select multiple="true" *ngIf="activity.SavedStatus!=0 " (ionChange)="aas()"
             style="position:absolute;background:transparent;opacity: 0;" [(ngModel)]="presentVolunteer">
             <ion-select-option *ngFor="let item of Volunteer;let idx=index;" value="{{item.VolId}}">
               {{item.VolunteerName}}</ion-select-option>
@@ -110,9 +110,9 @@
 
       <div class=" margin-top-10">
         <div class="flex-1">
-          <div class="textarea2 radius-2 bg-white h7-5 padding-5" style="width:100%;" *ngIf="activity.SavedStatus==0">
+          <!-- <div class="textarea2 radius-2 bg-white h7-5 padding-5" style="width:100%;" *ngIf="activity.SavedStatus==0">
             {{presentVolunteer}}
-          </div>
+          </div> -->
 
           <div class="textarea2 radius-2 bg-white h7-5 padding-5" style="width:100%;">
             {{Volunteerlist_show}}
@@ -335,9 +335,10 @@
               </div>
               <div class=" margin-top-10 flex-row flex-center" *ngIf="actDetailTypelist[0].actDetailType==true">活動地點:
                 <div class="flex-1">
-                  <input *ngIf="activity.SavedStatus!=0 " class="radius-2 other-input"
+                  <!-- <input *ngIf="activity.SavedStatus!=0 " class="radius-2 other-input"
                     placeholder="{{activity.Remarks1?activity.Remarks1:'輸入最多50字'}}" style=" width: 100%;" maxlength="50"
-                    [(ngModel)]="remarks1" />
+                    [(ngModel)]="remarks1" /> -->
+                    <div class="radius-2 other-input" style=" width: 100%;">{{activity.Remarks1}}</div>
                 </div>
               </div>
             </div>
@@ -351,9 +352,10 @@
               </div>
               <div class=" margin-top-10 flex-row flex-center" *ngIf="actDetailTypelist[1].actDetailType==true">講座主題:
                 <div class="flex-1">
-                  <input *ngIf="activity.SavedStatus!=0 " class="radius-2 other-input"
+                  <!-- <input *ngIf="activity.SavedStatus!=0 " class="radius-2 other-input"
                     placeholder="{{activity.Remarks2?activity.Remarks2:'輸入最多50字'}}" style=" width: 100%;" maxlength="50"
-                    [(ngModel)]="remarks2" />
+                    [(ngModel)]="remarks2" /> -->
+                    <div class="radius-2 other-input" style=" width: 100%;">{{activity.Remarks2}}</div>
                 </div>
               </div>
             </div>
@@ -369,9 +371,10 @@
               </div>
               <div class=" margin-top-10 flex-row flex-center" *ngIf="actDetailTypelist[2].actDetailType==true">活動主題:
                 <div class="flex-1">
-                  <input *ngIf="activity.SavedStatus!=0 " class="radius-2 other-input"
+                  <!-- <input *ngIf="activity.SavedStatus!=0 " class="radius-2 other-input"
                     placeholder="{{activity.Remarks3?activity.Remarks3:'輸入最多50字'}}" style=" width: 100%;" maxlength="50"
-                    [(ngModel)]="remarks3" />
+                    [(ngModel)]="remarks3" /> -->
+                    <div class="radius-2 other-input" style=" width: 100%;">{{activity.Remarks3}}</div>
                 </div>
               </div>
             </div>
@@ -435,7 +438,7 @@
     </div>
   </div>
 
-  <div class="flex-row padding-15 flex-center" *ngIf="activity.SavedStatus!=0">
+  <div class="flex-row padding-15 flex-center" *ngIf="activity.Status==2">
     <div class="flex-1"></div>
     <div class="flex-row">
       <div class="txt-blue margin-right-40" (click)='saveActivity()'>保存</div>
@@ -444,13 +447,13 @@
     <div class="flex-1"></div>
   </div>
 
-  <div class="flex-row padding-15 flex-center" *ngIf="activity.SavedStatus==0">
+  <!-- <div class="flex-row padding-15 flex-center" *ngIf="activity.SavedStatus==0">
     <div class="flex-1"></div>
     <div class="flex-row">
       <div class="txt-blue margin-right-40">保存</div>
       <div class="txt-blue">上傳</div>
     </div>
     <div class="flex-1"></div>
-  </div>
+  </div> -->
 
 </ion-content>

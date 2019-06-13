@@ -16,7 +16,7 @@
 <ion-content>
 
   <div class="txt-black txt-bold padding-20 h7 border-top" *ngFor="let item of medicalRecordList;let idx=index;" (click)='record(item.LocalId)'>
-    <div class="margin-top-20">{{item.AppointmentDate}}</div>
+    <div class="margin-top-20">{{item.AppointmentDate_Display}}</div>
     <div class="margin-top-20">{{item.Hosp_name}}</div>
     <div class="margin-top-20" *ngIf="item.Specialty">{{item.Specialty_name}}</div>
     <div class="margin-top-20" *ngIf="!item.Specialty">未填写專科</div>

@@ -20,6 +20,7 @@ import { QRScanner } from '@ionic-native/qr-scanner/ngx';
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot( {
     mode: 'ios',
+    swipeBackEnabled:false,
   }), AppRoutingModule, HttpModule],
   providers: [
     StatusBar,

@@ -82,6 +82,7 @@ export class ActivityPage extends AppBase {
   casedata = null;
   LocalId = 0;
   activity = null;
+  Volunteerlist_show=''
   getCase() {
     this.LocalId = this.params.LocalId;
     var cases = new CaseServe();
@@ -200,6 +201,29 @@ export class ActivityPage extends AppBase {
     this.actDetailTypelist[0].actDetailType = true;
   }
 
+  aas() {
+    console.log(this.presentVolunteer);
+    // return;
+    var Volunteerlist = this.presentVolunteer;
+    console.log(Volunteerlist)
+    var volunteerServr = new VolunteerServr();
+    for (var i = 0; i < Volunteerlist.length; i++) {
+      console.log(Volunteerlist[i])
+      volunteerServr.getVolunteerId(Volunteerlist[i]).then((e) => {
+        console.log(e)
+        var data = Array.from(e.res.rows)[0]
+        console.log(data)
+        if (data) {
+          if (this.Volunteerlist_show == '') {
+            this.Volunteerlist_show = data['VolunteerName'];
+          } else {
+            this.Volunteerlist_show = this.Volunteerlist_show + ',' + data['VolunteerName'];
+          }
+        }
+      })
+    }
+  }
+
   saveActivity() {
     // alert(this.actDetailTypelist[0].actDetailType1);
     // return;
@@ -264,10 +288,14 @@ export class ActivityPage extends AppBase {
     //   return;
     // }
 
-
     this.activityDate = AppUtil.FormatDate(new Date(this.activityDate));
-    this.activityStartTime = AppUtil.FormatTime(new Date(this.activityStartTime));
-    this.activityEndTime = AppUtil.FormatTime(new Date(this.activityEndTime));
+    if(this.activityStartTime!=''){
+      this.activityStartTime = AppUtil.FormatTime(new Date(this.activityStartTime));
+    }
+    if(this.activityEndTime!=''){
+      this.activityEndTime = AppUtil.FormatTime(new Date(this.activityEndTime));
+    }
+    
     this.LocalId = this.params.LocalId;
     console.log(this.LocalId, this.params.caseID, this.activityDate, this.activityStartTime, this.activityEndTime, this.presentVolunteer, this.actType, this.activityDetailType, this.remarks1, this.remarks2, this.remarks3, this.remarks4, this.otherActRemarks, this.otherContent)
     // return;

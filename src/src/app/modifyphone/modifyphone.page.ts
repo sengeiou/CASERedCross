@@ -182,7 +182,7 @@ export class ModifyphonePage extends AppBase {
   getLiaison(e) {
     console.log(e)
     this.CannotContact = e;
-    if(e==1){
+    if (e == 1) {
       this.DetailList = [{
         DetailType: false, value: 1
       }, {
@@ -203,10 +203,10 @@ export class ModifyphonePage extends AppBase {
         DetailType: false, value: 9
       }
       ];
-      this.DetailOther='';
-      this.OtherRemark='';
-      this.NextPhoneDate='';
-      this.NextPhoneTime='';
+      this.DetailOther = '';
+      this.OtherRemark = '';
+      this.NextPhoneDate = '';
+      this.NextPhoneTime = '';
     }
   }
 
@@ -215,28 +215,36 @@ export class ModifyphonePage extends AppBase {
       this.toast('已上傳過的的資料，無法修改');
       return;
     }
+    var CallDate_Display = ''
+
     var phone = new PhoneServe();
-    if(this.CallDate!=''){
-      this.CallDate = AppUtil.FormatDate(new Date(this.CallDate));
+    if (this.CallDate != '') {
+      console.log('shij ')
+      CallDate_Display = AppUtil.FormatDate2(new Date(this.CallDate));
     }
-    if(this.CallStartTime!=''){
+
+    if (this.CallStartTime != '') {
       this.CallStartTime = AppUtil.FormatTime(new Date(this.CallStartTime));
     }
-    if(this.CallEndTime!=''){
+
+    if (this.CallEndTime != '') {
       this.CallEndTime = AppUtil.FormatTime(new Date(this.CallEndTime));
     }
-    
-    this.CallDate= this.CallDate!=''?this.CallDate:this.phone.CallDate
-    this.CallStartTime= this.CallStartTime!=''?this.CallStartTime:this.phone.CallStartTime
-    this.CallEndTime= this.CallEndTime!=''?this.CallEndTime:this.phone.CallEndTime
-    
-    this.DetailOther= this.DetailOther!=''?this.DetailOther:this.phone.DetailOther
-    this.UserName= this.UserName!=''?this.UserName:this.phone.UserName
-    this.OtherRemark= this.OtherRemark!=''?this.OtherRemark:this.phone.OtherRemark
-    this.CannotContact= this.CannotContact!=0?this.CannotContact:this.phone.CannotContact
-    this.NextPhoneDate= this.NextPhoneDate!=''?this.NextPhoneDate:this.phone.NextPhoneDate
-    this.NextPhoneTime= this.NextPhoneTime!=''?this.NextPhoneTime:this.phone.NextPhoneTime
-    
+
+    this.CallDate = this.CallDate != '' ? this.CallDate : this.phone.CallDate
+
+    var CallDate_Display = this.CallDate != '' ? CallDate_Display : AppUtil.FormatDate2(new Date(this.phone.CallDate))
+
+    this.CallStartTime = this.CallStartTime != '' ? this.CallStartTime : this.phone.CallStartTime
+    this.CallEndTime = this.CallEndTime != '' ? this.CallEndTime : this.phone.CallEndTime
+
+    this.DetailOther = this.DetailOther != '' ? this.DetailOther : this.phone.DetailOther
+    this.UserName = this.UserName != '' ? this.UserName : this.phone.UserName
+    this.OtherRemark = this.OtherRemark != '' ? this.OtherRemark : this.phone.OtherRemark
+    this.CannotContact = this.CannotContact != 0 ? this.CannotContact : this.phone.CannotContact
+    this.NextPhoneDate = this.NextPhoneDate != '' ? this.NextPhoneDate : this.phone.NextPhoneDate
+    this.NextPhoneTime = this.NextPhoneTime != '' ? this.NextPhoneTime : this.phone.NextPhoneTime
+
 
 
     if (!this.CallDate) {
@@ -247,10 +255,7 @@ export class ModifyphonePage extends AppBase {
       this.toast('你沒有輸入電話慰問時間');
       return;
     }
-    if (this.CallStartTime == this.CallEndTime) {
-      this.toast('開始和結束時間不能一樣');
-      return;
-    }
+
 
     var oDate1 = new Date(this.CallStartTime);
     var oDate2 = new Date(this.CallEndTime);
@@ -259,7 +264,7 @@ export class ModifyphonePage extends AppBase {
       return;
     }
 
-    if (this.CannotContact !=1) {
+    if (this.CannotContact != 1) {
       for (var i = 0; i < this.DetailList.length; i++) {
         if (this.DetailList[i].DetailType == true) {
           if (this.Detail == '') {
@@ -269,15 +274,15 @@ export class ModifyphonePage extends AppBase {
           }
         }
       }
-      this.Detail= this.Detail!=''?this.Detail:this.phone.Detail
-    }else{
-      this.Detail='';
+      this.Detail = this.Detail != '' ? this.Detail : this.phone.Detail
+    } else {
+      this.Detail = '';
     }
 
-    
+
 
     this.PhoneID = this.params.PhoneID;
-    phone.addPhone(this.PhoneID, this.params.caseID, this.CallDate, this.CallStartTime, this.CallEndTime, this.Detail, this.DetailOther, this.UserName, this.OtherRemark, this.CannotContact, this.NextPhoneDate, this.NextPhoneTime).then((e) => {
+    phone.addPhone(this.PhoneID, this.params.caseID, this.CallDate, CallDate_Display, this.CallStartTime, this.CallEndTime, this.Detail, this.DetailOther, this.UserName, this.OtherRemark, this.CannotContact, this.NextPhoneDate, this.NextPhoneTime).then((e) => {
       console.log(e)
       if (this.PhoneID == 0 || this.PhoneID == undefined) {
         this.PhoneID = e.res.insertId;
@@ -317,9 +322,9 @@ export class ModifyphonePage extends AppBase {
             this.api.ExecuteWorkingSet(ret.WorkingSetID, this.params.caseID, this.params.UserId).then(e => {
               console.log(e)
               if (e.Result == 'true') {
-               
-                
-                phone.sevaPhoneSavedStatus(this.PhoneID).then(e=>{
+
+
+                phone.sevaPhoneSavedStatus(this.PhoneID).then(e => {
 
                 })
                 this.toast('資料提交成功');

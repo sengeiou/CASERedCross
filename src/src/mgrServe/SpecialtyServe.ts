@@ -4,7 +4,7 @@ export class SpecialtyServe {
 
     getSpecialtyId(id) {
         var mgr = DBMgr.GetInstance();
-        var sql = "select * from tb_Speciality where id=?";
+        var sql = "select * from tb_Speciality where SpecialtyId=?";
         return mgr.execSql(sql, [id]);
     }
 
@@ -14,10 +14,10 @@ export class SpecialtyServe {
         return mgr.execSql(sql);
     }
 
-    addSpecialty(Name) {
+    addSpecialty(SpecialtyId,Name) {
         var mgr = DBMgr.GetInstance();
-        var sql = "insert into tb_Speciality(Name) values (?)";
-        return mgr.execSql(sql,[Name]);
+        var sql = "insert into tb_Speciality(SpecialtyId,Name) values (?,?)";
+        return mgr.execSql(sql,[SpecialtyId,Name]);
     }
     
     deleteSpecialty(){

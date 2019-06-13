@@ -4,7 +4,7 @@ export class HosiptalServe {
 
     getHosiptalId(id) {
         var mgr = DBMgr.GetInstance();
-        var sql = "select * from tb_Hosiptal where id=?";
+        var sql = "select * from tb_Hosiptal where HospId=?";
         return mgr.execSql(sql, [id]);
     }
 
@@ -14,10 +14,10 @@ export class HosiptalServe {
         return mgr.execSql(sql);
     }
 
-    addHosiptal(Name) {
+    addHosiptal(HospId,Name) {
         var mgr = DBMgr.GetInstance();
-        var sql = "insert into tb_Hosiptal(Name) values (?)";
-        return mgr.execSql(sql,[Name]);
+        var sql = "insert into tb_Hosiptal(HospId,Name) values (?,?)";
+        return mgr.execSql(sql,[HospId,Name]);
     }
     
     deleteHosiptal(){

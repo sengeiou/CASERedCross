@@ -137,35 +137,33 @@ export class PhonePage extends AppBase {
       this.toast('你沒有輸入電話慰問日期');
       return;
     }
-    if (!this.CallStartTime || !this.CallEndTime) {
-      this.toast('你沒有輸入電話慰問時間');
-      return;
-    }
-    if (this.CallStartTime == this.CallEndTime) {
-      this.toast('開始和結束時間不能一樣');
-      return;
-    }
-
-    var oDate1 = new Date(this.CallStartTime);
-    var oDate2 = new Date(this.CallEndTime);
-    if (oDate1.getTime() > oDate2.getTime()) {
-      this.toast('開始時間不能遲於結束時間');
-      return;
-    }
-
-    // if (!this.Detail) {
-    //   this.toast('你沒有填寫電話慰問內容');
+    // if (!this.CallStartTime || !this.CallEndTime) {
+    //   this.toast('你沒有輸入電話慰問時間');
     //   return;
     // }
-    // if (this.Detail == '其他' && !this.DetailOther) {
-    //   this.toast('你沒有填寫電話其他慰問內容');
+    // if (this.CallStartTime == this.CallEndTime) {
+    //   this.toast('開始和結束時間不能一樣');
     //   return;
     // }
-    this.CallDate = AppUtil.FormatDate(new Date(this.CallDate));
-    this.CallStartTime = AppUtil.FormatTime(new Date(this.CallStartTime));
-    this.CallEndTime = AppUtil.FormatTime(new Date(this.CallEndTime));
+
+    // var oDate1 = new Date(this.CallStartTime);
+    // var oDate2 = new Date(this.CallEndTime);
+    // if (oDate1.getTime() > oDate2.getTime()) {
+    //   this.toast('開始時間不能遲於結束時間');
+    //   return;
+    // }
+
+    var CallDate_Display = AppUtil.FormatDate(new Date(this.CallDate));
+    if(this.CallStartTime!=''){
+      this.CallStartTime = AppUtil.FormatTime(new Date(this.CallStartTime));
+    }
+    if(this.CallEndTime!=''){
+      this.CallEndTime = AppUtil.FormatTime(new Date(this.CallEndTime));
+    }
+    
+    
     this.PhoneID = this.params.PhoneID;
-    phone.addPhone(this.PhoneID, this.params.caseID, this.CallDate, this.CallStartTime, this.CallEndTime, this.Detail, this.DetailOther, this.UserName, this.OtherRemark,this.CannotContact,this.NextPhoneDate,this.NextPhoneTime).then((e) => {
+    phone.addPhone(this.PhoneID, this.params.caseID, this.CallDate,CallDate_Display, this.CallStartTime, this.CallEndTime, this.Detail, this.DetailOther, this.UserName, this.OtherRemark,this.CannotContact,this.NextPhoneDate,this.NextPhoneTime).then((e) => {
       console.log(e)
       if (this.PhoneID == 0 || this.PhoneID == undefined) {
         this.PhoneID = e.res.insertId;

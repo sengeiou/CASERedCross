@@ -99,7 +99,7 @@
         <div class="title2">出席義工:</div>
         <div><img src="../assets/icon/plus_icon.png" class="icon-15 margin-left-30" /></div>
         <div style="position:absolute;margin-left:76px;background:transparent" class="aaa">
-          <ion-select multiple="true" *ngIf="activity.SavedStatus!=0 "
+          <ion-select multiple="true" *ngIf="activity.SavedStatus!=0 " (ionChange)="aas()"
             style="position:absolute;background:transparent;opacity: 0;" [(ngModel)]="presentVolunteer">
             <ion-select-option *ngFor="let item of Volunteer;let idx=index;" value="{{item.VolId}}">
               {{item.VolunteerName}}</ion-select-option>
@@ -109,12 +109,12 @@
 
       <div class=" margin-top-10">
         <div class="flex-1">
-          <div class="textarea2 radius-2 bg-white h7-5 padding-5" style="width:100%;" *ngIf="activity.SavedStatus==0">
+          <!-- <div class="textarea2 radius-2 bg-white h7-5 padding-5" style="width:100%;" *ngIf="activity.SavedStatus==0">
             {{activity.presentVolunteers}}
-          </div>
+          </div> -->
 
           <div class="textarea2 radius-2 bg-white h7-5 padding-5" style="width:100%;" *ngIf="activity.SavedStatus!=0 ">
-            {{presentVolunteer}}
+            {{Volunteerlist_show}}
           </div>
           
           <!-- <textarea class="textarea2 radius-2" style="width:100%;"></textarea> -->
@@ -132,7 +132,6 @@
             (click)="getActtype('1')" checked="{{activity.ActType=='1'?'1':''}}" />活動 -->
             <ion-radio *ngIf="activity.SavedStatus!=0 " name="activity" value="male" class="radio "
               (click)="getActtype('1')" checked="{{actType=='1'?'true':'false'}}"></ion-radio>活動
-
           </div>
           <div class="margin-left-30 margin-right-20">
 

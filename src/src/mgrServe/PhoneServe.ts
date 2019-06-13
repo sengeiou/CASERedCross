@@ -12,7 +12,7 @@ export class PhoneServe  {
 
     getPhoneCaseId(CaseId) {
         var mgr = DBMgr.GetInstance();
-        var sql = "select LocalId,CallDate,SavedStatus from tb_Phone where CaseId=? order by CallDate desc";
+        var sql = "select LocalId,CallDate,SavedStatus,CallDate_Display,Status from tb_Phone where CaseId=? order by CallDate asc";
         return mgr.execSql(sql, [CaseId]);
     }
 
@@ -40,26 +40,26 @@ export class PhoneServe  {
         return mgr.execSql(sql);
     }
 
-    addPhoneWeb(CallDate,CallEndTime,CallStartTime,CaseId,Detail,DetailOther,OtherRemark,Status,SupportId,UserName,CannotContact,NextPhoneDate,NextPhoneTime){
+    addPhoneWeb(CallDate,CallEndTime,CallStartTime,CaseId,Detail,DetailOther,OtherRemark,Status,SupportId,UserName,CannotContact,NextPhoneDate,NextPhoneTime,CallDate_Display){
         var mgr = DBMgr.GetInstance();
-        var sql = "insert into tb_Phone (CallDate,CallEndTime,CallStartTime,CaseId,Detail,DetailOther,OtherRemark,Status,SupportId,UserName,CannotContact,NextPhoneDate,NextPhoneTime,SavedStatus) values (?,?,?,?,?,?,?,?,?,?,?,?,?,0)";
-        return mgr.execSql(sql,[CallDate,CallEndTime,CallStartTime,CaseId,Detail,DetailOther,OtherRemark,Status,SupportId,UserName,CannotContact,NextPhoneDate,NextPhoneTime]);
+        var sql = "insert into tb_Phone (CallDate,CallEndTime,CallStartTime,CaseId,Detail,DetailOther,OtherRemark,Status,SupportId,UserName,CannotContact,NextPhoneDate,NextPhoneTime,CallDate_Display,SavedStatus) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,0)";
+        return mgr.execSql(sql,[CallDate,CallEndTime,CallStartTime,CaseId,Detail,DetailOther,OtherRemark,Status,SupportId,UserName,CannotContact,NextPhoneDate,NextPhoneTime,CallDate_Display]);
     }
 
-    addPhone(PhoneID,CaseId,CallDate,CallStartTime,CallEndTime,Detail,DetailOther,UserName,OtherRemark,CannotContact,NextPhoneDate,NextPhoneTime){
+    addPhone(PhoneID,CaseId,CallDate,CallDate_Display,CallStartTime,CallEndTime,Detail,DetailOther,UserName,OtherRemark,CannotContact,NextPhoneDate,NextPhoneTime){
         var mgr = DBMgr.GetInstance();
         if(!PhoneID){
-            var sql = "insert into tb_Phone (CaseId,CallDate,CallStartTime,CallEndTime,Detail,DetailOther,UserName,OtherRemark,Status,SavedStatus,CannotContact,NextPhoneDate,NextPhoneTime) values (?,?,?,?,?,?,?,?,2,1,?,?,?)";
-            return mgr.execSql(sql,[CaseId,CallDate,CallStartTime,CallEndTime,Detail,DetailOther,UserName,OtherRemark,CannotContact,NextPhoneDate,NextPhoneTime]);
+            var sql = "insert into tb_Phone (CaseId,CallDate,CallDate_Display,CallStartTime,CallEndTime,Detail,DetailOther,UserName,OtherRemark,Status,SavedStatus,CannotContact,NextPhoneDate,NextPhoneTime) values (?,?,?,?,?,?,?,?,?,2,1,?,?,?)";
+            return mgr.execSql(sql,[CaseId,CallDate,CallDate_Display,CallStartTime,CallEndTime,Detail,DetailOther,UserName,OtherRemark,CannotContact,NextPhoneDate,NextPhoneTime]);
         }else{
-            var sql = "update tb_Phone set CaseId=?,CallDate=?,CallStartTime=?,CallEndTime=?,Detail=?,DetailOther=?,UserName=?,OtherRemark=?,CannotContact=?,NextPhoneDate=?,NextPhoneTime=?,Status=2 where LocalId=?";
-            return mgr.execSql(sql,[CaseId,CallDate,CallStartTime,CallEndTime,Detail,DetailOther,UserName,OtherRemark,CannotContact,NextPhoneDate,NextPhoneTime,PhoneID]);
+            var sql = "update tb_Phone set CaseId=?,CallDate=?,CallDate_Display=?,CallStartTime=?,CallEndTime=?,Detail=?,DetailOther=?,UserName=?,OtherRemark=?,CannotContact=?,NextPhoneDate=?,NextPhoneTime=?,Status=2 where LocalId=?";
+            return mgr.execSql(sql,[CaseId,CallDate,CallDate_Display,CallStartTime,CallEndTime,Detail,DetailOther,UserName,OtherRemark,CannotContact,NextPhoneDate,NextPhoneTime,PhoneID]);
         }
     }
 
     sevaPhoneSavedStatus(id){
         var mgr = DBMgr.GetInstance();
-        var sql = "update  tb_Phone SET SavedStatus=0,Status=0  where LocalID=?";
+        var sql = "update  tb_Phone SET SavedStatus=0  where LocalID=?";
         return mgr.execSql(sql,[id]);
     }
 }

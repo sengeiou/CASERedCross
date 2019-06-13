@@ -80,6 +80,7 @@ export class VisitRecordPage extends AppBase {
       console.log(e)
       if (e.res.insertId) {
         this.toast('資料提交成功');
+        this.back()
       }
     })
   }
@@ -96,6 +97,10 @@ export class VisitRecordPage extends AppBase {
         this.MedicalRecord = arr;
         this.getSpecialty()
         this.gethosiptal()
+
+        var AppointmentDate_Display = AppUtil.FormatDate2(new Date(this.MedicalRecord.AppointmentDate));
+        console.log(this.MedicalRecord)
+        this.MedicalRecord.AppointmentDate_Display=AppointmentDate_Display
       })
     }
 
@@ -183,7 +188,7 @@ export class VisitRecordPage extends AppBase {
     var medicalRecord = new MedicalRecordServe();
     medicalRecord.saveMedicalRecord(this.AppointmentDate, this.AppointmentTime,this.Hosp, this.Specialty, this.Description, this.Reason, this.Status, this.LocalId).then((e) => {
       console.log(e)
-
+    this.back()
       this.toast('保存成功');
     })
   }

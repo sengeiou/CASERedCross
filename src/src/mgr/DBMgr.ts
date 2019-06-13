@@ -12,17 +12,17 @@ export class DBMgr {
 
         var dbcreateUSERsql = "CREATE TABLE  IF NOT EXISTS  USER (ID INTEGER PRIMARY KEY AUTOINCREMENT,`number` nvarchar(25),`password` nvarchar(100),`sdate` int(15),VolId int);";
 
-        let createActivityTableSQL = "CREATE TABLE IF NOT EXISTS tb_Activity (LocalId integer primary key autoincrement not null,ActivityId int, CaseId int, ActDate nvarchar(10), ActStartTime nvarchar(10), ActEndTime nvarchar(10), ActType int,  ActDetailType nvarchar(50), Remarks1 nvarchar(100), Remarks2 nvarchar(100),Remarks3 nvarchar(100),Remarks4 nvarchar(100), OtherActRemarks nvarchar(100), Remarks nvarchar(1000), Status int, SavedStatus int, PresentVolunteer nvarchar(1000))";
+        let createActivityTableSQL = "CREATE TABLE IF NOT EXISTS tb_Activity (LocalId integer primary key autoincrement not null,ActivityId int, CaseId int, ActDate nvarchar(10), ActDate_Display nvarchar(10),ActStartTime nvarchar(10), ActEndTime nvarchar(10), ActType int,  ActDetailType nvarchar(50), Remarks1 nvarchar(100), Remarks2 nvarchar(100),Remarks3 nvarchar(100),Remarks4 nvarchar(100), OtherActRemarks nvarchar(100), Remarks nvarchar(1000), Status int, SavedStatus int, PresentVolunteer nvarchar(1000))";
 
-        let createPhoneTableSQL = "CREATE TABLE IF NOT EXISTS tb_Phone (LocalId integer primary key autoincrement not null, SupportId int DEFAULT 0, CaseId int, CallDate nvarchar(10), CallStartTime nvarchar(10), CallEndTime nvarchar(10),CannotContact smallint,Detail nvarchar(50) ,NextPhoneDate nvarchar(50), NextPhoneTime nvarchar(50),DetailOther nvarchar(100), UserName nvarchar(100), OtherRemark nvarchar(500), Status int, SavedStatus int DEFAULT '1')";
+        let createPhoneTableSQL = "CREATE TABLE IF NOT EXISTS tb_Phone (LocalId integer primary key autoincrement not null, SupportId int DEFAULT 0, CaseId int, CallDate nvarchar(10), CallDate_Display nvarchar(10),CallStartTime nvarchar(10), CallEndTime nvarchar(10),CannotContact smallint,Detail nvarchar(50) ,NextPhoneDate nvarchar(50), NextPhoneTime nvarchar(50),DetailOther nvarchar(100), UserName nvarchar(100), OtherRemark nvarchar(500), Status int, SavedStatus int DEFAULT '1')";
 
-        let createHosiptal = "CREATE TABLE IF NOT EXISTS tb_Hosiptal (id integer primary key autoincrement not null, Name nvarchar(50))";
+        let createHosiptal = "CREATE TABLE IF NOT EXISTS tb_Hosiptal (id integer primary key autoincrement not null,HospId int, Name nvarchar(50))";
 
-        let createSpecality = "CREATE TABLE IF NOT EXISTS tb_Speciality (id integer primary key autoincrement not null, Name nvarchar(100))";
+        let createSpecality = "CREATE TABLE IF NOT EXISTS tb_Speciality (id integer primary key autoincrement not null,SpecialtyId int, Name nvarchar(100))";
 
         let CaseSql = "CREATE TABLE IF NOT EXISTS tb_Case (id integer primary key autoincrement not null,CaseId int,CaseNo nvarchar(50), VolVisitGrpId int,QRCode text, ChiName_Disply nvarchar(50),Illness_Disply nvarchar(1000), OtherIllness_Disply nvarchar(1000), CarePlan_Disply nvarchar(1000),Height double)";
 
-        let createVisittableSQL = "CREATE TABLE IF NOT EXISTS tb_home_visit (LocalId integer primary key autoincrement not null,CaseId int,TaskId int,VisitId int,ScheduleDate nvarchar(10),ScheduleTime nvarchar(10),VisitDate nvarchar(10),VisitStartTime nvarchar(10),VisitEndTime nvarchar(10),presentVolunteer nvarchar(100),supportVolunteer nvarchar(100),Location int,LocationRemarks nvarchar(100),VisitStatus int,VisitStatusRemarks nvarchar(100),VisitDetailIndoor nvarchar(50),VisitDetailIndoorRemarks nvarchar(100),VisitDetailOutdoor nvarchar(50),VisitDetailOutdoorRemarks nvarchar(100),VisitDetailOther nvarchar(500),CategoryTopic1 nvarchar(500),CategoryTopic2 nvarchar(500),CategoryTopic3 nvarchar(500),Weight Double,Bmi Double,Waist Double,Hip Double,WHRatio Double,SYS1 Double,DlA1 Double,SYS2 Double,DlA2 Double,heartBeats1 Double,heartBeats2 Double,LifeStyleQuestion1 int,LifeStyleQuestion2 int,LifeStyleQuestion3 int,LifeStyleQuestion4 int,LifeStyleQuestion5 int,LifeStyleQuestion6 int,LifeStyleMeasureBloodSuger int,LifeStyleMeasureBsLocation int,LifeStyleMeasureBsPeriod int,LifeStyleMeasureBsNoOfTime int,LifeStyleMeasureBloodPressure int,LifeStyleMeasureBpLocation int,LifeStyleMeasureBpPeriod int,LifeStyleMeasureBpNoOfTime int,EmotionAssessment nvarchar(50),EmotionAssessmentRemarks nvarchar(100),OtherHospDisbete int,OtherHospDisbeteNoOfDay int,OtherHospHighBp int,OtherHospHighBpNoOfDay int,OtherHospOtherIllness int,OtherAccident int,OtherHospOtherIllnessNoOfDay int,OtherSpecialNeed int,OtherAccidentNoOfDay int,OtherSpecialNeedService nvarchar(100),OtherRemarks nvarchar(500),DeletePicString nvarchar(100),Status int,SavedStatus int DEFAULT '1',NeedsContent nvarchar(50));";
+        let createVisittableSQL = "CREATE TABLE IF NOT EXISTS tb_home_visit (LocalId integer primary key autoincrement not null,CaseId int,TaskId int,VisitId int,ScheduleDate nvarchar(10),ScheduleDate_Display nvarchar(10),ScheduleTime nvarchar(10),VisitDate nvarchar(10),VisitDate_Display nvarchar(10),VisitStartTime nvarchar(10),VisitEndTime nvarchar(10),presentVolunteer nvarchar(100),supportVolunteer nvarchar(100),Location int,LocationRemarks nvarchar(100),VisitStatus int,VisitStatusRemarks nvarchar(100),VisitDetailIndoor nvarchar(50),VisitDetailIndoorRemarks nvarchar(100),VisitDetailOutdoor nvarchar(50),VisitDetailOutdoorRemarks nvarchar(100),VisitDetailOther nvarchar(500),CategoryTopic1 nvarchar(500),CategoryTopic2 nvarchar(500),CategoryTopic3 nvarchar(500),Weight Double,Bmi Double,Waist Double,Hip Double,WHRatio Double,SYS1 Double,DlA1 Double,SYS2 Double,DlA2 Double,heartBeats1 Double,heartBeats2 Double,LifeStyleQuestion1 int,LifeStyleQuestion2 int,LifeStyleQuestion3 int,LifeStyleQuestion4 int,LifeStyleQuestion5 int,LifeStyleQuestion6 int,LifeStyleMeasureBloodSuger int,LifeStyleMeasureBsLocation int,LifeStyleMeasureBsPeriod int,LifeStyleMeasureBsNoOfTime int,LifeStyleMeasureBloodPressure int,LifeStyleMeasureBpLocation int,LifeStyleMeasureBpPeriod int,LifeStyleMeasureBpNoOfTime int,EmotionAssessment nvarchar(50),EmotionAssessmentRemarks nvarchar(100),OtherHospDisbete int,OtherHospDisbeteNoOfDay int,OtherHospHighBp int,OtherHospHighBpNoOfDay int,OtherHospOtherIllness int,OtherAccident int,OtherHospOtherIllnessNoOfDay int,OtherSpecialNeed int,OtherAccidentNoOfDay int,OtherSpecialNeedService nvarchar(100),OtherRemarks nvarchar(500),DeletePicString nvarchar(100),Status int,SavedStatus int DEFAULT '1',NeedsContent nvarchar(50));";
  
         let CreateImgSQL = "CREATE TABLE IF NOT EXISTS tb_Image (LocalId integer primary key autoincrement not null, ImgId int DEFAULT '0', VisitId int, ImgName nvarchar(100), Base64ImgString BLOB)";
 
@@ -54,7 +54,7 @@ export class DBMgr {
             //alert(1);
             this.type = 0;
             sqlite.create({
-                name: 'appdata19.db',
+                name: 'appdata23.db',
                 location: 'default'
             }).then((db) => {
                 this._db = db;
@@ -81,7 +81,7 @@ export class DBMgr {
         } else {
             this.type = 1;
             //alert(2);
-            this._db = this.win.openDatabase("appdata19.db", '1.0', 'database', 5 * 1024 * 1024);
+            this._db = this.win.openDatabase("appdata23.db", '1.0', 'database', 5 * 1024 * 1024);
             this.execSql(dbcreateUSERsql);
             this.execSql(createActivityTableSQL);
             this.execSql(createPhoneTableSQL);

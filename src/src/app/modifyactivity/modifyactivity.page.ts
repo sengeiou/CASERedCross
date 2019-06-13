@@ -81,6 +81,29 @@ export class ModifyactivityPage extends AppBase {
     this.getActivity()
     this.getVolunteerList()
   }
+
+  aas() {
+    console.log(this.presentVolunteer);
+    // return;
+    var Volunteerlist = this.presentVolunteer;
+    console.log(Volunteerlist)
+    var volunteerServr = new VolunteerServr();
+    for (var i = 0; i < Volunteerlist.length; i++) {
+      console.log(Volunteerlist[i])
+      volunteerServr.getVolunteerId(Volunteerlist[i]).then((e) => {
+        console.log(e)
+        var data = Array.from(e.res.rows)[0]
+        console.log(data)
+        if (data) {
+          if (this.Volunteerlist_show == '') {
+            this.Volunteerlist_show = data['VolunteerName'];
+          } else {
+            this.Volunteerlist_show = this.Volunteerlist_show + ',' + data['VolunteerName'];
+          }
+        }
+      })
+    }
+  }
   casedata = null;
   LocalId = 0;
   activity = null;

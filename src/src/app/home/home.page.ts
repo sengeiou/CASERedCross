@@ -53,6 +53,7 @@ export class HomePage extends AppBase {
   list = [{}, {}]
   caselist = [];
   wangluo = ''
+
   onMyLoad() {
     //参数
     this.params;
@@ -64,6 +65,13 @@ export class HomePage extends AppBase {
     this.getCase()
     this.wangluo = this.network.type;
     console.log(this.network.type)
+
+    window.onload = function () {
+      var seewid = document.documentElement.clientWidth;
+      var seehei = document.documentElement.clientHeight;
+      console.log('可视区高' + seehei + '可视区宽' + seewid);
+    }
+
   }
 
 
@@ -107,54 +115,25 @@ export class HomePage extends AppBase {
     console.log('aa')
     // this.SysnAllWeb();
 
-    // var visit = new VisitServe();
-    // visit.getVisit_SavedStatus(1).then((e) => {
-    //   console.log(e)
-    //   visiltList = Array.from(e.res.rows)
-    // })
 
-    // var activity = new ActivityServe();
-    // activity.getActivity_SavedStatus(1).then((e) => {
-    //   console.log(e)
-    //   activityList = Array.from(e.res.rows)
-    // })
-
-    // var phone = new PhoneServe();
-    // phone.getPhone_SavedStatus(1).then((e) => {
-    //   console.log(Array.from(e.res.rows))
-    //   phoneList = Array.from(e.res.rows)
-    // })
-
-    // var medicalRecordServe = new MedicalRecordServe();
-    // medicalRecordServe.getAllMedicalRecor_SavedStatus(1).then((e) => {
-    //   console.log(e)
-    //   medicAppointLogList = Array.from(e.res.rows)
-    //   console.log(Array.from(e.res.rows))
-    //   // return;
-    //   var visiltList = []
-    //   var phoneList = []
-    //   var activityList = []
-    //   this.api.SaveAll(visiltList, phoneList, activityList, medicAppointLogList, this.params.id).then((ret) => {
-    //     if (ret.Result == 'true') {
-    //       this.api.ExecuteWorkingSet(ret.WorkingSetID, this.params.caseID, this.params.id).then(e => {
-    //         console.log(e)
-    //         if (e.Result == 'true') {
-    //           // this.SysnAllWeb();
-    //           this.toast('資料同步成功');
-    //         }
-    //       })
-    //     }
-    //     console.log(ret)
-    //   })
-    // })
-    for(var i=0;i<this.caselist.length;i++){
-        this.SaveAll(this.caselist[i])
+    console.log(this.caselist)
+    for (var i = 0; i < this.caselist.length; i++) {
+      this.SaveAll(this.caselist[i])
     }
+    console.log(this.caselist)
+    if (this.caselist.length == 0) {
+      console.log('565')
+      this.SysnAllWeb();
+    }
+
+    // this.SysnAllWeb();
 
   }
 
-  SaveAll(kv){
+  SaveAll(kv) {
     this.api.SaveAll(kv.visitList, kv.phoneList, kv.activityList, kv.medicAppointLogList, this.params.id).then((ret) => {
+      console.log(ret)
+      // return
       if (ret.Result == 'true') {
         this.api.ExecuteWorkingSet(ret.WorkingSetID, kv.CaseId, this.params.id).then(e => {
           console.log(e)
@@ -202,7 +181,7 @@ export class HomePage extends AppBase {
 
   getActivityList() {
     var visit = new VisitServe();
-  
+
     var activity = new ActivityServe();
     activity.getAllActivityList().then((e) => {
       console.log(e)
@@ -211,7 +190,7 @@ export class HomePage extends AppBase {
 
   getCase() {
     var cases = new CaseServe();
-    cases.getCaseAll().then(e=>{
+    cases.getCaseAll().then(e => {
       console.log(e)
     });
     // cases.addCase();
@@ -275,7 +254,7 @@ export class HomePage extends AppBase {
     });
   }
 
-  getAllMedicalRecordList(kv){
+  getAllMedicalRecordList(kv) {
     var medicalRecordServe = new MedicalRecordServe();
     medicalRecordServe.getAllMedicalRecordList(kv.CaseId).then((e) => {
       console.log(e);
@@ -298,6 +277,7 @@ export class HomePage extends AppBase {
   Weight = []; //重量
   WHR = []; //腰臀比
   HeartRate = []; //心跳
+  maList = [];//復診
 
   SysnAllWeb() {
     var VolId = this.params.id
@@ -359,9 +339,9 @@ export class HomePage extends AppBase {
     medicalRecordServe.deleteMedicalRecord()
 
 
-    for (var i = 0; i < this.Volunteer.length; i++) {
-      this.setVolunteer(this.Volunteer[i]);
-    }
+    // for (var i = 0; i < this.Volunteer.length; i++) {
+    //   this.setVolunteer(this.Volunteer[i]);
+    // }
     for (var i = 0; i < this.Specialty.length; i++) {
       this.setSpecialty(this.Specialty[i]);
     }
@@ -369,6 +349,36 @@ export class HomePage extends AppBase {
       this.setHosp(this.Hosp[i]);
     }
     for (var i = 0; i < this.saList.length; i++) {
+
+      if (this.saList[i].Support_VolunteerList) {
+        var Support_VolunteerList = [];
+        var listtype = typeof this.saList[i].Support_VolunteerList.SupportGroupApp;
+        if (listtype == 'object' && this.saList[i].Support_VolunteerList.SupportGroupApp.length == undefined) {
+          Support_VolunteerList.push(this.saList[i].Support_VolunteerList.SupportGroupApp);
+        } else {
+          Support_VolunteerList = this.saList[i].Support_VolunteerList.SupportGroupApp;
+        }
+        for (var j = 0; j < Support_VolunteerList.length; j++) {
+          this.setVolunteer_s(Support_VolunteerList[j]);
+          console.log('志願者1')
+        }
+      }
+      
+      console.log(this.saList[i])
+      if (this.saList[i].VisitGroup_VolunteerList) {
+        var VisitGroup_VolunteerList = [];
+        var listtype = typeof this.saList[i].VisitGroup_VolunteerList.VolunteerGroupApp;
+        if (listtype == 'object' && this.saList[i].VisitGroup_VolunteerList.VolunteerGroupApp.length == undefined) {
+          VisitGroup_VolunteerList.push(this.saList[i].VisitGroup_VolunteerList.VolunteerGroupApp);
+        } else {
+          VisitGroup_VolunteerList = this.saList[i].VisitGroup_VolunteerList.VolunteerGroupApp;
+        }
+        for (var j = 0; j < VisitGroup_VolunteerList.length; j++) {
+          this.setVolunteer_v(VisitGroup_VolunteerList[i]);
+          console.log('志願者2')
+        }
+      }
+      
       //案例
       this.setCase(this.saList[i].caseObj);
 
@@ -496,32 +506,54 @@ export class HomePage extends AppBase {
       }
 
       console.log(this.BloodPressure)
+
+
+
+      //復診
+      var maListtype = typeof this.saList[i].maList.objMedicalAppointmentApp;
+      if (maListtype == 'object' && this.saList[i].maList.objMedicalAppointmentApp.length == undefined) {
+        var data = [];
+        data.push(this.saList[i].maList.objMedicalAppointmentApp);
+        this.maList = data;
+      } else {
+        this.maList = this.saList[i].maList.objMedicalAppointmentApp;
+      }
+      if (this.maList) {
+        for (var j = 0; j < this.maList.length; j++) {
+          console.log('復診 ss')
+          this.setMedicalRecordWeb(this.maList[j])
+        }
+      }
+
     }
-
-    //復診
-
-
 
 
     this.getCase();
 
   }
 
-  setVolunteer(kv) {
+  setVolunteer_s(kv) {
     var volunteer = new VolunteerServr();
-    volunteer.addVolunteer(kv.VolId, kv.UserName).then((e) => {
+    volunteer.addVolunteer(kv.VolId, kv.VolGrpId, kv.UserName, 2).then((e) => {
+      console.log(e);
+    });
+  }
+
+  setVolunteer_v(kv) {
+    var volunteer = new VolunteerServr();
+    volunteer.addVolunteer(kv.VolId, kv.VolGrpId, kv.UserName, 1).then((e) => {
       console.log(e);
     });
   }
   setSpecialty(kv) {
     var specialtyServe = new SpecialtyServe();
-    specialtyServe.addSpecialty(kv.Name).then((e) => {
+    specialtyServe.addSpecialty(kv.Id, kv.Name).then((e) => {
       console.log(e);
     });
   }
   setHosp(kv) {
     var hosiptalServe = new HosiptalServe();
-    hosiptalServe.addHosiptal(kv.Name).then((e) => {
+    hosiptalServe.addHosiptal(kv.Id, kv.Name).then((e) => {
       console.log(e);
     });
   }
@@ -534,10 +566,10 @@ export class HomePage extends AppBase {
 
   setPhone(kv) {
     console.log(kv)
-    var CallDate = AppUtil.FormatDate2(new Date(kv.CallDate));
+    var CallDate_Display = AppUtil.FormatDate2(new Date(kv.CallDate));
     var phone = new PhoneServe();
     if (kv) {
-      phone.addPhoneWeb(CallDate, kv.CallEndTime, kv.CallStartTime, kv.CaseId, kv.Detail, kv.DetailOther, kv.OtherRemark, kv.Status, kv.SupportId, kv.UserName, kv.CannotContact, kv.NextPhoneDate, kv.NextPhoneTime).then((e) => {
+      phone.addPhoneWeb(kv.CallDate, kv.CallEndTime, kv.CallStartTime, kv.CaseId, kv.Detail, kv.DetailOther, kv.OtherRemark, kv.Status, kv.SupportId, kv.UserName, kv.CannotContact, kv.NextPhoneDate, kv.NextPhoneTime, CallDate_Display).then((e) => {
         console.log(e);
       });
     }
@@ -546,8 +578,10 @@ export class HomePage extends AppBase {
   setVisitWeb(kv) {
     console.log(kv)
     // var ScheduleDate = AppUtil.FormatDate2(new Date(kv.ScheduleDate));
-    var ScheduleDate = kv.ScheduleDate_Disply;
-
+    var ScheduleDate_Display = kv.ScheduleDate_Disply;
+    console.log('志願者0')
+    
+  
     if (kv.HomeVisitVolList) {
       var HomeVisitVolList = [];
       var listtype = typeof kv.HomeVisitVolList.objHomeVisitVolAPP;
@@ -557,16 +591,63 @@ export class HomePage extends AppBase {
         HomeVisitVolList = kv.HomeVisitVolList.objHomeVisitVolAPP;
       }
       var presentVolunteer = ''
+      var supportVolunteer = ''
       for (var i = 0; i < HomeVisitVolList.length; i++) {
-        if (presentVolunteer == '') {
-          presentVolunteer = HomeVisitVolList[i].VolId
-        } else {
-          presentVolunteer = presentVolunteer + ',' + HomeVisitVolList[i].VolId
+        if (HomeVisitVolList[i].VolType == '1') {
+          if (presentVolunteer == '') {
+            presentVolunteer = HomeVisitVolList[i].VolId
+          } else {
+            presentVolunteer = presentVolunteer + ',' + HomeVisitVolList[i].VolId
+          }
         }
 
+        if (HomeVisitVolList[i].VolType == '2') {
+          if (supportVolunteer == '') {
+            supportVolunteer = HomeVisitVolList[i].VolId
+          } else {
+            supportVolunteer = supportVolunteer + ',' + HomeVisitVolList[i].VolId
+          }
+        }
       }
     }
-    var medicalRecordServe = new MedicalRecordServe();
+
+    if (kv.BloodPressureList) {
+      var bloodPressureList = [];
+      var listtype = typeof kv.BloodPressureList.objBloodPressureAPP;
+      if (listtype == 'object' && kv.BloodPressureList.objBloodPressureAPP.length == undefined) {
+        bloodPressureList.push(kv.BloodPressureList.objBloodPressureAPP);
+      } else {
+        bloodPressureList = kv.BloodPressureList.objBloodPressureAPP;
+      }
+      // for(var i=0;i<BloodPressureList.length;i++){
+      kv.SYS1 = bloodPressureList[0].Upper
+      kv.DlA1 = bloodPressureList[0].Lower
+      if (bloodPressureList.length == 2) {
+        kv.SYS2 = bloodPressureList[1].Upper
+        kv.DlA2 = bloodPressureList[1].Lower
+      }
+
+      // }
+    }
+
+    if (kv.HeartRateList) {
+      var heartRateList = [];
+      var listtype = typeof kv.HeartRateList.objHeartRateApp;
+      if (listtype == 'object' && kv.HeartRateList.objHeartRateApp.length == undefined) {
+        heartRateList.push(kv.HeartRateList.objHeartRateApp);
+      } else {
+        heartRateList = kv.HeartRateList.objHeartRateApp;
+      }
+      // for(var i=0;i<heartRateList.length;i++){
+      kv.heartBeats1 = heartRateList[0].RatePerMin
+      if (heartRateList.length == 2) {
+        kv.heartBeats2 = heartRateList[1].RatePerMin
+      }
+
+
+      // }
+    }
+
     var visit = new VisitServe();
     visit.addVisitWeb(kv.Bmi, kv.CaseId, kv.CategoryTopic1, kv.CategoryTopic2,
       kv.CategoryTopic3, kv.EmotionAssessment, kv.EmotionAssessmentRemarks,
@@ -577,11 +658,11 @@ export class HomePage extends AppBase {
       kv.LifeStyleQuestion5, kv.LifeStyleQuestion6, kv.Location, kv.LocationRemarks, kv.OtherAccident,
       kv.OtherAccidentNoOfDay, kv.OtherHospDisbete, kv.OtherHospDisbeteNoOfDay, kv.OtherHospHighBp,
       kv.OtherHospHighBpNoOfDay, kv.OtherHospOtherIllness, kv.OtherHospOtherIllnessNoOfDay,
-      kv.OtherRemarks, kv.OtherSpecialNeed, kv.OtherSpecialNeedService, ScheduleDate, kv.ScheduleTime,
+      kv.OtherRemarks, kv.OtherSpecialNeed, kv.OtherSpecialNeedService, kv.ScheduleDate, kv.ScheduleTime,
       kv.Status, kv.TaskId, kv.VisitDate_Disply, kv.VisitDetailIndoor, kv.VisitDetailIndoorRemarks,
       kv.VisitDetailOther, kv.VisitDetailOutdoor, kv.VisitDetailOutdoorRemarks, kv.VisitEndTime,
       kv.VisitId, kv.VisitStartTime, kv.VisitStatus, kv.VisitStatusRemarks, kv.WHRatio, kv.Waist,
-      kv.Weight, presentVolunteer, kv.supportVolunteer).then((e) => {
+      kv.Weight, presentVolunteer, supportVolunteer, ScheduleDate_Display, kv.DlA1, kv.DlA2, kv.SYS1, kv.SYS2, kv.heartBeats1, kv.heartBeats2, kv.NeedsContent).then((e) => {
         console.log(e);
 
 
@@ -595,18 +676,20 @@ export class HomePage extends AppBase {
       if (Array.isArray(objHomeVisitUploadImgAppInfoList)) {
         for (let item of objHomeVisitUploadImgAppInfoList) {
           imgserve.addImage(item.ImgId, item.VisitId, item.ImgPath, this.transfer, this.file, this.base64);
+          console.log('img22')
         }
       } else {
         imgserve.addImage(objHomeVisitUploadImgAppInfoList.ImgId,
           objHomeVisitUploadImgAppInfoList.VisitId,
           objHomeVisitUploadImgAppInfoList.ImgPath, this.transfer, this.file, this.base64);
+        console.log('img233')
       }
     }
   }
 
   setActivityWeb(kv) {
     console.log(kv)
-    var ActDate = AppUtil.FormatDate2(new Date(kv.ActDate));
+    var ActDate_Display = AppUtil.FormatDate2(new Date(kv.ActDate));
     //caseId, activityDate, activityStartTime, activityEndTime, presentVolunteer, actType, activityDetailType, remarks1, remarks2, remarks3, remarks4, otherActRemarks, otherContent
     if (kv.ActivityVolList) {
       var ActivityVolList = [];
@@ -627,7 +710,7 @@ export class HomePage extends AppBase {
       }
     }
     var activity = new ActivityServe();
-    activity.addActivityWeb(kv.ActivityId, kv.CaseId, ActDate, kv.ActStartTime, kv.ActEndTime, presentVolunteer, kv.ActType, kv.ActDetailType, kv.Remarks1, kv.Remarks2, kv.Remarks3, kv.Remarks4, kv.OtherActRemarks, kv.Remarks).then((e) => {
+    activity.addActivityWeb(kv.ActivityId, kv.CaseId, kv.ActDate, kv.ActStartTime, kv.ActEndTime, presentVolunteer, kv.ActType, kv.ActDetailType, kv.Remarks1, kv.Remarks2, kv.Remarks3, kv.Remarks4, kv.OtherActRemarks, kv.Remarks, ActDate_Display, kv.Status).then((e) => {
 
     })
   }
@@ -664,8 +747,8 @@ export class HomePage extends AppBase {
 
   setMedicalRecordWeb(kv) {
     var medicalRecordServe = new MedicalRecordServe();
-
-    medicalRecordServe.addMedicalRecordWeb(kv.AppointmentDate, kv.AppointmentTime, kv.Description, kv.Reason, kv.Hosp, kv.Specialty, kv.CaseId).then(ret => {
+    console.log('復診 end')
+    medicalRecordServe.addMedicalRecordWeb(kv.AppointmentId, kv.AppointmentDate, kv.AppointmentTime, kv.Description, kv.Reason, kv.Hosp, kv.Specialty, kv.CaseId).then(ret => {
       console.log(ret)
     })
   }

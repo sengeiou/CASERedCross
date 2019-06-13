@@ -16,7 +16,7 @@ export class ActivityServe {
 
     getAllActivityListCaseId(caseId) {
         var mgr = DBMgr.GetInstance();
-        var sql = "select LocalID,ActDate,ActType,SavedStatus from tb_Activity where CaseId=? order by ActDate desc";
+        var sql = "select LocalID,ActDate,ActType,Status,ActDate_Display from tb_Activity where CaseId=? order by ActDate asc";
         return mgr.execSql(sql, [caseId]);
     }
 
@@ -44,10 +44,10 @@ export class ActivityServe {
         }
     }
 
-    addActivityWeb(ActivityId, CaseId, ActDate, ActStartTime, ActEndTime, presentVolunteer, ActType, ActDetailType, Remarks1, Remarks2, Remarks3, Remarks4, OtherActRemarks, Remarks) {
+    addActivityWeb(ActivityId, CaseId, ActDate, ActStartTime, ActEndTime, presentVolunteer, ActType, ActDetailType, Remarks1, Remarks2, Remarks3, Remarks4, OtherActRemarks, Remarks,ActDate_Display,Status,) {
         var mgr = DBMgr.GetInstance(); 
-        var sql = "insert into tb_Activity (ActivityId,CaseId,ActDate,ActStartTime,ActEndTime, presentVolunteer, ActType,ActDetailType,Remarks1,Remarks2,Remarks3,Remarks4,OtherActRemarks,Remarks,SavedStatus) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,0)";
-        return mgr.execSql(sql, [ActivityId,CaseId, ActDate, ActStartTime, ActEndTime, presentVolunteer, ActType, ActDetailType, Remarks1, Remarks2, Remarks3, Remarks4, OtherActRemarks, Remarks]);
+        var sql = "insert into tb_Activity (ActivityId,CaseId,ActDate,ActStartTime,ActEndTime, presentVolunteer, ActType,ActDetailType,Remarks1,Remarks2,Remarks3,Remarks4,OtherActRemarks,Remarks,ActDate_Display,Status,SavedStatus) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,0)";
+        return mgr.execSql(sql, [ActivityId,CaseId, ActDate, ActStartTime, ActEndTime, presentVolunteer, ActType, ActDetailType, Remarks1, Remarks2, Remarks3, Remarks4, OtherActRemarks, Remarks,ActDate_Display,Status]);
     }
 
     sevaActivitySavedStatus(id){

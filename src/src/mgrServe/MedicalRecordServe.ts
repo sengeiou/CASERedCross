@@ -23,10 +23,10 @@ export class MedicalRecordServe {
         return mgr.execSql(sql,[AppointmentDate,AppointmentTime,Description,Reason,Hosp,Specialty,CaseId,Status]);
     }
 
-    addMedicalRecordWeb(AppointmentDate,AppointmentTime,Description,Reason,Hosp,Specialty,CaseId){
+    addMedicalRecordWeb(AppointmentId,AppointmentDate,AppointmentTime,Description,Reason,Hosp,Specialty,CaseId){
         var mgr = DBMgr.GetInstance();
-        var sql = "insert into tb_MedicalRecord(AppointmentDate,AppointmentTime,Description,Reason,Hosp,Specialty,CaseId,Status,SavedStatus) values (?,?,?,?,?,?,?,1,0)";
-        return mgr.execSql(sql,[AppointmentDate,AppointmentTime,Description,Reason,Hosp,Specialty,CaseId]);
+        var sql = "insert into tb_MedicalRecord(AppointmentId,AppointmentDate,AppointmentTime,Description,Reason,Hosp,Specialty,CaseId,Status,SavedStatus) values (?,?,?,?,?,?,?,?,1,0)";
+        return mgr.execSql(sql,[AppointmentId,AppointmentDate,AppointmentTime,Description,Reason,Hosp,Specialty,CaseId]);
     }
 
     saveMedicalRecord(AppointmentDate,AppointmentTime,Hosp,Specialty,Description,Reason,Status,LocalId){

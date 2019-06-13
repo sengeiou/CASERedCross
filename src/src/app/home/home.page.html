@@ -22,51 +22,61 @@
 
       <div class="flex-row">
 
-        <div class="height h7 flex-row _center bg-gray width text-center border-bottom">探訪 <img
+        <div class="height h7 flex-row _center bg-gray width text-center border-bottom" style="width: 73px;">探訪 <img
             src="../assets/icon/plus_icon.png" class="icon-15 margin-left-5" (click)='visit(item.CaseId)' /></div>
         <div class="flex-1">
           <div class="xgun">
-            <div class="flex-row" style="width: 500px">
+            <div class="flex-row" >
               <div class="padding-5  border-black radius-5 height margin-right-10"
                 *ngFor="let itemVisit of item.visitList;let idx=index;" (click)='modifyvisit(item.CaseId,itemVisit.LocalId);'>
                 <div class="h7-5">預約日期:</div>
                 <div class="margin-top-10 h7-5" style="width: 73px;">
-                  {{itemVisit.ScheduleDate}}
+                  {{itemVisit.ScheduleDate_Display}}
                 </div>
-                <div class="margin-top-10 h7-5" *ngIf="itemVisit.SavedStatus=='1'">未上傳</div>
-                <div class="margin-top-10 h7-5" *ngIf="itemVisit.SavedStatus=='0'">已上傳</div>
+                <div class="margin-top-10 h7-5" *ngIf="itemVisit.Status=='1'">未上傳</div>
+                <div class="margin-top-10 h7-5" *ngIf="itemVisit.Status=='2'">已上傳</div>
+                <div class="margin-top-10 h7-5" *ngIf="itemVisit.Status=='3'">已完成</div>
               </div>
+
+              <!-- <div [ngStyle]="{'z-index': 9999 }" class="supercomment">
+                <div [ngStyle]="{'width.px': 73 }"></div>
+                
+              </div> -->
+              
             </div>
           </div>
         </div>
       </div>
 
+
+
       <div class="flex-row">
 
-        <div class="height h7 flex-row _center bg-gray width text-center border-bottom">電話 <img
+        <div class="height h7 flex-row _center bg-gray width text-center border-bottom" style="width: 73px;">電話 <img
             src="../assets/icon/plus_icon.png" class="icon-15 margin-left-5" (click)='phone(item.CaseId)' /></div>
         <div class="flex-1">
           <div class="xgun">
-            <div class="flex-row" >
-              <div class="padding-5  border-black radius-5 height margin-right-10" 
-                *ngFor="let itemPhnoe of item.phoneList;let idx=index;" (click)='modifyphone(item.CaseId,itemPhnoe.LocalId);'>
+            <div class="flex-row">
+              <div class="padding-5  border-black radius-5 height margin-right-10"
+                *ngFor="let itemPhnoe of item.phoneList;let idx=index;"
+                (click)='modifyphone(item.CaseId,itemPhnoe.LocalId);'>
                 <div class="h7-5">預約日期:</div>
                 <div class="margin-top-10 h7-5" style="width: 73px;">
-                  {{itemPhnoe.CallDate}}
+                  {{itemPhnoe.CallDate_Display}}
                 </div>
-                <div class="margin-top-10 h7-5" *ngIf="itemPhnoe.SavedStatus=='1'">未上傳</div>
-                <div class="margin-top-10 h7-5" *ngIf="itemPhnoe.SavedStatus=='0'">已上傳</div>
+                <div class="margin-top-10 h7-5" *ngIf="itemPhnoe.Status=='0'">已上傳</div>
+                <div class="margin-top-10 h7-5" *ngIf="itemPhnoe.Status=='3'">已完成</div>
+                <div class="margin-top-10 h7-5" *ngIf="itemPhnoe.Status=='2'">未上傳</div>
               </div>
             </div>
           </div>
         </div>
-
       </div>
 
 
       <div class="flex-row">
 
-        <div class="height h7 flex-row _center bg-gray width text-center border-bottom">活動<img
+        <div class="height h7 flex-row _center bg-gray width text-center border-bottom" style="width: 73px;">活動<img
             src="../assets/icon/plus_icon.png" class="icon-15 margin-left-5" (click)='activity(item.CaseId)' /></div>
         <div class="flex-1">
           <div class="xgun">
@@ -76,10 +86,11 @@
                 (click)="modifyactivity(item.CaseId,itemActivity.LocalId)">
                 <div class="h7-5">預約日期</div>
                 <div class="margin-top-10 h7-5" style="width: 73px;">
-                  {{itemActivity.ActDate}}
+                  {{itemActivity.ActDate_Display}}
                 </div>
-                <div class="margin-top-10 h7-5" *ngIf="itemActivity.SavedStatus!='0'">未上傳</div>
-                <div class="margin-top-10 h7-5" *ngIf="itemActivity.SavedStatus=='0'">已上傳</div>
+                <div class="margin-top-10 h7-5" *ngIf="itemActivity.Status=='0'">已上傳</div>
+                <div class="margin-top-10 h7-5" *ngIf="itemActivity.Status=='3'">已完成</div>
+                <div class="margin-top-10 h7-5" *ngIf="itemActivity.Status=='2'">未上傳</div>
               </div>
             </div>
           </div>

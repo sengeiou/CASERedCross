@@ -47,6 +47,9 @@ export class UploadimgPage extends AppBase {
   onMyShow() {
     console.log(this.params.visitid)
     var imgserver=new ImageServe();
+    imgserver.getAllImageList().then(e=>{
+      console.log(Array.from(e.res.rows))
+    })
     imgserver.getImageList(this.params.visitid).then(e=>{
       var list = Array.from(e.res.rows);
       console.log(list)
