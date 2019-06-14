@@ -44,7 +44,13 @@ export class MedicalRecordServe {
     deleteMedicalRecord(){
         var mgr = DBMgr.GetInstance();
         var sql = "DELETE FROM tb_MedicalRecord";
-        return mgr.execSql(sql,);
+        return mgr.execSql(sql);
+    }
+
+    deleteMedicalRecord_id(id){
+        var mgr = DBMgr.GetInstance();
+        var sql = "DELETE FROM tb_MedicalRecord where LocalId=?";
+        return mgr.execSql(sql,[id]);
     }
 
 }

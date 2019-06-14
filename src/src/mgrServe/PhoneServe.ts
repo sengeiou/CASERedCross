@@ -52,14 +52,14 @@ export class PhoneServe  {
             var sql = "insert into tb_Phone (CaseId,CallDate,CallDate_Display,CallStartTime,CallEndTime,Detail,DetailOther,UserName,OtherRemark,Status,SavedStatus,CannotContact,NextPhoneDate,NextPhoneTime) values (?,?,?,?,?,?,?,?,?,2,1,?,?,?)";
             return mgr.execSql(sql,[CaseId,CallDate,CallDate_Display,CallStartTime,CallEndTime,Detail,DetailOther,UserName,OtherRemark,CannotContact,NextPhoneDate,NextPhoneTime]);
         }else{
-            var sql = "update tb_Phone set CaseId=?,CallDate=?,CallDate_Display=?,CallStartTime=?,CallEndTime=?,Detail=?,DetailOther=?,UserName=?,OtherRemark=?,CannotContact=?,NextPhoneDate=?,NextPhoneTime=?,Status=2 where LocalId=?";
+            var sql = "update tb_Phone set CaseId=?,CallDate=?,CallDate_Display=?,CallStartTime=?,CallEndTime=?,Detail=?,DetailOther=?,UserName=?,OtherRemark=?,CannotContact=?,NextPhoneDate=?,NextPhoneTime=?,Status=2,SavedStatus=1 where LocalId=?";
             return mgr.execSql(sql,[CaseId,CallDate,CallDate_Display,CallStartTime,CallEndTime,Detail,DetailOther,UserName,OtherRemark,CannotContact,NextPhoneDate,NextPhoneTime,PhoneID]);
         }
     }
 
     sevaPhoneSavedStatus(id){
         var mgr = DBMgr.GetInstance();
-        var sql = "update  tb_Phone SET SavedStatus=0  where LocalID=?";
+        var sql = "update  tb_Phone SET SavedStatus=0,Status=0 where LocalID=?";
         return mgr.execSql(sql,[id]);
     }
 }

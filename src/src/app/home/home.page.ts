@@ -374,7 +374,7 @@ export class HomePage extends AppBase {
           VisitGroup_VolunteerList = this.saList[i].VisitGroup_VolunteerList.VolunteerGroupApp;
         }
         for (var j = 0; j < VisitGroup_VolunteerList.length; j++) {
-          this.setVolunteer_v(VisitGroup_VolunteerList[i]);
+          this.setVolunteer_v(VisitGroup_VolunteerList[j]);
           console.log('志願者2')
         }
       }

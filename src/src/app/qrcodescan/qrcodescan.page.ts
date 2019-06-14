@@ -55,8 +55,19 @@ export class QrcodescanPage extends AppBase {
       var obj = this.elementRef.nativeElement.querySelector('#ctv');
       obj.className = "";
       AppBase.LastQrcode=text;
-      //alert(AppBase.LastQrcode);
+      // alert(AppBase.LastQrcode);
       this.back();
+      if(AppBase.LastQrcode!=''){
+        // this.showAlert('掃描成功').then(e=>{
+        //   this.back();
+        // })
+        
+      }else{
+        // this.showAlert('你掃描的二維碼和你的探訪對象並不符合').then(e=>{
+        //   this.back();
+        // })
+      }
+      
 
     });
     var obj = this.elementRef.nativeElement.querySelector('#ctv');

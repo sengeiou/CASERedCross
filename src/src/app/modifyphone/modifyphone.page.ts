@@ -105,6 +105,9 @@ export class ModifyphonePage extends AppBase {
         console.log(data)
         console.log(data["CallDate"])
         this.CallDate_show = AppUtil.FormatDate(new Date(data["CallDate"]));
+        
+        this.CannotContact=this.phone.CannotContact;
+        
 
         var DetailTypelist = this.phone.Detail.split(',');
         for (var i = 0; i < DetailTypelist.length; i++) {
@@ -181,32 +184,41 @@ export class ModifyphonePage extends AppBase {
 
   getLiaison(e) {
     console.log(e)
-    this.CannotContact = e;
     if (e == 1) {
-      this.DetailList = [{
-        DetailType: false, value: 1
-      }, {
-        DetailType: false, value: 2
-      }, {
-        DetailType: false, value: 3
-      }, {
-        DetailType: false, value: 4
-      }, {
-        DetailType: false, value: 5
-      }, {
-        DetailType: false, value: 6
-      }, {
-        DetailType: false, value: 7
-      }, {
-        DetailType: false, value: 8
-      }, {
-        DetailType: false, value: 9
-      }
-      ];
-      this.DetailOther = '';
-      this.OtherRemark = '';
-      this.NextPhoneDate = '';
-      this.NextPhoneTime = '';
+      this.showConfirm('一旦按選，在這按鈕以下的資料將會清空，你確定要按選嗎？', (ret) => {
+        if (ret) {
+          this.CannotContact = e;
+          this.phone.CannotContact=e;
+          this.Detail = '';
+          this.DetailOther = '';
+          this.OtherRemark = ''
+          this.NextPhoneDate = ''
+          this.NextPhoneTime = '';
+          this.DetailList = [{
+            DetailType: false, value: 1
+          }, {
+            DetailType: false, value: 2
+          }, {
+            DetailType: false, value: 3
+          }, {
+            DetailType: false, value: 4
+          }, {
+            DetailType: false, value: 5
+          }, {
+            DetailType: false, value: 6
+          }, {
+            DetailType: false, value: 7
+          }, {
+            DetailType: false, value: 8
+          }, {
+            DetailType: false, value: 9
+          }
+          ]
+        }
+      })
+    }else{
+      this.CannotContact = e;
+      this.phone.CannotContact=e;
     }
   }
 
@@ -215,6 +227,8 @@ export class ModifyphonePage extends AppBase {
       this.toast('已上傳過的的資料，無法修改');
       return;
     }
+
+    
     var CallDate_Display = ''
 
     var phone = new PhoneServe();
@@ -231,9 +245,9 @@ export class ModifyphonePage extends AppBase {
       this.CallEndTime = AppUtil.FormatTime(new Date(this.CallEndTime));
     }
 
-    this.CallDate = this.CallDate != '' ? this.CallDate : this.phone.CallDate
-
     var CallDate_Display = this.CallDate != '' ? CallDate_Display : AppUtil.FormatDate2(new Date(this.phone.CallDate))
+
+    this.CallDate = this.CallDate != '' ? this.CallDate : this.phone.CallDate
 
     this.CallStartTime = this.CallStartTime != '' ? this.CallStartTime : this.phone.CallStartTime
     this.CallEndTime = this.CallEndTime != '' ? this.CallEndTime : this.phone.CallEndTime
@@ -246,23 +260,27 @@ export class ModifyphonePage extends AppBase {
     this.NextPhoneTime = this.NextPhoneTime != '' ? this.NextPhoneTime : this.phone.NextPhoneTime
 
 
-
-    if (!this.CallDate) {
+    console.log(this.CannotContact)
+    // return;
+    if (this.CallDate=='') {
       this.toast('你沒有輸入電話慰問日期');
       return;
     }
-    if (!this.CallStartTime || !this.CallEndTime) {
-      this.toast('你沒有輸入電話慰問時間');
-      return;
-    }
 
+    // if (this.CallStartTime=='' || this.CallEndTime=='') {
+    //   this.toast('你沒有輸入電話慰問時間');
+    //   return;
+    // }
 
-    var oDate1 = new Date(this.CallStartTime);
-    var oDate2 = new Date(this.CallEndTime);
-    if (oDate1.getTime() > oDate2.getTime()) {
-      this.toast('開始時間不能遲於結束時間');
-      return;
-    }
+    // if(this.CallStartTime!='' && this.CallEndTime!=''){
+    //   var oDate1 = new Date(this.CallStartTime);
+    //   var oDate2 = new Date(this.CallEndTime);
+    //   if (oDate1.getTime() > oDate2.getTime()) {
+    //     this.toast('開始時間不能遲於結束時間');
+    //     return;
+    //   }
+    // }
+    
 
     if (this.CannotContact != 1) {
       for (var i = 0; i < this.DetailList.length; i++) {

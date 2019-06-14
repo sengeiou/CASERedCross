@@ -88,7 +88,7 @@ export class VisitServe {
             + "LifeStyleQuestion4=?, LifeStyleQuestion5=?,LifeStyleQuestion6=?,Location=?, LocationRemarks=?, OtherAccident=?, OtherAccidentNoOfDay=?,  OtherHospDisbete=?,"
             + "OtherHospDisbeteNoOfDay=?,OtherHospHighBp=?,OtherHospHighBpNoOfDay=?,OtherHospOtherIllness=?,OtherHospOtherIllnessNoOfDay=?,OtherRemarks=?,OtherSpecialNeed=?,"
             + "OtherSpecialNeedService=?,ScheduleDate=?,ScheduleTime=?,Status=?,TaskId=?,VisitDate=?,VisitDetailIndoor=?, VisitDetailIndoorRemarks=?, VisitDetailOther=?,VisitDetailOutdoor=?,"
-            + "VisitDetailOutdoorRemarks=?,VisitEndTime=?,VisitId=?,VisitStartTime=?,VisitStatus=?,VisitStatusRemarks=?,WHRatio=? ,Waist=?, Weight=?,NeedsContent=? ,SYS1=?, DlA1=?, SYS2=?, DlA2=?, heartBeats1=?, heartBeats2=?,presentVolunteer=?, supportVolunteer=?,DeletePicString=? where LocalId=?";
+            + "VisitDetailOutdoorRemarks=?,VisitEndTime=?,VisitId=?,VisitStartTime=?,VisitStatus=?,VisitStatusRemarks=?,WHRatio=? ,Waist=?, Weight=?,NeedsContent=? ,SYS1=?, DlA1=?, SYS2=?, DlA2=?, heartBeats1=?, heartBeats2=?,presentVolunteer=?, supportVolunteer=?,DeletePicString=?,SavedStatus=1 where LocalId=?";
         return mgr.execSql(sql, [Bmi, CaseId, CategoryTopic1, CategoryTopic2, CategoryTopic3, EmotionAssessment, EmotionAssessmentRemarks,
             Hip, LifeStyleMeasureBloodPressure, LifeStyleMeasureBloodSuger, LifeStyleMeasureBpLocation, LifeStyleMeasureBpNoOfTime,
             LifeStyleMeasureBpPeriod, LifeStyleMeasureBsLocation, LifeStyleMeasureBsNoOfTime, LifeStyleMeasureBsPeriod, LifeStyleQuestion1, LifeStyleQuestion2, LifeStyleQuestion3,

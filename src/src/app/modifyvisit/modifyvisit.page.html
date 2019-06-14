@@ -15,13 +15,35 @@
     <div class="text-center padding-top-20 txt-black txt-bold">個案資料</div>
     <div class="text-center padding-top-10">
       <img src="../assets/icon/camera.png" class="icon-25 margin-3" (click)='uploadimg(visit.LocalId);' />
-      <img src="../assets/icon/scan.png" class="icon-25 margin-3" (click)='scan();' />
+      <!-- <div> -->
+      <img src="../assets/icon/scan.png" class="icon-25 margin-3" (click)='saomiao();' />
+
+      <!-- </div> -->
       <img src="../assets/icon/booking.png" class="icon-25 margin-3" (click)="visitList();" />
       <img src="../assets/icon/HEART-BEAT-.png" class="icon-25 margin-3" (click)='aa()' />
       <img src="../assets/icon/BLOODPRESSURE_ICON.png" class="icon-25 margin-3" (click)='bloodPressure()' />
       <img src="../assets/icon/waisthipratio.png" class="icon-25 margin-3" (click)='whr()' />
       <img src="../assets/icon/WEIGHT_ICON.png" class="icon-25 margin-3" (click)='weight()' />
     </div>
+
+    <!-- <div style="position:absolute;margin-top:-30px;background:transparent" class="aaa">
+      <ion-select multiple="true" style="position:absolute;background:transparent;opacity: 0;" (ionChange)="aas()">
+        <ion-select-option *ngFor="let item of Volunteer;let idx=index;" value="{{item.VolId}}">
+          {{item.VolunteerName}}</ion-select-option>
+      </ion-select>
+    </div> -->
+    <div class="bg-white saomiao text-center" *ngIf="saomiao_show==true">
+      <div class="saomiao_top _center">
+        <div>
+          <div>掃描</div>
+          <div class="f-10 margin-top-5">你想進行哪個操作</div>
+        </div>
+      </div>
+      <div class="saomiao_li _center text-blue" (click)="scan('ss');">掃描開始時間</div>
+      <div class="saomiao_li _center text-blue" (click)="scan('end');">掃描結束時間</div>
+      <div class="saomiao_li _center" (click)='saomiao2();'>取消</div>
+    </div>
+    <!-- <div class=""></div> -->
     <div class="margin-20">
       <div class="flex-row">
         <div class="title">檔案編號:</div>
@@ -87,7 +109,7 @@
           <div class="title2">預約探訪時間:</div>
           <div class="flex-1">
             <div class="bg-white">
-              <ion-datetime placeholder="{{visit.ScheduleTime}}" displayFormat="HH：MM" picker-format="HH：MM"
+              <ion-datetime placeholder="{{visit.ScheduleTime}}" displayFormat="HH:mm" picker-format="hh：mm A"
                 style="height:25px;padding:2px;" max="2050-12-09" done-text='确定' cancel-text='取消'
                 [(ngModel)]="ScheduleTime"></ion-datetime>
             </div>
@@ -123,8 +145,8 @@
           <div class="title2">實際探訪時間:</div>
           <div class="flex-1">
             <div class="bg-white">
-              <ion-datetime placeholder="{{visit.VisitStartTime}}" style="height:25px;padding:2px;"
-                displayFormat="hh：mm" picker-format="hh：mm" max="2050-12-09" done-text='确定' cancel-text='取消'
+              <ion-datetime placeholder="{{VisitStartTime==''?visit.VisitStartTime:VisitStartTime}}" style="height:25px;padding:2px;"
+                displayFormat="HH:mm" picker-format="hh:mm A" max="2050-12-09" done-text='确定' cancel-text='取消'
                 [(ngModel)]="VisitStartTime">
               </ion-datetime>
             </div>
@@ -134,9 +156,9 @@
           <div class="margin-5">至</div>
           <div class="flex-1">
             <div class="bg-white">
-              <ion-datetime placeholder="{{visit.VisitEndTime}}" style="height:25px;padding:2px;" displayFormat="hh：mm"
-                picker-format="hh：mm " max="2050-12-09" done-text='确定' cancel-text='取消' [(ngModel)]="VisitEndTime">
-              </ion-datetime>
+              <ion-datetime placeholder="{{VisitEndTime==''?visit.VisitEndTime:VisitEndTime}}" style="height:25px;padding:2px;" displayFormat="HH:mm"
+                picker-format="hh:mm A" max="2050-12-09" done-text='确定' cancel-text='取消' [(ngModel)]="VisitEndTime">
+              </ion-datetime> 
             </div>
           </div>
         </div>
@@ -165,7 +187,7 @@
               <div style="position:absolute;margin-top:-30px;background:transparent" class="aaa">
                 <ion-select multiple="true" style="position:absolute;background:transparent;opacity: 0;"
                   [(ngModel)]="presentVolunteer" (ionChange)="aas()">
-                  <ion-select-option *ngFor="let item of Volunteer;let idx=index;" value="{{item.VolId}}">
+                  <ion-select-option *ngFor="let item of presentVolunteerList;let idx=index;" value="{{item.VolId}}">
                     {{item.VolunteerName}}</ion-select-option>
                 </ion-select>
               </div>
@@ -173,8 +195,7 @@
           </div>
           <div class=" ">
             <div class="flex-1">
-              <div class="textarea2 radius-2 bg-white h7-5 padding-5" style="width:100%;"
-                >
+              <div class="textarea2 radius-2 bg-white h7-5 padding-5" style="width:100%;">
                 {{presentVolunteer_show}}
               </div>
               <!-- <div class="textarea2 radius-2 bg-white h7-5 padding-5" style="width:100%;">
@@ -193,7 +214,7 @@
               <div style="position:absolute;margin-top:-30px;background:transparent;opacity: 0;" class="aaa">
                 <ion-select multiple="true" style="position:absolute;background:transparent"
                   [(ngModel)]="supportVolunteer" (ionChange)="aab()">
-                  <ion-select-option *ngFor="let item of Volunteer;let idx=index;" value="{{item.VolId}}">
+                  <ion-select-option *ngFor="let item of supportVolunteerList;let idx=index;" value="{{item.VolId}}">
                     {{item.VolunteerName}}</ion-select-option>
                 </ion-select>
               </div>
@@ -202,8 +223,7 @@
           </div>
           <div class=" ">
             <div class="flex-1">
-              <div class="textarea2 radius-2 bg-white h7-5 padding-5" style="width:100%;"
-                >
+              <div class="textarea2 radius-2 bg-white h7-5 padding-5" style="width:100%;">
                 {{supportVolunteer_show}}
               </div>
 
@@ -887,7 +907,8 @@
       <div class=" padding-top-20 flex-row flex-center padding-right-30">
         <div class="flex-1"></div>
         <div class="txt-black txt-bold">預約</div>
-        <div class=" flex-1 h8 txt-blue  aa" (click)='saveYuyue(visit.LocalId)'>保存</div>
+        <!-- <div class=" flex-1 h8 txt-blue  aa" (click)='saveYuyue(visit.LocalId)'>保存</div> -->
+        <div class="flex-1"></div>
       </div>
       <div class="padding-20">
         <div class="flex-row">
@@ -917,7 +938,8 @@
       <div class=" padding-top-20 flex-row flex-center padding-right-40">
         <div class="flex-1"></div>
         <div class="txt-black txt-bold">探訪內容</div>
-        <div class=" flex-1 h8 txt-blue  aa" (click)='saveVisit_Neurou(visit.LocalId)'>保存</div>
+        <!-- <div class=" flex-1 h8 txt-blue  aa" (click)='saveVisit_Neurou(visit.LocalId)'>保存</div> -->
+        <div class="flex-1"></div>
       </div>
 
       <div class="margin-20">
@@ -1015,7 +1037,8 @@
       <div class=" padding-top-20 flex-row flex-center padding-right-40">
         <div class="flex-1"></div>
         <div class="txt-black txt-bold">服務內容</div>
-        <div class=" flex-1 h8 txt-blue  aa" (click)='saveService_neurou(visit.LocalId)'>保存</div>
+        <!-- <div class=" flex-1 h8 txt-blue  aa" (click)='saveService_neurou(visit.LocalId)'>保存</div> -->
+        <div class="flex-1"></div>
       </div>
       <div class=" ">
         <div class="margin-20">
@@ -1059,7 +1082,7 @@
                 disabled='{{visit.Status!=1?disabled:false}}'></ion-checkbox>
               其他
               <div class="flex-1">
-                <div class="radius-2 other-input"> {{visit.VisitDetailIndoorRemarks}}</div>
+                <div class="radius-2 other-input padding-left-5"> {{visit.VisitDetailIndoorRemarks}}</div>
               </div>
 
             </div>
@@ -1097,7 +1120,7 @@
               其他
 
               <div class="flex-1">
-                <div class="radius-2 other-input"> {{visit.VisitDetailOutdoorRemarks}}</div>
+                <div class="radius-2 other-input bg-white padding-left-5"> {{visit.VisitDetailOutdoorRemarks}}</div>
               </div>
             </div>
 
@@ -1111,7 +1134,7 @@
                 <!-- <input class="radius-2 " placeholder="{{visit.VisitDetailOther?visit.VisitDetailOther:'輸入最多250字'}}"
                   disabled='{{visit.Status!=1?true:false}}' [(ngModel)]="VisitDetailOther" name='VisitDetailOther'
                   style=" width: 100%;" /> -->
-                <div class="radius-2 other-input"> {{visit.VisitDetailOther}}</div>
+                <div class="radius-2 other-input bg-white padding-left-5"> {{visit.VisitDetailOther}}</div>
               </div>
             </div>
           </div>
@@ -1150,7 +1173,8 @@
       <div class=" padding-top-20 flex-row flex-center padding-right-40">
         <div class="flex-1"></div>
         <div class="txt-black txt-bold">健康檢查紀錄</div>
-        <div class=" flex-1 h8 txt-blue  aa" (click)="saveHeightWeight(visit.LocalId)">保存</div>
+        <!-- <div class=" flex-1 h8 txt-blue  aa" (click)="saveHeightWeight(visit.LocalId)">保存</div> -->
+        <div class="flex-1"></div>
       </div>
 
       <div class="margin-20">
@@ -1259,7 +1283,8 @@
       <div class=" padding-top-20 flex-row flex-center padding-right-40">
         <div class="flex-1"></div>
         <div class="txt-black txt-bold">生活習慣評估</div>
-        <div class=" flex-1 h8 txt-blue  aa" (click)='saveLifeHabit(visit.LocalId)' *ngIf='visit.Status!=1'>保存</div>
+        <!-- <div class=" flex-1 h8 txt-blue  aa" (click)='saveLifeHabit(visit.LocalId)' *ngIf='visit.Status!=1'>保存</div> -->
+        <div class="flex-1"></div>
       </div>
       <div class="margin-20">
         <div>
@@ -1271,6 +1296,10 @@
           <div class=" margin-top-5 flex-row flex-center">
             <input type="radio" name="LifeHabit1" value="male" class="radio " disabled='{{visit.Status!=1?true:false}}'
               checked="{{visit.LifeStyleQuestion1=='2'?'1':''}}" (click)="getLifeHabit1('2')" />否
+          </div>
+          <div class=" margin-top-5 flex-row flex-center">
+            <input type="radio" name="LifeHabit1" value="male" class="radio " disabled='{{visit.Status!=1?true:false}}'
+              checked="{{visit.LifeStyleQuestion1=='3'?'1':''}}" (click)="getLifeHabit1('3')" />不適用
           </div>
         </div>
 
@@ -1335,15 +1364,15 @@
         </div>
 
         <div class="margin-top-10">
-          <div>在家/外出(醫院／診所除外)*量度血糖:</div>
+          <div>在家/外出(醫院／診所除外)*量度血糖: {{visit.LifeStyleMeasureBsLocation}}</div>
           <div class=" margin-top-5 flex-row flex-center">
             <div class="flex-row flex-center">
               <input type="radio" name="LifeStyleMeasureBsLocation" value="male" class="radio "
-                disabled='{{visit.Status!=1?true:false}}' checked="{{visit.LifeStyleMeasureBsLocation==1?'1':false}}"
+                disabled='{{visit.Status!=1?true:false}}' checked="{{visit.LifeStyleMeasureBloodSuger==1?true:false}}"
                 (click)="LifeStyleMeasureBsLocation=1" />是
             </div>
 
-            <div class="flex-row h7-5 flex-1 margin-left-20 flex-center">
+            <div class="flex-row h7-5 flex-1 margin-left-20 flex-center" *ngIf='visit.LifeStyleMeasureBloodSuger==1'>
               <div class="" style="width:3.6rem;">地點</div>
               <div class="input_s radius-2 bg-white flex-row  flex-center" style="width:35%;">
                 <div *ngIf='visit.LifeStyleMeasureBsLocation==1'>家中</div>
@@ -1352,7 +1381,6 @@
               <div class="margin-5" style="width:3.6rem;">頻率</div>
 
               <div class="input_s radius-2 bg-white flex-row  flex-center" style="width:35%;">
-
                 <div *ngIf='visit.LifeStyleMeasureBsPeriod==1'>每日</div>
                 <div *ngIf='visit.LifeStyleMeasureBsPeriod==2'>每週</div>
                 <div *ngIf='visit.LifeStyleMeasureBsPeriod==3'>每月</div>
@@ -1367,7 +1395,13 @@
           </div>
           <div class=" margin-top-5 flex-row flex-center">
             <input type="radio" name="LifeStyleMeasureBsLocation" value="male" class="radio "
-              (click)="LifeStyleMeasureBsLocation=2" checked="{{visit.LifeStyleMeasureBsLocation==2?'1':''}}" />否
+              (click)="LifeStyleMeasureBsLocation=2" checked="{{visit.LifeStyleMeasureBloodSuger==2?true:false}}"
+              disabled='{{visit.Status!=1?true:false}}' />否
+          </div>
+          <div class=" margin-top-5 flex-row flex-center">
+            <input type="radio" name="LifeStyleMeasureBsLocation" value="male" class="radio "
+              checked="{{visit.LifeStyleMeasureBloodSuger==3?true:false}}" disabled='{{visit.Status!=1?true:false}}'
+              (click)="LifeStyleMeasureBsLocation=3" />不適用
           </div>
         </div>
 
@@ -1375,11 +1409,12 @@
           <div>在家/外出(醫院／診所除外)*量度血壓:</div>
           <div class=" margin-top-5 flex-row flex-center">
             <div class="flex-row flex-center">
-              <input type="radio" name="sex" value="male" class="radio "
+              <input type="radio" name="LifeStyleMeasureBloodPressure" value="male" class="radio "
+                checked="{{visit.LifeStyleMeasureBloodPressure==1?'true':false}}"
                 checked="{{visit.LifeStyleMeasureBloodPressure==1?'1':''}}"
                 (click)="LifeStyleMeasureBloodPressure=1" />是</div>
 
-            <div class="flex-row h7-5 flex-1 margin-left-20 flex-center">
+            <div class="flex-row h7-5 flex-1 margin-left-20 flex-center" *ngIf='visit.LifeStyleMeasureBloodPressure==1'>
               <div class="" style="width:3.6rem;">地點</div>
 
               <div class="input_s radius-2 bg-white flex-row  flex-center" style="width:35%;">
@@ -1404,8 +1439,16 @@
             </div>
           </div>
           <div class=" margin-top-5 flex-row flex-center">
-            <input type="radio" name="sex" value="male" class="radio " (click)="LifeStyleMeasureBloodPressure=2"
+            <input type="radio" name="LifeStyleMeasureBloodPressure" value="male" class="radio "
+              (click)="LifeStyleMeasureBloodPressure=2"
+              checked="{{visit.LifeStyleMeasureBloodPressure==2?'true':false}}"
               disabled='{{visit.Status!=1?true:false}}' />否
+          </div>
+          <div class=" margin-top-5 flex-row flex-center">
+            <input type="radio" name="LifeStyleMeasureBloodPressure" value="male" class="radio "
+              (click)="LifeStyleMeasureBloodPressure=3"
+              checked="{{visit.LifeStyleMeasureBloodPressure==3?'true':false}}"
+              disabled='{{visit.Status!=1?true:false}}' />不適用
           </div>
         </div>
 
@@ -1416,7 +1459,8 @@
       <div class=" padding-top-20 flex-row flex-center padding-right-40">
         <div class="flex-1"></div>
         <div class="txt-black txt-bold">情緒評估</div>
-        <div class=" flex-1 h8 txt-blue  aa" (click)='saveEmotion(visit.LocalId)'>保存</div>
+        <!-- <div class=" flex-1 h8 txt-blue  aa" (click)='saveEmotion(visit.LocalId)'>保存</div> -->
+        <div class="flex-1"></div>
       </div>
       <div class="margin-20">
         <div class="">
@@ -1450,7 +1494,7 @@
             其他
 
             <div class="flex-1">
-              <div class="radius-2 other-input"> {{visit.EmotionAssessmentRemarks}}</div>
+              <div class="radius-2 other-input bg-white"> {{visit.EmotionAssessmentRemarks}}</div>
             </div>
           </div>
         </div>
@@ -1461,7 +1505,8 @@
       <div class=" padding-top-20 flex-row flex-center padding-right-40">
         <div class="flex-1"></div>
         <div class="txt-black txt-bold">長者其他狀況補充(自上次探訪後)</div>
-        <div class=" flex-1 h8 txt-blue  aa" (click)='OtherSupplement(visit.LocalId)'>保存</div>
+        <!-- <div class=" flex-1 h8 txt-blue  aa" (click)='OtherSupplement(visit.LocalId)'>保存</div> -->
+        <div class="flex-1"></div>
       </div>
       <div class="margin-20">
         <div class="margin-top-10">
@@ -1471,10 +1516,7 @@
               <input type="radio" name="Other1" value="male" class="radio " disabled='{{visit.Status!=1?true:false}}'
                 checked="{{visit.OtherHospDisbete=='1'?'1':''}}" (click)='getOtherHospDisbete(1)' />是</div>
 
-            <div class="flex-row h7-5 flex-1 margin-left-30 flex-center">
-              <!-- <input class="input_s radius-2" style="width:35%;" disabled='{{visit.Status!=1?true:false}}'
-                placeholder="{{visit.OtherHospDisbeteNoOfDay?visit.OtherHospDisbeteNoOfDay:''}}"
-                [(ngModel)]='OtherHospDisbeteNoOfDay' /> -->
+            <div class="flex-row h7-5 flex-1 margin-left-30 flex-center" *ngIf="visit.OtherHospDisbete==1">
 
               <div class="input_s radius-2 bg-white" style="width:35%;">{{visit.OtherHospDisbeteNoOfDay}}</div>
 
@@ -1494,7 +1536,7 @@
               <input type="radio" name="Other2" value="male" class="radio " disabled='{{visit.Status!=1?true:false}}'
                 checked="{{visit.OtherHospHighBp=='1'?'1':''}}" (click)='getOtherHospHighBp(1)' />是</div>
 
-            <div class="flex-row h7-5 flex-1 margin-left-30 flex-center">
+            <div class="flex-row h7-5 flex-1 margin-left-30 flex-center" *ngIf="visit.OtherHospHighBp==1">
               <!-- <input class="input_s radius-2" style="width:35%;" disabled='{{visit.Status!=1?true:false}}'
                 placeholder="{{visit.OtherHospHighBpNoOfDay?visit.OtherHospHighBpNoOfDay:''}}"
                 [(ngModel)]='OtherHospHighBpNoOfDay' /> -->
@@ -1516,7 +1558,7 @@
               <input type="radio" name="Other3" value="male" class="radio " disabled='{{visit.Status!=1?true:false}}'
                 checked="{{visit.OtherHospOtherIllness=='1'?'1':''}}" (click)='getOtherHospOtherIllness(1)' />是</div>
 
-            <div class="flex-row h7-5 flex-1 margin-left-30 flex-center">
+            <div class="flex-row h7-5 flex-1 margin-left-30 flex-center" *ngIf="visit.OtherHospOtherIllness==1">
               <!-- <input class="input_s radius-2" style="width:35%;" disabled='{{visit.Status!=1?true:false}}'
                 placeholder="{{visit.OtherHospOtherIllnessNoOfDay?visit.OtherHospOtherIllnessNoOfDay:''}}"
                 [(ngModel)]='OtherHospOtherIllnessNoOfDay' /> -->
@@ -1537,7 +1579,7 @@
               <input type="radio" name="Other4" value="male" class="radio " disabled='{{visit.Status!=1?true:false}}'
                 checked="{{visit.OtherAccident=='1'?'1':''}}" (click)='getOtherAccident(1)' />是</div>
 
-            <div class="flex-row h7-5 flex-1 margin-left-30 flex-center">
+            <div class="flex-row h7-5 flex-1 margin-left-30 flex-center" *ngIf="visit.OtherAccident==1">
               <!-- <input class="input_s radius-2" style="width:35%;" disabled='{{visit.Status!=1?true:false}}'
                 placeholder="{{visit.OtherAccidentNoOfDay?visit.OtherAccidentNoOfDay:''}}"
                 [(ngModel)]='OtherAccidentNoOfDay' /> -->

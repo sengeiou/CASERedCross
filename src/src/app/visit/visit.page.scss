@@ -57,3 +57,35 @@
     display: none;
     background: red;
 }
+
+.saomiao {
+    width: 200px;
+    height: 150px;
+    font-size: 15px;
+    border-radius: 10px;
+    margin: auto;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+
+.saomiao_top {
+    height: 50px;
+    ;
+}
+
+.saomiao_li {
+    height: 33px;
+    border-top: 1px solid #999;
+}
+
+.text-blue {
+    color: blue;
+    
+}
+
+.f-10 {
+    font-size: 10px;
+}

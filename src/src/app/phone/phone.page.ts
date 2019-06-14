@@ -43,12 +43,35 @@ export class PhonePage extends AppBase {
   DetailOther = '';
   UserName = '';
   OtherRemark = ''
-  CannotContact = 0;
+  CannotContact = 2;
   NextPhoneDate = ''
   NextPhoneTime = '';
   VolunteerName = '';
   PhoneID = 0;
   phone = null;
+
+  disabled=true;
+
+  DetailList = [{
+    DetailType: false, value: 1
+  }, {
+    DetailType: false, value: 2
+  }, {
+    DetailType: false, value: 3
+  }, {
+    DetailType: false, value: 4
+  }, {
+    DetailType: false, value: 5
+  }, {
+    DetailType: false, value: 6
+  }, {
+    DetailType: false, value: 7
+  }, {
+    DetailType: false, value: 8
+  }, {
+    DetailType: false, value: 9
+  }
+  ]
   onMyLoad() {
     //参数
     this.params;
@@ -83,7 +106,9 @@ export class PhonePage extends AppBase {
         this.phone = data;
         console.log(data)
         console.log(data["CallDate"])
-        this.CallDate_show = AppUtil.FormatDate(new Date(data["CallDate"]));
+
+        this.CallDate_show = AppUtil.FormatDate2(new Date(data["CallDate"]));
+        console.log(this.phone)
       })
     }
   }
@@ -94,7 +119,9 @@ export class PhonePage extends AppBase {
       if (e.res.rows.length > 0) {
         console.log(e.res.rows);
         var arr = Array.from(e.res.rows)[0];
+        // this.phone.ScheduleDate_show=AppUtil.FormatDate2(this.phone.VisitDate.ScheduleDate)
         this.phone.VisitDate = arr;
+        console.log(arr);
       }
     });
   }
@@ -128,7 +155,42 @@ export class PhonePage extends AppBase {
 
   getLiaison(e) {
     console.log(e)
-    this.CannotContact = e;
+    if (e == 1) {
+      this.showConfirm('一旦按選，在這按鈕以下的資料將會清空，你確定要按選嗎？', (ret) => {
+        if (ret) {
+          this.CannotContact = e;
+          this.Detail = '';
+          this.DetailOther = '';
+          this.OtherRemark = ''
+          this.NextPhoneDate = ''
+          this.NextPhoneTime = '';
+          this.DetailList = [{
+            DetailType: false, value: 1
+          }, {
+            DetailType: false, value: 2
+          }, {
+            DetailType: false, value: 3
+          }, {
+            DetailType: false, value: 4
+          }, {
+            DetailType: false, value: 5
+          }, {
+            DetailType: false, value: 6
+          }, {
+            DetailType: false, value: 7
+          }, {
+            DetailType: false, value: 8
+          }, {
+            DetailType: false, value: 9
+          }
+          ]
+        }
+      })
+    }else{
+      this.CannotContact = e;
+    }
+
+
   }
 
   savePhone() {
@@ -153,17 +215,32 @@ export class PhonePage extends AppBase {
     //   return;
     // }
 
-    var CallDate_Display = AppUtil.FormatDate(new Date(this.CallDate));
-    if(this.CallStartTime!=''){
+    if (this.CannotContact != 1) {
+      for (var i = 0; i < this.DetailList.length; i++) {
+        if (this.DetailList[i].DetailType == true) {
+          if (this.Detail == '') {
+            this.Detail = String(this.DetailList[i].value);
+          } else {
+            this.Detail = this.Detail + ',' + this.DetailList[i].value
+          }
+        }
+      }
+      this.Detail = this.Detail != '' ? this.Detail : this.phone.Detail
+    } else {
+      this.Detail = '';
+    }
+
+    var CallDate_Display = AppUtil.FormatDate2(new Date(this.CallDate));
+    if (this.CallStartTime != '') {
       this.CallStartTime = AppUtil.FormatTime(new Date(this.CallStartTime));
     }
-    if(this.CallEndTime!=''){
+    if (this.CallEndTime != '') {
       this.CallEndTime = AppUtil.FormatTime(new Date(this.CallEndTime));
     }
-    
-    
+
+
     this.PhoneID = this.params.PhoneID;
-    phone.addPhone(this.PhoneID, this.params.caseID, this.CallDate,CallDate_Display, this.CallStartTime, this.CallEndTime, this.Detail, this.DetailOther, this.UserName, this.OtherRemark,this.CannotContact,this.NextPhoneDate,this.NextPhoneTime).then((e) => {
+    phone.addPhone(this.PhoneID, this.params.caseID, this.CallDate, CallDate_Display, this.CallStartTime, this.CallEndTime, this.Detail, this.DetailOther, this.UserName, this.OtherRemark, this.CannotContact, this.NextPhoneDate, this.NextPhoneTime).then((e) => {
       console.log(e)
       if (this.PhoneID == 0 || this.PhoneID == undefined) {
         this.PhoneID = e.res.insertId;

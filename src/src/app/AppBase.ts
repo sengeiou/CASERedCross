@@ -77,7 +77,7 @@ export class AppBase implements OnInit {
         if(this.needcheck){
             this.timer=setInterval(()=>{
                 this.opmin++;
-                if(this.opmin>5){
+                if(this.opmin>30){
                     this.router.navigateByUrl("/test");
                     clearInterval(this.timer);
                 }

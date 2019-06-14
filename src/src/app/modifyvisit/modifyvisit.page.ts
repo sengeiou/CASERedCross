@@ -110,8 +110,10 @@ export class ModifyvisitPage extends AppBase {
 
   presentVolunteer_show = ''
   supportVolunteer_show = ''
-  Volunteerlist_show=''
+  Volunteerlist_show = ''
 
+  saomiao_show = false;
+  time_type = ''
 
   onMyLoad() {
     //参数
@@ -128,9 +130,21 @@ export class ModifyvisitPage extends AppBase {
     }
   }
 
+  saomiao() {
+    if (this.visit.Status == 1) {
+      this.saomiao_show = true;
+    }
+
+  }
+
+  saomiao2() {
+    this.saomiao_show = false;
+  }
+
   aas() {
     console.log(this.presentVolunteer);
     // return;
+    this.presentVolunteer_show = ''
     var Volunteerlist = this.presentVolunteer;
     console.log(Volunteerlist)
     var volunteerServr = new VolunteerServr();
@@ -151,9 +165,10 @@ export class ModifyvisitPage extends AppBase {
     }
   }
 
-  aab() { 
+  aab() {
     console.log(this.supportVolunteer);
     // return;
+    this.supportVolunteer_show = ''
     var Volunteerlist = this.supportVolunteer;
     console.log(Volunteerlist)
     var volunteerServr = new VolunteerServr();
@@ -161,7 +176,7 @@ export class ModifyvisitPage extends AppBase {
       console.log(Volunteerlist[i])
       volunteerServr.getVolunteerId(Volunteerlist[i]).then((e) => {
         console.log(e)
-        var data = Array.from(e.res.rows)[0]
+        var data = Array.from(e.res.rows)[0];
         console.log(data)
         if (data) {
           if (this.supportVolunteer_show == '') {
@@ -175,7 +190,23 @@ export class ModifyvisitPage extends AppBase {
   }
 
   qrcodeHandle(code) {
-    alert(code);
+    // var time=new Date(); 
+    if (code == this.casedata.QRCode) {
+      this.showAlert('掃描成功');
+      this.VisitDate = AppUtil.FormatDate2(new Date())
+      if (this.time_type == 'ss') {
+        this.VisitStartTime = AppUtil.FormatTime(new Date());//实际开始时间
+      } else {
+        this.VisitEndTime = AppUtil.FormatTime(new Date());//实际结束时间
+      }
+    }else{
+      this.showAlert('你掃描的二維碼和你的探訪對象並不符合').then(e=>{
+        
+      })
+    }
+    console.log('開始時間：' + this.VisitStartTime);
+    console.log('結束時間' + this.VisitEndTime);
+    // alert( AppBase.LastQrcode);
   }
   LocalId = 0;
   casedata = null;
@@ -292,6 +323,7 @@ export class ModifyvisitPage extends AppBase {
           })
         }
 
+
         var visitDetailIndoorlist = this.visit.VisitDetailIndoor.split(',');
         for (var i = 0; i < visitDetailIndoorlist.length; i++) {
           console.log(visitDetailIndoorlist[i])
@@ -315,19 +347,25 @@ export class ModifyvisitPage extends AppBase {
           }
         }
 
-        var visitDetailOutdoorlist = this.visit.VisitDetailOutdoor.split(',');
-        for (var i = 0; i < visitDetailIndoorlist.length; i++) {
-          console.log(visitDetailOutdoorlist[i])
-          if (visitDetailOutdoorlist[i] == 1) {
+
+        // alert(this.visit.VisitDetailOutdoor)\
+        var a = '4,5'
+        // console.log('557'+a)
+        var visitDetailOutdoorlist = []
+        visitDetailOutdoorlist = this.visit.VisitDetailOutdoor.split(',');
+        for (var j = 0; j < visitDetailOutdoorlist.length; j++) {
+          console.log('556' + visitDetailIndoorlist[j])
+          if (visitDetailOutdoorlist[j] == '1') {
             this.VisitDetailOutdoorlist[0].type = true;
           }
-          if (visitDetailOutdoorlist[i] == 2) {
+          if (visitDetailOutdoorlist[j] == '2') {
             this.VisitDetailOutdoorlist[1].type = true;
           }
-          if (visitDetailOutdoorlist[i] == 3) {
+          if (visitDetailOutdoorlist[j] == '3') {
             this.VisitDetailOutdoorlist[2].type = true;
           }
-          if (visitDetailOutdoorlist[i] == 4) {
+          if (visitDetailOutdoorlist[j] == '4') {
+            console.log('533' + visitDetailOutdoorlist[j])
             this.VisitDetailOutdoorlist[3].type = true;
           }
 
@@ -374,14 +412,29 @@ export class ModifyvisitPage extends AppBase {
   }
 
   Volunteer = [];
+  presentVolunteerList = [];
+  supportVolunteerList = [];
   getVolunteerList() {
     var volunteerServr = new VolunteerServr();
-    volunteerServr.getAllVolunteerList().then((e) => {
+    volunteerServr.getAllVolunteerList_VolType('1').then((e) => {
       if (e.res.rows.length > 0) {
         console.log(Array.from(e.res.rows))
-        this.Volunteer = Array.from(e.res.rows)
+        this.presentVolunteerList = Array.from(e.res.rows)
       }
     })
+
+    volunteerServr.getAllVolunteerList_VolType('2').then((e) => {
+      if (e.res.rows.length > 0) {
+        console.log(Array.from(e.res.rows))
+        this.supportVolunteerList = Array.from(e.res.rows)
+      }
+    })
+    // volunteerServr.getAllVolunteerList().then((e) => {
+    //   if (e.res.rows.length > 0) {
+    //     console.log(Array.from(e.res.rows))
+    //     this.Volunteer = Array.from(e.res.rows)
+    //   }
+    // })
   }
 
 
@@ -417,6 +470,123 @@ export class ModifyvisitPage extends AppBase {
   getVisitStatus(e) {
     console.log(e)
     this.VisitStatus = e;
+    if (e == 2) {
+      this.otherIndoorActivities = '';//其他室内活动输入
+      this.outdoorActivities = '';//室外活动
+      this.otherOutdoorActivities = '';//其他室外活动输入
+      this.otherServe = '';//其他服务
+      this.targetTitle1 = '';//目标标题
+      this.targetTitle2 = '';//目标标题
+      this.targetTitle3 = '';//目标标题
+
+      this.VisitDetailIndoor = '';
+      this.VisitDetailIndoorRemarks = '';
+      this.VisitDetailOutdoor = '';
+      this.VisitDetailOutdoorRemarks = '';
+      this.VisitDetailOther = '';
+      this.CategoryTopic1 = '';
+      this.CategoryTopic2 = '';
+      this.CategoryTopic3 = '';
+
+      this.Height = 0;
+      this.Weight = 0;
+      this.Bmi = 0;
+      this.Waist = 0;
+      this.Hip = 0;
+      this.WHRatio = 0;
+      this.SYS1 = 0;
+      this.DlA1 = 0;
+      this.SYS2 = 0;
+      this.DlA2 = 0;
+      this.heartBeats1 = 0;
+      this.heartBeats2 = 0;
+
+      this.LifeStyleQuestion1 = 0;
+      this.LifeStyleQuestion2 = 0;
+      this.LifeStyleQuestion3 = 0;
+      this.LifeStyleQuestion4 = 0;
+      this.LifeStyleQuestion5 = 0;
+      this.LifeStyleQuestion6 = 0;
+      this.LifeStyleMeasureBloodSuger = 0;
+      this.LifeStyleMeasureBsLocation = 0;
+      this.LifeStyleMeasureBsPeriod = 0;
+      this.LifeStyleMeasureBsNoOfTime = 0;
+      this.LifeStyleMeasureBloodPressure = 0;
+      this.LifeStyleMeasureBpLocation = 0;
+      this.LifeStyleMeasureBpPeriod = 0;
+      this.LifeStyleMeasureBpNoOfTime = 0;
+
+      this.EmotionAssessment = '';
+      this.EmotionAssessmentRemarks = '';
+
+      this.OtherHospDisbete = 0;
+      this.OtherHospDisbeteNoOfDay = 0;
+      this.OtherHospHighBp = 0;
+      this.OtherHospHighBpNoOfDay = 0;
+      this.OtherHospOtherIllness = 0;
+      this.OtherHospOtherIllnessNoOfDay = 0;
+      this.OtherAccident = 0;
+      this.OtherAccidentNoOfDay = 0;
+      this.OtherSpecialNeed = 0;
+      this.OtherSpecialNeedService = '';
+      this.OtherRemarks = '';
+      this.NeedsContent = '';
+
+      this.DeletePicString = ''
+
+      // this.presentVolunteer_show = ''
+      // this.supportVolunteer_show = ''
+      // this.Volunteerlist_show=''
+      // this.ScheduleDate_Display=''
+
+      this.VisitDetailIndoorlist = [{
+        type: false, value: 1
+      }, {
+        type: false, value: 2
+      }, {
+        type: false, value: 3
+      }, {
+        type: false, value: 4
+      }, {
+        type: false, value: 5
+      }, {
+        type: false, value: 6
+      }
+      ]
+
+      this.VisitDetailOutdoorlist = [{
+        type: false, value: 1
+      }, {
+        type: false, value: 2
+      }, {
+        type: false, value: 3
+      }, {
+        type: false, value: 4
+      }
+      ]
+
+      this.EmotionAssessmentlist = [{
+        type: false, value: 1
+      }, {
+        type: false, value: 2
+      }, {
+        type: false, value: 3
+      }, {
+        type: false, value: 4
+      }
+      ]
+
+      this.NeedsContenttlist = [{
+        type: false, value: 1
+      }, {
+        type: false, value: 2
+      }, {
+        type: false, value: 3
+      }, {
+        type: false, value: 4
+      }
+      ]
+    }
   }
 
   saveVisit_Neurou(visitId) {
@@ -743,7 +913,7 @@ export class ModifyvisitPage extends AppBase {
 
     var visit = new VisitServe();
     if (this.ScheduleDate != '') {
-      this.ScheduleDate = AppUtil.FormatDate(new Date(this.ScheduleDate));
+      this.ScheduleDate = AppUtil.FormatDate2(new Date(this.ScheduleDate));
     }
 
     if (this.ScheduleTime != '') {
@@ -870,7 +1040,10 @@ export class ModifyvisitPage extends AppBase {
   aa() {
     this.navigate('heart-rat', { caseid: this.params.caseID });
   }
-  scan() {
+
+  scan(e) {
+    this.saomiao_show = false;
+    this.time_type = e
     this.navigate("qrcodescan");
   }
 

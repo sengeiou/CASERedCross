@@ -209,7 +209,12 @@ export class ModifyactivityPage extends AppBase {
       }, {
         actDetailType: false, value: 5
       }
-      ]
+      ];
+      this.activityDetailType = '';
+      this.remarks1 = ''
+      this.remarks2 = ''
+      this.remarks3 = ''
+      this.remarks4 = ''
     }
     this.actType = e;
   }
@@ -268,6 +273,9 @@ export class ModifyactivityPage extends AppBase {
   saveActivity() {
     // alert(this.actDetailTypelist[0].actDetailType1);
     // return;
+    if(this.activityDate!=''){
+      var ActDate_Display = AppUtil.FormatDate2(new Date(this.activityDate));
+    }
     if(this.activityStartTime){
       this.activityStartTime = AppUtil.FormatTime(new Date(this.activityStartTime));
     }
@@ -332,7 +340,6 @@ export class ModifyactivityPage extends AppBase {
       this.remarks4 = ''
     }
 
-
     // if (!this.presentVolunteer) {
     //   this.toast('你沒有出席義工一欄');
     //   return;
@@ -363,14 +370,14 @@ export class ModifyactivityPage extends AppBase {
     // }
 
 
-    this.activityDate = AppUtil.FormatDate(new Date(this.activityDate));
+    
 
 
     this.LocalId = this.params.LocalId;
 
 
 
-    activity.saveActivity(this.LocalId, this.params.caseID, this.activityDate, this.activityStartTime, this.activityEndTime, this.presentVolunteer, this.actType, this.activityDetailType, this.remarks1, this.remarks2, this.remarks3, this.remarks4, this.otherActRemarks, this.Remarks).then((e) => {
+    activity.saveActivity(this.LocalId, this.params.caseID, this.activityDate, this.activityStartTime, this.activityEndTime, this.presentVolunteer, this.actType, this.activityDetailType, this.remarks1, this.remarks2, this.remarks3, this.remarks4, this.otherActRemarks, this.Remarks,ActDate_Display).then((e) => {
       console.log(e)
       if (e) {
         // this.navigate("home", { id: this.params.UserId });

@@ -32,14 +32,14 @@ export class ActivityServe {
         return mgr.execSql(sql,[SavedStatus]);
     }
 
-    saveActivity(ActivityId, CaseId, ActDate, ActStartTime, ActEndTime, presentVolunteer, ActType, ActDetailType, Remarks1, Remarks2, Remarks3, Remarks4, OtherActRemarks, Remarks) {
+    saveActivity(ActivityId, CaseId, ActDate, ActStartTime, ActEndTime, presentVolunteer, ActType, ActDetailType, Remarks1, Remarks2, Remarks3, Remarks4, OtherActRemarks, Remarks,ActDate_Display) {
         var mgr = DBMgr.GetInstance();
         if (ActivityId) {
-            var sql = "update tb_Activity SET ActDate=?, ActStartTime=?, ActEndTime=?, presentVolunteer=?, ActType=?,ActDetailType=?,Remarks1=?,Remarks2=?,Remarks3=?,Remarks4=?,OtherActRemarks=?,Remarks=? where LocalId=?";
-            return mgr.execSql(sql, [ActDate, ActStartTime, ActEndTime, presentVolunteer, ActType, ActDetailType, Remarks1, Remarks2, Remarks3, Remarks4, OtherActRemarks, Remarks, ActivityId]);
+            var sql = "update tb_Activity SET ActDate=?, ActStartTime=?, ActEndTime=?, presentVolunteer=?, ActType=?,ActDetailType=?,Remarks1=?,Remarks2=?,Remarks3=?,Remarks4=?,OtherActRemarks=?,Remarks=?,SavedStatus=1,ActDate_Display=? where LocalId=?";
+            return mgr.execSql(sql, [ActDate, ActStartTime, ActEndTime, presentVolunteer, ActType, ActDetailType, Remarks1, Remarks2, Remarks3, Remarks4, OtherActRemarks, Remarks,ActDate_Display, ActivityId]);
         } else {
-            var sql = "insert into tb_Activity (CaseId,ActDate,ActStartTime,ActEndTime, presentVolunteer, ActType,ActDetailType,Remarks1,Remarks2,Remarks3,Remarks4,OtherActRemarks,Remarks,Status,SavedStatus,ActivityId) values (?,?,?,?,?,?,?,?,?,?,?,?,?,2,1,0)";
-            return mgr.execSql(sql, [CaseId, ActDate, ActStartTime, ActEndTime, presentVolunteer, ActType, ActDetailType, Remarks1, Remarks2, Remarks3, Remarks4, OtherActRemarks, Remarks]);
+            var sql = "insert into tb_Activity (CaseId,ActDate,ActStartTime,ActEndTime, presentVolunteer, ActType,ActDetailType,Remarks1,Remarks2,Remarks3,Remarks4,OtherActRemarks,Remarks,Status,SavedStatus,ActivityId,ActDate_Display) values (?,?,?,?,?,?,?,?,?,?,?,?,?,2,1,0,?)";
+            return mgr.execSql(sql, [CaseId, ActDate, ActStartTime, ActEndTime, presentVolunteer, ActType, ActDetailType, Remarks1, Remarks2, Remarks3, Remarks4, OtherActRemarks, Remarks,ActDate_Display]);
 
         }
     }

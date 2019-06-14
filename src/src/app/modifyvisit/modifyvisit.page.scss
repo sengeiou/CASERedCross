@@ -1,59 +1,101 @@
-.title{
+.title {
     width: 5.5rem;
 }
-.title2{
+
+.title2 {
     width: 7rem;
 }
-.bg-l{
+
+.bg-l {
     background-color: #A3F8B4;
 }
-.bg-h{
+
+.bg-h {
     background-color: #E8E8E8;
 }
-.bg-h1{
+
+.bg-h1 {
     background-color: #EFEFF4;
 }
-.textarea{
+
+.textarea {
     width: 15rem;
     height: 4rem;
 }
-.textarea1{
+
+.textarea1 {
     width: 15rem;
     height: 6.5rem;
 }
-.textarea2{
+
+.textarea2 {
     width: 20rem;
     height: 4rem;
-    
 }
-.input_s{
+
+.input_s {
     width: 4.8rem;
     height: 1.5rem;
 }
-.radius-2{
+
+.radius-2 {
     border-radius: 0.2rem;
 }
-.radio{
+
+.radio {
     width: 1rem;
     height: 1rem;
     margin-right: 0.6rem;
 }
-.other-input{
+
+.other-input {
     margin-left: 0.5rem;
-    
 }
-.aa{
+
+.aa {
     text-align: right
 }
 
-.ion_radio{
+.ion_radio {
     width: 1rem;
     height: 1rem;
     border: 1px solid #000;
     border-radius: 50%;
 }
 
-.select-icon{
+.select-icon {
     display: none;
     background: red;
+}
+
+.saomiao {
+    width: 200px;
+    height: 150px;
+    font-size: 15px;
+    border-radius: 10px;
+    margin: auto;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+
+.saomiao_top {
+    height: 50px;
+    ;
+}
+
+.saomiao_li {
+    height: 33px;
+    border-top: 1px solid #999;
+}
+
+.text-blue {
+    color: blue;
+    
+}
+
+.f-10 {
+    font-size: 10px;
 }
