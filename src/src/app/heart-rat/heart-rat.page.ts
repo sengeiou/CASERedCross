@@ -70,12 +70,12 @@ export class HeartRatPage extends AppBase {
                     name: '心率数据',
                     type: 'line',
                     data: ydata,
-                    markPoint: {
-                        data: [
-                            { type: 'max', name: 'max' },
-                            { type: 'min', name: 'min' }
-                        ]
-                    }
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'top'
+                        }
+                    },
                 },
             ]
         };

@@ -71,12 +71,12 @@ export class WeightPage extends AppBase {
                   name: '',
                   type: 'line',
                   data: ydata,
-                  markPoint: {
-                      data: [
-                          { type: 'max', name: 'max' },
-                          { type: 'min', name: 'min' }
-                      ]
-                  }
+                  label: {
+                    normal: {
+                        show: true,
+                        position: 'top'
+                    }
+                },
               },
           ]
       };

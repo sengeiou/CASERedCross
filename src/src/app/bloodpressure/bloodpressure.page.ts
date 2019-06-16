@@ -75,22 +75,22 @@ export class BloodpressurePage extends AppBase {
             name: '上壓(mmHg)',
             type: 'line',
             data: ydata,
-            markPoint: {
-              data: [
-                { type: 'max', name: 'max' },
-                { type: 'min', name: 'min' }
-              ]
-            }
+            label: {
+              normal: {
+                  show: true,
+                  position: 'top'
+              }
+          },
           },{
             name: '下壓(mmHg)',
             type: 'line',
             data: ydata2,
-            markPoint: {
-              data: [
-                { type: 'max', name: 'max' },
-                { type: 'min', name: 'min' }
-              ]
-            }
+            label: {
+              normal: {
+                  show: true,
+                  position: 'top'
+              }
+          },
           },
         ]
       };

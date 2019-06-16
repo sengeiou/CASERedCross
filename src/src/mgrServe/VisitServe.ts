@@ -32,7 +32,7 @@ export class VisitServe {
 
     getVisitCaseId(CaseId) {
         var mgr = DBMgr.GetInstance();
-        var sql = "select LocalId,ScheduleDate,SavedStatus,ScheduleDate_Display,Status from tb_home_visit where CaseId=? order by ScheduleDate asc";
+        var sql = "select * from tb_home_visit where CaseId=? order by ScheduleDate asc";
         return mgr.execSql(sql, [CaseId]);
     }
 

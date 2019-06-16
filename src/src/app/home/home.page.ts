@@ -53,11 +53,13 @@ export class HomePage extends AppBase {
   list = [{}, {}]
   caselist = [];
   wangluo = ''
+  UserId = 0;
 
   onMyLoad() {
     //参数
     this.params;
     this.getActivityList()
+    this.UserId = this.params.id;
   }
   onMyShow() {
 
@@ -66,11 +68,11 @@ export class HomePage extends AppBase {
     this.wangluo = this.network.type;
     console.log(this.network.type)
 
-    window.onload = function () {
-      var seewid = document.documentElement.clientWidth;
-      var seehei = document.documentElement.clientHeight;
-      console.log('可视区高' + seehei + '可视区宽' + seewid);
-    }
+    // window.onload = function () {
+    //   var seewid = document.documentElement.clientWidth;
+    //   var seehei = document.documentElement.clientHeight;
+    //   console.log('可视区高' + seehei + '可视区宽' + seewid);
+    // }
 
   }
 
@@ -131,11 +133,11 @@ export class HomePage extends AppBase {
   }
 
   SaveAll(kv) {
-    this.api.SaveAll(kv.visitList, kv.phoneList, kv.activityList, kv.medicAppointLogList, this.params.id).then((ret) => {
+    this.api.SaveAll(kv.visitList, kv.phoneList, kv.activityList, kv.medicAppointLogList, this.UserId, 'all').then((ret) => {
       console.log(ret)
       // return
       if (ret.Result == 'true') {
-        this.api.ExecuteWorkingSet(ret.WorkingSetID, kv.CaseId, this.params.id).then(e => {
+        this.api.ExecuteWorkingSet(ret.WorkingSetID, kv.CaseId, this.UserId).then(e => {
           console.log(e)
           if (e.Result == 'true') {
             this.SysnAllWeb();
@@ -151,32 +153,32 @@ export class HomePage extends AppBase {
 
   phone(caseID, LocalId) {
     console.log(caseID, LocalId)
-    this.navigate("phone", { caseID: caseID, PhoneID: LocalId, UserId: this.params.id });
+    this.navigate("phone", { caseID: caseID, PhoneID: LocalId, UserId: this.UserId });
   }
 
   modifyphone(caseID, LocalId) {
-    this.navigate("modifyphone", { caseID: caseID, PhoneID: LocalId, UserId: this.params.id });
+    this.navigate("modifyphone", { caseID: caseID, PhoneID: LocalId, UserId: this.UserId });
   }
 
 
   activity(caseID, LocalId) {
     console.log(caseID, LocalId);
-    this.navigate('activity', { caseID: caseID, LocalId: LocalId, UserId: this.params.id });
+    this.navigate('activity', { caseID: caseID, LocalId: LocalId, UserId: this.UserId });
   }
 
   modifyactivity(caseID, LocalId) {
     console.log(caseID, LocalId);
-    this.navigate('modifyactivity', { caseID: caseID, LocalId: LocalId, UserId: this.params.id });
+    this.navigate('modifyactivity', { caseID: caseID, LocalId: LocalId, UserId: this.UserId });
   }
 
   visit(caseID, LocalId) {
     console.log(caseID, LocalId)
-    this.navigate('visit', { caseID: caseID, LocalId: LocalId, UserId: this.params.id });
+    this.navigate('visit', { caseID: caseID, LocalId: LocalId, UserId: this.UserId });
   }
 
   modifyvisit(caseID, LocalId) {
     console.log(caseID, LocalId)
-    this.navigate('modifyvisit', { caseID: caseID, LocalId: LocalId, UserId: this.params.id });
+    this.navigate('modifyvisit', { caseID: caseID, LocalId: LocalId, UserId: this.UserId });
   }
 
   getActivityList() {
@@ -194,7 +196,7 @@ export class HomePage extends AppBase {
       console.log(e)
     });
     // cases.addCase();
-    var UserId = this.params.id
+    var UserId = this.UserId
     cases.getCaseVolVisitGrpId(UserId).then((e) => {
       console.log(e);
       console.log(this.caselist);
@@ -203,6 +205,7 @@ export class HomePage extends AppBase {
       for (var i = 0; i < arr.length; i++) {
         arr[i].activityList = [];
         arr[i].visitList = [];
+
         arr[i].phoneList = [];
         arr[i].medicAppointLogList = [];
       }
@@ -222,11 +225,34 @@ export class HomePage extends AppBase {
 
   setVisit(kv) {
     var visit = new VisitServe();
+    var imgserver = new ImageServe();
     visit.getVisitCaseId(kv.CaseId).then((e) => {
       console.log(e);
       if (e.res.rows.length > 0) {
         console.log(e.res.rows);
         kv.visitList = Array.from(e.res.rows);
+        for (var i = 0; i < kv.visitList.length; i++) {
+          kv.visitList[i].hvImgKeepListStr = '';
+          kv.visitList[i].hvNewImgQty = 0;
+          imgserver.getImageList_web(kv.visitList[i].LocalId).then(e => {
+            console.log(Array.from(e.res.rows))
+            var ImgList = [];
+            ImgList = Array.from(e.res.rows);
+            var hvImgKeepListStr = '';
+            for (var j = 0; j < ImgList.length; j++) {
+              if (hvImgKeepListStr = '') {
+                hvImgKeepListStr = ImgList[j].LocalId
+              } else {
+                hvImgKeepListStr = hvImgKeepListStr + ',' + ImgList[j].LocalId;
+              }
+            }
+            if (hvImgKeepListStr.length > 0) {
+              kv.visitList[i].hvImgKeepListStr = hvImgKeepListStr;
+              kv.visitList[i].hvNewImgQty = ImgList.length;
+            }
+
+          })
+        }
       }
     });
   }
@@ -280,7 +306,7 @@ export class HomePage extends AppBase {
   maList = [];//復診
 
   SysnAllWeb() {
-    var VolId = this.params.id
+    var VolId = this.UserId
     this.api.SysnAllResultRecord(VolId).then((ret) => {
       console.log(ret)
       if (ret.Result == "false") {
@@ -363,7 +389,7 @@ export class HomePage extends AppBase {
           console.log('志願者1')
         }
       }
-      
+
       console.log(this.saList[i])
       if (this.saList[i].VisitGroup_VolunteerList) {
         var VisitGroup_VolunteerList = [];
@@ -378,7 +404,7 @@ export class HomePage extends AppBase {
           console.log('志願者2')
         }
       }
-      
+
       //案例
       this.setCase(this.saList[i].caseObj);
 
@@ -559,7 +585,7 @@ export class HomePage extends AppBase {
   }
   setCase(kv) {
     var caseServe = new CaseServe();
-    caseServe.addCase(kv.CaseId, kv.CaseNo, kv.QRCode, kv.ChiName_Disply, kv.Illness_Disply, kv.OtherIllness_Disply, kv.CarePlan_Disply, kv.Height, this.params.id).then((e) => {
+    caseServe.addCase(kv.CaseId, kv.CaseNo, kv.QRCode, kv.ChiName_Disply, kv.Illness_Disply, kv.OtherIllness_Disply, kv.CarePlan_Disply, kv.Height, this.UserId).then((e) => {
       console.log(e);
     });
   }
@@ -580,8 +606,8 @@ export class HomePage extends AppBase {
     // var ScheduleDate = AppUtil.FormatDate2(new Date(kv.ScheduleDate));
     var ScheduleDate_Display = kv.ScheduleDate_Disply;
     console.log('志願者0')
-    
-  
+
+
     if (kv.HomeVisitVolList) {
       var HomeVisitVolList = [];
       var listtype = typeof kv.HomeVisitVolList.objHomeVisitVolAPP;
@@ -619,7 +645,7 @@ export class HomePage extends AppBase {
       } else {
         bloodPressureList = kv.BloodPressureList.objBloodPressureAPP;
       }
-      // for(var i=0;i<BloodPressureList.length;i++){
+
       kv.SYS1 = bloodPressureList[0].Upper
       kv.DlA1 = bloodPressureList[0].Lower
       if (bloodPressureList.length == 2) {
@@ -627,7 +653,11 @@ export class HomePage extends AppBase {
         kv.DlA2 = bloodPressureList[1].Lower
       }
 
-      // }
+    } else {
+      kv.SYS1 = 0;
+      kv.DlA1 = 0;
+      kv.SYS2 = 0;
+      kv.DlA2 = 0;
     }
 
     if (kv.HeartRateList) {
@@ -638,14 +668,15 @@ export class HomePage extends AppBase {
       } else {
         heartRateList = kv.HeartRateList.objHeartRateApp;
       }
-      // for(var i=0;i<heartRateList.length;i++){
+
       kv.heartBeats1 = heartRateList[0].RatePerMin
       if (heartRateList.length == 2) {
         kv.heartBeats2 = heartRateList[1].RatePerMin
       }
 
-
-      // }
+    } else {
+      kv.heartBeats1 = 0;
+      kv.heartBeats2 = 0;
     }
 
     var visit = new VisitServe();

@@ -402,7 +402,7 @@ export class ModifyactivityPage extends AppBase {
       var phoneSupportLogList=[];
       var medicAppointLogList=[]
       if (activityLogList["SavedStatus"] != 0) {
-        this.api.SaveAll(hvLogList,phoneSupportLogList,activityLogList,medicAppointLogList,this.params.UserId).then((ret) => {
+        this.api.SaveAll(hvLogList,phoneSupportLogList,activityLogList,medicAppointLogList,this.params.UserId,'one').then((ret) => {
           console.log(ret)
           if(ret.Result=='true'){
             this.api.ExecuteWorkingSet(ret.WorkingSetID,this.params.caseID,this.params.UserId).then(e=>{

@@ -47,9 +47,7 @@ export class VisiltListPage extends AppBase {
       var arr = null;
       arr = Array.from(e.res.rows);
 
-      this.medicalRecordList = arr;
-      var secialtyServe = new SpecialtyServe();
-     
+      this.medicalRecordList = arr;    
       for (var i = 0; i < this.medicalRecordList.length; i++) {
         if(this.medicalRecordList[i].AppointmentDate){
           var AppointmentDate_Display = AppUtil.FormatDate2(new Date(this.medicalRecordList[i].AppointmentDate));

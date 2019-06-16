@@ -25,14 +25,20 @@ export class ImageServe {
         return mgr.execSql(sql, [VisitId]);
     }
 
+    getImageList_web(VisitId) {
+        var mgr = DBMgr.GetInstance();
+        var sql = "select * from tb_Image where VisitId = ? and ImgId>0";
+        return mgr.execSql(sql, [VisitId]);
+    }
+
     addImage(ImgId, VisitId, ImgPath, transfer: FileTransfer, file: File, base64Mgr: Base64) {
         var mgr = DBMgr.GetInstance();
         mgr.execSql("select * from tb_Image where ImgId=? ", [ImgId]).then((e) => {
             var list = Array.from(e.res.rows);
-            if(list.length>0){
+            if (list.length > 0) {
                 return;
             }
-            
+
             var uploadpath = ApiConfig.getUploadPath();
             var fileurl = uploadpath + ImgPath;
             var fileTransfer: FileTransferObject = transfer.create();

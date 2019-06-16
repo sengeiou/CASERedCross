@@ -256,7 +256,9 @@ export class ServiceApi {
             });
     }
 
-    public SaveAll(hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList, userId) {
+
+
+    public SaveAll(hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList, userId,type) {
         var url = ApiConfig.getApiUrl();
         var data = { hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList };
         var headers = ApiConfig.GetHeader(url, data);
@@ -270,7 +272,7 @@ export class ServiceApi {
         soapMessage += "<hvLogList>";
 
         for (var i = 0; i < hvLogList.length; i++) {
-            if (hvLogList[i].SavedStatus == 1) {
+            if (hvLogList[i].SavedStatus == 1 && type=='all') {
                 if (hvLogList[i].VisitDate) {
                     var VisitDate = AppUtil.FormatDate2(new Date(hvLogList[i].VisitDate));
                 } else {
@@ -286,8 +288,8 @@ export class ServiceApi {
                 console.log(VisitDate)
                 var UlnarLength = 0;
                 var DeletePicString = '';
-                var hvImgKeepListStr = ''
-                var hvNewImgQty = 0
+                // var hvImgKeepListStr = ''
+                // var hvNewImgQty = 0
                 var ServHrs = 0;
                 var hvuilList = []
                 soapMessage += "<objAppHomeVisit>";
@@ -355,8 +357,8 @@ export class ServiceApi {
                 soapMessage += "<DeletePicString>" + DeletePicString + "</DeletePicString>";
                 soapMessage += "<NeedsContent>" + hvLogList[i].NeedsContent + "</NeedsContent>";
                 soapMessage += "<hvuilList>" + hvuilList + "</hvuilList>";
-                soapMessage += "<hvImgKeepListStr>" + hvImgKeepListStr + "</hvImgKeepListStr>";
-                soapMessage += "<hvNewImgQty>" + hvNewImgQty + "</hvNewImgQty>";
+                soapMessage += "<hvImgKeepListStr>" + hvLogList[i].hvImgKeepListStr + "</hvImgKeepListStr>";
+                soapMessage += "<hvNewImgQty>" + hvLogList[i].hvNewImgQty + "</hvNewImgQty>";
                 soapMessage += "</objAppHomeVisit>";
             }
         }
@@ -364,7 +366,7 @@ export class ServiceApi {
 
         soapMessage += "<activityLogList>";
         for (var i = 0; i < activityLogList.length; i++) {
-            if (activityLogList[i].SavedStatus == 1) {
+            if (activityLogList[i].SavedStatus == 1 && type=='all') {
                 var ActDate = AppUtil.FormatDate2(new Date(activityLogList[i].ActDate));
                 console.log(ActDate)
                 soapMessage += "<tb_acticve_log_temp>";
@@ -392,7 +394,7 @@ export class ServiceApi {
 
         soapMessage += "<phoneSupportLogList>";
         for (var i = 0; i < phoneSupportLogList.length; i++) {
-            if (phoneSupportLogList[i].SavedStatus == 1) {
+            if (phoneSupportLogList[i].SavedStatus == 1 && type=='all') {
                 var CallDate = AppUtil.FormatDate2(new Date(phoneSupportLogList[i].CallDate));
                 console.log(CallDate)
                 soapMessage += "<tb_phone_support_log_temp>";
@@ -416,7 +418,7 @@ export class ServiceApi {
 
         soapMessage += "<medicAppointLogList>";
         for (var i = 0; i < medicAppointLogList.length; i++) {
-            if (medicAppointLogList[i].SavedStatus == 1) {
+            if (medicAppointLogList[i].SavedStatus == 1 && type=='all') {
                 var AppointmentDate = AppUtil.FormatDate2(new Date(medicAppointLogList[i].AppointmentDate));
                 soapMessage += "<tb_medical_appointment_log_temp>";
                 soapMessage += "<AppointmentId>" + medicAppointLogList[i].AppointmentId + "</AppointmentId>";
@@ -459,5 +461,45 @@ export class ServiceApi {
                 return ApiConfig.ErrorHandle('/SaveAll ', data, err);
             });
     }
+
+    public UploadImgPart(section,ClientID,ImgDataBase64){
+        var url = ApiConfig.getApiUrl();
+        var data = { section,ClientID,ImgDataBase64 };
+        var headers = ApiConfig.GetHeader(url, data);
+        let options = new RequestOptions({ headers: headers });
+        var soapMessage = "<?xml version='1.0' encoding='utf-8'?>";
+        soapMessage += "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">";
+        soapMessage += "<soap:Body>";
+        soapMessage += "<UploadImgPart xmlns=\"http://tempuri.org/\">";
+        soapMessage += "<attachment>";
+        soapMessage += "<section>string</section>";
+        soapMessage += "<ClientID>string</ClientID>";
+        soapMessage += "<ImgDataBase64>string</ImgDataBase64>";
+        soapMessage += "</attachment>";
+        soapMessage += "</UploadImgPart>";
+        soapMessage += "</soap:Body>";
+       soapMessage += "</soap:Envelope>";
+
+        let body = soapMessage;
+        console.log(body);
+        return this.http.post(url, body, options).toPromise()
+            .then((res) => {
+                console.log(res);
+                var xmlstr = res.text();
+                console.log(xmlstr);
+                var x2js = new X2JS();
+                var jsonObj = x2js.xml_str2json(xmlstr);
+                //输出结果
+                console.log(jsonObj);
+                console.log(jsonObj.Envelope.Body.UploadImgPartResponse.UploadImgPartResult);
+
+                return jsonObj.Envelope.Body.UploadImgPartResponse.UploadImgPartResult;
+            })
+            .catch(err => {
+                return ApiConfig.ErrorHandle('/UploadImgPart', data, err);
+            });
+    }
+
+    
 
 }
