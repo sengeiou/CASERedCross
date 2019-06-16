@@ -27,29 +27,36 @@ export class ImageServe {
 
     addImage(ImgId, VisitId, ImgPath, transfer: FileTransfer, file: File, base64Mgr: Base64) {
         var mgr = DBMgr.GetInstance();
-        var uploadpath = ApiConfig.getUploadPath();
-        var fileurl = uploadpath + ImgPath;
-        var fileTransfer: FileTransferObject = transfer.create();
+        mgr.execSql("select * from tb_Image where ImgId=? ", [ImgId]).then((e) => {
+            var list = Array.from(e.res.rows);
+            if(list.length>0){
+                return;
+            }
+            
+            var uploadpath = ApiConfig.getUploadPath();
+            var fileurl = uploadpath + ImgPath;
+            var fileTransfer: FileTransferObject = transfer.create();
 
-        // fileurl="D:\\wwwroot\\"+ImgId+".jpg";
+            // fileurl="D:\\wwwroot\\"+ImgId+".jpg";
 
-        // base64Mgr.encodeFile(fileurl).then((base64File:string)=>{
-        //     alert(base64File);
-        //     var sql = "insert into tb_Image(ImgId,VisitId,ImgName,Base64ImgString) values (?,?,?,?)";
-        //     return mgr.execSql(sql,[ImgId,VisitId,'',base64File]);
-        // }, (err) => {
-        //     alert(err);
-        //   });
-        fileTransfer.download(fileurl, file.dataDirectory + 'f' + ImgId + ".jpg").then((entry) => {
-            base64Mgr.encodeFile(file.dataDirectory + 'f' + ImgId + ".jpg").then((base64File: string) => {
-                //alert(base64File);
-                var sql = "insert into tb_Image(ImgId,VisitId,ImgName,Base64ImgString) values (?,?,?,?)";
-                return mgr.execSql(sql, [ImgId, VisitId, '', base64File]);
+            // base64Mgr.encodeFile(fileurl).then((base64File:string)=>{
+            //     alert(base64File);
+            //     var sql = "insert into tb_Image(ImgId,VisitId,ImgName,Base64ImgString) values (?,?,?,?)";
+            //     return mgr.execSql(sql,[ImgId,VisitId,'',base64File]);
+            // }, (err) => {
+            //     alert(err);
+            //   });
+            fileTransfer.download(fileurl, file.dataDirectory + 'f' + ImgId + ".jpg").then((entry) => {
+                base64Mgr.encodeFile(file.dataDirectory + 'f' + ImgId + ".jpg").then((base64File: string) => {
+                    //alert(base64File);
+                    var sql = "insert into tb_Image(ImgId,VisitId,ImgName,Base64ImgString) values (?,?,?,?)";
+                    return mgr.execSql(sql, [ImgId, VisitId, '', base64File]);
+                });
+
+            }, (error) => {
+                // handle error
+
             });
-
-        }, (error) => {
-            // handle error
-
         });
     }
 
@@ -81,6 +88,6 @@ export class ImageServe {
     deleteImage(id) {
         var mgr = DBMgr.GetInstance();
         var sql = "DELETE FROM tb_Image where LocalId=?";
-        return mgr.execSql(sql,[id]);
+        return mgr.execSql(sql, [id]);
     }
 }
