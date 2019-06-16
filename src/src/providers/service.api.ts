@@ -272,7 +272,7 @@ export class ServiceApi {
         soapMessage += "<hvLogList>";
 
         for (var i = 0; i < hvLogList.length; i++) {
-            if (hvLogList[i].SavedStatus == 1 && type=='all') {
+            if (hvLogList[i].SavedStatus == 1 || type=='one') {
                 if (hvLogList[i].VisitDate) {
                     var VisitDate = AppUtil.FormatDate2(new Date(hvLogList[i].VisitDate));
                 } else {
@@ -366,7 +366,7 @@ export class ServiceApi {
 
         soapMessage += "<activityLogList>";
         for (var i = 0; i < activityLogList.length; i++) {
-            if (activityLogList[i].SavedStatus == 1 && type=='all') {
+            if (activityLogList[i].SavedStatus == 1 || type=='one') {
                 var ActDate = AppUtil.FormatDate2(new Date(activityLogList[i].ActDate));
                 console.log(ActDate)
                 soapMessage += "<tb_acticve_log_temp>";
@@ -394,7 +394,7 @@ export class ServiceApi {
 
         soapMessage += "<phoneSupportLogList>";
         for (var i = 0; i < phoneSupportLogList.length; i++) {
-            if (phoneSupportLogList[i].SavedStatus == 1 && type=='all') {
+            if (phoneSupportLogList[i].SavedStatus == 1 || type=='one') {
                 var CallDate = AppUtil.FormatDate2(new Date(phoneSupportLogList[i].CallDate));
                 console.log(CallDate)
                 soapMessage += "<tb_phone_support_log_temp>";
@@ -418,7 +418,7 @@ export class ServiceApi {
 
         soapMessage += "<medicAppointLogList>";
         for (var i = 0; i < medicAppointLogList.length; i++) {
-            if (medicAppointLogList[i].SavedStatus == 1 && type=='all') {
+            if (medicAppointLogList[i].SavedStatus == 1 || type=='one') {
                 var AppointmentDate = AppUtil.FormatDate2(new Date(medicAppointLogList[i].AppointmentDate));
                 soapMessage += "<tb_medical_appointment_log_temp>";
                 soapMessage += "<AppointmentId>" + medicAppointLogList[i].AppointmentId + "</AppointmentId>";

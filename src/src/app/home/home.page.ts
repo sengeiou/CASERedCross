@@ -234,6 +234,7 @@ export class HomePage extends AppBase {
         for (var i = 0; i < kv.visitList.length; i++) {
           kv.visitList[i].hvImgKeepListStr = '';
           kv.visitList[i].hvNewImgQty = 0;
+          kv.visitList[i].Height = kv.Height;
           imgserver.getImageList_web(kv.visitList[i].LocalId).then(e => {
             console.log(Array.from(e.res.rows))
             var ImgList = [];
@@ -635,6 +636,9 @@ export class HomePage extends AppBase {
           }
         }
       }
+    }else{
+      var presentVolunteer = ''
+      var supportVolunteer = ''
     }
 
     if (kv.BloodPressureList) {
@@ -651,6 +655,9 @@ export class HomePage extends AppBase {
       if (bloodPressureList.length == 2) {
         kv.SYS2 = bloodPressureList[1].Upper
         kv.DlA2 = bloodPressureList[1].Lower
+      } else {
+        kv.SYS2 = 0;
+        kv.DlA2 = 0;
       }
 
     } else {
@@ -672,6 +679,8 @@ export class HomePage extends AppBase {
       kv.heartBeats1 = heartRateList[0].RatePerMin
       if (heartRateList.length == 2) {
         kv.heartBeats2 = heartRateList[1].RatePerMin
+      } else {
+        kv.heartBeats2 = 0;
       }
 
     } else {
@@ -695,7 +704,10 @@ export class HomePage extends AppBase {
       kv.VisitId, kv.VisitStartTime, kv.VisitStatus, kv.VisitStatusRemarks, kv.WHRatio, kv.Waist,
       kv.Weight, presentVolunteer, supportVolunteer, ScheduleDate_Display, kv.DlA1, kv.DlA2, kv.SYS1, kv.SYS2, kv.heartBeats1, kv.heartBeats2, kv.NeedsContent).then((e) => {
         console.log(e);
-
+        // return;
+        // visit.sevaVisitSavedStatus(e.res.insertId).then(e=>{
+          
+        // })
 
       });
 

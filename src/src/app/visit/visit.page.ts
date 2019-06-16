@@ -1133,7 +1133,7 @@ export class VisitPage extends AppBase {
       hvLogList.push(this.visit);
       hvLogList[0]['Height'] = this.casedata.Height;
       console.log(hvLogList)
-
+      
       this.api.SaveAll(hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList, this.params.UserId, 'one').then((ret) => {
         console.log(ret)
         if (ret.Result == 'true') {
