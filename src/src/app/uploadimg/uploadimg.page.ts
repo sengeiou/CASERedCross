@@ -50,7 +50,7 @@ export class UploadimgPage extends AppBase {
     imgserver.getAllImageList().then(e=>{
       console.log(Array.from(e.res.rows))
     })
-    // alert(this.params.visitid);
+    
     imgserver.getImageList(this.params.visitid).then(e=>{
       var list = Array.from(e.res.rows);
       console.log(list)
