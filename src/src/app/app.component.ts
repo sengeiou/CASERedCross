@@ -31,7 +31,9 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
-    
+      const sub = this.platform.backButton.subscribeWithPriority(9999, () => {
+        // Do nothing
+      });
 
     });
   }

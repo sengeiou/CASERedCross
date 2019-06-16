@@ -70,6 +70,8 @@ export class AppBase implements OnInit {
      opmin=0;
     ngOnInit() {
 
+        
+
         ApiConfig.SetUnicode(AppBase.UNICODE);
         this.onMyLoad();
         this.setStatusBar();
@@ -98,6 +100,10 @@ export class AppBase implements OnInit {
         AppBase.CurrentRoute = this.router;
         AppBase.CurrentNav = this.navCtrl;
 
+        document.addEventListener("backbutton",function(e) {
+            //alert(1);
+            console.log("disable back button")
+          }, false);
 
         this.onMyShow();
 
