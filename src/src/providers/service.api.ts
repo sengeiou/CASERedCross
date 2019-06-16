@@ -357,8 +357,10 @@ export class ServiceApi {
                 soapMessage += "<DeletePicString>" + DeletePicString + "</DeletePicString>";
                 soapMessage += "<NeedsContent>" + hvLogList[i].NeedsContent + "</NeedsContent>";
                 soapMessage += "<hvuilList>" + hvuilList + "</hvuilList>";
-                soapMessage += "<hvImgKeepListStr>" + hvLogList[i].hvImgKeepListStr + "</hvImgKeepListStr>";
-                soapMessage += "<hvNewImgQty>" + hvLogList[i].hvNewImgQty + "</hvNewImgQty>";
+                // soapMessage += "<hvImgKeepListStr>" + hvLogList[i].hvImgKeepListStr + "</hvImgKeepListStr>";
+                // soapMessage += "<hvNewImgQty>" + hvLogList[i].hvNewImgQty + "</hvNewImgQty>";
+                soapMessage += "<hvImgKeepListStr>4,5</hvImgKeepListStr>";
+                soapMessage += "<hvNewImgQty>2</hvNewImgQty>";
                 soapMessage += "</objAppHomeVisit>";
             }
         }

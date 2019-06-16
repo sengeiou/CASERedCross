@@ -54,6 +54,7 @@ export class HomePage extends AppBase {
   caselist = [];
   wangluo = ''
   UserId = 0;
+  imgList=[];
 
   onMyLoad() {
     //参数
@@ -137,13 +138,46 @@ export class HomePage extends AppBase {
       console.log(ret)
       // return
       if (ret.Result == 'true') {
-        this.api.ExecuteWorkingSet(ret.WorkingSetID, kv.CaseId, this.UserId).then(e => {
-          console.log(e)
-          if (e.Result == 'true') {
-            this.SysnAllWeb();
-            this.toast('資料同步成功');
+        
+        var AttachmentGroupLists = [];
+        var AttchList=[]
+        if (ret.AttachmentGroupLists) {
+          var listtype = typeof ret.AttachmentGroupLists;
+          if (listtype == 'object' && ret.AttachmentGroupLists.length == undefined) {
+            AttachmentGroupLists.push(ret.AttachmentGroupLists.AttchList);
+          } else {
+            AttachmentGroupLists = ret.AttachmentGroupLists.AttchList;
           }
-        })
+          if (AttachmentGroupLists.length > 0) {
+            for (var i = 0; i < AttachmentGroupLists.length; i++) {
+
+              var listtype2 = typeof ret.AttachmentGroupLists.AttchList;
+              if (listtype2 == 'object' && ret.AttachmentGroupLists.AttchList.length == undefined) {
+                AttchList.push(ret.AttachmentGroupLists.AttchList);
+              } else {
+                AttchList = ret.AttachmentGroupLists.AttchList;
+              }
+
+            }
+          }
+          
+          for(var j=0;j<this.imgList.length;j++){
+            this.api.UploadImgPart('HomeVisit', this.UserId, this.imgList[j].Base64ImgString).then(e => {
+              console.log(e)
+              
+            })
+          }
+
+
+          this.api.ExecuteWorkingSet(ret.WorkingSetID, kv.CaseId, this.UserId).then(e => {
+            console.log(e)
+            if (e.Result == 'true') {
+              this.SysnAllWeb();
+              this.toast('資料同步成功');
+            }
+          })
+        }
+
       }
       console.log(ret)
     })
@@ -235,13 +269,20 @@ export class HomePage extends AppBase {
           kv.visitList[i].hvImgKeepListStr = '';
           kv.visitList[i].hvNewImgQty = 0;
           kv.visitList[i].Height = kv.Height;
+          var visitId = kv.visitList[i].LocalId;
+          if (kv.visitList[i].VisitId > 0) {
+            visitId = kv.visitList[i].VisitId;
+          }
+
           imgserver.getImageList_web(kv.visitList[i].LocalId).then(e => {
             console.log(Array.from(e.res.rows))
+
+            this.imgList=Array.from(e.res.rows);
             var ImgList = [];
             ImgList = Array.from(e.res.rows);
             var hvImgKeepListStr = '';
             for (var j = 0; j < ImgList.length; j++) {
-              if (hvImgKeepListStr = '') {
+              if (hvImgKeepListStr == '') {
                 hvImgKeepListStr = ImgList[j].LocalId
               } else {
                 hvImgKeepListStr = hvImgKeepListStr + ',' + ImgList[j].LocalId;
@@ -324,7 +365,7 @@ export class HomePage extends AppBase {
           this.saList = a;
         }
 
-        this.updateData(); //同步数据到本地数据库
+        // this.updateData(); //同步数据到本地数据库
 
         this.loading.dismiss();;
       } else {
@@ -636,7 +677,7 @@ export class HomePage extends AppBase {
           }
         }
       }
-    }else{
+    } else {
       var presentVolunteer = ''
       var supportVolunteer = ''
     }
@@ -706,7 +747,7 @@ export class HomePage extends AppBase {
         console.log(e);
         // return;
         // visit.sevaVisitSavedStatus(e.res.insertId).then(e=>{
-          
+
         // })
 
       });

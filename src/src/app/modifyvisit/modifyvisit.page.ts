@@ -291,13 +291,17 @@ export class ModifyvisitPage extends AppBase {
         console.log(data);
 
         var imgserver = new ImageServe();
-        imgserver.getImageList_web(this.visit.LocalId).then(e => {
+        var visitId=this.LocalId;
+        if(this.visit.VisitId>0){
+          visitId=this.visit.VisitId;
+        }
+        imgserver.getImageList_web(visitId).then(e => {
           console.log(Array.from(e.res.rows))
           var ImgList = [];
           ImgList = Array.from(e.res.rows);
           var hvImgKeepListStr = '';
           for (var j = 0; j < ImgList.length; j++) {
-            if (hvImgKeepListStr = '') {
+            if (hvImgKeepListStr == '') {
               hvImgKeepListStr = ImgList[j].LocalId
             } else {
               hvImgKeepListStr = hvImgKeepListStr + ',' + ImgList[j].LocalId
@@ -308,7 +312,7 @@ export class ModifyvisitPage extends AppBase {
         })
 
         var medicalRecord = new MedicalRecordServe();
-        medicalRecord.getAllMedicalRecordList(this.params.caseid).then((e) => {
+        medicalRecord.getAllMedicalRecordList(this.params.caseID).then((e) => {
           this.medicAppointLogList = Array.from(e.res.rows);
         })
 
@@ -920,11 +924,7 @@ export class ModifyvisitPage extends AppBase {
   }
 
   addVisit() {
-    // if (this.visit.SavedStatus == 0) {
-    //   this.toast('已上傳過的的資料，無法修改');
-    //   return;
-    // }
-
+    
     for (var i = 0; i < this.VisitDetailIndoorlist.length; i++) {
       if (this.VisitDetailIndoorlist[i].type == true) {
         if (this.VisitDetailOutdoor == '') {
@@ -1050,7 +1050,6 @@ export class ModifyvisitPage extends AppBase {
     this.supportVolunteer = this.supportVolunteer != '' ? this.supportVolunteer : this.visit.supportVolunteer
 
 
-
     if (this.ScheduleDate == '') {
       this.toast('你沒有選擇探訪日期');
       return;
@@ -1115,10 +1114,7 @@ export class ModifyvisitPage extends AppBase {
 
 
   uploadVisitListWeb(e) {
-    // if (e == 0) {
-    //   this.toast('已上傳過的的資料，無需上傳');
-    //   return;
-    // }
+    
     if (this.LocalId == 0 || this.LocalId == undefined) {
       this.showConfirm('资料没有保存？请先保存', (e) => {
 
@@ -1128,24 +1124,7 @@ export class ModifyvisitPage extends AppBase {
       hvLogList.push(this.visit);
       hvLogList[0]['Height'] = this.casedata.Height;
       console.log(hvLogList)
-      // return
-      // var imgserver = new ImageServe();
-      // imgserver.getImageList_web(this.visit.LocalId).then(e => {
-      //   console.log(Array.from(e.res.rows))
-      //   var ImgList = [];
-      //   ImgList = Array.from(e.res.rows);
-      //   var hvImgKeepListStr = '';
-      //   for (var j = 0; j < ImgList.length; j++) {
-      //     if (hvImgKeepListStr = '') {
-      //       hvImgKeepListStr = ImgList[j].LocalId
-      //     } else {
-      //       hvImgKeepListStr = hvImgKeepListStr + ',' + ImgList[j].LocalId
-      //     }
-      //   }
-      //   hvLogList[0].hvImgKeepListStr = hvImgKeepListStr;
-      //   hvLogList[0].hvNewImgQty = ImgList.length;
-      // })
-
+      
       var activityLogList = [];
       var phoneSupportLogList = [];
       var medicAppointLogList = this.medicAppointLogList;
