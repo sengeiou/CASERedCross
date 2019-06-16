@@ -51,10 +51,12 @@
     left: 0px;
     top: 0px;
     height:100vh;
+    width:100vw;
+    z-index: 9999;
 }
 .sq{
-    width:25vw;
-    height:25vw;
+    width:20vw;
+    height:20vw;
     border-color: white;
 }
 .bt{
