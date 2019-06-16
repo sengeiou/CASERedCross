@@ -14,7 +14,7 @@
 }
 
 .xgun{
-    width: 17.5rem;
+    width: calc( 100vw - 73px );
     height: 5rem;
     overflow-x: scroll;
     overflow-y:hidden;
