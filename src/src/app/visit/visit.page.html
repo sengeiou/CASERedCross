@@ -440,7 +440,7 @@
           </div>
           <div class="flex-row margin-top-5">
             <div>BMI</div>
-            <div class="margin-left-20" *ngIf="!visit.Bmi ">{{Bmi}}</div>
+            <div class="margin-left-20" *ngIf="!visit.Bmi ">{{(Weight/(casedata.Height*casedata.Height)).toFixed(2)}}</div>
             <div class="margin-left-20" *ngIf="visit.Bmi ">{{visit.Bmi}}</div>
 
           </div>
@@ -461,7 +461,7 @@
           </div>
           <div class="flex-row margin-top-5">
             <div>腰臀比例</div>
-            <div class="margin-left-20" *ngIf="!visit.WHRatio ">{{WHRatio}}</div>
+            <div class="margin-left-20" *ngIf="!visit.WHRatio ">{{(Waist/Hip).toFixed(2)}}</div>
             <div class="margin-left-20" *ngIf="visit.WHRatio ">{{visit.WHRatio}}</div>
           </div>
         </div>
@@ -559,7 +559,7 @@
             <div class="flex-row h7-5 flex-1 margin-left-20 flex-center" *ngIf="LifeStyleMeasureBloodSuger==1">
               <div class="" style="width:3.3rem;">地點</div>
               <div class="input_s radius-2 bg-white flex-row  flex-center" style="width:34%;">
-                <ion-select [(ngModel)]="LifeStyleMeasureBsLocation" >
+                <ion-select [(ngModel)]="LifeStyleMeasureBsLocation" style="--padding-start:0;--padding-end:0;width:100%;">
                   <ion-select-option value="1">家中</ion-select-option>
                   <ion-select-option value="2">外出</ion-select-option>
                 </ion-select>
@@ -569,7 +569,7 @@
               <div class="margin-5" style="width:3.3rem;">頻率</div>
 
               <div class="input_s radius-2 bg-white flex-row  flex-center" style="width:34%;">
-                <ion-select [(ngModel)]="LifeStyleMeasureBsPeriod" >
+                <ion-select [(ngModel)]="LifeStyleMeasureBsPeriod" style="--padding-start:0;--padding-end:0;width:100%;">
                   <ion-select-option value="1">每日</ion-select-option>
                   <ion-select-option value="2">每週</ion-select-option>
                   <ion-select-option value="3">每月</ion-select-option>
@@ -578,7 +578,7 @@
 
               <div class="margin-5" style="width:3.3rem;">次數</div>
 
-              <input class="input_s radius-2" style="width:34%;" type="number" />
+              <input class="input_s radius-2" style="width:34%;" type="number" [(ngModel)]='LifeStyleMeasureBsNoOfTime'/>
 
             </div>
           </div>
@@ -599,7 +599,7 @@
               <div class="" style="width:3.3rem;">地點</div>
 
               <div class="input_s radius-2 bg-white flex-row  flex-center" style="width:34%;">
-                <ion-select [(ngModel)]="LifeStyleMeasureBpLocation" >
+                <ion-select [(ngModel)]="LifeStyleMeasureBpLocation" style="--padding-start:0;--padding-end:0;width:100%;">
                   <ion-select-option value="1">家中</ion-select-option>
                   <ion-select-option value="2">外出</ion-select-option>
                 </ion-select>
@@ -608,7 +608,7 @@
               <div class="margin-5" style="width:3.3rem;">頻率</div>
 
               <div class="input_s radius-2 bg-white flex-row  flex-center" style="width:34%;">
-                <ion-select [(ngModel)]="LifeStyleMeasureBpPeriod" >
+                <ion-select [(ngModel)]="LifeStyleMeasureBpPeriod" style="--padding-start:0;--padding-end:0;width:100%;">
                   <ion-select-option value="1">每日</ion-select-option>
                   <ion-select-option value="2">每週</ion-select-option>
                   <ion-select-option value="3">每月</ion-select-option>
@@ -617,7 +617,7 @@
 
               <div class="margin-5" style="width:3.3rem;">次數</div> 
 
-              <input class="input_s radius-2" style="width:34%;" type="number" />
+              <input class="input_s radius-2" style="width:34%;" type="number" [(ngModel)]='LifeStyleMeasureBpNoOfTime'/>
 
             </div>
           </div>
@@ -825,8 +825,8 @@
   <div class="flex-row padding-15 flex-center">
     <div class="flex-1"></div>
     <div class="flex-row">
-      <div class="txt-blue margin-right-60" (click)='addVisit()'>保存及離開</div>
-      <div class="txt-blue" (click)='uploadVisitListWeb()'>上傳</div>
+      <div class="txt-blue margin-right-60" (click)="addVisit('no')">保存及離開</div>
+      <div class="txt-blue" (click)="addVisit('web')">上傳</div>
     </div>
     <div class="flex-1"></div>
   </div>

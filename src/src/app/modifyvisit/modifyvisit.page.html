@@ -341,7 +341,7 @@
                 disabled='{{VisitStatus==2?disabled:false}}'></ion-checkbox>
               其他
 
-              <div class="flex-1" *ngIf='VisitDetailIndoorlist[3].type==true'>
+              <div class="flex-1" *ngIf='VisitDetailOutdoorlist[3].type==true'>
                 <input class="radius-2  other-input"
                   placeholder="{{visit.VisitDetailOutdoorRemarks?visit.VisitDetailOutdoorRemarks:'輸入最多50字'}}"
                   [(ngModel)]="VisitDetailOutdoorRemarks" name='VisitDetailOutdoorRemarks' style=" width: 100%;" />
@@ -453,8 +453,9 @@
           </div>
           <div class="flex-row margin-top-5">
             <div>BMI</div>
-            <div class="margin-left-20" *ngIf="!visit.Bmi ">{{Bmi}}</div>
-            <div class="margin-left-20" *ngIf="visit.Bmi ">{{visit.Bmi}}</div>
+            <div class="margin-left-20" *ngIf="Bmi!=null" >{{(Weight/(casedata.Height*casedata.Height)).toFixed(2)}}</div>
+            <div class="margin-left-20" *ngIf="Bmi==null">{{visit.Bmi}}</div>
+            
 
           </div>
         </div>
@@ -474,8 +475,8 @@
           </div>
           <div class="flex-row margin-top-5">
             <div>腰臀比例</div>
-            <div class="margin-left-20" *ngIf="!visit.WHRatio ">{{WHRatio}}</div>
-            <div class="margin-left-20" *ngIf="visit.WHRatio ">{{visit.WHRatio}}</div>
+            <div class="margin-left-20" *ngIf="WHRatio!=0 ">{{(Waist/Hip).toFixed(2)}}</div>
+            <div class="margin-left-20" *ngIf="WHRatio==0 ">{{visit.WHRatio}}</div>
           </div>
         </div>
 
@@ -569,29 +570,29 @@
               <ion-radio type="radio" name="sex"  class="radio "  disabled='{{VisitStatus==2?disabled:false}}' checked="{{visit.LifeStyleMeasureBloodSuger==1?true:false}}"
               (ionSelect)='LifeStyleMeasureBloodSuger=1;visit.LifeStyleMeasureBloodSuger=1'></ion-radio>是</div>
 
-            <div class="flex-row h7-5 flex-1 margin-left-20 flex-center" *ngIf='LifeStyleMeasureBloodSuger==1'>
-              <div class="" style="width:3.3rem;">地點</div>
-              <div class="input_s radius-2 bg-white flex-row  flex-center" style="width:34%;">
-                <ion-select [(ngModel)]="LifeStyleMeasureBsLocation">
+            <div class="flex-row h7-5 flex-1 margin-left-20 flex-center" *ngIf='LifeStyleMeasureBloodSuger==1 || visit.LifeStyleMeasureBloodSuger==1'>
+              <div class="" style="width:3.0rem;">地點</div>
+              <div class="input_s radius-2 bg-white flex-row  flex-center" style="width:30%;">
+                <ion-select [(ngModel)]="LifeStyleMeasureBsLocation" placeholder="{{LifeStyleMeasureBsLocation_name}}" style="--padding-start:0;--padding-end:0;width:100%;">
                   <ion-select-option value="1">家中</ion-select-option>
                   <ion-select-option value="2">外出</ion-select-option>
                 </ion-select>
               </div>
               <!-- <input class="input_s radius-2" style="width:35%;" /> -->
 
-              <div class="margin-5" style="width:3.3rem;">頻率</div>
+              <div class="margin-left-5" style="width:3.0rem;">頻率</div>
 
-              <div class="input_s radius-2 bg-white flex-row  flex-center" style="width:34%;">
-                <ion-select [(ngModel)]="LifeStyleMeasureBsPeriod">
+              <div class="input_s radius-2 bg-white flex-row  flex-center" style="width:30%;">
+                <ion-select [(ngModel)]="LifeStyleMeasureBsPeriod" placeholder="{{LifeStyleMeasureBsPeriod_name}}" style="--padding-start:0;--padding-end:0;width:100%;" >
                   <ion-select-option value="1">每日</ion-select-option>
                   <ion-select-option value="2">每週</ion-select-option>
                   <ion-select-option value="3">每月</ion-select-option>
                 </ion-select>
               </div>
 
-              <div class="margin-5" style="width:3.3rem;">次數</div>
+              <div class="margin-left-5" style="width:3.0rem;">次數</div>
 
-              <input class="input_s radius-2" style="width:34%;" type="number" />
+              <input class="input_s radius-2" style="width:31%;" type="number" [(ngModel)]='LifeStyleMeasureBsNoOfTime' placeholder="{{visit.LifeStyleMeasureBsNoOfTime}}"/>
 
             </div>
           </div>
@@ -607,29 +608,29 @@
               <ion-radio type="radio" name="sex"  class="radio " disabled='{{VisitStatus==2?disabled:false}}' checked="{{visit.LifeStyleMeasureBloodPressure==1?true:false}}"
               (ionSelect)='LifeStyleMeasureBloodPressure=1;visit.LifeStyleMeasureBloodPressure=1'></ion-radio>是</div>
 
-            <div class="flex-row h7-5 flex-1 margin-left-20 flex-center" *ngIf='LifeStyleMeasureBloodPressure==1'>
-              <div class="" style="width:3.3rem;">地點</div>
+            <div class="flex-row h7-5 flex-1 margin-left-20 flex-center" *ngIf='LifeStyleMeasureBloodPressure==1 || visit.LifeStyleMeasureBloodPressure==1'>
+              <div class="" style="width:3.0rem;">地點</div>
 
               <div class="input_s radius-2 bg-white flex-row  flex-center" style="width:34%;">
-                <ion-select [(ngModel)]="LifeStyleMeasureBpLocation">
+                <ion-select [(ngModel)]="LifeStyleMeasureBpLocation" placeholder="{{LifeStyleMeasureBpLocation_name}}" style="--padding-start:0;--padding-end:0; width:100%;">
                   <ion-select-option value="1">家中</ion-select-option>
                   <ion-select-option value="2">外出</ion-select-option>
                 </ion-select>
               </div>
 
-              <div class="margin-5" style="width:3.3rem;">頻率</div>
-
+              <div class="margin-left-5" style="width:3.0rem;">頻率</div>
               <div class="input_s radius-2 bg-white flex-row  flex-center" style="width:34%;">
-                <ion-select [(ngModel)]="LifeStyleMeasureBpPeriod">
+                <ion-select [(ngModel)]="LifeStyleMeasureBpPeriod" placeholder="{{LifeStyleMeasureBpPeriod_name}}" style="--padding-start:0;--padding-end:0;width:100%;">
                   <ion-select-option value="1">每日</ion-select-option>
                   <ion-select-option value="2">每週</ion-select-option>
                   <ion-select-option value="3">每月</ion-select-option>
                 </ion-select>
+
               </div>
 
-              <div class="margin-5" style="width:3.3rem;">次數</div>
+              <div class="margin-left-5" style="width:3.0rem;">次數</div>
 
-              <input class="input_s radius-2" style="width:34%;" type="number" />
+              <input class="input_s radius-2" style="width:31%;" type="number" [(ngModel)]='LifeStyleMeasureBpNoOfTime' placeholder="{{visit.LifeStyleMeasureBpNoOfTime}}"/>
 
             </div>
           </div>
@@ -704,9 +705,9 @@
 
             <div class="flex-row h7-5 flex-1 margin-left-30 flex-center" *ngIf='visit.OtherHospDisbete==1'>
               <input class="input_s radius-2" style="width:35%;" type="number"
-                placeholder="{{visit.OtherHospDisbeteNoOfDay?visit.OtherHospDisbeteNoOfDay:''}}"
-                [(ngModel)]='OtherHospDisbeteNoOfDay' />
-              <div class="margin-5" style="width:3.6rem;">日數</div>
+                placeholder="{{visit.OtherHospDisbeteNoOfDay}}"   [(ngModel)]='OtherHospDisbeteNoOfDay'    
+                />
+              <div class="margin-5" style="width:3.6rem;">日數 </div>
             </div>
           </div>
           <div class=" margin-top-5 flex-row flex-center">
@@ -1485,7 +1486,7 @@
           <div class=" margin-top-5 flex-row flex-center">
             <div class="flex-row flex-center">
               <ion-radio type="radio" name="Other4"  class="radio " disabled='{{visit.Status!=1?true:false}}'
-                checked="{{visit.OtherAccident=='1'?true:false}}" (click)='getOtherAccident(1)' ></ion-radio>>是</div>
+                checked="{{visit.OtherAccident=='1'?true:false}}" (click)='getOtherAccident(1)' ></ion-radio>是</div>
 
             <div class="flex-row h7-5 flex-1 margin-left-30 flex-center" *ngIf="visit.OtherAccident==1">
               <!-- <input class="input_s radius-2" style="width:35%;" disabled='{{visit.Status!=1?true:false}}'
@@ -1562,8 +1563,8 @@
   <div class="flex-row padding-15 flex-center" *ngIf='visit.Status==1'>
     <div class="flex-1"></div>
     <div class="flex-row">
-      <div class="txt-blue margin-right-60" (click)='addVisit()'>保存及離開</div>
-      <div class="txt-blue" (click)='uploadVisitListWeb(visit.SavedStatus)'>上傳</div>
+      <div class="txt-blue margin-right-60" (click)='addVisit(1)'>保存及離開</div>
+      <div class="txt-blue" (click)="addVisit('web')">上傳</div>
     </div>
     <div class="flex-1"></div>
   </div>

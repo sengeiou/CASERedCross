@@ -13,6 +13,12 @@ export class ImageServe {
         return mgr.execSql(sql, [id]);
     }
 
+    saveImage_AttachmentId(AttachmentId,id) {
+        var mgr = DBMgr.GetInstance();
+        var sql = "update tb_Image SET AttachmentId=? where LocalId=?";
+        return mgr.execSql(sql, [AttachmentId,id]);
+    }
+
     getAllImageList() {
         var mgr = DBMgr.GetInstance();
         var sql = "select * from tb_Image";
@@ -27,7 +33,7 @@ export class ImageServe {
 
     getImageList_web(VisitId) {
         var mgr = DBMgr.GetInstance();
-        var sql = "select * from tb_Image where VisitId = ? and ImgId=0";
+        var sql = "select * from tb_Image where  ImgId=0 and VisitId = ? ";
         return mgr.execSql(sql, [VisitId]);
     }
 

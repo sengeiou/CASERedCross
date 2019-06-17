@@ -50,7 +50,7 @@ export class VisitServe {
 
     sevaVisitSavedStatus(id) {
         var mgr = DBMgr.GetInstance();
-        var sql = "update  tb_home_visit SET SavedStatus=0,Status=2  where LocalID=?";
+        var sql = "update  tb_home_visit SET SavedStatus=0,Status=3  where LocalID=?";
         return mgr.execSql(sql, [id]);
     }
 
@@ -85,9 +85,9 @@ export class VisitServe {
         LifeStyleMeasureBloodSuger, LifeStyleMeasureBpLocation, LifeStyleMeasureBpNoOfTime, LifeStyleMeasureBpPeriod, LifeStyleMeasureBsLocation, LifeStyleMeasureBsNoOfTime,
         LifeStyleMeasureBsPeriod, LifeStyleQuestion1, LifeStyleQuestion2, LifeStyleQuestion3, LifeStyleQuestion4, LifeStyleQuestion5, LifeStyleQuestion6, Location,
         LocationRemarks, OtherAccident, OtherAccidentNoOfDay, OtherHospDisbete, OtherHospDisbeteNoOfDay, OtherHospHighBp, OtherHospHighBpNoOfDay, OtherHospOtherIllness,
-        OtherHospOtherIllnessNoOfDay, OtherRemarks, OtherSpecialNeed, OtherSpecialNeedService, ScheduleDate, ScheduleTime, Status, TaskId, VisitDate, VisitDetailIndoor,
-        VisitDetailIndoorRemarks, VisitDetailOther, VisitDetailOutdoor, VisitDetailOutdoorRemarks, VisitEndTime, VisitId, VisitStartTime, VisitStatus, VisitStatusRemarks,
-        WHRatio, Waist, Weight, NeedsContent, SYS1, DlA1, SYS2, DlA2, heartBeats1, heartBeats2, presentVolunteer, supportVolunteer, DeletePicString) {
+        OtherHospOtherIllnessNoOfDay, OtherRemarks, OtherSpecialNeed, OtherSpecialNeedService, ScheduleDate, ScheduleTime, Status,  VisitDate, VisitDetailIndoor,
+        VisitDetailIndoorRemarks, VisitDetailOther, VisitDetailOutdoor, VisitDetailOutdoorRemarks, VisitEndTime, VisitStartTime, VisitStatus, VisitStatusRemarks,
+        WHRatio, Waist, Weight, NeedsContent, SYS1, DlA1, SYS2, DlA2, heartBeats1, heartBeats2, presentVolunteer, supportVolunteer, DeletePicString,ScheduleDate_Display) {
         // alert(LifeStyleQuestion1)
         var mgr = DBMgr.GetInstance();
         var sql = "update tb_home_visit set Bmi=?, CaseId=?, CategoryTopic1=?, CategoryTopic2=?, CategoryTopic3=?, EmotionAssessment=?, EmotionAssessmentRemarks=?, Hip=?, "
@@ -95,15 +95,15 @@ export class VisitServe {
             + "LifeStyleMeasureBsLocation=?, LifeStyleMeasureBsNoOfTime=?, LifeStyleMeasureBsPeriod=?, LifeStyleQuestion1=?, LifeStyleQuestion2=?, LifeStyleQuestion3=?, "
             + "LifeStyleQuestion4=?, LifeStyleQuestion5=?,LifeStyleQuestion6=?,Location=?, LocationRemarks=?, OtherAccident=?, OtherAccidentNoOfDay=?,  OtherHospDisbete=?,"
             + "OtherHospDisbeteNoOfDay=?,OtherHospHighBp=?,OtherHospHighBpNoOfDay=?,OtherHospOtherIllness=?,OtherHospOtherIllnessNoOfDay=?,OtherRemarks=?,OtherSpecialNeed=?,"
-            + "OtherSpecialNeedService=?,ScheduleDate=?,ScheduleTime=?,Status=?,TaskId=?,VisitDate=?,VisitDetailIndoor=?, VisitDetailIndoorRemarks=?, VisitDetailOther=?,VisitDetailOutdoor=?,"
-            + "VisitDetailOutdoorRemarks=?,VisitEndTime=?,VisitId=?,VisitStartTime=?,VisitStatus=?,VisitStatusRemarks=?,WHRatio=? ,Waist=?, Weight=?,NeedsContent=? ,SYS1=?, DlA1=?, SYS2=?, DlA2=?, heartBeats1=?, heartBeats2=?,presentVolunteer=?, supportVolunteer=?,DeletePicString=?,SavedStatus=1 where LocalId=?";
+            + "OtherSpecialNeedService=?,ScheduleDate=?,ScheduleTime=?,Status=?,VisitDate=?,VisitDetailIndoor=?, VisitDetailIndoorRemarks=?, VisitDetailOther=?,VisitDetailOutdoor=?,"
+            + "VisitDetailOutdoorRemarks=?,VisitEndTime=?,VisitStartTime=?,VisitStatus=?,VisitStatusRemarks=?,WHRatio=? ,Waist=?, Weight=?,NeedsContent=? ,SYS1=?, DlA1=?, SYS2=?, DlA2=?, heartBeats1=?, heartBeats2=?,presentVolunteer=?, supportVolunteer=?,DeletePicString=?,ScheduleDate_Display=?,SavedStatus=1 where LocalId=?";
         return mgr.execSql(sql, [Bmi, CaseId, CategoryTopic1, CategoryTopic2, CategoryTopic3, EmotionAssessment, EmotionAssessmentRemarks,
             Hip, LifeStyleMeasureBloodPressure, LifeStyleMeasureBloodSuger, LifeStyleMeasureBpLocation, LifeStyleMeasureBpNoOfTime,
             LifeStyleMeasureBpPeriod, LifeStyleMeasureBsLocation, LifeStyleMeasureBsNoOfTime, LifeStyleMeasureBsPeriod, LifeStyleQuestion1, LifeStyleQuestion2, LifeStyleQuestion3,
             LifeStyleQuestion4, LifeStyleQuestion5, LifeStyleQuestion6, Location, LocationRemarks, OtherAccident, OtherAccidentNoOfDay, OtherHospDisbete, OtherHospDisbeteNoOfDay,
             OtherHospHighBp, OtherHospHighBpNoOfDay, OtherHospOtherIllness, OtherHospOtherIllnessNoOfDay, OtherRemarks, OtherSpecialNeed, OtherSpecialNeedService, ScheduleDate,
-            ScheduleTime, Status, TaskId, VisitDate, VisitDetailIndoor, VisitDetailIndoorRemarks, VisitDetailOther, VisitDetailOutdoor, VisitDetailOutdoorRemarks, VisitEndTime,
-            VisitId, VisitStartTime, VisitStatus, VisitStatusRemarks, WHRatio, Waist, Weight, NeedsContent, SYS1, DlA1, SYS2, DlA2, heartBeats1, heartBeats2, presentVolunteer, supportVolunteer, DeletePicString, LocalId]);
+            ScheduleTime, Status,  VisitDate, VisitDetailIndoor, VisitDetailIndoorRemarks, VisitDetailOther, VisitDetailOutdoor, VisitDetailOutdoorRemarks, VisitEndTime,
+             VisitStartTime, VisitStatus, VisitStatusRemarks, WHRatio, Waist, Weight, NeedsContent, SYS1, DlA1, SYS2, DlA2, heartBeats1, heartBeats2, presentVolunteer, supportVolunteer, DeletePicString,ScheduleDate_Display, LocalId]);
     }
 
 

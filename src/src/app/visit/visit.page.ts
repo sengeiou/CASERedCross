@@ -357,8 +357,8 @@ export class VisitPage extends AppBase {
   }
   ]
 
-  medicAppointLogList=[];
-
+  medicAppointLogList = [];
+  imgList=[];
   getVisitId() {
     console.log(this.LocalId);
 
@@ -376,6 +376,7 @@ export class VisitPage extends AppBase {
           console.log(Array.from(e.res.rows))
           var ImgList = [];
           ImgList = Array.from(e.res.rows);
+          this.imgList=Array.from(e.res.rows);
           var hvImgKeepListStr = '';
           for (var j = 0; j < ImgList.length; j++) {
             if (hvImgKeepListStr = '') {
@@ -541,24 +542,8 @@ export class VisitPage extends AppBase {
   saveYuyue(visitId) {
 
     console.log(visitId, this.ScheduleDate, this.ScheduleTime, this.params.caseID)
-    // this.ScheduleDate = AppUtil.FormatDate(new Date(this.ScheduleDate));
-    // this.ScheduleTime = AppUtil.FormatTime(new Date(this.ScheduleTime));
-    // console.log(this.ScheduleDate)
-    // if (!this.visit.ScheduleDate) {
-    //   var visit = new VisitServe();
-    //   visit.addVisit_yuyue(visitId, this.ScheduleDate, this.ScheduleTime, this.params.caseID).then((e) => {
-    //     console.log(e)
-    //     if (this.LocalId == 0 || this.LocalId == undefined) {
-    //       this.LocalId = e.res.insertId;
-    //       visit.saveVisitCaseId(this.params.caseID, e.res.insertId).then((e) => {
-    //         console.log(e)
-    //       })
-    //     }
-    //     this.getVisitId()
-    //   })
-
-    // }
-    this.addVisit()
+    
+    this.addVisit('no')
 
   }
 
@@ -719,26 +704,8 @@ export class VisitPage extends AppBase {
     //   this.toast('你沒有填寫未能探訪的原因');
     //   return;
     // }
-    this.addVisit()
-    // if (!this.visit.VisitDate) {
-    // var visit = new VisitServe();
-    // this.VisitDate = AppUtil.FormatDate(new Date(this.VisitDate));
-    // this.VisitStartTime = AppUtil.FormatTime(new Date(this.VisitStartTime));
-    // this.VisitEndTime = AppUtil.FormatTime(new Date(this.VisitEndTime));
-    // console.log(this.presentVolunteer, this.supportVolunteer)
-    // visit.addVisit_neurou(visitId, this.VisitDate, this.VisitStartTime, this.VisitEndTime, this.presentVolunteer, this.supportVolunteer, this.Location, this.LocationRemarks, this.VisitStatus, this.VisitStatusRemarks, this.params.caseID).then((e) => {
-    //   console.log(e)
-    //   if (this.LocalId == 0 || this.LocalId == undefined) {
-    //     this.LocalId = e.res.insertId;
-    //     visit.saveVisitCaseId(this.params.caseID, e.res.insertId).then((e) => {
-    //       console.log(e)
-    //     })
-    //   }
-    //   this.toast('資料提交成功');
-    //   this.getVisitId()
-    // })
-    // this.addVisit()
-    // }
+    this.addVisit('no')
+
   }
 
   getVisitDetailIndoor(e) {
@@ -769,19 +736,9 @@ export class VisitPage extends AppBase {
     //   return;
     // }
 
-    // var visit = new VisitServe();
-    // visit.saveService_neurou(visitId, this.VisitDetailIndoor, this.VisitDetailIndoorRemarks, this.VisitDetailOutdoor, this.VisitDetailOutdoorRemarks, this.VisitDetailOther, this.CategoryTopic1, this.CategoryTopic2, this.CategoryTopic3, this.params.caseID).then((e) => {
-    //   if (this.LocalId == 0 || this.LocalId == undefined) {
-    //     this.LocalId = e.res.insertId;
-    //     visit.saveVisitCaseId(this.params.caseID, e.res.insertId).then((e) => {
-    //       console.log(e)
-    //     })
-    //   }
-    //   this.toast('資料提交成功');
-    //   this.getVisitId()
-    // })
 
-    this.addVisit()
+
+    this.addVisit('no')
   }
 
   getWeight(e) {
@@ -815,7 +772,7 @@ export class VisitPage extends AppBase {
     //   this.toast('資料提交成功');
     //   this.getVisitId()
     // })
-    this.addVisit()
+    this.addVisit('no')
   }
 
   getLifeHabit1(e) {
@@ -858,7 +815,7 @@ export class VisitPage extends AppBase {
     //   this.toast('資料提交成功');
     //   this.getVisitId()
     // })
-    this.addVisit()
+    this.addVisit('no')
   }
 
   getEmotion(e) {
@@ -871,7 +828,7 @@ export class VisitPage extends AppBase {
     this.WHRatio = this.Waist / this.Hip;
     this.Bmi = this.Weight / (1.72 * 1.72)
 
-    this.addVisit()
+    this.addVisit('no')
     // var visit = new VisitServe();
     // visit.saveEmotion(visitId, this.EmotionAssessment, this.params.caseID).then((e) => {
     //   if (this.LocalId == 0 || this.LocalId == undefined) {
@@ -956,7 +913,7 @@ export class VisitPage extends AppBase {
     //   return;
     // }
 
-    this.addVisit()
+    this.addVisit('no')
 
     // var visit = new VisitServe();
     // visit.savaOtherSupplement(visitId, this.OtherHospDisbete, this.OtherHospDisbeteNoOfDay, this.OtherHospHighBp, this.OtherHospHighBpNoOfDay, this.OtherHospOtherIllness, this.OtherHospOtherIllnessNoOfDay, this.OtherAccident, this.OtherAccidentNoOfDay, this.OtherSpecialNeed, this.OtherSpecialNeedService, this.OtherRemarks, this.params.caseID).then((e) => {
@@ -971,11 +928,7 @@ export class VisitPage extends AppBase {
     // })
   }
 
-  addVisit() {
-    // if (this.visit.SavedStatus == 0) {
-    //   this.toast('已上傳過的的資料，無法修改');
-    //   return;
-    // }
+  addVisit(ret) {
 
     for (var i = 0; i < this.VisitDetailIndoorlist.length; i++) {
       if (this.VisitDetailIndoorlist[i].type == true) {
@@ -1039,6 +992,15 @@ export class VisitPage extends AppBase {
       this.VisitEndTime = AppUtil.FormatTime(new Date(this.VisitEndTime));
     }
 
+    if (this.Weight != 0 ) {
+      this.Bmi = this.Weight / (this.casedata.Height * this.casedata.Height);
+      this.Bmi=Math.floor(this.Bmi*100)/100;
+    }
+    if (this.Waist != 0 && this.Hip != 0) {
+      this.WHRatio = this.Waist / this.Hip;
+      this.WHRatio=Math.floor(this.WHRatio*100)/100;
+    }
+
     var VisitId = 0;
     var Status = 1;
     var TaskId = 0;
@@ -1049,9 +1011,151 @@ export class VisitPage extends AppBase {
       this.toast('你沒有選擇探訪日期');
       return;
     }
-    if (this.VisitStatus == 2 && this.VisitStatusRemarks == '') {
-      this.toast('請填寫未能探訪原因');
-      return;
+    if (ret == 'web') {
+
+      if (!this.VisitDate) {
+        this.toast('你沒有填寫實際探訪日期');
+        return;
+      }
+      if (!this.VisitStartTime || !this.VisitEndTime) {
+        this.toast('你沒有填寫實際探訪時間');
+        return;
+      }
+      if (this.Location == 0) {
+        this.toast('你沒有填寫面見地點');
+        return;
+      }
+      if (this.Location == 2 && this.LocationRemarks == '') {
+        this.toast('你沒有填寫其他面見地點');
+        return;
+      }
+      if (!this.presentVolunteer) {
+        this.toast('你沒有填寫出席義工一欄');
+        return;
+      }
+      if (!this.VisitStatus) {
+        this.toast('你沒有填寫探訪狀況');
+        return;
+      }
+      if (this.VisitStatus == 2 && !this.VisitStatusRemarks) {
+        this.toast('你沒有填寫未能探訪的原因');
+        return;
+      }
+      if (this.VisitStatus == 1) {
+
+        if (this.VisitDetailIndoor == '') {
+          this.toast('你沒有填寫室內活動選項');
+          return;
+        }
+        if (this.VisitDetailIndoorlist[5].type == true && this.VisitDetailIndoorRemarks == '') {
+          this.toast('你沒有填寫室內活動的其他項目');
+          return;
+        }
+        if (this.VisitDetailOutdoor == '') {
+          this.toast('你沒有填寫室外活動選項');
+          return;
+        }
+        if (this.VisitDetailOutdoorlist[3].type == true && this.VisitDetailOutdoorRemarks == '') {
+          this.toast('你沒有填寫室外活動的其他項目');
+          return;
+        }
+
+        if (this.LifeStyleQuestion1 == 0) {
+          this.toast('你沒有填寫根據醫生處方服食藥物');
+          return;
+        }
+        if (this.LifeStyleQuestion2 == 0) {
+          this.toast('你沒有填寫根據低鈉原則選擇食物');
+          return;
+        }
+        if (this.LifeStyleQuestion3 == 0) {
+          this.toast('你沒有填寫按低脂及低膽固醇原則選擇食物');
+          return;
+        }
+        if (this.LifeStyleQuestion4 == 0) {
+          this.toast('你沒有填寫根據高纖維原則選擇食物');
+          return;
+        }
+        if (this.LifeStyleQuestion5 == 0) {
+          this.toast('你沒有填寫能維持每星期運動至少3次及每次30分鐘');
+          return;
+        }
+        if (this.LifeStyleQuestion6 == 0) {
+          this.toast('你沒有填寫家居環境安全');
+          return;
+        }
+        if (this.LifeStyleMeasureBloodSuger == 0) {
+          this.toast('在家/外出(醫院／診所除外)*量度血糖');
+          return;
+        }
+        if (this.LifeStyleMeasureBloodPressure == 0) {
+          this.toast('你沒有填寫在家/外出(醫院／診所除外)*量度血壓');
+          return;
+        }
+
+        if (this.EmotionAssessment == '') {
+          this.toast('你沒有填寫情緒評估');
+          return;
+        }
+
+        if (this.EmotionAssessmentlist[3].type == true && this.EmotionAssessmentRemarks == '') {
+          this.toast('你沒有填寫其他情緒');
+          return;
+        }
+
+        if (this.OtherHospDisbete == 0) {
+          this.toast('你沒有填寫是否因糖尿病曾經入院');
+          return;
+        }
+        if (this.OtherHospDisbete == 1 && this.OtherHospDisbeteNoOfDay == 0) {
+          this.toast('你沒有填寫糖尿病曾經入院日數');
+          return;
+        }
+
+        if (this.OtherHospHighBp == 0) {
+          this.toast('你沒有填寫是否因高血壓曾經入院');
+          return;
+        }
+        if (this.OtherHospHighBp == 1 && this.OtherHospHighBpNoOfDay == 0) {
+          this.toast('你沒有填寫長者因高血壓曾經入院日數');
+          return;
+        }
+
+        if (this.OtherHospOtherIllness == 0) {
+          this.toast('你沒有填寫是否因其他疾病曾經入院');
+          return;
+        }
+        if (this.OtherHospOtherIllness == 1 && this.OtherHospOtherIllnessNoOfDay == 0) {
+          this.toast('你沒有填寫是否因其他疾病曾經入院日數');
+          return;
+        }
+
+        if (this.OtherAccident == 0) {
+          this.toast('你沒有填寫是否曾發生突發事件');
+          return;
+        }
+        if (this.OtherAccident == 1 && this.OtherAccidentNoOfDay == 0) {
+          this.toast('你沒有填寫曾發生突發事件');
+          return;
+        }
+
+        if (this.OtherSpecialNeed == 0) {
+          this.toast('你沒有填寫有否提出特別需要');
+          return;
+        }
+        if (this.OtherSpecialNeed == 1 && this.OtherSpecialNeedService == '') {
+          this.toast('你沒有填寫提出特別需要');
+          return;
+        }
+        if (this.OtherSpecialNeed == 1 && this.OtherSpecialNeedService != '' && this.NeedsContenttlist[3].type==true) {
+          this.toast('你沒有填寫其他特別需要说明');
+          return;
+        }
+        // if (this.OtherRemarks == '') {
+        //   this.toast('你沒有填寫其他狀況');
+        //   return;
+        // }
+      }
     }
     visit.addVisit(this.Bmi, this.params.caseID, this.CategoryTopic1, this.CategoryTopic2, this.CategoryTopic3, this.EmotionAssessment, this.EmotionAssessmentRemarks,
       this.Hip, this.LifeStyleMeasureBloodPressure, this.LifeStyleMeasureBloodSuger, this.LifeStyleMeasureBpLocation, this.LifeStyleMeasureBpNoOfTime,
@@ -1063,8 +1167,47 @@ export class VisitPage extends AppBase {
       this.VisitDetailOutdoorRemarks, this.VisitEndTime, VisitId, this.VisitStartTime, this.VisitStatus, this.VisitStatusRemarks, this.WHRatio, this.Waist, this.Weight,
       this.NeedsContent, this.SYS1, this.DlA1, this.SYS2, this.DlA2, this.heartBeats1, this.heartBeats2, this.presentVolunteer, this.supportVolunteer, this.DeletePicString, this.ScheduleDate_Display).then(e => {
         if (e) {
-          this.toast('資料保存成功');
-          this.back();
+          if (ret != 'web') {
+            this.toast('資料保存成功');
+            if(ret!='no'){
+              this.back();
+            }
+          } else {
+            var visit = new VisitServe();
+            visit.getVisitId(e.res.insertId).then((e) => {
+              console.log(e)
+              var casedata = e.res.rows;
+              var data = Array.from(casedata)[0]
+              this.visit = data;
+              console.log(data);
+              var imgserver = new ImageServe();
+              imgserver.getImageList_web(this.visit.LocalId).then(e => {
+                console.log(Array.from(e.res.rows))
+                var ImgList = [];
+                ImgList = Array.from(e.res.rows);
+                var hvImgKeepListStr = '';
+                for (var j = 0; j < ImgList.length; j++) {
+                  if (hvImgKeepListStr = '') {
+                    hvImgKeepListStr = ImgList[j].LocalId
+                  } else {
+                    hvImgKeepListStr = hvImgKeepListStr + ',' + ImgList[j].LocalId
+                  }
+                }
+                this.visit.hvImgKeepListStr = hvImgKeepListStr;
+                this.visit.hvNewImgQty = ImgList.length;
+
+                // this.uploadVisitListWeb()
+              })
+
+              var medicalRecord = new MedicalRecordServe();
+              medicalRecord.getAllMedicalRecordList(this.params.caseid).then((e) => {
+                this.medicAppointLogList = Array.from(e.res.rows);
+              })
+
+              this.uploadVisitListWeb()
+            })
+
+          }
         }
 
       })
@@ -1116,27 +1259,61 @@ export class VisitPage extends AppBase {
 
 
   uploadVisitListWeb() {
-    // if (e == 0) {
-    //   this.toast('已上傳過的的資料，無需上傳');
-    //   return;
-    // }
-    if (this.LocalId == 0 || this.LocalId == undefined) {
-      this.showConfirm('资料没有保存？请先保存', (e) => {
 
-      })
-    } else {
-      var hvLogList = [];
-      var activityLogList = [];
-      var phoneSupportLogList = [];
-      var medicAppointLogList = this.medicAppointLogList
+    // if (this.LocalId == 0 || this.LocalId == undefined) {
+    //   this.showConfirm('资料没有保存？请先保存', (e) => {
 
-      hvLogList.push(this.visit);
-      hvLogList[0]['Height'] = this.casedata.Height;
-      console.log(hvLogList)
-      
-      this.api.SaveAll(hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList, this.params.UserId, 'one').then((ret) => {
-        console.log(ret)
-        if (ret.Result == 'true') {
+    //   })
+    // } else {
+    var hvLogList = [];
+    var activityLogList = [];
+    var phoneSupportLogList = [];
+    var medicAppointLogList = this.medicAppointLogList
+
+    hvLogList.push(this.visit);
+    hvLogList[0]['Height'] = this.casedata.Height;
+    console.log(hvLogList)
+
+    this.api.SaveAll(hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList, this.params.UserId, 'one').then((ret) => {
+      console.log(ret)
+      if (ret.Result == 'true') {
+        var AttachmentGroupLists = [];
+        var AttchList = []
+        if (ret.AttachmentGroupLists) {
+          var listtype = typeof ret.AttachmentGroupLists;
+          if (listtype == 'object' && ret.AttachmentGroupLists.length == undefined) {
+            AttachmentGroupLists.push(ret.AttachmentGroupLists.AttchList);
+          } else {
+            AttachmentGroupLists = ret.AttachmentGroupLists.AttchList;
+          }
+          if (AttachmentGroupLists.length > 0) {
+            for (var i = 0; i < AttachmentGroupLists.length; i++) {
+              var listtype2 = typeof ret.AttachmentGroupLists.AttchList;
+              if (listtype2 == 'object' && ret.AttachmentGroupLists.AttchList.length == undefined) {
+                AttchList.push(ret.AttachmentGroupLists.AttchList);
+              } else {
+                AttchList = ret.AttachmentGroupLists.AttchList;
+              }
+            }
+          }
+
+          for (var j = 0; j < this.imgList.length; j++) {
+            this.api.UploadImgPart('HomeVisit', this.imgList[j].VisitId, this.imgList[j].Base64ImgString).then(e => {
+              console.log(e)
+            })
+          }
+          this.api.ExecuteWorkingSet(ret.WorkingSetID, this.casedata.CaseId, this.params.UserId).then(e => {
+            console.log(e)
+            if (e.Result == 'true') {
+              var visit = new VisitServe();
+              visit.sevaVisitSavedStatus(this.LocalId).then(e => {
+
+              })
+              this.toast('資料同步成功');
+            }
+          })
+
+        } else {
           this.api.ExecuteWorkingSet(ret.WorkingSetID, this.params.caseID, this.params.UserId).then(e => {
             if (e.Result == 'true') {
 
@@ -1151,10 +1328,11 @@ export class VisitPage extends AppBase {
             }
           })
         }
+      }
 
-      });
-    }
+    });
   }
+  // }
 
 
 

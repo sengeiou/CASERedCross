@@ -258,7 +258,7 @@ export class ServiceApi {
 
 
 
-    public SaveAll(hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList, userId,type) {
+    public SaveAll(hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList, userId, type) {
         var url = ApiConfig.getApiUrl();
         var data = { hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList };
         var headers = ApiConfig.GetHeader(url, data);
@@ -272,12 +272,12 @@ export class ServiceApi {
         soapMessage += "<hvLogList>";
 
         for (var i = 0; i < hvLogList.length; i++) {
-            if (hvLogList[i].SavedStatus == 1 || type=='one') {
-                if (hvLogList[i].VisitDate) {
-                    var VisitDate = AppUtil.FormatDate2(new Date(hvLogList[i].VisitDate));
-                } else {
-                    var VisitDate = ''
-                }
+            if (hvLogList[i].SavedStatus == 1 || type == 'one') {
+                // if (hvLogList[i].VisitDate) {
+                //     var VisitDate = AppUtil.FormatDate2(new Date(hvLogList[i].VisitDate));
+                // } else {
+                //     var VisitDate = ''
+                // }
 
                 if (hvLogList[i].ScheduleDate) {
                     var ScheduleDate = AppUtil.FormatDate2(new Date(hvLogList[i].ScheduleDate));
@@ -285,7 +285,7 @@ export class ServiceApi {
                     var ScheduleDate = ''
                 }
 
-                console.log(VisitDate)
+                // console.log(VisitDate)
                 var UlnarLength = 0;
                 var DeletePicString = '';
                 // var hvImgKeepListStr = ''
@@ -303,7 +303,7 @@ export class ServiceApi {
                 soapMessage += "<TaskId>" + hvLogList[i].TaskId + "</TaskId>";
                 soapMessage += "<VisitId>" + hvLogList[i].VisitId + "</VisitId>";
                 // soapMessage += "<VisitDate>" + hvLogList[i].VisitDate + "</VisitDate>";
-                soapMessage += "<VisitDate>" + VisitDate + "</VisitDate>";
+                soapMessage += "<VisitDate>" + hvLogList[i].VisitDate + "</VisitDate>";
                 soapMessage += "<VisitStartTime>" + hvLogList[i].VisitStartTime + "</VisitStartTime>";
                 soapMessage += "<VisitEndTime>" + hvLogList[i].VisitEndTime + "</VisitEndTime>";
                 soapMessage += "<ServHrs>" + ServHrs + "</ServHrs>";
@@ -353,14 +353,18 @@ export class ServiceApi {
                 soapMessage += "<OtherSpecialNeed>" + hvLogList[i].OtherSpecialNeed + "</OtherSpecialNeed>";
                 soapMessage += "<OtherSpecialNeedService>" + hvLogList[i].OtherSpecialNeedService + "</OtherSpecialNeedService>";
                 soapMessage += "<OtherRemarks>" + hvLogList[i].OtherRemarks + "</OtherRemarks>";
-                soapMessage += "<Status>" + hvLogList[i].Status + "</Status>";
+                if (type == 'one' && hvLogList[i].VisitId != 0) {
+                    soapMessage += "<Status>2</Status>";
+                } else {
+                    soapMessage += "<Status>" + hvLogList[i].Status + "</Status>";
+                }
                 soapMessage += "<DeletePicString>" + DeletePicString + "</DeletePicString>";
                 soapMessage += "<NeedsContent>" + hvLogList[i].NeedsContent + "</NeedsContent>";
                 soapMessage += "<hvuilList>" + hvuilList + "</hvuilList>";
-                // soapMessage += "<hvImgKeepListStr>" + hvLogList[i].hvImgKeepListStr + "</hvImgKeepListStr>";
-                // soapMessage += "<hvNewImgQty>" + hvLogList[i].hvNewImgQty + "</hvNewImgQty>";
-                soapMessage += "<hvImgKeepListStr>4,5</hvImgKeepListStr>";
-                soapMessage += "<hvNewImgQty>2</hvNewImgQty>";
+                soapMessage += "<hvImgKeepListStr>" + hvLogList[i].hvImgKeepListStr + "</hvImgKeepListStr>";
+                soapMessage += "<hvNewImgQty>" + hvLogList[i].hvNewImgQty + "</hvNewImgQty>";
+                // soapMessage += "<hvImgKeepListStr>4,5</hvImgKeepListStr>";
+                // soapMessage += "<hvNewImgQty>2</hvNewImgQty>";
                 soapMessage += "</objAppHomeVisit>";
             }
         }
@@ -368,7 +372,7 @@ export class ServiceApi {
 
         soapMessage += "<activityLogList>";
         for (var i = 0; i < activityLogList.length; i++) {
-            if (activityLogList[i].SavedStatus == 1 || type=='one') {
+            if (activityLogList[i].SavedStatus == 1 || type == 'one') {
                 var ActDate = AppUtil.FormatDate2(new Date(activityLogList[i].ActDate));
                 console.log(ActDate)
                 soapMessage += "<tb_acticve_log_temp>";
@@ -386,7 +390,12 @@ export class ServiceApi {
                 soapMessage += "<Remarks4>" + activityLogList[i].Remarks4 + "</Remarks4>";
                 soapMessage += "<OtherActRemarks>" + activityLogList[i].OtherActRemarks + "</OtherActRemarks>";
                 soapMessage += "<Remarks>" + activityLogList[i].Remarks + "</Remarks>";
-                soapMessage += "<Status>" + activityLogList[i].Status + "</Status>";
+                if (type == 'one' && activityLogList[i].ActivityId != 0) {
+                    soapMessage += "<Status>1</Status>";
+                } else {
+                    soapMessage += "<Status>" + activityLogList[i].Status + "</Status>";
+                }
+
                 soapMessage += "<alvList xsi:nil=\"true \"/>";
                 soapMessage += "</tb_acticve_log_temp>";
             }
@@ -396,7 +405,7 @@ export class ServiceApi {
 
         soapMessage += "<phoneSupportLogList>";
         for (var i = 0; i < phoneSupportLogList.length; i++) {
-            if (phoneSupportLogList[i].SavedStatus == 1 || type=='one') {
+            if (phoneSupportLogList[i].SavedStatus == 1 || type == 'one') {
                 var CallDate = AppUtil.FormatDate2(new Date(phoneSupportLogList[i].CallDate));
                 console.log(CallDate)
                 soapMessage += "<tb_phone_support_log_temp>";
@@ -412,7 +421,12 @@ export class ServiceApi {
                 soapMessage += "<CannotContact>" + phoneSupportLogList[i].CannotContact + "</CannotContact>";
                 soapMessage += "<NextPhoneDate>" + phoneSupportLogList[i].NextPhoneDate + "</NextPhoneDate>";
                 soapMessage += "<NextPhoneTime>" + phoneSupportLogList[i].NextPhoneTime + "</NextPhoneTime>";
-                soapMessage += "<Status>" + phoneSupportLogList[i].Status + "</Status>";
+                if (type == 'one' && phoneSupportLogList[i].SupportId != 0) {
+                    soapMessage += "<Status>1</Status>";
+                } else {
+                    soapMessage += "<Status>" + phoneSupportLogList[i].Status + "</Status>";
+                }
+
                 soapMessage += "</tb_phone_support_log_temp>";
             }
         }
@@ -420,15 +434,21 @@ export class ServiceApi {
 
         soapMessage += "<medicAppointLogList>";
         for (var i = 0; i < medicAppointLogList.length; i++) {
-            if (medicAppointLogList[i].SavedStatus == 1 || type=='one') {
+            if (medicAppointLogList[i].SavedStatus == 1 || type == 'one') {
                 var AppointmentDate = AppUtil.FormatDate2(new Date(medicAppointLogList[i].AppointmentDate));
                 soapMessage += "<tb_medical_appointment_log_temp>";
                 soapMessage += "<AppointmentId>" + medicAppointLogList[i].AppointmentId + "</AppointmentId>";
+                soapMessage += "<CaseId>" + medicAppointLogList[i].CaseId + "</CaseId>";
                 soapMessage += "<Hosp>" + medicAppointLogList[i].Hosp + "</Hosp>";
                 soapMessage += "<Specialty>" + medicAppointLogList[i].Specialty + "</Specialty>";
                 soapMessage += "<Description>" + medicAppointLogList[i].Description + "</Description>";
                 soapMessage += "<AppointmentDate>" + AppointmentDate + "</AppointmentDate>";
                 soapMessage += "<AppointmentTime>" + medicAppointLogList[i].AppointmentTime + "</AppointmentTime>";
+                // if (type == 'all' && medicAppointLogList[i].AppointmentId != 0) {
+                //     soapMessage += "<Status>1</Status>";
+                // } else {
+                    
+                // }
                 soapMessage += "<Status>" + medicAppointLogList[i].Status + "</Status>";
                 soapMessage += "<Reason>" + medicAppointLogList[i].Reason + "</Reason>";
                 soapMessage += "</tb_medical_appointment_log_temp>";
@@ -464,9 +484,9 @@ export class ServiceApi {
             });
     }
 
-    public UploadImgPart(section,ClientID,ImgDataBase64){
+    public UploadImgPart(section, ClientID, ImgDataBase64) {
         var url = ApiConfig.getApiUrl();
-        var data = { section,ClientID,ImgDataBase64 };
+        var data = { section, ClientID, ImgDataBase64 };
         var headers = ApiConfig.GetHeader(url, data);
         let options = new RequestOptions({ headers: headers });
         var soapMessage = "<?xml version='1.0' encoding='utf-8'?>";
@@ -480,7 +500,7 @@ export class ServiceApi {
         soapMessage += "</attachment>";
         soapMessage += "</UploadImgPart>";
         soapMessage += "</soap:Body>";
-       soapMessage += "</soap:Envelope>";
+        soapMessage += "</soap:Envelope>";
 
         let body = soapMessage;
         console.log(body);
@@ -502,6 +522,6 @@ export class ServiceApi {
             });
     }
 
-    
+
 
 }

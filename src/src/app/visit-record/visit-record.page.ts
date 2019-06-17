@@ -48,7 +48,7 @@ export class VisitRecordPage extends AppBase {
     this.Hosp = '';
     this.Specialty = '';
     this.Status = 1;
-    this.MedicalRecord = null;
+    // this.MedicalRecord = null;
     console.log(this.params.MedicalRecordId)
     this.getMedicalRecord()
     this.getAllHosiptalList()
@@ -110,11 +110,14 @@ export class VisitRecordPage extends AppBase {
         this.MedicalRecord = arr;
         this.getSpecialty()
         this.gethosiptal()
-        if(this.MedicalRecord.AppointmentDate){
-          var AppointmentDate_Display = AppUtil.FormatDate2(new Date(this.MedicalRecord.AppointmentDate));
-          console.log(this.MedicalRecord)
-          this.MedicalRecord.AppointmentDate_Display = AppointmentDate_Display
+        if(this.MedicalRecord){
+          if(this.MedicalRecord.AppointmentDate){
+            var AppointmentDate_Display = AppUtil.FormatDate2(new Date(this.MedicalRecord.AppointmentDate));
+            console.log(this.MedicalRecord)
+            this.MedicalRecord.AppointmentDate_Display = AppointmentDate_Display
+          }
         }
+       
        
       })
     }

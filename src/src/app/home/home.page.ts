@@ -54,7 +54,7 @@ export class HomePage extends AppBase {
   caselist = [];
   wangluo = ''
   UserId = 0;
-  imgList=[];
+  imgList = [];
 
   onMyLoad() {
     //参数
@@ -75,6 +75,46 @@ export class HomePage extends AppBase {
     //   console.log('可视区高' + seehei + '可视区宽' + seewid);
     // }
 
+  }
+  visiltList_web = [];
+  getSavedStatus() {
+    var SavedStatus = 1;
+    var visit = new VisitServe();
+    var imgserver = new ImageServe();
+    visit.getVisit_SavedStatus(SavedStatus).then(e => {
+      this.visiltList_web = Array.from(e.res.rows);
+      for (var i = 0; i < this.visiltList_web.length; i++) {
+        this.visiltList_web[i].hvImgKeepListStr = '';
+        this.visiltList_web[i].hvNewImgQty = 0;
+        this.visiltList_web[i].Height = 0;
+        var visitId = this.visiltList_web[i].LocalId;
+        if (this.visiltList_web[i].VisitId > 0) {
+          visitId = this.visiltList_web[i].VisitId;
+        }
+        imgserver.getImageList_web(visitId).then(e => {
+          console.log(Array.from(e.res.rows));
+          this.imgList = Array.from(e.res.rows);
+          var ImgList = [];
+          ImgList = Array.from(e.res.rows);
+          var hvImgKeepListStr = '';
+          for (var j = 0; j < ImgList.length; j++) {
+            if (hvImgKeepListStr == '') {
+              hvImgKeepListStr = ImgList[j].LocalId
+            } else {
+              hvImgKeepListStr = hvImgKeepListStr + ',' + ImgList[j].LocalId;
+            }
+          }
+          if (hvImgKeepListStr.length > 0) {
+            this.visiltList_web[i].hvImgKeepListStr = hvImgKeepListStr;
+            this.visiltList_web[i].hvNewImgQty = ImgList.length;
+          }
+        })
+      }
+    })
+
+    var activity = new ActivityServe();
+    var phone = new PhoneServe();
+    var medicalRecordServe = new MedicalRecordServe();
   }
 
 
@@ -103,8 +143,6 @@ export class HomePage extends AppBase {
   }
 
   loading = null;
-
-
   async presentLoading() {
 
     this.loading = await this.loadingController.create({
@@ -116,31 +154,34 @@ export class HomePage extends AppBase {
     var visiltList = [];
     var medicAppointLogList = [];
     console.log('aa')
-    // this.SysnAllWeb();
-
 
     console.log(this.caselist)
     for (var i = 0; i < this.caselist.length; i++) {
-      this.SaveAll(this.caselist[i])
+      // this.SaveAll(this.caselist[i])
+      visiltList=visiltList.concat(this.caselist[i].visitList)
+      activityList=activityList.concat(this.caselist[i].activityList)
+      phoneList=phoneList.concat(this.caselist[i].phoneList)
+      medicAppointLogList=medicAppointLogList.concat(this.caselist[i].medicAppointLogList)
     }
+    console.log(visiltList);
+    // return;
+    this. SaveAll(visiltList, phoneList, activityList,medicAppointLogList);
     console.log(this.caselist)
     if (this.caselist.length == 0) {
       console.log('565')
       this.SysnAllWeb();
     }
-
-    // this.SysnAllWeb();
-
   }
 
-  SaveAll(kv) {
-    this.api.SaveAll(kv.visitList, kv.phoneList, kv.activityList, kv.medicAppointLogList, this.UserId, 'all').then((ret) => {
+  SaveAll(visitList, phoneList, activityList,medicAppointLogList) {
+    console.log(visitList)
+
+    this.api.SaveAll(visitList, phoneList, activityList, medicAppointLogList, this.UserId, 'all').then((ret) => {
       console.log(ret)
       // return
       if (ret.Result == 'true') {
-        
         var AttachmentGroupLists = [];
-        var AttchList=[]
+        var AttchList = []
         if (ret.AttachmentGroupLists) {
           var listtype = typeof ret.AttachmentGroupLists;
           if (listtype == 'object' && ret.AttachmentGroupLists.length == undefined) {
@@ -150,7 +191,6 @@ export class HomePage extends AppBase {
           }
           if (AttachmentGroupLists.length > 0) {
             for (var i = 0; i < AttachmentGroupLists.length; i++) {
-
               var listtype2 = typeof ret.AttachmentGroupLists.AttchList;
               if (listtype2 == 'object' && ret.AttachmentGroupLists.AttchList.length == undefined) {
                 AttchList.push(ret.AttachmentGroupLists.AttchList);
@@ -158,18 +198,25 @@ export class HomePage extends AppBase {
                 AttchList = ret.AttachmentGroupLists.AttchList;
               }
 
+              // this.saveImage_AttachmentId();
+
             }
           }
-          
-          for(var j=0;j<this.imgList.length;j++){
-            this.api.UploadImgPart('HomeVisit', this.UserId, this.imgList[j].Base64ImgString).then(e => {
+
+          for (var j = 0; j < this.imgList.length; j++) {
+            this.api.UploadImgPart('HomeVisit', this.imgList[j].VisitId, this.imgList[j].Base64ImgString).then(e => {
               console.log(e)
-              
             })
           }
-
-
-          this.api.ExecuteWorkingSet(ret.WorkingSetID, kv.CaseId, this.UserId).then(e => {
+          this.api.ExecuteWorkingSet(ret.WorkingSetID,0, this.UserId).then(e => {
+            console.log(e)
+            if (e.Result == 'true') {
+              this.SysnAllWeb();
+              this.toast('資料同步成功');
+            }
+          })
+        } else {
+          this.api.ExecuteWorkingSet(ret.WorkingSetID, 0, this.UserId).then(e => {
             console.log(e)
             if (e.Result == 'true') {
               this.SysnAllWeb();
@@ -177,7 +224,6 @@ export class HomePage extends AppBase {
             }
           })
         }
-
       }
       console.log(ret)
     })
@@ -274,10 +320,10 @@ export class HomePage extends AppBase {
             visitId = kv.visitList[i].VisitId;
           }
 
-          imgserver.getImageList_web(kv.visitList[i].LocalId).then(e => {
+          imgserver.getImageList_web(visitId).then(e => {
             console.log(Array.from(e.res.rows))
 
-            this.imgList=Array.from(e.res.rows);
+            this.imgList = Array.from(e.res.rows);
             var ImgList = [];
             ImgList = Array.from(e.res.rows);
             var hvImgKeepListStr = '';
@@ -365,7 +411,7 @@ export class HomePage extends AppBase {
           this.saList = a;
         }
 
-        // this.updateData(); //同步数据到本地数据库
+        this.updateData(); //同步数据到本地数据库
 
         this.loading.dismiss();;
       } else {
@@ -507,27 +553,27 @@ export class HomePage extends AppBase {
       //血压
       var blood = this.saList[i].BloodPressureMonthlyList.objChartBP
       var BloodPressuretype = typeof this.saList[i].BloodPressureMonthlyList.objChartBP;
-
-      console.log('血压rr' + BloodPressuretype)
-      console.log('血压rd' + this.saList[i].BloodPressureMonthlyList.objChartBP.length)
-      if (BloodPressuretype == 'object' && this.saList[i].BloodPressureMonthlyList.objChartBP.length == undefined) {
-        var data = [];
-        data.push(this.saList[i].BloodPressureMonthlyList.objChartBP);
-        this.BloodPressure = data;
-        console.log('血压rr')
-      } else {
-        this.BloodPressure = this.saList[i].BloodPressureMonthlyList.objChartBP;
-        console.log('血压ff')
-      }
-      console.log(this.BloodPressure)
-      // return
-      if (this.BloodPressure) {
-        for (var j = 0; j < this.BloodPressure.length; j++) {
-          console.log('血壓ss')
-          this.setBloodPressureWeb(this.BloodPressure[j])
+      if (this.saList[i].BloodPressureMonthlyList) {
+        console.log('血压rr' + BloodPressuretype)
+        console.log('血压rd' + this.saList[i].BloodPressureMonthlyList.objChartBP.length)
+        if (BloodPressuretype == 'object' && this.saList[i].BloodPressureMonthlyList.objChartBP.length == undefined) {
+          var data = [];
+          data.push(this.saList[i].BloodPressureMonthlyList.objChartBP);
+          this.BloodPressure = data;
+          console.log('血压rr')
+        } else {
+          this.BloodPressure = this.saList[i].BloodPressureMonthlyList.objChartBP;
+          console.log('血压ff')
+        }
+        console.log(this.BloodPressure)
+        // return
+        if (this.BloodPressure) {
+          for (var j = 0; j < this.BloodPressure.length; j++) {
+            console.log('血壓ss')
+            this.setBloodPressureWeb(this.BloodPressure[j])
+          }
         }
       }
-
       //体重
       var Weighttype = typeof this.saList[i].WeightMonthlyList.objChartWeight;
       if (Weighttype == 'object' && this.saList[i].WeightMonthlyList.objChartWeight.length == undefined) {
@@ -740,7 +786,7 @@ export class HomePage extends AppBase {
       kv.OtherAccidentNoOfDay, kv.OtherHospDisbete, kv.OtherHospDisbeteNoOfDay, kv.OtherHospHighBp,
       kv.OtherHospHighBpNoOfDay, kv.OtherHospOtherIllness, kv.OtherHospOtherIllnessNoOfDay,
       kv.OtherRemarks, kv.OtherSpecialNeed, kv.OtherSpecialNeedService, kv.ScheduleDate, kv.ScheduleTime,
-      kv.Status, kv.TaskId, kv.VisitDate_Disply, kv.VisitDetailIndoor, kv.VisitDetailIndoorRemarks,
+      kv.Status,kv.TaskId, kv.VisitDate_Disply, kv.VisitDetailIndoor, kv.VisitDetailIndoorRemarks,
       kv.VisitDetailOther, kv.VisitDetailOutdoor, kv.VisitDetailOutdoorRemarks, kv.VisitEndTime,
       kv.VisitId, kv.VisitStartTime, kv.VisitStatus, kv.VisitStatusRemarks, kv.WHRatio, kv.Waist,
       kv.Weight, presentVolunteer, supportVolunteer, ScheduleDate_Display, kv.DlA1, kv.DlA2, kv.SYS1, kv.SYS2, kv.heartBeats1, kv.heartBeats2, kv.NeedsContent).then((e) => {
@@ -834,6 +880,13 @@ export class HomePage extends AppBase {
     console.log('復診 end')
     medicalRecordServe.addMedicalRecordWeb(kv.AppointmentId, kv.AppointmentDate, kv.AppointmentTime, kv.Description, kv.Reason, kv.Hosp, kv.Specialty, kv.CaseId).then(ret => {
       console.log(ret)
+    })
+  }
+
+  saveImage_AttachmentId(kv) {
+    var imgserve = new ImageServe();
+    imgserve.saveImage_AttachmentId(kv.AttachmentId, kv.LocalId).then(e => {
+      console.log(e)
     })
   }
 

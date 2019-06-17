@@ -54,10 +54,10 @@ export class TestPage extends AppBase {
 
   }
   onMyShow() {
-    this.number = '91001';
-    this.password = 'carman';
-    // this.number = '';
-    // this.password = '';
+    // this.number = '91001';
+    // this.password = 'carman';
+    this.number = '';
+    this.password = '';
 
     this.wangluo = this.network.type;
     console.log(this.network.type)
@@ -72,7 +72,6 @@ export class TestPage extends AppBase {
   password = '';
   data = [];
  
-
   insert() {
     var dbmgr = DBMgr.GetInstance();
     dbmgr.execSql("insert into USER (number,password,sdate,VolId) values (?,?,?,?)", [this.number, this.password, new Date().getTime(),this.VolId]).then((ret) => {
@@ -106,6 +105,9 @@ export class TestPage extends AppBase {
       lastlogininfo = window.localStorage.getItem("lastlogininfo");
       if (lastlogininfo == null) {
         var userServe=new UserServe()
+        userServe.getAllUserList().then(e=>{
+          console.log(e);
+        })
         userServe.getUser(this.number, this.password).then(ret=>{
           var rows = ret.res.rows;
           console.log(rows);
@@ -114,7 +116,7 @@ export class TestPage extends AppBase {
           if (this.data) {
             var time = new Date().getTime() - this.data[0]['sdate'];
             if (time < 24 * 60 * 60 * 1000) {
-              this.navigate('home', { id: rows.VolId })
+              this.navigate('home', { id: rows[0].VolId })
               this.update()
               this.toast('登录成功');
             } else {
@@ -128,7 +130,6 @@ export class TestPage extends AppBase {
         })
         
       } else {
-
         lastlogininfo = JSON.parse(lastlogininfo);
         var logintime = parseInt(lastlogininfo.logintime);
         var now = (new Date()).getTime();
