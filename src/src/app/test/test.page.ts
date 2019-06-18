@@ -81,7 +81,7 @@ export class TestPage extends AppBase {
 
   update() {
     var dbmgr = DBMgr.GetInstance();
-    dbmgr.execSql("update  USER SET sdate=" + new Date().getTime() + ' where ID=' + this.data[0]['ID']).then((ret) => {
+    dbmgr.execSql("update  USER SET sdate=" + new Date().getTime() + ' where id=' + this.data[0]['id']).then((ret) => {
       // this.showAlert("影响了"+ret.res.rowsAffected+"行数据");
     });
   }
@@ -160,8 +160,9 @@ export class TestPage extends AppBase {
 
           this.VolId = ret.objUser.VolId;
           this.navigate('home', { id: this.VolId });
-          this.update();
+          
           userServe.getUserNumber(this.number).then((e) => {
+            this.update();
             console.log(e)
             if (e.res.rows.length == 0) {
               this.insert()

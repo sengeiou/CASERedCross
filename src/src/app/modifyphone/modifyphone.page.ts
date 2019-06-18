@@ -32,7 +32,8 @@ export class ModifyphonePage extends AppBase {
     this.headerscroptshow = 480;
 
     this.phone = {};
-    this.casedata = {}
+    this.casedata = {};
+    this.phone.VisitDate = {};
   }
 
 
@@ -49,6 +50,7 @@ export class ModifyphonePage extends AppBase {
   VolunteerName = '';
   PhoneID = 0;
   phone = null;
+
 
   DetailList = [{
     DetailType: false, value: 1
@@ -78,7 +80,7 @@ export class ModifyphonePage extends AppBase {
     this.getCase()
     this.getPhone()
     this.getVolunteerList()
-    this.getAllVisitScheduleDate()
+
     this.getVolunteer()
   }
 
@@ -104,10 +106,12 @@ export class ModifyphonePage extends AppBase {
         this.phone = data;
         console.log(data)
         console.log(data["CallDate"])
-        this.CallDate_show = AppUtil.FormatDate(new Date(data["CallDate"]));
-        
-        this.CannotContact=this.phone.CannotContact;
-        
+        this.CallDate_show = AppUtil.FormatDate2(new Date(data["CallDate"]));
+        this.phone.VisitDate = [];
+
+        this.CannotContact = this.phone.CannotContact;
+
+        this.getAllVisitScheduleDate()
 
         var DetailTypelist = this.phone.Detail.split(',');
         for (var i = 0; i < DetailTypelist.length; i++) {
@@ -188,7 +192,7 @@ export class ModifyphonePage extends AppBase {
       this.showConfirm('一旦按選，在這按鈕以下的資料將會清空，你確定要按選嗎？', (ret) => {
         if (ret) {
           this.CannotContact = e;
-          this.phone.CannotContact=e;
+          this.phone.CannotContact = e;
           this.Detail = '';
           this.DetailOther = '';
           this.OtherRemark = ''
@@ -216,19 +220,14 @@ export class ModifyphonePage extends AppBase {
           ]
         }
       })
-    }else{
+    } else {
       this.CannotContact = e;
-      this.phone.CannotContact=e;
+      this.phone.CannotContact = e;
     }
   }
 
-  savePhone(e) {
-    if (e == 0) {
-      this.toast('已上傳過的的資料，無法修改');
-      return;
-    }
+  savePhone(ret) {
 
-    
     var CallDate_Display = ''
 
     var phone = new PhoneServe();
@@ -258,30 +257,6 @@ export class ModifyphonePage extends AppBase {
     this.CannotContact = this.CannotContact != 0 ? this.CannotContact : this.phone.CannotContact
     this.NextPhoneDate = this.NextPhoneDate != '' ? this.NextPhoneDate : this.phone.NextPhoneDate
     this.NextPhoneTime = this.NextPhoneTime != '' ? this.NextPhoneTime : this.phone.NextPhoneTime
-
-
-    console.log(this.CannotContact)
-    // return;
-    if (this.CallDate=='') {
-      this.toast('你沒有輸入電話慰問日期');
-      return;
-    }
-
-    // if (this.CallStartTime=='' || this.CallEndTime=='') {
-    //   this.toast('你沒有輸入電話慰問時間');
-    //   return;
-    // }
-
-    // if(this.CallStartTime!='' && this.CallEndTime!=''){
-    //   var oDate1 = new Date(this.CallStartTime);
-    //   var oDate2 = new Date(this.CallEndTime);
-    //   if (oDate1.getTime() > oDate2.getTime()) {
-    //     this.toast('開始時間不能遲於結束時間');
-    //     return;
-    //   }
-    // }
-    
-
     if (this.CannotContact != 1) {
       for (var i = 0; i < this.DetailList.length; i++) {
         if (this.DetailList[i].DetailType == true) {
@@ -297,6 +272,55 @@ export class ModifyphonePage extends AppBase {
       this.Detail = '';
     }
 
+    console.log(this.CannotContact)
+    // return;
+    if (this.CallDate == '') {
+      this.toast('你沒有輸入電話慰問日期');
+      return;
+    }
+
+    if (ret == 'web') {
+      if (this.CallStartTime == '' || this.CallEndTime == '') {
+        this.toast('你沒有輸入電話慰問時間');
+        return;
+      }
+
+      if (this.CallStartTime == this.CallEndTime) {
+        this.toast('開始和結束時間不能一樣');
+        return;
+      }
+      var oDate1 = new Date(this.CallStartTime);
+      var oDate2 = new Date(this.CallEndTime);
+      if (oDate1.getTime() > oDate2.getTime()) {
+        this.toast('開始時間不能遲於結束時間');
+        return;
+      }
+      if (this.CannotContact == 0) {
+        this.toast('你沒有輸入聯絡状态');
+        return;
+      }
+      
+      if (this.CannotContact == 2) {
+        if (this.DetailList[7].DetailType == true) {
+          if (this.NextPhoneDate == '' ) {
+            this.toast('你沒有輸入下次探訪日期');
+            return;
+          }
+
+          if (this.NextPhoneTime=='' ) {
+            this.toast('你沒有輸入下次探訪時間');
+            return;
+          }
+        }
+
+        if (this.DetailList[8].DetailType == true) {
+          if (this.DetailOther=='' ) {
+            this.toast('你沒有輸入其他電話慰問內容');
+            return;
+          }
+        }
+      }
+    }
 
 
     this.PhoneID = this.params.PhoneID;
@@ -309,17 +333,19 @@ export class ModifyphonePage extends AppBase {
         })
       }
       if (e) {
-        this.back();
-        this.toast('資料保存成功');
+        if (ret == 'no') {
+          this.back();
+          this.toast('資料保存成功');
+        }
+        if (ret == 'web') {
+          this.uploadPhoneListWeb();
+        }
       }
     })
   }
 
-  uploadPhoneListWeb(e) {
-    if (e == 0) {
-      this.toast('已上傳過的的資料，無需上傳');
-      return;
-    }
+  uploadPhoneListWeb() {
+
     if (this.PhoneID == 0) {
       this.showConfirm('资料没有保存？请先保存', (e) => {
 
@@ -335,7 +361,7 @@ export class ModifyphonePage extends AppBase {
         var medicAppointLogList = [];
 
         // if (datas["SavedStatus"] != 0) {
-        this.api.SaveAll(hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList, this.params.UserId,'one').then((ret) => {
+        this.api.SaveAll(hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList, this.params.UserId, 'one').then((ret) => {
           if (ret.Result == 'true') {
             this.api.ExecuteWorkingSet(ret.WorkingSetID, this.params.caseID, this.params.UserId).then(e => {
               console.log(e)

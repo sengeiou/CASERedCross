@@ -239,7 +239,7 @@
       <div class="flex-row flex-center">
         <div class="title2">電話慰問日期:</div>
         <div class="flex-1">
-          <div class="input_s radius-2 bg-white padding-left-5" *ngIf="phone.SavedStatus==0" style="width:100%;">
+          <div class="input_s radius-2 bg-white padding-left-5"  style="width:100%;">
             {{phone.CallDate_Display}}</div>
 
         </div>
@@ -248,13 +248,13 @@
       <div class="flex-row margin-top-10  flex-center">
         <div class="title2">電話慰問時間:</div>
         <div class="flex-1">
-          <div class="input_s radius-2 bg-white padding-left-5" *ngIf="phone.SavedStatus==0" style="width:100%;">
+          <div class="input_s radius-2 bg-white padding-left-5"  style="width:100%;">
             {{phone.CallStartTime}}</div>
 
         </div>
         <div class="margin-5">至</div>
         <div class="flex-1">
-          <div class="input_s radius-2 bg-white padding-left-5" *ngIf="phone.SavedStatus==0" style="width:100%;">
+          <div class="input_s radius-2 bg-white padding-left-5" style="width:100%;">
             {{phone.CallEndTime}}</div>
 
         </div>
@@ -268,7 +268,7 @@
 
       <div class="flex-row margin-top-10 flex-center">
         <div class="title2">下次預約探訪:</div>
-        <div class=" radius-2 padding-left-5" *ngIf="phone.VisitDate" style="width:60%;">
+        <div class=" radius-2 padding-left-5"  style="width:60%;">
           {{phone.VisitDate.ScheduleDate_Display}}  {{phone.VisitDate.ScheduleTime==''?'時間未定':phone.VisitDate.ScheduleTime}}
         </div>
       </div>
@@ -279,7 +279,7 @@
         <div class=" margin-top-10 flex-row flex-center">
 
           <ion-radio name="CannotContact" value="male" class="radio " (click)="getLiaison(2)"
-            checked="{{CannotContact==2?'true':'false'}}" disabled='{{phone.SavedStatus==0?disabled:false}}'>
+            checked="{{CannotContact==2?'true':'false'}}" disabled='{{disabled}}'>
           </ion-radio>否
         </div>
 
@@ -405,8 +405,8 @@
   <div class="flex-row padding-15 flex-center" *ngIf='phone.Status==2'>
     <div class="flex-1"></div>
     <div class="flex-row">
-      <div class="txt-blue margin-right-40" (click)='savePhone(phone.SavedStatus)'>保存</div>
-      <div class="txt-blue" (click)='uploadPhoneListWeb(phone.SavedStatus)'>上傳</div>
+      <div class="txt-blue margin-right-40" (click)='savePhone("no")'>保存</div>
+      <div class="txt-blue" (click)='savePhone("web")'>上傳</div>
     </div>
     <div class="flex-1"></div>
   </div>

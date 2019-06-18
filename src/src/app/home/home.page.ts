@@ -452,46 +452,71 @@ export class HomePage extends AppBase {
     var medicalRecordServe = new MedicalRecordServe();
     medicalRecordServe.deleteMedicalRecord()
 
-
-    // for (var i = 0; i < this.Volunteer.length; i++) {
-    //   this.setVolunteer(this.Volunteer[i]);
-    // }
     for (var i = 0; i < this.Specialty.length; i++) {
       this.setSpecialty(this.Specialty[i]);
     }
     for (var i = 0; i < this.Hosp.length; i++) {
       this.setHosp(this.Hosp[i]);
     }
+
+    if (this.saList[0].Support_VolunteerList) {
+      var Support_VolunteerList = [];
+      var listtype = typeof this.saList[0].Support_VolunteerList.SupportGroupApp;
+      if (listtype == 'object' && this.saList[0].Support_VolunteerList.SupportGroupApp.length == undefined) {
+        Support_VolunteerList.push(this.saList[0].Support_VolunteerList.SupportGroupApp);
+      } else {
+        Support_VolunteerList = this.saList[0].Support_VolunteerList.SupportGroupApp;
+      }
+      for (var j = 0; j < Support_VolunteerList.length; j++) {
+        this.setVolunteer_s(Support_VolunteerList[j]);
+        console.log('志願者1')
+      }
+    }
+
+    if (this.saList[0].VisitGroup_VolunteerList) {
+      var VisitGroup_VolunteerList = [];
+      var listtype = typeof this.saList[0].VisitGroup_VolunteerList.VolunteerGroupApp;
+      if (listtype == 'object' && this.saList[0].VisitGroup_VolunteerList.VolunteerGroupApp.length == undefined) {
+        VisitGroup_VolunteerList.push(this.saList[0].VisitGroup_VolunteerList.VolunteerGroupApp);
+      } else {
+        VisitGroup_VolunteerList = this.saList[0].VisitGroup_VolunteerList.VolunteerGroupApp;
+      }
+      for (var j = 0; j < VisitGroup_VolunteerList.length; j++) {
+        this.setVolunteer_v(VisitGroup_VolunteerList[j]);
+        console.log('志願者2')
+      }
+    }
+
     for (var i = 0; i < this.saList.length; i++) {
 
-      if (this.saList[i].Support_VolunteerList) {
-        var Support_VolunteerList = [];
-        var listtype = typeof this.saList[i].Support_VolunteerList.SupportGroupApp;
-        if (listtype == 'object' && this.saList[i].Support_VolunteerList.SupportGroupApp.length == undefined) {
-          Support_VolunteerList.push(this.saList[i].Support_VolunteerList.SupportGroupApp);
-        } else {
-          Support_VolunteerList = this.saList[i].Support_VolunteerList.SupportGroupApp;
-        }
-        for (var j = 0; j < Support_VolunteerList.length; j++) {
-          this.setVolunteer_s(Support_VolunteerList[j]);
-          console.log('志願者1')
-        }
-      }
+      // if (this.saList[0].Support_VolunteerList) {
+      //   var Support_VolunteerList = [];
+      //   var listtype = typeof this.saList[i].Support_VolunteerList.SupportGroupApp;
+      //   if (listtype == 'object' && this.saList[i].Support_VolunteerList.SupportGroupApp.length == undefined) {
+      //     Support_VolunteerList.push(this.saList[i].Support_VolunteerList.SupportGroupApp);
+      //   } else {
+      //     Support_VolunteerList = this.saList[i].Support_VolunteerList.SupportGroupApp;
+      //   }
+      //   for (var j = 0; j < Support_VolunteerList.length; j++) {
+      //     this.setVolunteer_s(Support_VolunteerList[j]);
+      //     console.log('志願者1')
+      //   }
+      // }
 
-      console.log(this.saList[i])
-      if (this.saList[i].VisitGroup_VolunteerList) {
-        var VisitGroup_VolunteerList = [];
-        var listtype = typeof this.saList[i].VisitGroup_VolunteerList.VolunteerGroupApp;
-        if (listtype == 'object' && this.saList[i].VisitGroup_VolunteerList.VolunteerGroupApp.length == undefined) {
-          VisitGroup_VolunteerList.push(this.saList[i].VisitGroup_VolunteerList.VolunteerGroupApp);
-        } else {
-          VisitGroup_VolunteerList = this.saList[i].VisitGroup_VolunteerList.VolunteerGroupApp;
-        }
-        for (var j = 0; j < VisitGroup_VolunteerList.length; j++) {
-          this.setVolunteer_v(VisitGroup_VolunteerList[j]);
-          console.log('志願者2')
-        }
-      }
+      // console.log(this.saList[i])
+      // if (this.saList[0].VisitGroup_VolunteerList) {
+      //   var VisitGroup_VolunteerList = [];
+      //   var listtype = typeof this.saList[i].VisitGroup_VolunteerList.VolunteerGroupApp;
+      //   if (listtype == 'object' && this.saList[i].VisitGroup_VolunteerList.VolunteerGroupApp.length == undefined) {
+      //     VisitGroup_VolunteerList.push(this.saList[i].VisitGroup_VolunteerList.VolunteerGroupApp);
+      //   } else {
+      //     VisitGroup_VolunteerList = this.saList[i].VisitGroup_VolunteerList.VolunteerGroupApp;
+      //   }
+      //   for (var j = 0; j < VisitGroup_VolunteerList.length; j++) {
+      //     this.setVolunteer_v(VisitGroup_VolunteerList[j]);
+      //     console.log('志願者2')
+      //   }
+      // }
 
       //案例
       this.setCase(this.saList[i].caseObj);
@@ -791,15 +816,10 @@ export class HomePage extends AppBase {
       kv.VisitId, kv.VisitStartTime, kv.VisitStatus, kv.VisitStatusRemarks, kv.WHRatio, kv.Waist,
       kv.Weight, presentVolunteer, supportVolunteer, ScheduleDate_Display, kv.DlA1, kv.DlA2, kv.SYS1, kv.SYS2, kv.heartBeats1, kv.heartBeats2, kv.NeedsContent).then((e) => {
         console.log(e);
-        // return;
-        // visit.sevaVisitSavedStatus(e.res.insertId).then(e=>{
-
-        // })
-
       });
 
     var objHomeVisitUploadImgAppInfoList = kv.UploadImgInfoList.objHomeVisitUploadImgAppInfo;
-    //console.error(objHomeVisitUploadImgAppInfoList);
+ 
     var imgserve = new ImageServe();
     if (objHomeVisitUploadImgAppInfoList != undefined
     ) {
@@ -820,7 +840,6 @@ export class HomePage extends AppBase {
   setActivityWeb(kv) {
     console.log(kv)
     var ActDate_Display = AppUtil.FormatDate2(new Date(kv.ActDate));
-    //caseId, activityDate, activityStartTime, activityEndTime, presentVolunteer, actType, activityDetailType, remarks1, remarks2, remarks3, remarks4, otherActRemarks, otherContent
     if (kv.ActivityVolList) {
       var ActivityVolList = [];
       var listtype = typeof kv.ActivityVolList.objActivityVolApp;

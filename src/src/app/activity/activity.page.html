@@ -109,15 +109,12 @@
 
       <div class=" margin-top-10">
         <div class="flex-1">
-          <!-- <div class="textarea2 radius-2 bg-white h7-5 padding-5" style="width:100%;" *ngIf="activity.SavedStatus==0">
-            {{activity.presentVolunteers}}
-          </div> -->
-
+         
           <div class="textarea2 radius-2 bg-white h7-5 padding-5" style="width:100%;" *ngIf="activity.SavedStatus!=0 ">
             {{Volunteerlist_show}}
           </div>
           
-          <!-- <textarea class="textarea2 radius-2" style="width:100%;"></textarea> -->
+        
         </div>
 
       </div>
@@ -128,8 +125,7 @@
         <div class="title">活動內容:</div>
         <ion-radio-group>
           <div class=" margin-top-10 flex-row flex-center">
-            <!-- <input *ngIf="activity.SavedStatus!=0 " type="radio" name="activity" value="male" class="radio "
-            (click)="getActtype('1')" checked="{{activity.ActType=='1'?'1':''}}" />活動 -->
+            
             <ion-radio *ngIf="activity.SavedStatus!=0 " name="activity" value="male" class="radio "
               (click)="getActtype('1')" checked="{{actType=='1'?'true':'false'}}"></ion-radio>活動
           </div>
@@ -137,8 +133,7 @@
 
             <div class="">
               <div class=" margin-top-10 flex-row flex-center">
-                <!-- <input type="radio" name="sex"  (click)="getActDetail('參觀病人資源中心')" checked="{{activity.ActDetailType=='參觀病人資源中心'?'1':''}}"
-                class="radio " />參觀病人資源中心 -->
+                
                 <ion-checkbox class="radio " color="secondary" name="sex"  [checked]='actDetailTypelist[0].actDetailType==true' (ionChange)='actDetailTypelist[0].actDetailType=$event.detail.checked'
                    disabled='{{disabled}}' ></ion-checkbox> 參觀病人資源中心
 
@@ -153,7 +148,7 @@
             </div>
             <div class="">
               <div class=" margin-top-10 flex-row flex-center">
-                <!-- <input type="radio" name="sex" (click)="getActDetail('出席健康講座')" checked="{{activity.ActDetailType=='出席健康講座'?'1':''}}" class="radio " />出席健康講座 -->
+                
                 <ion-checkbox class="radio " color="secondary" name="sex" [checked]='actDetailTypelist[1].actDetailType==true' (ionChange)='actDetailTypelist[1].actDetailType=$event.detail.checked' disabled='{{disabled}}'></ion-checkbox>出席健康講座
               </div>
               <div class=" margin-top-10 flex-row flex-center" *ngIf="actDetailTypelist[1].actDetailType==true">講座主題:<div class="flex-1">
@@ -167,8 +162,7 @@
 
             <div class="">
               <div class=" margin-top-10 flex-row flex-center">
-                <!-- <input type="radio" name="sex" (click)="getActDetail('出席與運動有關活動')" checked="{{activity.ActDetailType=='出席與運動有關活動'?'1':''}}"
-                  class="radio " />出席與運動有關活動 -->
+
                   <ion-checkbox class="radio " color="secondary" name="sex" [checked]='actDetailTypelist[2].actDetailType==true' (ionChange)='actDetailTypelist[2].actDetailType=$event.detail.checked' disabled='{{disabled}}'></ion-checkbox>出席與運動有關活動
                   
               </div>
@@ -181,13 +175,12 @@
             </div>
 
             <div class=" margin-top-10 flex-row flex-center ">
-              <!-- <input type="radio" name="sex" (click)="getActDetail('出席與健康飲食有關活動')" checked="{{activity.ActDetailType=='出席與健康飲食有關活動'?'1':''}}"
-                class="radio " />出席與健康飲食有關活動  -->
+
                 <ion-checkbox class="radio " color="secondary" name="sex" [checked]='actDetailTypelist[3].actDetailType==true' (ionChange)='actDetailTypelist[3].actDetailType=$event.detail.checked' disabled='{{disabled}}'></ion-checkbox>出席與健康飲食有關活動
               </div>
             <div class="">
               <div class=" margin-top-10 flex-row flex-center">
-                <!-- <input type="radio" name="sex"  (click)="getActDetail('其他')" checked="{{activity.OtherActRemarks=='其他'?'1':''}}" class="radio " />其他 -->
+              
                 <ion-checkbox class="radio " color="secondary" name="sex" [checked]='actDetailTypelist[4].actDetailType==true' (ionChange)='actDetailTypelist[4].actDetailType=$event.detail.checked' disabled='{{disabled}}'></ion-checkbox>其他
               </div>
               <div class=" margin-top-10 flex-row flex-center margin-left-20" *ngIf="actDetailTypelist[4].actDetailType==true">
@@ -204,8 +197,7 @@
 
 
           <div class=" margin-top-10 flex-row flex-center">
-            <!-- <input type="radio" name="activity" value="male" class="radio "
-            (click)="getActtype('2')" checked="{{activity.ActType=='2'?'1':''}}" />其他活動 -->
+            
             <ion-radio *ngIf="activity.SavedStatus!=0" name="activity" value="male" class="radio "
               (click)="getActtype('2')" checked="{{actType=='2'?'true':'false'}}"></ion-radio>其他活動
 
@@ -221,7 +213,7 @@
 
         <div class="title2 margin-top-10">其他補充:</div>
         <div class=" margin-top-10 margin-right-20">
-          <!-- <textarea class="textarea2 radius-2" placeholder="輸入最多250字"></textarea> -->
+         
           <div class="flex-1">
             <input *ngIf="activity.SavedStatus!=0 " class="radius-2 other-input"
               placeholder="{{activity.Remarks?activity.Remarks:'輸入最多250字'}}" maxlength="250" style=" width: 100%;"

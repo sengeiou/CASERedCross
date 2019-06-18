@@ -670,18 +670,17 @@ export class ModifyvisitPage extends AppBase {
 
   getWaist(e) {
     this.Waist = e;
-    this.WHRatio = this.Waist / this.Hip;
+    
   }
 
   getHip(e) {
     this.Hip = e;
-    this.WHRatio = this.Waist / this.Hip;
+    
   }
 
   saveHeightWeight(visitId) {
     console.log(visitId, this.Weight, this.Bmi, this.Waist, this.Hip, this.WHRatio, this.SYS1, this.DlA1, this.SYS2, this.DlA2, this.heartBeats1, this.heartBeats2, this.params.caseID)
-    this.WHRatio = this.Waist / this.Hip;
-    this.Bmi = this.Weight / (1.72 * 1.72)
+   
 
     this.addVisit('no')
   }
@@ -719,10 +718,7 @@ export class ModifyvisitPage extends AppBase {
 
   saveLifeHabit(visitId) {
     console.log(visitId)
-    if (this.Waist != 0 && this.Hip != 0) {
-      
-      this.Bmi = this.Weight / (1.72 * 1.72)
-    }
+   
 
 
     this.addVisit('no')
@@ -736,10 +732,7 @@ export class ModifyvisitPage extends AppBase {
 
   saveEmotion(visitId) {
     console.log(visitId, this.EmotionAssessment, this.params.caseID)
-    if (this.Waist != 0 && this.Hip != 0) {
-      this.WHRatio = this.Waist / this.Hip;
-      
-    }
+   
 
     this.addVisit('no')
   }
@@ -771,7 +764,22 @@ export class ModifyvisitPage extends AppBase {
   getOtherSpecialNeed(e) {
     console.log(e)
     this.OtherSpecialNeed = e;
-    this.visit.OtherSpecialNeed = e
+    this.visit.OtherSpecialNeed = e;
+    if(e==2){
+      this.NeedsContenttlist = [{
+        type: false, value: 1
+      }, {
+        type: false, value: 2
+      }, {
+        type: false, value: 3
+      }, {
+        type: false, value: 4
+      }
+      ]
+      this.OtherSpecialNeedService='';
+    }
+    
+
   }
   getLifeStyleMeasureBloodSuger(e) {
     this.LifeStyleMeasureBloodSuger = e
@@ -879,17 +887,17 @@ export class ModifyvisitPage extends AppBase {
     var VisitId = 0;
     var Status = 1;
 
-    if (this.Weight != null ) {
+    if (this.Weight != null && this.Weight >0 ) {
       this.Bmi = this.Weight / (this.casedata.Height * this.casedata.Height);
       this.Bmi=Math.floor(this.Bmi*100)/100;
     }
-    if (this.Waist !=null && this.Hip != null) {
+    if (this.Waist >0 && this.Waist !=null && this.Hip >0 && this.Hip != null) {
       this.WHRatio = this.Waist / this.Hip;
       this.WHRatio=Math.floor(this.WHRatio*100)/100;
     }
     
 
-    this.Bmi = this.Bmi != 0 ? this.Bmi : this.visit.Bmi
+    this.Bmi = this.Bmi >0 ? this.Bmi : this.visit.Bmi
     this.CategoryTopic1 = this.CategoryTopic1 != '' ? this.CategoryTopic1 : this.visit.CategoryTopic1
     this.CategoryTopic2 = this.CategoryTopic2 != '' ? this.CategoryTopic2 : this.visit.CategoryTopic2
     this.CategoryTopic3 = this.CategoryTopic3 != '' ? this.CategoryTopic3 : this.visit.CategoryTopic3
@@ -934,7 +942,7 @@ export class ModifyvisitPage extends AppBase {
     this.VisitStartTime = this.VisitStartTime != '' ? this.VisitStartTime : this.visit.VisitStartTime
     this.VisitStatus = this.VisitStatus != 0 ? this.VisitStatus : this.visit.VisitStatus
     this.VisitStatusRemarks = this.VisitStatusRemarks != '' ? this.VisitStatusRemarks : this.visit.VisitStatusRemarks
-    this.WHRatio = this.WHRatio != null ? this.WHRatio : this.visit.WHRatio
+    this.WHRatio = this.WHRatio >0 ? this.WHRatio : this.visit.WHRatio
     this.Waist = this.Waist != null ? this.Waist : this.visit.Waist
     this.Weight = this.Weight != null ? this.Weight : this.visit.Weight
     this.NeedsContent = this.NeedsContent != '' ? this.NeedsContent : this.visit.NeedsContent
@@ -1097,7 +1105,7 @@ export class ModifyvisitPage extends AppBase {
           this.toast('你沒有填寫提出特別需要');
           return;
         }
-        if (this.OtherSpecialNeed == 1 && this.OtherSpecialNeedService != '' && this.NeedsContenttlist[3].type==true) {
+        if (this.OtherSpecialNeed == 1 && this.OtherSpecialNeedService == '' && this.NeedsContenttlist[3].type==true) {
           this.toast('你沒有填寫其他特別需要说明');
           return;
         }
@@ -1121,6 +1129,7 @@ export class ModifyvisitPage extends AppBase {
         if (e) {
           if (ret != 'web') {
             this.toast('資料保存成功');
+            this.getVisitId()
             if(ret!='no'){
               this.back();
             }

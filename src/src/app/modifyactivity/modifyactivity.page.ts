@@ -192,6 +192,7 @@ export class ModifyactivityPage extends AppBase {
       this.otherContent = '';
     }
     if (e == 2) {
+      this.activity.ActType = e;
       this.disabled = true;
       this.actDetailType1 = false;
       this.actDetailType2 = false;
@@ -270,19 +271,17 @@ export class ModifyactivityPage extends AppBase {
     this.actDetailTypelist[0].actDetailType = true;
   }
 
-  saveActivity() {
+  saveActivity(ret) {
     // alert(this.actDetailTypelist[0].actDetailType1);
     // return;
-    if(this.activityDate!=''){
-      var ActDate_Display = AppUtil.FormatDate2(new Date(this.activityDate));
-    }
-    if(this.activityStartTime){
+
+    if (this.activityStartTime) {
       this.activityStartTime = AppUtil.FormatTime(new Date(this.activityStartTime));
     }
-    if(this.activityEndTime){
+    if (this.activityEndTime) {
       this.activityEndTime = AppUtil.FormatTime(new Date(this.activityEndTime));
     }
-    
+
     console.log(this.activityStartTime)
     console.log(this.activityEndTime)
     // return
@@ -304,18 +303,10 @@ export class ModifyactivityPage extends AppBase {
       this.toast('你沒有輸入活動日期');
       return;
     }
-    if (this.activityStartTime) {
-      var oDate1 = new Date(this.activityStartTime);
-      var oDate2 = new Date(this.activityEndTime);
-      if (oDate1.getTime() > oDate2.getTime()) {
-        this.toast('開始時間不能遲於結束時間');
-        return;
-      }
-      if (oDate1.getTime() == oDate2.getTime()) {
-        this.toast('開始和結束時間不能一樣');
-        return;
-      }
+    if (this.activityDate != '') {
+      var ActDate_Display = AppUtil.FormatDate2(new Date(this.activityDate));
     }
+
     if (this.actType == 1) {
 
       for (var i = 0; i < this.actDetailTypelist.length; i++) {
@@ -339,51 +330,76 @@ export class ModifyactivityPage extends AppBase {
       this.remarks3 = ''
       this.remarks4 = ''
     }
-
-    // if (!this.presentVolunteer) {
-    //   this.toast('你沒有出席義工一欄');
-    //   return;
-    // }
-    // if (this.actType == 0) {
-    //   this.toast('你沒有揀選活動內容');
-    //   return;
-    // }
-    // if (this.actType == 1 && !this.otherActRemarks && this.activityDetailType=='其他') {
-    //   this.toast('你沒有填寫電話其他慰問內容');
-    //   return;
-    // }
-    // if (this.actType == 1 && !this.remarks1 && this.activityDetailType=='參觀病人資源中心') {
-    //   this.toast('你沒有填寫參觀病人資源中心的活動地點');
-    //   return;
-    // }
-    // if (this.actType == 1 && !this.remarks2 && this.activityDetailType=='出席健康講座') {
-    //   this.toast('你沒有填寫健康講座的主題');
-    //   return;
-    // }
-    // if (this.actType == 1 && !this.remarks3 && this.activityDetailType=='出席與運動有關活動') {
-    //   this.toast('你沒有填寫與運動有關活動的活動主題');
-    //   return;
-    // }
-    // if (this.actType == 2 && !this.otherContent) {
-    //   this.toast('你沒有填寫其他的活動內容');
-    //   return;
-    // }
-
-
-    
-
+    if (ret = 'web') {
+      if (this.activityStartTime == '') {
+        this.toast('你沒有輸入開始時間');
+        return;
+      }
+      if (this.activityEndTime == '') {
+        this.toast('你沒有輸入結束時間');
+        return;
+      }
+      if (this.activityStartTime != '' && this.activityEndTime != '') {
+        var oDate1 = new Date(this.activityStartTime);
+        var oDate2 = new Date(this.activityEndTime);
+        if (oDate1.getTime() > oDate2.getTime()) {
+          this.toast('開始時間不能遲於結束時間');
+          return;
+        }
+        if (oDate1.getTime() == oDate2.getTime()) {
+          this.toast('開始和結束時間不能一樣');
+          return;
+        }
+      }
+      if (!this.presentVolunteer) {
+        this.toast('你沒有出席義工一欄');
+        return;
+      }
+      if (this.actType == 0) {
+        this.toast('你沒有揀選活動內容');
+        return;
+      }
+      if (this.actType == 1) {
+        if (this.otherActRemarks == '' && this.actDetailTypelist[0].actDetailType == true) {
+          this.toast('你沒有填寫電話其他慰問內容');
+          return;
+        }
+        if (this.remarks1 == '' && this.actDetailTypelist[1].actDetailType == true) {
+          this.toast('你沒有填寫參觀病人資源中心的活動地點');
+          return;
+        }
+        if (this.remarks2 == '' && this.actDetailTypelist[2].actDetailType == true) {
+          this.toast('你沒有填寫健康講座的主題');
+          return;
+        }
+        if (this.remarks3 == '' && this.actDetailTypelist[3].actDetailType == true) {
+          this.toast('你沒有填寫與運動有關活動的活動主題');
+          return;
+        }
+      }
+      if (this.actType == 2 && this.otherContent == '') {
+        this.toast('你沒有填寫其他的活動內容');
+        return;
+      }
+    }
 
     this.LocalId = this.params.LocalId;
-
-
-
-    activity.saveActivity(this.LocalId, this.params.caseID, this.activityDate, this.activityStartTime, this.activityEndTime, this.presentVolunteer, this.actType, this.activityDetailType, this.remarks1, this.remarks2, this.remarks3, this.remarks4, this.otherActRemarks, this.Remarks,ActDate_Display).then((e) => {
+    activity.saveActivity(this.LocalId, this.params.caseID, this.activityDate, this.activityStartTime, this.activityEndTime, this.presentVolunteer, this.actType, this.activityDetailType, this.remarks1, this.remarks2, this.remarks3, this.remarks4, this.otherActRemarks, this.Remarks, ActDate_Display).then((e) => {
       console.log(e)
       if (e) {
-        // this.navigate("home", { id: this.params.UserId });
-        // this.back();
-        this.toast('資料保存成功');
-        this.back();
+        if (ret == 'no') {
+          this.toast('資料保存成功');
+          this.back();
+        } else if (ret = 'web') {
+          var activity = new ActivityServe();
+          activity.getActivity(this.LocalId).then((e) => {
+            console.log(e)
+            var casedata = e.res.rows;
+            var data = Array.from(casedata)[0]
+            this.activity = data;
+            this.uploadActiveListWeb();
+          })
+        }
       }
     })
   }
@@ -396,33 +412,28 @@ export class ModifyactivityPage extends AppBase {
 
       })
     } else {
-      var  hvLogList=[];
-      var activityLogList =[];
+      var hvLogList = [];
+      var activityLogList = [];
       activityLogList.push(this.activity)
-      var phoneSupportLogList=[];
-      var medicAppointLogList=[]
-      if (activityLogList["SavedStatus"] != 0) {
-        this.api.SaveAll(hvLogList,phoneSupportLogList,activityLogList,medicAppointLogList,this.params.UserId,'one').then((ret) => {
-          console.log(ret)
-          if(ret.Result=='true'){
-            this.api.ExecuteWorkingSet(ret.WorkingSetID,this.params.caseID,this.params.UserId).then(e=>{
-              console.log(e)
-              if(e.Result){
-                var activity = new ActivityServe();
-                
-                activity.sevaActivitySavedStatus(this.LocalId).then(e=>{
-
-                })
-                this.toast('資料提交成功');
-                this.back();
-              }
-            })
-          }
-          
-        });
-      }
-
+      var phoneSupportLogList = [];
+      var medicAppointLogList = []
+      this.api.SaveAll(hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList, this.params.UserId, 'one').then((ret) => {
+        console.log(ret)
+        if (ret.Result == 'true') {
+          this.api.ExecuteWorkingSet(ret.WorkingSetID, this.params.caseID, this.params.UserId).then(e => {
+            console.log(e)
+            if (e.Result) {
+              var activity = new ActivityServe();
+              activity.sevaActivitySavedStatus(this.LocalId).then(e => {
+              })
+              this.toast('資料提交成功');
+              this.back();
+            }
+          })
+        }
+      });
     }
+
   }
 
 }

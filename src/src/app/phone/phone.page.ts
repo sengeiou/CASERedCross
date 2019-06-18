@@ -50,7 +50,7 @@ export class PhonePage extends AppBase {
   PhoneID = 0;
   phone = null;
 
-  disabled=true;
+  disabled = true;
 
   DetailList = [{
     DetailType: false, value: 1
@@ -186,34 +186,13 @@ export class PhonePage extends AppBase {
           ]
         }
       })
-    }else{
+    } else {
       this.CannotContact = e;
     }
-
-
   }
 
-  savePhone() {
+  savePhone(ret) {
     var phone = new PhoneServe();
-    if (!this.CallDate) {
-      this.toast('你沒有輸入電話慰問日期');
-      return;
-    }
-    // if (!this.CallStartTime || !this.CallEndTime) {
-    //   this.toast('你沒有輸入電話慰問時間');
-    //   return;
-    // }
-    // if (this.CallStartTime == this.CallEndTime) {
-    //   this.toast('開始和結束時間不能一樣');
-    //   return;
-    // }
-
-    // var oDate1 = new Date(this.CallStartTime);
-    // var oDate2 = new Date(this.CallEndTime);
-    // if (oDate1.getTime() > oDate2.getTime()) {
-    //   this.toast('開始時間不能遲於結束時間');
-    //   return;
-    // }
 
     if (this.CannotContact != 1) {
       for (var i = 0; i < this.DetailList.length; i++) {
@@ -225,10 +204,65 @@ export class PhonePage extends AppBase {
           }
         }
       }
-      this.Detail = this.Detail != '' ? this.Detail : this.phone.Detail
+      // this.Detail = this.Detail != '' ? this.Detail : this.phone.Detail
     } else {
       this.Detail = '';
     }
+
+    if (!this.CallDate) {
+      this.toast('你沒有輸入電話慰問日期');
+      return;
+    }
+    if (ret == 'web') {
+      if (this.CallStartTime == '' || this.CallEndTime == '') {
+        this.toast('你沒有輸入電話慰問時間');
+        return;
+      }
+
+      if (this.CallStartTime == this.CallEndTime) {
+        this.toast('開始和結束時間不能一樣');
+        return;
+      }
+      var oDate1 = new Date(this.CallStartTime);
+      var oDate2 = new Date(this.CallEndTime);
+      if (oDate1.getTime() > oDate2.getTime()) {
+        this.toast('開始時間不能遲於結束時間');
+        return;
+      }
+      if (this.CannotContact == 0) {
+        this.toast('你沒有輸入聯絡状态');
+        return;
+      }
+      
+      if (this.CannotContact == 2) {
+        if (this.Detail == '') {
+          this.toast('你沒有輸入慰問內容');
+          return;
+        }
+        if (this.DetailList[7].DetailType == true) {
+          if (this.NextPhoneDate == '') {
+            this.toast('你沒有輸入下次探訪日期');
+            return;
+          }
+
+          if (this.NextPhoneTime == '') {
+            this.toast('你沒有輸入下次探訪時間');
+            return;
+          }
+        }
+
+        if (this.DetailList[8].DetailType == true) {
+          if (this.DetailOther == '') {
+            this.toast('你沒有輸入其他電話慰問內容');
+            return;
+          }
+        }
+      }
+
+    }
+
+
+
 
     var CallDate_Display = AppUtil.FormatDate2(new Date(this.CallDate));
     if (this.CallStartTime != '') {
@@ -249,8 +283,13 @@ export class PhonePage extends AppBase {
         })
       }
       if (e) {
-        this.toast('資料提交成功');
-        this.back();
+        if (ret == 'no') {
+          this.back();
+          this.toast('資料保存成功');
+        }
+        if (ret == 'web') {
+          this.uploadPhoneListWeb();
+        }
       }
     })
   }
@@ -275,21 +314,19 @@ export class PhonePage extends AppBase {
         var activityLogList = [];
         var phoneSupportLogList = datas;
         var medicAppointLogList = []
-        if (phoneSupportLogList["SavedStatus"] != 0) {
-          this.api.SaveAll(hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList, this.params.UserId,'one').then((ret) => {
-            console.log(ret)
-            if (ret.Result == 'true') {
-              this.api.ExecuteWorkingSet(ret.WorkingSetID, this.params.caseID, this.params.UserId).then(e => {
-                console.log(e)
-                if (e.Result == 'true') {
-                  this.toast('資料提交成功');
-                  this.back();
-                }
-              })
-            }
-          });
-        }
 
+        this.api.SaveAll(hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList, this.params.UserId, 'one').then((ret) => {
+          console.log(ret)
+          if (ret.Result == 'true') {
+            this.api.ExecuteWorkingSet(ret.WorkingSetID, this.params.caseID, this.params.UserId).then(e => {
+              console.log(e)
+              if (e.Result == 'true') {
+                this.toast('資料提交成功');
+                this.back();
+              }
+            })
+          }
+        });
 
       })
 
