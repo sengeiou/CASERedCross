@@ -376,37 +376,41 @@ export class ServiceApi {
                 soapMessage += "</hvvlList>";
 
                 soapMessage += "<bplList>";
-                soapMessage += "<tb_blood_pressure_log_temp>";
-                soapMessage += "<CaseId>" + hvLogList[i].CaseId + "</CaseId>";
-                soapMessage += "<MeasurementDate >" +  hvLogList[i].VisitDate + "</MeasurementDate>";
-                soapMessage += "<Upper>" + hvLogList[i].SYS1 + "</Upper>";
-                soapMessage += "<Lower>" + hvLogList[i].DlA1 + "</Lower>";
-                soapMessage += "</tb_blood_pressure_log_temp>";
-
-                soapMessage += "<tb_blood_pressure_log_temp>";
-                soapMessage += "<CaseId>" + hvLogList[i].CaseId + "</CaseId>";
-                soapMessage += "<MeasurementDate>" +  hvLogList[i].VisitDate + "</MeasurementDate>";
-                soapMessage += "<Upper>" + hvLogList[i].SYS2 + "</Upper>";
-                soapMessage += "<Lower>" + hvLogList[i].DlA2 + "</Lower>";
-                soapMessage += "</tb_blood_pressure_log_temp>";
+                if (hvLogList[i].SYS1 != 0 && hvLogList[i].DlA1 != 0) {
+                    soapMessage += "<tb_blood_pressure_log_temp>";
+                    soapMessage += "<CaseId>" + hvLogList[i].CaseId + "</CaseId>";
+                    soapMessage += "<MeasurementDate>" + hvLogList[i].VisitDate + "</MeasurementDate>";
+                    soapMessage += "<Upper>" + hvLogList[i].SYS1 + "</Upper>";
+                    soapMessage += "<Lower>" + hvLogList[i].DlA1 + "</Lower>";
+                    soapMessage += "</tb_blood_pressure_log_temp>";
+                }
+                if (hvLogList[i].SYS2 != 0 && hvLogList[i].DlA2 != 0) {
+                    soapMessage += "<tb_blood_pressure_log_temp>";
+                    soapMessage += "<CaseId>" + hvLogList[i].CaseId + "</CaseId>";
+                    soapMessage += "<MeasurementDate>" + hvLogList[i].VisitDate + "</MeasurementDate>";
+                    soapMessage += "<Upper>" + hvLogList[i].SYS2 + "</Upper>";
+                    soapMessage += "<Lower>" + hvLogList[i].DlA2 + "</Lower>";
+                    soapMessage += "</tb_blood_pressure_log_temp>";
+                }
                 soapMessage += "</bplList>";
 
 
                 soapMessage += "<hrlList>";
-                soapMessage += "<tb_heart_rate_log_temp>";
-                soapMessage += "<CaseId>" + hvLogList[i].CaseId + "</CaseId>";
-                soapMessage += "<MeasurementDate>" + hvLogList[i].VisitDate + "</MeasurementDate>";
-                soapMessage += "<RatePerMin>" + hvLogList[i].heartBeats1 + "</RatePerMin>";
-                soapMessage += "</tb_heart_rate_log_temp>";
-            
-                soapMessage += "<tb_heart_rate_log_temp>";
-                soapMessage += "<CaseId>" + hvLogList[i].CaseId + "</CaseId>";
-                soapMessage += "<MeasurementDate>" +  hvLogList[i].VisitDate + "</MeasurementDate>";
-                soapMessage += "<RatePerMin>" + hvLogList[i].heartBeats2 + "</RatePerMin>";
-                soapMessage += "</tb_heart_rate_log_temp>";
+                if (hvLogList[i].heartBeats1 > 0 ) {
+                    soapMessage += "<tb_heart_rate_log_temp>";
+                    soapMessage += "<CaseId>" + hvLogList[i].CaseId + "</CaseId>";
+                    soapMessage += "<MeasurementDate>" + hvLogList[i].VisitDate + "</MeasurementDate>";
+                    soapMessage += "<RatePerMin>" + hvLogList[i].heartBeats1 + "</RatePerMin>";
+                    soapMessage += "</tb_heart_rate_log_temp>";
+                }
+                if (hvLogList[i].heartBeats2 > 0 ) {
+                    soapMessage += "<tb_heart_rate_log_temp>";
+                    soapMessage += "<CaseId>" + hvLogList[i].CaseId + "</CaseId>";
+                    soapMessage += "<MeasurementDate>" + hvLogList[i].VisitDate + "</MeasurementDate>";
+                    soapMessage += "<RatePerMin>" + hvLogList[i].heartBeats2 + "</RatePerMin>";
+                    soapMessage += "</tb_heart_rate_log_temp>"; 
+                }
                 soapMessage += "</hrlList>";
-
-
                 soapMessage += "</objAppHomeVisit>";
             }
         }

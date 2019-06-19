@@ -318,6 +318,7 @@ export class HomePage extends AppBase {
       if (e.res.rows.length > 0) {
         console.log(e.res.rows);
         kv.visitList = Array.from(e.res.rows);
+
         for (var i = 0; i < kv.visitList.length; i++) {
           kv.visitList[i].hvImgKeepListStr = '';
           kv.visitList[i].hvNewImgQty = 0;
@@ -330,25 +331,26 @@ export class HomePage extends AppBase {
           var hvvlList = [];
           var Volunteerlist = kv.visitList[i].presentVolunteer.split(',');
           console.log(Volunteerlist)
-          // for (var t = 0; t < Volunteerlist.length; t++) {
-          //   console.log(Volunteerlist[t])
-          //   for (var j = 0; j < this.Volunteer.length; j++) {
-          //     if (Volunteerlist[t] == this.Volunteer[j].VolId) {
-            
-          //       hvvlList.push(this.Volunteer[j]);
-          //     }
-          //   }
-          // }
-          // var supportVolunteer = kv.visitList[i].supportVolunteer.split(',');
-          // console.log(supportVolunteer)
-          // for (var t = 0; t < supportVolunteer.length; t++) {
-          //   console.log(supportVolunteer[i])
-          //   for (var j = 0; j < this.Volunteer.length; j++) {
-          //     if (supportVolunteer[t] == this.Volunteer[j].VolId) {
-          //       hvvlList.push(this.Volunteer[j]);
-          //     }
-          //   }
-          // }
+
+          for (var t = 0; t < Volunteerlist.length; t++) {
+            console.log(Volunteerlist[t])
+            for (var j = 0; j < this.Volunteer.length; j++) {
+              if (Volunteerlist[t] == this.Volunteer[j].VolId.toString()) {
+                hvvlList.push(this.Volunteer[j]);
+              }
+            }
+          }
+          
+          var supportVolunteer = kv.visitList[i].supportVolunteer.split(',');
+          console.log(supportVolunteer)
+          for (var t = 0; t < supportVolunteer.length; t++) {
+            console.log(supportVolunteer[i])
+            for (var j = 0; j < this.Volunteer.length; j++) {
+              if (supportVolunteer[t] == this.Volunteer[j].VolId.toString()) {
+                hvvlList.push(this.Volunteer[j]);
+              }
+            }
+          }
 
           kv.visitList[i].hvvlList = hvvlList;
 
