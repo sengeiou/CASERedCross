@@ -761,10 +761,9 @@ export class VisitPage extends AppBase {
 
   saveEmotion(visitId) {
     
-   
 
     this.addVisit('no')
-   
+
   }
 
   getOtherHospDisbete(e) {
@@ -794,7 +793,6 @@ export class VisitPage extends AppBase {
 
   OtherSupplement(visitId) {
     
-
     this.addVisit('no')
 
   }
@@ -932,12 +930,11 @@ export class VisitPage extends AppBase {
       this.toast('你沒有選擇探訪日期');
       return;
     }
+    if (!this.VisitDate) {
+      this.toast('你沒有填寫實際探訪日期');
+      return;
+    }
     if (ret == 'web') {
-
-      if (!this.VisitDate) {
-        this.toast('你沒有填寫實際探訪日期');
-        return;
-      }
       if (!this.VisitStartTime || !this.VisitEndTime) {
         this.toast('你沒有填寫實際探訪時間');
         return;

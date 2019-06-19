@@ -959,6 +959,10 @@ export class ModifyvisitPage extends AppBase {
       this.toast('你沒有選擇探訪日期');
       return;
     }
+    if (this.VisitDate == '') {
+      this.toast('你沒有填寫實際探訪日期');
+      return;
+    }
 
     var ScheduleDate_Display = ''
     if (this.ScheduleDate != '') {
@@ -967,10 +971,6 @@ export class ModifyvisitPage extends AppBase {
 
     if (ret == 'web') {
 
-      if (this.VisitDate == '') {
-        this.toast('你沒有填寫實際探訪日期');
-        return;
-      }
       if (!this.VisitStartTime || !this.VisitEndTime) {
         this.toast('你沒有填寫實際探訪時間');
         return;
