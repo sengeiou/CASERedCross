@@ -293,7 +293,7 @@ export class ModifyvisitPage extends AppBase {
         var data = Array.from(casedata)[0]
         this.visit = data;
         console.log(data);
-
+        this.VisitStatus=this.visit.VisitStatus;
         if (this.visit.LifeStyleMeasureBsLocation == 1) {
           this.LifeStyleMeasureBsLocation_name = '家中'
         } else if (this.visit.LifeStyleMeasureBsLocation == 2) {
@@ -793,6 +793,7 @@ export class ModifyvisitPage extends AppBase {
 
 
   addVisit(ret) {
+    console.log('開始了')
     console.log(this.VisitDetailOutdoorlist)
     for (var i = 0; i < this.VisitDetailIndoorlist.length; i++) {
       if (this.VisitDetailIndoorlist[i].type == true) {
@@ -842,14 +843,11 @@ export class ModifyvisitPage extends AppBase {
     var visit = new VisitServe();
 
     console.log(this.ScheduleTime);
-    // return
+ 
     if (this.ScheduleTime != '') {
       this.ScheduleTime = AppUtil.FormatTime(new Date(this.ScheduleTime));
     }
-    console.log(this.VisitDate)
-    console.log(this.VisitStartTime)
-    console.log(this.VisitEndTime)
-    // return
+   
 
     if (this.VisitDate != '') {
       this.VisitDate = AppUtil.FormatDate2(new Date(this.VisitDate));
@@ -955,6 +953,8 @@ export class ModifyvisitPage extends AppBase {
     this.OtherHospOtherIllnessNoOfDay = this.OtherHospOtherIllnessNoOfDay != null ? this.OtherHospOtherIllnessNoOfDay : this.visit.OtherHospOtherIllnessNoOfDay
 
     console.log(this.VisitDetailOutdoor)
+
+    console.log('驗證數據')
     if (this.ScheduleDate == '') {
       this.toast('你沒有選擇探訪日期');
       return;
@@ -1112,7 +1112,7 @@ export class ModifyvisitPage extends AppBase {
         // }
       }
     }
-
+    console.log('保存')
     visit.saveVisit(this.visit.LocalId, this.Bmi, this.params.caseID, this.CategoryTopic1, this.CategoryTopic2, this.CategoryTopic3, this.EmotionAssessment, this.EmotionAssessmentRemarks,
       this.Hip, this.LifeStyleMeasureBloodPressure, this.LifeStyleMeasureBloodSuger, this.LifeStyleMeasureBpLocation, this.LifeStyleMeasureBpNoOfTime,
       this.LifeStyleMeasureBpPeriod, this.LifeStyleMeasureBsLocation, this.LifeStyleMeasureBsNoOfTime, this.LifeStyleMeasureBsPeriod, this.LifeStyleQuestion1,
@@ -1123,6 +1123,7 @@ export class ModifyvisitPage extends AppBase {
       this.VisitDetailOutdoorRemarks, this.VisitEndTime, this.VisitStartTime, this.VisitStatus, this.VisitStatusRemarks, this.WHRatio, this.Waist, this.Weight,
       this.NeedsContent, this.SYS1, this.DlA1, this.SYS2, this.DlA2, this.heartBeats1, this.heartBeats2, this.presentVolunteer, this.supportVolunteer, this.DeletePicString, ScheduleDate_Display).then(e => {
         if (e) {
+          console.log('保存55')
           if (ret != 'web') {
             this.toast('資料保存成功');
             this.getVisitId()
@@ -1189,6 +1190,8 @@ export class ModifyvisitPage extends AppBase {
                 medicalRecord.getAllMedicalRecordList(this.params.caseID).then((e) => {
                   this.medicAppointLogList = Array.from(e.res.rows);
                   console.log(this.medicAppointLogList)
+                  
+                  this.uploadVisitListWeb('1')
                 })
               })
               // this.uploadVisitListWeb('1')
@@ -1295,6 +1298,7 @@ export class ModifyvisitPage extends AppBase {
                 console.log(e)
               })
             }
+
             this.api.ExecuteWorkingSet(ret.WorkingSetID, this.casedata.CaseId, this.params.UserId).then(e => {
               console.log(e)
               if (e.Result == 'true') {

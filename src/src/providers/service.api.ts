@@ -366,13 +366,16 @@ export class ServiceApi {
 
                 soapMessage += "<hvvlList>";
                 var hvvlList = hvLogList[i].hvvlList;
-                for (var j = 0; j < hvvlList.length; j++) {
-                    soapMessage += "<tb_home_visit_vol_log_temp>";
-                    soapMessage += "<VolType>" + hvvlList[j].VolType + "</VolType>";
-                    soapMessage += "<VolId>" + hvvlList[j].VolId + "</VolId>";
-                    soapMessage += "<VolGrpId>" + hvvlList[j].VolGrpId + "</VolGrpId>";
-                    soapMessage += "</tb_home_visit_vol_log_temp>";
+                if (hvvlList) {
+                    for (var j = 0; j < hvvlList.length; j++) {
+                        soapMessage += "<tb_home_visit_vol_log_temp>";
+                        soapMessage += "<VolType>" + hvvlList[j].VolType + "</VolType>";
+                        soapMessage += "<VolId>" + hvvlList[j].VolId + "</VolId>";
+                        soapMessage += "<VolGrpId>" + hvvlList[j].VolGrpId + "</VolGrpId>";
+                        soapMessage += "</tb_home_visit_vol_log_temp>";
+                    }
                 }
+
                 soapMessage += "</hvvlList>";
 
                 soapMessage += "<bplList>";
@@ -396,19 +399,19 @@ export class ServiceApi {
 
 
                 soapMessage += "<hrlList>";
-                if (hvLogList[i].heartBeats1 > 0 ) {
+                if (hvLogList[i].heartBeats1 > 0) {
                     soapMessage += "<tb_heart_rate_log_temp>";
                     soapMessage += "<CaseId>" + hvLogList[i].CaseId + "</CaseId>";
                     soapMessage += "<MeasurementDate>" + hvLogList[i].VisitDate + "</MeasurementDate>";
                     soapMessage += "<RatePerMin>" + hvLogList[i].heartBeats1 + "</RatePerMin>";
                     soapMessage += "</tb_heart_rate_log_temp>";
                 }
-                if (hvLogList[i].heartBeats2 > 0 ) {
+                if (hvLogList[i].heartBeats2 > 0) {
                     soapMessage += "<tb_heart_rate_log_temp>";
                     soapMessage += "<CaseId>" + hvLogList[i].CaseId + "</CaseId>";
                     soapMessage += "<MeasurementDate>" + hvLogList[i].VisitDate + "</MeasurementDate>";
                     soapMessage += "<RatePerMin>" + hvLogList[i].heartBeats2 + "</RatePerMin>";
-                    soapMessage += "</tb_heart_rate_log_temp>"; 
+                    soapMessage += "</tb_heart_rate_log_temp>";
                 }
                 soapMessage += "</hrlList>";
                 soapMessage += "</objAppHomeVisit>";

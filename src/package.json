@@ -35,11 +35,12 @@
     "@ionic/angular": "^4.1.0",
     "@types/echarts": "^4.1.9",
     "com-badrit-base64": "0.2.0",
-    "cordova-android": "8.0.0",
+    "cordova-android": "7.1.4",
     "cordova-ios": "5.0.1",
     "cordova-plugin-add-swift-support": "^2.0.2",
     "cordova-plugin-advanced-http": "^2.0.9",
     "cordova-plugin-camera": "^4.0.3",
+    "cordova-plugin-crosswalk-webview-v2": "^2.4.3",
     "cordova-plugin-device": "2.0.2",
     "cordova-plugin-dns": "^1.0.2",
     "cordova-plugin-file": "6.0.1",
@@ -75,7 +76,6 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~10.14.2",
     "codelyzer": "~4.5.0",
-    "cordova-plugin-crosswalk-webview-v2": "^2.4.3",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-ionic-keyboard": "^2.1.3",
     "cordova-plugin-ionic-webview": "^4.0.1",
@@ -115,11 +115,17 @@
       "com-badrit-base64": {},
       "cordova-plugin-file": {},
       "cordova-plugin-screen-orientation": {},
-      "cordova-plugin-crosswalk-webview-v2": {}
+      "cordova-plugin-crosswalk-webview-v2": {
+        "XWALK_VERSION": "23+",
+        "XWALK_LITEVERSION": "xwalk_core_library_canary:17+",
+        "XWALK_COMMANDLINE": "--disable-pull-to-refresh-effect",
+        "XWALK_MODE": "embedded",
+        "XWALK_MULTIPLEAPK": "true"
+      }
     },
     "platforms": [
-      "android",
-      "ios"
+      "ios",
+      "android"
     ]
   }
 }

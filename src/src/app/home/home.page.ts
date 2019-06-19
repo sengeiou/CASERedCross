@@ -340,7 +340,7 @@ export class HomePage extends AppBase {
               }
             }
           }
-          
+
           var supportVolunteer = kv.visitList[i].supportVolunteer.split(',');
           console.log(supportVolunteer)
           for (var t = 0; t < supportVolunteer.length; t++) {
@@ -367,7 +367,7 @@ export class HomePage extends AppBase {
                 hvImgKeepListStr = hvImgKeepListStr + ',' + ImgList[j].LocalId;
               }
             }
-            if (hvImgKeepListStr.length > 0) {
+            if (ImgList.length > 0) {
               kv.visitList[i].hvImgKeepListStr = hvImgKeepListStr;
               kv.visitList[i].hvNewImgQty = ImgList.length;
             }
