@@ -76,11 +76,11 @@ export class VisitRecordPage extends AppBase {
       return;
     }
     if (this.AppointmentDate != '') {
-      this.AppointmentDate = AppUtil.FormatDate(new Date(this.AppointmentDate));
+      this.AppointmentDate = AppUtil.FormatDate2(new Date(this.AppointmentDate));
     }
 
     if (this.AppointmentTime != '') {
-      this.AppointmentTime = AppUtil.FormatDate(new Date(this.AppointmentTime));
+      this.AppointmentTime = AppUtil.FormatTime(new Date(this.AppointmentTime));
     }
 
 

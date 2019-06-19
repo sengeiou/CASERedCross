@@ -97,9 +97,7 @@ export class UploadimgPage extends AppBase {
           text: "立即自拍",
           handler: () => {
             let options: CameraOptions = {
-              quality: 75,
-              targetWidth: 200,
-              targetHeight: 200,
+              quality: 10,
               allowEdit: true,
               destinationType: this.camera.DestinationType.FILE_URI,
               sourceType: this.camera.PictureSourceType.CAMERA,
@@ -122,9 +120,8 @@ export class UploadimgPage extends AppBase {
           text: "从相册选择",
           handler: () => {
             let options: CameraOptions = {
-              quality: 75,
-              targetWidth: 200,
-              targetHeight: 200,
+              quality: 10,
+
               allowEdit: true,
               destinationType: this.camera.DestinationType.FILE_URI,
               sourceType: this.camera.PictureSourceType.SAVEDPHOTOALBUM,

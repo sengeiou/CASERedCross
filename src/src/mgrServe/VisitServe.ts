@@ -50,7 +50,7 @@ export class VisitServe {
 
     sevaVisitSavedStatus(id) {
         var mgr = DBMgr.GetInstance();
-        var sql = "update  tb_home_visit SET SavedStatus=0,Status=3  where LocalID=?";
+        var sql = "update  tb_home_visit SET SavedStatus=0,Status=2  where LocalID=?";
         return mgr.execSql(sql, [id]);
     }
 

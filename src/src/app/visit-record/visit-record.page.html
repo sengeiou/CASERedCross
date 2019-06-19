@@ -21,7 +21,7 @@
         <div class="title2">覆診日期:</div>
         <div class="flex-1 margin-left-40">
           <div class="bg-white">
-            <ion-datetime placeholder="{{MedicalRecord.AppointmentDate?MedicalRecord.AppointmentDate_Display:''}}" style="height:25px;padding:2px; color: #000;" displayFormat="YYYY/MM/DD "
+            <ion-datetime placeholder="{{MedicalRecord.AppointmentDate?MedicalRecord.AppointmentDate_Display:''}}" style="height:25px;padding:2px; color: #000;--placeholder-color:#000;" displayFormat="YYYY/MM/DD "
               picker-format="YYYY MM DD " max="2050-12-09" done-text='确定' cancel-text='取消'
               [(ngModel)]="AppointmentDate"></ion-datetime>
           </div>
@@ -32,7 +32,7 @@
         <div class="title2">覆診時間:</div>
         <div class="flex-1 margin-left-40">
           <div class="bg-white">
-            <ion-datetime placeholder="{{MedicalRecord.AppointmentTime?MedicalRecord.AppointmentTime:''}}" style="height:25px;padding:2px; color: #000;" displayFormat="HH：mm" picker-format="HH：mm"
+            <ion-datetime placeholder="{{MedicalRecord.AppointmentTime?MedicalRecord.AppointmentTime:''}}" style="height:25px;padding:2px; color: #000;--placeholder-color:#000;" displayFormat="HH：mm" picker-format="HH：mm"
               max="2050-12-09" done-text='确定' cancel-text='取消' [(ngModel)]="AppointmentTime">
             </ion-datetime>
           </div>
@@ -42,10 +42,8 @@
       <div class="flex-row margin-top-10">
         <div class="title2">診所/醫院:</div>
         <div class="flex-1 margin-left-40">
-         
           <ion-select class="bg-white radius-2" style="width:100%;height:25px;padding:2px;color:#000;" [(ngModel)]="Hosp" placeholder="{{MedicalRecord.Hosp?MedicalRecord.Hosp_name:''}}">
             <ion-select-option *ngFor="let item of Hosiptal;let idx=index;"   value="{{item.HospId}}">{{item.Name}}</ion-select-option>
-            
           </ion-select>
         </div>
       </div>
@@ -54,7 +52,7 @@
         <div class="title2">普通專科門診:</div>
         <div class="flex-1 margin-left-40">
          
-          <ion-select class="bg-white radius-2" style="width:100%;height:25px;padding:2px; color:#000;" [(ngModel)]="Specialty" placeholder="{{MedicalRecord.Specialty?MedicalRecord.Specialty_name:''}}">
+          <ion-select class="bg-white radius-2" style="width:100%;height:25px;padding:2px; color:#000;--placeholder-color:#000;" [(ngModel)]="Specialty" placeholder="{{MedicalRecord.Specialty?MedicalRecord.Specialty_name:''}}">
             <ion-select-option *ngFor="let item of Specialtyl;let idx=index;"  value="{{item.SpecialtyId}}">{{item.Name}}</ion-select-option>
             
           </ion-select>

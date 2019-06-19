@@ -363,8 +363,50 @@ export class ServiceApi {
                 soapMessage += "<hvuilList>" + hvuilList + "</hvuilList>";
                 soapMessage += "<hvImgKeepListStr>" + hvLogList[i].hvImgKeepListStr + "</hvImgKeepListStr>";
                 soapMessage += "<hvNewImgQty>" + hvLogList[i].hvNewImgQty + "</hvNewImgQty>";
-                // soapMessage += "<hvImgKeepListStr>4,5</hvImgKeepListStr>";
-                // soapMessage += "<hvNewImgQty>2</hvNewImgQty>";
+
+                soapMessage += "<hvvlList>";
+                var hvvlList = hvLogList[i].hvvlList;
+                for (var j = 0; j < hvvlList.length; j++) {
+                    soapMessage += "<tb_home_visit_vol_log_temp>";
+                    soapMessage += "<VolType>" + hvvlList[j].VolType + "</VolType>";
+                    soapMessage += "<VolId>" + hvvlList[j].VolId + "</VolId>";
+                    soapMessage += "<VolGrpId>" + hvvlList[j].VolGrpId + "</VolGrpId>";
+                    soapMessage += "</tb_home_visit_vol_log_temp>";
+                }
+                soapMessage += "</hvvlList>";
+
+                soapMessage += "<bplList>";
+                soapMessage += "<tb_blood_pressure_log_temp>";
+                soapMessage += "<CaseId>" + hvLogList[i].CaseId + "</CaseId>";
+                soapMessage += "<MeasurementDate >" +  hvLogList[i].VisitDate + "</MeasurementDate>";
+                soapMessage += "<Upper>" + hvLogList[i].SYS1 + "</Upper>";
+                soapMessage += "<Lower>" + hvLogList[i].DlA1 + "</Lower>";
+                soapMessage += "</tb_blood_pressure_log_temp>";
+
+                soapMessage += "<tb_blood_pressure_log_temp>";
+                soapMessage += "<CaseId>" + hvLogList[i].CaseId + "</CaseId>";
+                soapMessage += "<MeasurementDate>" +  hvLogList[i].VisitDate + "</MeasurementDate>";
+                soapMessage += "<Upper>" + hvLogList[i].SYS2 + "</Upper>";
+                soapMessage += "<Lower>" + hvLogList[i].DlA2 + "</Lower>";
+                soapMessage += "</tb_blood_pressure_log_temp>";
+                soapMessage += "</bplList>";
+
+
+                soapMessage += "<hrlList>";
+                soapMessage += "<tb_heart_rate_log_temp>";
+                soapMessage += "<CaseId>" + hvLogList[i].CaseId + "</CaseId>";
+                soapMessage += "<MeasurementDate>" + hvLogList[i].VisitDate + "</MeasurementDate>";
+                soapMessage += "<RatePerMin>" + hvLogList[i].heartBeats1 + "</RatePerMin>";
+                soapMessage += "</tb_heart_rate_log_temp>";
+            
+                soapMessage += "<tb_heart_rate_log_temp>";
+                soapMessage += "<CaseId>" + hvLogList[i].CaseId + "</CaseId>";
+                soapMessage += "<MeasurementDate>" +  hvLogList[i].VisitDate + "</MeasurementDate>";
+                soapMessage += "<RatePerMin>" + hvLogList[i].heartBeats2 + "</RatePerMin>";
+                soapMessage += "</tb_heart_rate_log_temp>";
+                soapMessage += "</hrlList>";
+
+
                 soapMessage += "</objAppHomeVisit>";
             }
         }
@@ -447,7 +489,7 @@ export class ServiceApi {
                 // if (type == 'all' && medicAppointLogList[i].AppointmentId != 0) {
                 //     soapMessage += "<Status>1</Status>";
                 // } else {
-                    
+
                 // }
                 soapMessage += "<Status>" + medicAppointLogList[i].Status + "</Status>";
                 soapMessage += "<Reason>" + medicAppointLogList[i].Reason + "</Reason>";
