@@ -139,6 +139,7 @@ export class AppBase implements OnInit {
         if(this.isbacking==true){
             return;
         }
+        this.isbacking=false;
         //alert(this.Params.fromtab);
         if(this.params.fromtab!=undefined){
             this.navCtrl.navigateBack('tabs/'+this.params.fromtab);
