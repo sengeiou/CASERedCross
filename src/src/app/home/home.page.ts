@@ -330,21 +330,21 @@ export class HomePage extends AppBase {
           var hvvlList = [];
           var Volunteerlist = kv.visitList[i].presentVolunteer.split(',');
           console.log(Volunteerlist)
-          // for (var i = 0; i < Volunteerlist.length; i++) {
-          //   console.log(Volunteerlist[i])
+          // for (var t = 0; t < Volunteerlist.length; t++) {
+          //   console.log(Volunteerlist[t])
           //   for (var j = 0; j < this.Volunteer.length; j++) {
-          //     if (Volunteerlist[i] == this.Volunteer[j].VolId) {
-          //       console.log(this.Volunteer[j])
+          //     if (Volunteerlist[t] == this.Volunteer[j].VolId) {
+            
           //       hvvlList.push(this.Volunteer[j]);
           //     }
           //   }
           // }
           // var supportVolunteer = kv.visitList[i].supportVolunteer.split(',');
           // console.log(supportVolunteer)
-          // for (var i = 0; i < supportVolunteer.length; i++) {
+          // for (var t = 0; t < supportVolunteer.length; t++) {
           //   console.log(supportVolunteer[i])
           //   for (var j = 0; j < this.Volunteer.length; j++) {
-          //     if (supportVolunteer[i] == this.Volunteer[j].VolId) {
+          //     if (supportVolunteer[t] == this.Volunteer[j].VolId) {
           //       hvvlList.push(this.Volunteer[j]);
           //     }
           //   }
