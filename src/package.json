@@ -75,7 +75,6 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~10.14.2",
     "codelyzer": "~4.5.0",
-    "cordova-plugin-crosswalk-webview-v2": "^2.4.3",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-ionic-keyboard": "^2.1.3",
     "cordova-plugin-ionic-webview": "^4.0.1",
@@ -114,12 +113,11 @@
       "cordova-plugin-dns": {},
       "com-badrit-base64": {},
       "cordova-plugin-file": {},
-      "cordova-plugin-screen-orientation": {},
-      "cordova-plugin-crosswalk-webview-v2": {}
+      "cordova-plugin-screen-orientation": {}
     },
     "platforms": [
-      "android",
-      "ios"
+      "ios",
+      "android"
     ]
   }
 }
