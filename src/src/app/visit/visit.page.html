@@ -101,7 +101,7 @@
             <div class="bg-white">
               <ion-datetime placeholder="{{visit.ScheduleTime}}" displayFormat="HH:mm" picker-format="hh:mm A"
                 style="height:25px;padding:2px;" max="2050-12-09" done-text='确定' cancel-text='取消'
-                [(ngModel)]="ScheduleTime"></ion-datetime>
+                [(ngModel)]="ScheduleTime2"></ion-datetime>
             </div>
 
           </div>
@@ -125,7 +125,7 @@
               <div class="bg-white">
                 <ion-datetime placeholder="{{VisitDate}}" style="height:25px;padding:2px;"
                   displayFormat="DD-MM-YYYY " picker-format="DD MM YYYY" max="2050-12-09" done-text='确定'
-                  cancel-text='取消' [(ngModel)]="VisitDate"></ion-datetime>
+                  cancel-text='取消' [(ngModel)]="VisitDate2"></ion-datetime>
               </div>
 
             </div>
@@ -136,7 +136,7 @@
           <div class="flex-1">
             <div class="bg-white">
               <ion-datetime placeholder="{{VisitStartTime}}" style="height:25px;padding:2px;" displayFormat="HH:mm"
-                picker-format="hh：mm A" max="2050-12-09" done-text='确定' cancel-text='取消' [(ngModel)]="VisitStartTime">
+                picker-format="hh：mm A" max="2050-12-09" done-text='确定' cancel-text='取消' [(ngModel)]="VisitStartTime2">
               </ion-datetime>
             </div>
 
@@ -146,7 +146,7 @@
           <div class="flex-1">
             <div class="bg-white">
               <ion-datetime placeholder="{{VisitEndTime}}" style="height:25px;padding:2px;" displayFormat="HH:mm"
-                picker-format="hh：mm A" max="2050-12-09" done-text='确定' cancel-text='取消' [(ngModel)]="VisitEndTime">
+                picker-format="hh：mm A" max="2050-12-09" done-text='确定' cancel-text='取消' [(ngModel)]="VisitEndTime2">
               </ion-datetime>
             </div>
           </div>
@@ -348,17 +348,20 @@
             <div class=" margin-top-10">是次分享之健康管家手冊項目(如有，請填寫該目錄標題):</div>
             <div class=" margin-top-10 ">
               <div class="flex-1 flex-row  margin-top-10 flex-center">
-                <div class="margin-right-10">1.</div><input class="radius-2 " [(ngModel)]="CategoryTopic1"
+                <div class="margin-right-10">1.</div>
+                <input class="radius-2 " [(ngModel)]="CategoryTopic1"
                   name='CategoryTopic1' placeholder="輸入最多50字" disabled='{{VisitStatus==2?disabled:false}}'
                   maxlength="50" style=" width: 100%;" />
               </div>
               <div class="flex-1 flex-row margin-top-10 flex-center">
-                <div class="margin-right-10">2.</div><input class="radius-2 " [(ngModel)]="CategoryTopic2"
+                <div class="margin-right-10">2.</div>
+                <input class="radius-2 " [(ngModel)]="CategoryTopic2"
                   name='CategoryTopic2' placeholder="輸入最多50字" disabled='{{VisitStatus==2?disabled:false}}'
                   maxlength="50" style=" width: 100%;" />
               </div>
               <div class="flex-1 flex-row margin-top-10 flex-center">
-                <div class="margin-right-10">3.</div><input class="radius-2 " [(ngModel)]="CategoryTopic3"
+                <div class="margin-right-10">3.</div>
+                <input class="radius-2 " [(ngModel)]="CategoryTopic3"
                   name='CategoryTopic3' placeholder="輸入最多50字" disabled='{{VisitStatus==2?disabled:false}}'
                   maxlength="50" style=" width: 100%;" />
               </div>
@@ -440,8 +443,8 @@
           </div>
           <div class="flex-row margin-top-5">
             <div>BMI</div>
-            <div class="margin-left-20" *ngIf="!visit.Bmi ">{{(Weight/(casedata.Height*casedata.Height)).toFixed(2)}}</div>
-            <div class="margin-left-20" *ngIf="visit.Bmi ">{{visit.Bmi}}</div>
+            <div class="margin-left-20" *ngIf="Weight!=null && Weight!=0" >{{(Weight/(casedata.Height*casedata.Height)).toFixed(2)}}</div>
+            <div class="margin-left-20" *ngIf="Weight==null || Weight==0">0</div>
 
           </div>
         </div>
@@ -461,8 +464,8 @@
           </div>
           <div class="flex-row margin-top-5">
             <div>腰臀比例</div>
-            <div class="margin-left-20" *ngIf="!visit.WHRatio ">{{(Waist/Hip).toFixed(2)}}</div>
-            <div class="margin-left-20" *ngIf="visit.WHRatio ">{{visit.WHRatio}}</div>
+            <div class="margin-left-20" *ngIf="Waist!=null && Waist!=0 && Hip!=null && Hip!=0">{{(Waist/Hip).toFixed(2)}}</div>
+            <div class="margin-left-20" *ngIf="Waist==null || Waist==0">0</div>
           </div>
         </div>
 
@@ -486,6 +489,10 @@
           <div class=" margin-top-5 flex-row flex-center">
             <ion-radio type="radio" name="lifeHabit1" value="male" class="radio " disabled='{{VisitStatus==2?disabled:false}}'
               checked="{{LifeStyleQuestion1==2?true:false}}" (click)="getLifeHabit1(2)" ></ion-radio>否
+          </div>
+          <div class=" margin-top-5 flex-row flex-center">
+            <ion-radio type="radio" name="lifeHabit1" value="male" class="radio " disabled='{{VisitStatus==3?disabled:false}}'
+              checked="{{LifeStyleQuestion1==2?true:false}}" (click)="getLifeHabit1(3)" ></ion-radio>不適用
           </div>
         </div>
 
@@ -586,6 +593,11 @@
             <ion-radio type="radio" name="LifeStyleMeasureBloodSuger"  class="radio " checked="{{LifeStyleMeasureBloodSuger==2?true:false}}" disabled='{{VisitStatus==2?disabled:false}}'
               (click)="LifeStyleMeasureBloodSuger=2"></ion-radio>否
           </div>
+
+          <div class=" margin-top-5 flex-row flex-center">
+            <ion-radio type="radio" name="LifeStyleMeasureBloodSuger"  class="radio " checked="{{LifeStyleMeasureBloodSuger==3?true:false}}" disabled='{{VisitStatus==2?disabled:false}}'
+              (click)="LifeStyleMeasureBloodSuger=3"></ion-radio>不適用
+          </div>
         </div>
 
         <div class="margin-top-10">
@@ -623,6 +635,9 @@
           </div>
           <div class=" margin-top-5 flex-row flex-center">
             <ion-radio type="radio" name="LifeStyleMeasureBloodPressure"  class="radio " (click)="LifeStyleMeasureBloodPressure=2" checked="{{LifeStyleMeasureBloodPressure==2?true:false}}" disabled='{{VisitStatus==2?disabled:false}}'></ion-radio>否
+          </div>
+          <div class=" margin-top-5 flex-row flex-center">
+            <ion-radio type="radio" name="LifeStyleMeasureBloodPressure"  class="radio " (click)="LifeStyleMeasureBloodPressure=2" checked="{{LifeStyleMeasureBloodPressure==2?true:false}}" disabled='{{VisitStatus==2?disabled:false}}'></ion-radio>不適用
           </div>
         </div>
 
@@ -766,7 +781,7 @@
 
         <div class="margin-top-10">
           <div>有否提出特別需要(如送飯, 入住老人院, 家居維修等)</div>
-          <div class=" margin-top-5 ">
+          <div class=" margin-top-5 " *ngIf="VisitStatus!=2">
             <div class="flex-row flex-center">
               <ion-radio type="radio" name="Other5" value="male" class="radio"  disabled='{{VisitStatus==2?disabled:false}}' checked="{{OtherSpecialNeed==1?true:false}}"
                 (click)='getOtherSpecialNeed(1)' ></ion-radio>是</div>
@@ -774,26 +789,26 @@
               <div class="margin-top-5">
                 <ion-checkbox class="radio " [checked]='NeedsContenttlist[0].type==true'
                   (ionChange)='NeedsContenttlist[0].type=$event.detail.checked'
-                  disabled='{{VisitStatus==2?disabled:false}}'></ion-checkbox> 送飯
+                  disabled='{{OtherSpecialNeed==1 ?false:disabled}}'></ion-checkbox> 送飯
               </div>
               <div class="margin-top-5">
                 <ion-checkbox class="radio " [checked]='NeedsContenttlist[1].type==true'
                   (ionChange)='NeedsContenttlist[1].type=$event.detail.checked'
-                  disabled='{{VisitStatus==2?disabled:false}}'></ion-checkbox> 入住老人院
+                  disabled='{{OtherSpecialNeed==1 ?false:disabled}}'></ion-checkbox> 入住老人院
               </div>
               <div class="margin-top-5">
                 <ion-checkbox class="radio " [checked]='NeedsContenttlist[2].type==true'
                   (ionChange)='NeedsContenttlist[2].type=$event.detail.checked'
-                  disabled='{{VisitStatus==2?disabled:false}}'></ion-checkbox> 家居維修
+                  disabled='{{OtherSpecialNeed==1 ?false:disabled}}'></ion-checkbox> 家居維修
               </div>
               <div class="margin-top-5 flex-row flex-center">
                 <ion-checkbox class="radio " [checked]='NeedsContenttlist[3].type==true'
                   (ionChange)='NeedsContenttlist[3].type=$event.detail.checked'
-                  disabled='{{VisitStatus==2?disabled:false}}'></ion-checkbox> 其他
+                  disabled='{{OtherSpecialNeed==1 ?false:disabled}}'></ion-checkbox> 其他
 
                 <div class="flex-1 margin-left-5" *ngIf='NeedsContenttlist[3].type==true'>
                   <input class="input_s radius-2" placeholder="輸入最多50字" style="width:100%;" maxlength="50"
-                    disabled='{{VisitStatus==2?disabled:false}}'
+                    disabled='{{OtherSpecialNeed==1 ?false:disabled}}'
                     placeholder="{{OtherSpecialNeedService?visit.OtherSpecialNeedService:''}}"
                     [(ngModel)]='OtherSpecialNeedService' />
                 </div>
@@ -825,7 +840,7 @@
   <div class="flex-row padding-15 flex-center">
     <div class="flex-1"></div>
     <div class="flex-row">
-      <div class="txt-blue margin-right-60" (click)="addVisit('no')">保存及離開</div>
+      <div class="txt-blue margin-right-60" (click)="addVisit('mm')">保存及離開</div>
       <div class="txt-blue" (click)="addVisit('web')">上傳</div>
     </div>
     <div class="flex-1"></div>

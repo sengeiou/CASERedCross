@@ -74,6 +74,13 @@ export class HomePage extends AppBase {
     //   var seehei = document.documentElement.clientHeight;
     //   console.log('可视区高' + seehei + '可视区宽' + seewid);
     // }
+    var volunteerServr = new VolunteerServr();
+    volunteerServr.getAllVolunteerList().then((e) => {
+      if (e.res.rows.length > 0) {
+        console.log(Array.from(e.res.rows))
+        this.Volunteer = Array.from(e.res.rows)
+      }
+    })
 
   }
   visiltList_web = [];
@@ -158,14 +165,14 @@ export class HomePage extends AppBase {
     console.log(this.caselist)
     for (var i = 0; i < this.caselist.length; i++) {
       // this.SaveAll(this.caselist[i])
-      visiltList=visiltList.concat(this.caselist[i].visitList)
-      activityList=activityList.concat(this.caselist[i].activityList)
-      phoneList=phoneList.concat(this.caselist[i].phoneList)
-      medicAppointLogList=medicAppointLogList.concat(this.caselist[i].medicAppointLogList)
+      visiltList = visiltList.concat(this.caselist[i].visitList)
+      activityList = activityList.concat(this.caselist[i].activityList)
+      phoneList = phoneList.concat(this.caselist[i].phoneList)
+      medicAppointLogList = medicAppointLogList.concat(this.caselist[i].medicAppointLogList)
     }
     console.log(visiltList);
     // return;
-    this. SaveAll(visiltList, phoneList, activityList,medicAppointLogList);
+    this.SaveAll(visiltList, phoneList, activityList, medicAppointLogList);
     console.log(this.caselist)
     if (this.caselist.length == 0) {
       console.log('565')
@@ -173,7 +180,7 @@ export class HomePage extends AppBase {
     }
   }
 
-  SaveAll(visitList, phoneList, activityList,medicAppointLogList) {
+  SaveAll(visitList, phoneList, activityList, medicAppointLogList) {
     console.log(visitList)
 
     this.api.SaveAll(visitList, phoneList, activityList, medicAppointLogList, this.UserId, 'all').then((ret) => {
@@ -208,7 +215,7 @@ export class HomePage extends AppBase {
               console.log(e)
             })
           }
-          this.api.ExecuteWorkingSet(ret.WorkingSetID,0, this.UserId).then(e => {
+          this.api.ExecuteWorkingSet(ret.WorkingSetID, 0, this.UserId).then(e => {
             console.log(e)
             if (e.Result == 'true') {
               this.SysnAllWeb();
@@ -320,9 +327,33 @@ export class HomePage extends AppBase {
             visitId = kv.visitList[i].VisitId;
           }
 
+          var hvvlList = [];
+          var Volunteerlist = kv.visitList[i].presentVolunteer.split(',');
+          console.log(Volunteerlist)
+          // for (var i = 0; i < Volunteerlist.length; i++) {
+          //   console.log(Volunteerlist[i])
+          //   for (var j = 0; j < this.Volunteer.length; j++) {
+          //     if (Volunteerlist[i] == this.Volunteer[j].VolId) {
+          //       console.log(this.Volunteer[j])
+          //       hvvlList.push(this.Volunteer[j]);
+          //     }
+          //   }
+          // }
+          // var supportVolunteer = kv.visitList[i].supportVolunteer.split(',');
+          // console.log(supportVolunteer)
+          // for (var i = 0; i < supportVolunteer.length; i++) {
+          //   console.log(supportVolunteer[i])
+          //   for (var j = 0; j < this.Volunteer.length; j++) {
+          //     if (supportVolunteer[i] == this.Volunteer[j].VolId) {
+          //       hvvlList.push(this.Volunteer[j]);
+          //     }
+          //   }
+          // }
+
+          kv.visitList[i].hvvlList = hvvlList;
+
           imgserver.getImageList_web(visitId).then(e => {
             console.log(Array.from(e.res.rows))
-
             this.imgList = Array.from(e.res.rows);
             var ImgList = [];
             ImgList = Array.from(e.res.rows);
@@ -811,7 +842,7 @@ export class HomePage extends AppBase {
       kv.OtherAccidentNoOfDay, kv.OtherHospDisbete, kv.OtherHospDisbeteNoOfDay, kv.OtherHospHighBp,
       kv.OtherHospHighBpNoOfDay, kv.OtherHospOtherIllness, kv.OtherHospOtherIllnessNoOfDay,
       kv.OtherRemarks, kv.OtherSpecialNeed, kv.OtherSpecialNeedService, kv.ScheduleDate, kv.ScheduleTime,
-      kv.Status,kv.TaskId, kv.VisitDate_Disply, kv.VisitDetailIndoor, kv.VisitDetailIndoorRemarks,
+      kv.Status, kv.TaskId, kv.VisitDate_Disply, kv.VisitDetailIndoor, kv.VisitDetailIndoorRemarks,
       kv.VisitDetailOther, kv.VisitDetailOutdoor, kv.VisitDetailOutdoorRemarks, kv.VisitEndTime,
       kv.VisitId, kv.VisitStartTime, kv.VisitStatus, kv.VisitStatusRemarks, kv.WHRatio, kv.Waist,
       kv.Weight, presentVolunteer, supportVolunteer, ScheduleDate_Display, kv.DlA1, kv.DlA2, kv.SYS1, kv.SYS2, kv.heartBeats1, kv.heartBeats2, kv.NeedsContent).then((e) => {
@@ -819,7 +850,7 @@ export class HomePage extends AppBase {
       });
 
     var objHomeVisitUploadImgAppInfoList = kv.UploadImgInfoList.objHomeVisitUploadImgAppInfo;
- 
+
     var imgserve = new ImageServe();
     if (objHomeVisitUploadImgAppInfoList != undefined
     ) {
