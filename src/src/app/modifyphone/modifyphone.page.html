@@ -57,12 +57,11 @@
       <div class="flex-row flex-center">
         <div class="title2">電話慰問日期:</div>
         <div class="flex-1">
-          <div class="input_s radius-2 bg-white padding-left-5" *ngIf="phone.SavedStatus==0" style="width:100%;">
-            {{phone.CallDate_Display}}</div>
-          <div class="" style="width:100%;" *ngIf="phone.SavedStatus!=0">
+         
+          <div class="" style="width:100%;" >
             <div class="bg-white">
               <ion-datetime placeholder="{{phone.CallDate_Display}}" displayFormat="DD-MM-YYYY " picker-format="DD MM YYYY  "
-                max="2050-12-09" style="height:25px;padding:2px;" done-text='确定' cancel-text='取消'
+                max="2050-12-09" style="height:25px;padding:2px;--placeholder-color:#000;" done-text='确定' cancel-text='取消'
                 [(ngModel)]="CallDate"></ion-datetime>
             </div>
           </div>
@@ -72,25 +71,23 @@
       <div class="flex-row margin-top-10  flex-center">
         <div class="title2">電話慰問時間:</div>
         <div class="flex-1">
-          <div class="input_s radius-2 bg-white padding-left-5" *ngIf="phone.SavedStatus==0" style="width:100%;">
-            {{phone.CallStartTime}}</div>
-          <div class="" style="width:100%;" *ngIf="phone.SavedStatus!=0">
+          
+          <div class="" style="width:100%;" >
             <div class="bg-white">
               <ion-datetime placeholder="{{phone.CallStartTime}}" displayFormat="HH：mm" picker-format="HH：mm"
-                max="2050-12-09" done-text='确定' style="height:25px;padding:2px;" cancel-text='取消'
-                [(ngModel)]="CallStartTime"></ion-datetime>
+                max="2050-12-09" done-text='确定' style="height:25px;padding:2px;--placeholder-color:#000;" cancel-text='取消'
+                [(ngModel)]="CallStartTime2"></ion-datetime>
             </div>
           </div>
         </div>
         <div class="margin-5">至</div>
         <div class="flex-1">
-          <div class="input_s radius-2 bg-white padding-left-5" *ngIf="phone.SavedStatus==0" style="width:100%;">
-            {{phone.CallEndTime}}</div>
-          <div class="" style="width:100%;" *ngIf="phone.SavedStatus!=0">
+         
+          <div class="" style="width:100%;" >
             <div class="bg-white">
               <ion-datetime placeholder="{{phone.CallEndTime}}" displayFormat="HH：mm" picker-format="HH：mm"
-                max="2050-12-09" done-text='确定' style="height:25px;padding:2px;" cancel-text='取消'
-                [(ngModel)]="CallEndTime"></ion-datetime>
+                max="2050-12-09" done-text='确定' style="height:25px;padding:2px;--placeholder-color:#000;" cancel-text='取消'
+                [(ngModel)]="CallEndTime2"></ion-datetime>
             </div>
           </div>
         </div>
@@ -104,10 +101,11 @@
 
       <div class="flex-row margin-top-10 flex-center">
         <div class="title2">下次預約探訪:</div>
-        <div class=" radius-2 padding-left-5" *ngIf="phone.VisitDate" style="width:60%;">
+        <div class=" radius-2 padding-left-5"  style="width:60%;" *ngIf="phone.VisitDate.length>0">
             {{phone.VisitDate.ScheduleDate_Display}}
             {{phone.VisitDate.ScheduleTime==''?'時間未定':phone.VisitDate.ScheduleTime}}
         </div>
+        <div class=" radius-2 padding-left-5"  *ngIf="phone.VisitDate.length==0">沒有預約日期</div>
       </div>
 
       <div class="margin-top-10">
@@ -115,14 +113,14 @@
         <div class=" margin-top-10 flex-row flex-center">
 
           <ion-radio name="CannotContact" value="male" class="radio " (click)="getLiaison(2)" 
-            checked="{{phone.CannotContact==2?'true':'false'}}" disabled='{{phone.SavedStatus==0?disabled:false}}'>
+            checked="{{phone.CannotContact==2?'true':'false'}}" >
           </ion-radio>否
         </div>
 
         <div class=" margin-top-10 flex-row flex-center">
 
           <ion-radio name="CannotContact" value="male" class="radio " (click)="getLiaison(1)"
-            checked="{{phone.CannotContact==1?'true':'false'}}" disabled='{{phone.SavedStatus==0?disabled:false}}'>
+            checked="{{phone.CannotContact==1?'true':'false'}}">
           </ion-radio>是
         </div>
       </div>
@@ -175,13 +173,12 @@
             <div class="flex-row flex-center margin-top-10">
               <div class="title2">下次探訪日期:</div>
               <div class="flex-1">
-                <div class="input_s radius-2 bg-white padding-left-5" *ngIf="phone.SavedStatus==0" style="width:100%;">
-                  {{phone.NextPhoneDate}}</div>
-                <div class="" style="width:100%;" *ngIf="phone.SavedStatus!=0">
+               
+                <div class="" style="width:100%;" >
                   <div class="bg-white">
                     <ion-datetime placeholder="{{phone.NextPhoneDate}}" displayFormat="DD-MM-YYYY "
-                      picker-format="DD MM YYYY " max="2050-12-09" style="height:25px;padding:2px;" done-text='确定'
-                      cancel-text='取消' [(ngModel)]="NextPhoneDate"></ion-datetime>
+                      picker-format="DD MM YYYY " max="2050-12-09" style="height:25px;padding:2px;--placeholder-color:#000;" done-text='确定'
+                      cancel-text='取消' [(ngModel)]="NextPhoneDate2"></ion-datetime>
                   </div>
                 </div>
               </div>
@@ -190,14 +187,11 @@
             <div class="flex-row margin-top-10  flex-center">
               <div class="title2">下次探訪時間:</div>
               <div class="flex-1">
-                <div class="input_s radius-2 bg-white padding-left-5" *ngIf="phone.SavedStatus==0" style="width:100%;">
-                  {{phone.NextPhoneTime}}</div>
-
-                <div class="" style="width:100%;" *ngIf="phone.SavedStatus!=0">
+                <div class="" style="width:100%;" >
                   <div class="bg-white">
                     <ion-datetime placeholder="{{phone.NextPhoneTime}}" displayFormat="HH：mm" picker-format="HH：mm"
-                      max="2050-12-09" done-text='确定' style="height:25px;padding:2px;" cancel-text='取消'
-                      [(ngModel)]="NextPhoneTime"></ion-datetime>
+                      max="2050-12-09" done-text='确定' style="height:25px;padding:2px;--placeholder-color:#000;" cancel-text='取消'
+                      [(ngModel)]="NextPhoneTime2"></ion-datetime>
                   </div>
                 </div>
               </div>

@@ -40,6 +40,10 @@ export class ModifyphonePage extends AppBase {
   CallDate = '';
   CallStartTime = '';
   CallEndTime = '';
+
+  CallStartTime2 = '';
+  CallEndTime2 = '';
+
   Detail = '';
   DetailOther = '';
   UserName = '';
@@ -47,6 +51,9 @@ export class ModifyphonePage extends AppBase {
   CannotContact = 0;
   NextPhoneDate = ''
   NextPhoneTime = '';
+
+  NextPhoneDate2 = '';
+  NextPhoneTime2 = '';
   VolunteerName = '';
   PhoneID = 0;
   phone = null;
@@ -108,10 +115,21 @@ export class ModifyphonePage extends AppBase {
         console.log(data["CallDate"])
         this.CallDate_show = AppUtil.FormatDate2(new Date(data["CallDate"]));
         this.phone.VisitDate = [];
-
         this.CannotContact = this.phone.CannotContact;
-
         this.getAllVisitScheduleDate()
+
+
+        this.CallDate = this.phone.CallDate
+
+        this.CallStartTime = this.phone.CallStartTime
+        this.CallEndTime = this.phone.CallEndTime
+
+        this.DetailOther = this.phone.DetailOther
+        this.UserName = this.phone.UserName
+        this.OtherRemark = this.phone.OtherRemark
+        this.CannotContact = this.phone.CannotContact
+        this.NextPhoneDate = this.phone.NextPhoneDate
+        this.NextPhoneTime = this.phone.NextPhoneTime
 
         var DetailTypelist = this.phone.Detail.split(',');
         for (var i = 0; i < DetailTypelist.length; i++) {
@@ -236,27 +254,35 @@ export class ModifyphonePage extends AppBase {
       CallDate_Display = AppUtil.FormatDate2(new Date(this.CallDate));
     }
 
-    if (this.CallStartTime != '') {
-      this.CallStartTime = AppUtil.FormatTime(new Date(this.CallStartTime));
+    if (this.CallStartTime2 != '') {
+      this.CallStartTime = AppUtil.FormatTime(new Date(this.CallStartTime2));
     }
 
-    if (this.CallEndTime != '') {
-      this.CallEndTime = AppUtil.FormatTime(new Date(this.CallEndTime));
+    if (this.CallEndTime2 != '') {
+      this.CallEndTime = AppUtil.FormatTime(new Date(this.CallEndTime2));
+    }
+
+    if (this.NextPhoneDate2 != '') {
+      this.NextPhoneDate = AppUtil.FormatDate2(new Date(this.NextPhoneDate2));
+    }
+
+    if (this.NextPhoneTime2 != '') {
+      this.NextPhoneTime = AppUtil.FormatTime(new Date(this.NextPhoneTime2));
     }
 
     var CallDate_Display = this.CallDate != '' ? CallDate_Display : AppUtil.FormatDate2(new Date(this.phone.CallDate))
 
-    this.CallDate = this.CallDate != '' ? this.CallDate : this.phone.CallDate
+    // this.CallDate = this.CallDate != '' ? this.CallDate : this.phone.CallDate
 
-    this.CallStartTime = this.CallStartTime != '' ? this.CallStartTime : this.phone.CallStartTime
-    this.CallEndTime = this.CallEndTime != '' ? this.CallEndTime : this.phone.CallEndTime
+    // this.CallStartTime = this.CallStartTime != '' ? this.CallStartTime : this.phone.CallStartTime
+    // this.CallEndTime = this.CallEndTime != '' ? this.CallEndTime : this.phone.CallEndTime
 
-    this.DetailOther = this.DetailOther != '' ? this.DetailOther : this.phone.DetailOther
-    this.UserName = this.UserName != '' ? this.UserName : this.phone.UserName
-    this.OtherRemark = this.OtherRemark != '' ? this.OtherRemark : this.phone.OtherRemark
-    this.CannotContact = this.CannotContact != 0 ? this.CannotContact : this.phone.CannotContact
-    this.NextPhoneDate = this.NextPhoneDate != '' ? this.NextPhoneDate : this.phone.NextPhoneDate
-    this.NextPhoneTime = this.NextPhoneTime != '' ? this.NextPhoneTime : this.phone.NextPhoneTime
+    // this.DetailOther = this.DetailOther != '' ? this.DetailOther : this.phone.DetailOther
+    // this.UserName = this.UserName != '' ? this.UserName : this.phone.UserName
+    // this.OtherRemark = this.OtherRemark != '' ? this.OtherRemark : this.phone.OtherRemark
+    // this.CannotContact = this.CannotContact != 0 ? this.CannotContact : this.phone.CannotContact
+    // this.NextPhoneDate = this.NextPhoneDate != '' ? this.NextPhoneDate : this.phone.NextPhoneDate
+    // this.NextPhoneTime = this.NextPhoneTime != '' ? this.NextPhoneTime : this.phone.NextPhoneTime
     if (this.CannotContact != 1) {
       for (var i = 0; i < this.DetailList.length; i++) {
         if (this.DetailList[i].DetailType == true) {
@@ -285,12 +311,15 @@ export class ModifyphonePage extends AppBase {
         return;
       }
 
-      if (this.CallStartTime == this.CallEndTime) {
+      
+      var oDate1 = new Date(this.CallStartTime);
+      var oDate2 = new Date(this.CallEndTime);
+
+      if (oDate1.getTime() == oDate2.getTime()) {
         this.toast('開始和結束時間不能一樣');
         return;
       }
-      var oDate1 = new Date(this.CallStartTime);
-      var oDate2 = new Date(this.CallEndTime);
+
       if (oDate1.getTime() > oDate2.getTime()) {
         this.toast('開始時間不能遲於結束時間');
         return;
@@ -299,22 +328,22 @@ export class ModifyphonePage extends AppBase {
         this.toast('你沒有輸入聯絡状态');
         return;
       }
-      
+
       if (this.CannotContact == 2) {
         if (this.DetailList[7].DetailType == true) {
-          if (this.NextPhoneDate == '' ) {
+          if (this.NextPhoneDate == '') {
             this.toast('你沒有輸入下次探訪日期');
             return;
           }
 
-          if (this.NextPhoneTime=='' ) {
+          if (this.NextPhoneTime == '') {
             this.toast('你沒有輸入下次探訪時間');
             return;
           }
         }
 
         if (this.DetailList[8].DetailType == true) {
-          if (this.DetailOther=='' ) {
+          if (this.DetailOther == '') {
             this.toast('你沒有輸入其他電話慰問內容');
             return;
           }
@@ -366,8 +395,6 @@ export class ModifyphonePage extends AppBase {
             this.api.ExecuteWorkingSet(ret.WorkingSetID, this.params.caseID, this.params.UserId).then(e => {
               console.log(e)
               if (e.Result == 'true') {
-
-
                 phone.sevaPhoneSavedStatus(this.PhoneID).then(e => {
 
                 })

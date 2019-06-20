@@ -11,10 +11,17 @@ export class MedicalRecordServe {
         var sql = "select * from tb_MedicalRecord where CaseId=?";
         return mgr.execSql(sql,[CaseId]);
     }
+
     getAllMedicalRecor_SavedStatus(SavedStatus) {
         var mgr = DBMgr.GetInstance();
         var sql = "select * from tb_MedicalRecord where SavedStatus=?";
         return mgr.execSql(sql,[SavedStatus]);
+    }
+
+    getAllMedicalRecor_SavedStatus2(SavedStatus,CaseId) {
+        var mgr = DBMgr.GetInstance();
+        var sql = "select * from tb_MedicalRecord where SavedStatus=? and CaseId=?";
+        return mgr.execSql(sql,[SavedStatus,CaseId]);
     }
 
     addMedicalRecord(AppointmentDate,AppointmentTime,Description,Reason,Hosp,Specialty,CaseId,Status){
@@ -31,8 +38,14 @@ export class MedicalRecordServe {
 
     saveMedicalRecord(AppointmentDate,AppointmentTime,Hosp,Specialty,Description,Reason,Status,LocalId){
         var mgr = DBMgr.GetInstance();
-        var sql = "update tb_MedicalRecord SET AppointmentDate=?,AppointmentTime=?,Hosp=?,Specialty=?,Description=?,Reason=?,Status=? where LocalId=?";
+        var sql = "update tb_MedicalRecord SET AppointmentDate=?,AppointmentTime=?,Hosp=?,Specialty=?,Description=?,Reason=?,Status=?,SavedStatus=1 where LocalId=?";
         return mgr.execSql(sql,[AppointmentDate,AppointmentTime,Hosp,Specialty,Description,Reason,Status,LocalId]);
+    }
+
+    saveMedicalRecord_SavedStatus(SavedStatus,LocalId){
+        var mgr = DBMgr.GetInstance();
+        var sql = "update tb_MedicalRecord SET SavedStatus=? where LocalId=?";
+        return mgr.execSql(sql,[SavedStatus,LocalId]);
     }
 
     addMedicalRecordHospSpecialty(Hosp,Specialty,CaseId){

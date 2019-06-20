@@ -40,6 +40,13 @@ export class ModifyvisitPage extends AppBase {
   VisitDate = ''; //实际日期
   VisitStartTime = '';//实际开始时间
   VisitEndTime = '';//实际结束时间
+
+
+  ScheduleTime2 = '';
+  VisitDate2 = '';
+  VisitStartTime2 = '';
+  VisitEndTime2 = '';
+
   Location = 0; //面见地点
   LocationRemarks = '';//其他地点输入
   VisitStatus = 0;//探访状况
@@ -293,7 +300,69 @@ export class ModifyvisitPage extends AppBase {
         var data = Array.from(casedata)[0]
         this.visit = data;
         console.log(data);
-        this.VisitStatus=this.visit.VisitStatus;
+        // this.VisitStatus = this.visit.VisitStatus;
+        this.Bmi = this.visit.Bmi
+        this.CategoryTopic1 = this.visit.CategoryTopic1
+        this.CategoryTopic2 = this.visit.CategoryTopic2
+        this.CategoryTopic3 = this.visit.CategoryTopic3
+        this.EmotionAssessment = this.visit.EmotionAssessment
+        this.EmotionAssessmentRemarks = this.visit.EmotionAssessmentRemarks
+        this.Hip = this.visit.Hip
+        this.LifeStyleMeasureBpPeriod = this.visit.LifeStyleMeasureBpPeriod
+        this.LifeStyleMeasureBloodSuger = this.visit.LifeStyleMeasureBloodSuger
+        this.LifeStyleMeasureBpLocation = this.visit.LifeStyleMeasureBpLocation
+        this.LifeStyleMeasureBpNoOfTime = this.visit.LifeStyleMeasureBpNoOfTime
+        this.LifeStyleMeasureBloodPressure = this.visit.LifeStyleMeasureBloodPressure
+        this.LifeStyleMeasureBsLocation = this.visit.LifeStyleMeasureBsLocation
+        this.LifeStyleMeasureBsNoOfTime = this.visit.LifeStyleMeasureBsNoOfTime
+        this.LifeStyleMeasureBsPeriod = this.visit.LifeStyleMeasureBsPeriod
+        this.LifeStyleQuestion1 = this.visit.LifeStyleQuestion1
+        this.LifeStyleQuestion2 = this.visit.LifeStyleQuestion2
+        this.LifeStyleQuestion3 = this.visit.LifeStyleQuestion3
+        this.LifeStyleQuestion4 = this.visit.LifeStyleQuestion4
+        this.LifeStyleQuestion5 = this.visit.LifeStyleQuestion5
+        this.LifeStyleQuestion6 = this.visit.LifeStyleQuestion6
+        this.Location = this.visit.Location
+        this.LocationRemarks = this.visit.LocationRemarks
+        this.OtherAccident = this.visit.OtherAccident
+        this.OtherAccidentNoOfDay = this.visit.OtherAccidentNoOfDay
+        this.OtherHospDisbete = this.visit.OtherHospDisbete
+        this.OtherHospDisbeteNoOfDay = this.visit.OtherHospDisbeteNoOfDay
+        this.OtherHospHighBp = this.visit.OtherHospHighBp
+        this.OtherHospHighBpNoOfDay = this.visit.OtherHospHighBpNoOfDay
+        this.OtherHospOtherIllness = this.visit.OtherHospOtherIllness
+        this.OtherRemarks = this.visit.OtherRemarks
+        this.OtherSpecialNeed = this.visit.OtherSpecialNeed
+        this.OtherSpecialNeedService = this.visit.OtherSpecialNeedService
+        this.ScheduleDate = this.visit.ScheduleDate
+        this.ScheduleTime = this.visit.ScheduleTime
+        this.VisitDate = this.visit.VisitDate
+        this.VisitDetailIndoor = this.VisitDetailIndoor != '' ? this.VisitDetailIndoor : this.visit.VisitDetailIndoor
+        this.VisitDetailIndoorRemarks = this.visit.VisitDetailIndoorRemarks
+        this.VisitDetailOther = this.visit.VisitDetailOther
+        this.VisitDetailOutdoor = this.visit.VisitDetailOutdoor
+        this.VisitDetailOutdoorRemarks = this.visit.VisitDetailOutdoorRemarks
+        this.VisitEndTime = this.visit.VisitEndTime
+        this.VisitStartTime = this.visit.VisitStartTime
+        this.VisitStatus = this.visit.VisitStatus
+        this.VisitStatusRemarks = this.visit.VisitStatusRemarks
+        this.WHRatio = this.visit.WHRatio
+        this.Waist = this.visit.Waist
+        this.Weight = this.visit.Weight
+        this.NeedsContent = this.visit.NeedsContent
+        this.SYS1 = this.visit.SYS1
+        this.DlA1 = this.visit.DlA1
+        this.SYS2 = this.visit.SYS2
+        this.DlA2 = this.visit.DlA2
+        this.heartBeats1 = this.visit.heartBeats1
+        this.heartBeats2 = this.visit.heartBeats2
+        this.presentVolunteer = this.visit.presentVolunteer
+        this.supportVolunteer = this.visit.supportVolunteer
+        this.OtherHospOtherIllnessNoOfDay = this.visit.OtherHospOtherIllnessNoOfDay
+
+
+
+
         if (this.visit.LifeStyleMeasureBsLocation == 1) {
           this.LifeStyleMeasureBsLocation_name = '家中'
         } else if (this.visit.LifeStyleMeasureBsLocation == 2) {
@@ -329,25 +398,26 @@ export class ModifyvisitPage extends AppBase {
         if (this.visit.VisitId > 0) {
           visitId = this.visit.VisitId;
         }
+
         imgserver.getImageList_web(visitId).then(e => {
-          console.log(Array.from(e.res.rows))
-          var ImgList = [];
-          ImgList = Array.from(e.res.rows);
+          console.log('圖片' , Array.from(e.res.rows))
+
           this.imgList == Array.from(e.res.rows);
           var hvImgKeepListStr = '';
-          for (var j = 0; j < ImgList.length; j++) {
+          for (var j = 0; j < this.imgList.length; j++) {
             if (hvImgKeepListStr == '') {
-              hvImgKeepListStr = ImgList[j].LocalId
+              hvImgKeepListStr = this.imgList[j].LocalId
             } else {
-              hvImgKeepListStr = hvImgKeepListStr + ',' + ImgList[j].LocalId
+              hvImgKeepListStr = hvImgKeepListStr + ',' + this.imgList[j].LocalId
             }
           }
           this.visit.hvImgKeepListStr = hvImgKeepListStr;
-          this.visit.hvNewImgQty = ImgList.length;
+          this.visit.hvNewImgQty = this.imgList.length;
         })
 
         var medicalRecord = new MedicalRecordServe();
-        medicalRecord.getAllMedicalRecordList(this.params.caseID).then((e) => {
+        var SavedStatus = 1;
+        medicalRecord.getAllMedicalRecor_SavedStatus2(SavedStatus, this.params.caseID).then((e) => {
           this.medicAppointLogList = Array.from(e.res.rows);
           console.log(this.medicAppointLogList)
         })
@@ -652,12 +722,12 @@ export class ModifyvisitPage extends AppBase {
     this.VisitDetailIndoor = e;
   }
   getVisitDetailOutdoor(e) {
-    
+
     this.VisitDetailOutdoor = e;
   }
 
   saveService_neurou(visitId) {
-    
+
     this.addVisit('no')
   }
 
@@ -843,22 +913,22 @@ export class ModifyvisitPage extends AppBase {
     var visit = new VisitServe();
 
     console.log(this.ScheduleTime);
- 
-    if (this.ScheduleTime != '') {
-      this.ScheduleTime = AppUtil.FormatTime(new Date(this.ScheduleTime));
-    }
-   
 
-    if (this.VisitDate != '') {
-      this.VisitDate = AppUtil.FormatDate2(new Date(this.VisitDate));
+    if (this.ScheduleTime2 != '') {
+      this.ScheduleTime = AppUtil.FormatTime(new Date(this.ScheduleTime2));
     }
 
-    if (this.VisitStartTime != '') {
-      this.VisitStartTime = AppUtil.FormatTime(new Date(this.VisitStartTime));
+
+    if (this.VisitDate2 != '') {
+      this.VisitDate = AppUtil.FormatDate2(new Date(this.VisitDate2));
     }
 
-    if (this.VisitEndTime != '') {
-      this.VisitEndTime = AppUtil.FormatTime(new Date(this.VisitEndTime));
+    if (this.VisitStartTime2 != '') {
+      this.VisitStartTime = AppUtil.FormatTime(new Date(this.VisitStartTime2));
+    }
+
+    if (this.VisitEndTime2 != '') {
+      this.VisitEndTime = AppUtil.FormatTime(new Date(this.VisitEndTime2));
     }
 
     console.log(this.VisitDate)
@@ -892,65 +962,65 @@ export class ModifyvisitPage extends AppBase {
     }
 
 
-    this.Bmi = this.Bmi > 0 ? this.Bmi : this.visit.Bmi
-    this.CategoryTopic1 = this.CategoryTopic1 != '' ? this.CategoryTopic1 : this.visit.CategoryTopic1
-    this.CategoryTopic2 = this.CategoryTopic2 != '' ? this.CategoryTopic2 : this.visit.CategoryTopic2
-    this.CategoryTopic3 = this.CategoryTopic3 != '' ? this.CategoryTopic3 : this.visit.CategoryTopic3
-    this.EmotionAssessment = this.EmotionAssessment != '' ? this.EmotionAssessment : this.visit.EmotionAssessment
-    this.EmotionAssessmentRemarks = this.EmotionAssessmentRemarks != '' ? this.EmotionAssessmentRemarks : this.visit.EmotionAssessmentRemarks
-    this.Hip = this.Hip != null ? this.Hip : this.visit.Hip
-    this.LifeStyleMeasureBpPeriod = this.LifeStyleMeasureBpPeriod != 0 ? this.LifeStyleMeasureBpPeriod : this.visit.LifeStyleMeasureBpPeriod
-    this.LifeStyleMeasureBloodSuger = this.LifeStyleMeasureBloodSuger != 0 ? this.LifeStyleMeasureBloodSuger : this.visit.LifeStyleMeasureBloodSuger
-    this.LifeStyleMeasureBpLocation = this.LifeStyleMeasureBpLocation != 0 ? this.LifeStyleMeasureBpLocation : this.visit.LifeStyleMeasureBpLocation
-    this.LifeStyleMeasureBpNoOfTime = this.LifeStyleMeasureBpNoOfTime != null ? this.LifeStyleMeasureBpNoOfTime : this.visit.LifeStyleMeasureBpNoOfTime
-    this.LifeStyleMeasureBloodPressure = this.LifeStyleMeasureBloodPressure != 0 ? this.LifeStyleMeasureBloodPressure : this.visit.LifeStyleMeasureBloodPressure
-    this.LifeStyleMeasureBsLocation = this.LifeStyleMeasureBsLocation != 0 ? this.LifeStyleMeasureBsLocation : this.visit.LifeStyleMeasureBsLocation
-    this.LifeStyleMeasureBsNoOfTime = this.LifeStyleMeasureBsNoOfTime != null ? this.LifeStyleMeasureBsNoOfTime : this.visit.LifeStyleMeasureBsNoOfTime
-    this.LifeStyleMeasureBsPeriod = this.LifeStyleMeasureBsPeriod != 0 ? this.LifeStyleMeasureBsPeriod : this.visit.LifeStyleMeasureBsPeriod
-    this.LifeStyleQuestion1 = this.LifeStyleQuestion1 != 0 ? this.LifeStyleQuestion1 : this.visit.LifeStyleQuestion1
-    this.LifeStyleQuestion2 = this.LifeStyleQuestion2 != 0 ? this.LifeStyleQuestion2 : this.visit.LifeStyleQuestion2
-    this.LifeStyleQuestion3 = this.LifeStyleQuestion3 != 0 ? this.LifeStyleQuestion3 : this.visit.LifeStyleQuestion3
-    this.LifeStyleQuestion4 = this.LifeStyleQuestion4 != 0 ? this.LifeStyleQuestion4 : this.visit.LifeStyleQuestion4
-    this.LifeStyleQuestion5 = this.LifeStyleQuestion5 != 0 ? this.LifeStyleQuestion5 : this.visit.LifeStyleQuestion5
-    this.LifeStyleQuestion6 = this.LifeStyleQuestion6 != 0 ? this.LifeStyleQuestion6 : this.visit.LifeStyleQuestion6
-    this.Location = this.Location != 0 ? this.Location : this.visit.Location
-    this.LocationRemarks = this.LocationRemarks != '' ? this.LocationRemarks : this.visit.LocationRemarks
-    this.OtherAccident = this.OtherAccident != 0 ? this.OtherAccident : this.visit.OtherAccident
-    this.OtherAccidentNoOfDay = this.OtherAccidentNoOfDay != null ? this.OtherAccidentNoOfDay : this.visit.OtherAccidentNoOfDay
-    this.OtherHospDisbete = this.OtherHospDisbete != 0 ? this.OtherHospDisbete : this.visit.OtherHospDisbete
-    this.OtherHospDisbeteNoOfDay = this.OtherHospDisbeteNoOfDay != null ? this.OtherHospDisbeteNoOfDay : this.visit.OtherHospDisbeteNoOfDay
-    this.OtherHospHighBp = this.OtherHospHighBp != 0 ? this.OtherHospHighBp : this.visit.OtherHospHighBp
-    this.OtherHospHighBpNoOfDay = this.OtherHospHighBpNoOfDay != null ? this.OtherHospHighBpNoOfDay : this.visit.OtherHospHighBpNoOfDay
-    this.OtherHospOtherIllness = this.OtherHospOtherIllness != 0 ? this.OtherHospOtherIllness : this.visit.OtherHospOtherIllness
-    this.OtherRemarks = this.OtherRemarks != '' ? this.OtherRemarks : this.visit.OtherRemarks
-    this.OtherSpecialNeed = this.OtherSpecialNeed != 0 ? this.OtherSpecialNeed : this.visit.OtherSpecialNeed
-    this.OtherSpecialNeedService = this.OtherSpecialNeedService != '' ? this.OtherSpecialNeedService : this.visit.OtherSpecialNeedService
-    this.ScheduleDate = this.ScheduleDate != '' ? this.ScheduleDate : this.visit.ScheduleDate
-    this.ScheduleTime = this.ScheduleTime != '' ? this.ScheduleTime : this.visit.ScheduleTime
-    this.VisitDate = this.VisitDate != '' ? this.VisitDate : this.visit.VisitDate
-    this.VisitDetailIndoor = this.VisitDetailIndoor != '' ? this.VisitDetailIndoor : this.visit.VisitDetailIndoor
-    this.VisitDetailIndoorRemarks = this.VisitDetailIndoorRemarks != '' ? this.VisitDetailIndoorRemarks : this.visit.VisitDetailIndoorRemarks
-    this.VisitDetailOther = this.VisitDetailOther != '' ? this.VisitDetailOther : this.visit.VisitDetailOther
-    this.VisitDetailOutdoor = this.VisitDetailOutdoor != '' ? this.VisitDetailOutdoor : this.visit.VisitDetailOutdoor
-    this.VisitDetailOutdoorRemarks = this.VisitDetailOutdoorRemarks != '' ? this.VisitDetailOutdoorRemarks : this.visit.VisitDetailOutdoorRemarks
-    this.VisitEndTime = this.VisitEndTime != '' ? this.VisitEndTime : this.visit.VisitEndTime
-    this.VisitStartTime = this.VisitStartTime != '' ? this.VisitStartTime : this.visit.VisitStartTime
-    this.VisitStatus = this.VisitStatus != 0 ? this.VisitStatus : this.visit.VisitStatus
-    this.VisitStatusRemarks = this.VisitStatusRemarks != '' ? this.VisitStatusRemarks : this.visit.VisitStatusRemarks
-    this.WHRatio = this.WHRatio > 0 ? this.WHRatio : this.visit.WHRatio
-    this.Waist = this.Waist != null ? this.Waist : this.visit.Waist
-    this.Weight = this.Weight != null ? this.Weight : this.visit.Weight
-    this.NeedsContent = this.NeedsContent != '' ? this.NeedsContent : this.visit.NeedsContent
-    this.SYS1 = this.SYS1 != null ? this.SYS1 : this.visit.SYS1
-    this.DlA1 = this.DlA1 != null ? this.DlA1 : this.visit.DlA1
-    this.SYS2 = this.SYS2 != null ? this.SYS2 : this.visit.SYS2
-    this.DlA2 = this.DlA2 != null ? this.DlA2 : this.visit.DlA2
-    this.heartBeats1 = this.heartBeats1 != null ? this.heartBeats1 : this.visit.heartBeats1
-    this.heartBeats2 = this.heartBeats2 != null ? this.heartBeats2 : this.visit.heartBeats2
-    this.presentVolunteer = this.presentVolunteer != '' ? this.presentVolunteer : this.visit.presentVolunteer
-    this.supportVolunteer = this.supportVolunteer != '' ? this.supportVolunteer : this.visit.supportVolunteer
+    // this.Bmi = this.Bmi > 0 ? this.Bmi : this.visit.Bmi
+    // this.CategoryTopic1 = this.CategoryTopic1 != '' ? this.CategoryTopic1 : this.visit.CategoryTopic1
+    // this.CategoryTopic2 = this.CategoryTopic2 != '' ? this.CategoryTopic2 : this.visit.CategoryTopic2
+    // this.CategoryTopic3 = this.CategoryTopic3 != '' ? this.CategoryTopic3 : this.visit.CategoryTopic3
+    // this.EmotionAssessment = this.EmotionAssessment != '' ? this.EmotionAssessment : this.visit.EmotionAssessment
+    // this.EmotionAssessmentRemarks = this.EmotionAssessmentRemarks != '' ? this.EmotionAssessmentRemarks : this.visit.EmotionAssessmentRemarks
+    // this.Hip = this.Hip != null ? this.Hip : this.visit.Hip
+    // this.LifeStyleMeasureBpPeriod = this.LifeStyleMeasureBpPeriod != 0 ? this.LifeStyleMeasureBpPeriod : this.visit.LifeStyleMeasureBpPeriod
+    // this.LifeStyleMeasureBloodSuger = this.LifeStyleMeasureBloodSuger != 0 ? this.LifeStyleMeasureBloodSuger : this.visit.LifeStyleMeasureBloodSuger
+    // this.LifeStyleMeasureBpLocation = this.LifeStyleMeasureBpLocation != 0 ? this.LifeStyleMeasureBpLocation : this.visit.LifeStyleMeasureBpLocation
+    // this.LifeStyleMeasureBpNoOfTime = this.LifeStyleMeasureBpNoOfTime != null ? this.LifeStyleMeasureBpNoOfTime : this.visit.LifeStyleMeasureBpNoOfTime
+    // this.LifeStyleMeasureBloodPressure = this.LifeStyleMeasureBloodPressure != 0 ? this.LifeStyleMeasureBloodPressure : this.visit.LifeStyleMeasureBloodPressure
+    // this.LifeStyleMeasureBsLocation = this.LifeStyleMeasureBsLocation != 0 ? this.LifeStyleMeasureBsLocation : this.visit.LifeStyleMeasureBsLocation
+    // this.LifeStyleMeasureBsNoOfTime = this.LifeStyleMeasureBsNoOfTime != null ? this.LifeStyleMeasureBsNoOfTime : this.visit.LifeStyleMeasureBsNoOfTime
+    // this.LifeStyleMeasureBsPeriod = this.LifeStyleMeasureBsPeriod != 0 ? this.LifeStyleMeasureBsPeriod : this.visit.LifeStyleMeasureBsPeriod
+    // this.LifeStyleQuestion1 = this.LifeStyleQuestion1 != 0 ? this.LifeStyleQuestion1 : this.visit.LifeStyleQuestion1
+    // this.LifeStyleQuestion2 = this.LifeStyleQuestion2 != 0 ? this.LifeStyleQuestion2 : this.visit.LifeStyleQuestion2
+    // this.LifeStyleQuestion3 = this.LifeStyleQuestion3 != 0 ? this.LifeStyleQuestion3 : this.visit.LifeStyleQuestion3
+    // this.LifeStyleQuestion4 = this.LifeStyleQuestion4 != 0 ? this.LifeStyleQuestion4 : this.visit.LifeStyleQuestion4
+    // this.LifeStyleQuestion5 = this.LifeStyleQuestion5 != 0 ? this.LifeStyleQuestion5 : this.visit.LifeStyleQuestion5
+    // this.LifeStyleQuestion6 = this.LifeStyleQuestion6 != 0 ? this.LifeStyleQuestion6 : this.visit.LifeStyleQuestion6
+    // this.Location = this.Location != 0 ? this.Location : this.visit.Location
+    // this.LocationRemarks = this.LocationRemarks != '' ? this.LocationRemarks : this.visit.LocationRemarks
+    // this.OtherAccident = this.OtherAccident != 0 ? this.OtherAccident : this.visit.OtherAccident
+    // this.OtherAccidentNoOfDay = this.OtherAccidentNoOfDay != null ? this.OtherAccidentNoOfDay : this.visit.OtherAccidentNoOfDay
+    // this.OtherHospDisbete = this.OtherHospDisbete != 0 ? this.OtherHospDisbete : this.visit.OtherHospDisbete
+    // this.OtherHospDisbeteNoOfDay = this.OtherHospDisbeteNoOfDay != null ? this.OtherHospDisbeteNoOfDay : this.visit.OtherHospDisbeteNoOfDay
+    // this.OtherHospHighBp = this.OtherHospHighBp != 0 ? this.OtherHospHighBp : this.visit.OtherHospHighBp
+    // this.OtherHospHighBpNoOfDay = this.OtherHospHighBpNoOfDay != null ? this.OtherHospHighBpNoOfDay : this.visit.OtherHospHighBpNoOfDay
+    // this.OtherHospOtherIllness = this.OtherHospOtherIllness != 0 ? this.OtherHospOtherIllness : this.visit.OtherHospOtherIllness
+    // this.OtherRemarks = this.OtherRemarks != '' ? this.OtherRemarks : this.visit.OtherRemarks
+    // this.OtherSpecialNeed = this.OtherSpecialNeed != 0 ? this.OtherSpecialNeed : this.visit.OtherSpecialNeed
+    // this.OtherSpecialNeedService = this.OtherSpecialNeedService != '' ? this.OtherSpecialNeedService : this.visit.OtherSpecialNeedService
+    // this.ScheduleDate = this.ScheduleDate != '' ? this.ScheduleDate : this.visit.ScheduleDate
+    // this.ScheduleTime = this.ScheduleTime != '' ? this.ScheduleTime : this.visit.ScheduleTime
+    // this.VisitDate = this.VisitDate != '' ? this.VisitDate : this.visit.VisitDate
+    // this.VisitDetailIndoor = this.VisitDetailIndoor != '' ? this.VisitDetailIndoor : this.visit.VisitDetailIndoor
+    // this.VisitDetailIndoorRemarks = this.VisitDetailIndoorRemarks != '' ? this.VisitDetailIndoorRemarks : this.visit.VisitDetailIndoorRemarks
+    // this.VisitDetailOther = this.VisitDetailOther != '' ? this.VisitDetailOther : this.visit.VisitDetailOther
+    // this.VisitDetailOutdoor = this.VisitDetailOutdoor != '' ? this.VisitDetailOutdoor : this.visit.VisitDetailOutdoor
+    // this.VisitDetailOutdoorRemarks = this.VisitDetailOutdoorRemarks != '' ? this.VisitDetailOutdoorRemarks : this.visit.VisitDetailOutdoorRemarks
+    // this.VisitEndTime = this.VisitEndTime != '' ? this.VisitEndTime : this.visit.VisitEndTime
+    // this.VisitStartTime = this.VisitStartTime != '' ? this.VisitStartTime : this.visit.VisitStartTime
+    // this.VisitStatus = this.VisitStatus != 0 ? this.VisitStatus : this.visit.VisitStatus
+    // this.VisitStatusRemarks = this.VisitStatusRemarks != '' ? this.VisitStatusRemarks : this.visit.VisitStatusRemarks
+    // this.WHRatio = this.WHRatio > 0 ? this.WHRatio : this.visit.WHRatio
+    // this.Waist = this.Waist != null ? this.Waist : this.visit.Waist
+    // this.Weight = this.Weight != null ? this.Weight : this.visit.Weight
+    // this.NeedsContent = this.NeedsContent != '' ? this.NeedsContent : this.visit.NeedsContent
+    // this.SYS1 = this.SYS1 != null ? this.SYS1 : this.visit.SYS1
+    // this.DlA1 = this.DlA1 != null ? this.DlA1 : this.visit.DlA1
+    // this.SYS2 = this.SYS2 != null ? this.SYS2 : this.visit.SYS2
+    // this.DlA2 = this.DlA2 != null ? this.DlA2 : this.visit.DlA2
+    // this.heartBeats1 = this.heartBeats1 != null ? this.heartBeats1 : this.visit.heartBeats1
+    // this.heartBeats2 = this.heartBeats2 != null ? this.heartBeats2 : this.visit.heartBeats2
+    // this.presentVolunteer = this.presentVolunteer != '' ? this.presentVolunteer : this.visit.presentVolunteer
+    // this.supportVolunteer = this.supportVolunteer != '' ? this.supportVolunteer : this.visit.supportVolunteer
 
-    this.OtherHospOtherIllnessNoOfDay = this.OtherHospOtherIllnessNoOfDay != null ? this.OtherHospOtherIllnessNoOfDay : this.visit.OtherHospOtherIllnessNoOfDay
+    // this.OtherHospOtherIllnessNoOfDay = this.OtherHospOtherIllnessNoOfDay != null ? this.OtherHospOtherIllnessNoOfDay : this.visit.OtherHospOtherIllnessNoOfDay
 
     console.log(this.VisitDetailOutdoor)
 
@@ -1106,10 +1176,7 @@ export class ModifyvisitPage extends AppBase {
           this.toast('你沒有填寫其他特別需要说明');
           return;
         }
-        // if (this.OtherRemarks == '') {
-        //   this.toast('你沒有填寫其他狀況');
-        //   return;
-        // }
+
       }
     }
     console.log('保存')
@@ -1123,10 +1190,11 @@ export class ModifyvisitPage extends AppBase {
       this.VisitDetailOutdoorRemarks, this.VisitEndTime, this.VisitStartTime, this.VisitStatus, this.VisitStatusRemarks, this.WHRatio, this.Waist, this.Weight,
       this.NeedsContent, this.SYS1, this.DlA1, this.SYS2, this.DlA2, this.heartBeats1, this.heartBeats2, this.presentVolunteer, this.supportVolunteer, this.DeletePicString, ScheduleDate_Display).then(e => {
         if (e) {
+
           console.log('保存55')
           if (ret != 'web') {
             this.toast('資料保存成功');
-            this.getVisitId()
+            // this.getVisitId()
             if (ret != 'no') {
               this.back();
             }
@@ -1140,13 +1208,13 @@ export class ModifyvisitPage extends AppBase {
               var data = Array.from(casedata)[0]
               this.visit = data;
 
-              var hvvlList=[];
+              var hvvlList = [];
               var Volunteerlist = this.visit.presentVolunteer.split(',');
               console.log(Volunteerlist)
               for (var i = 0; i < Volunteerlist.length; i++) {
                 console.log(Volunteerlist[i])
-                for(var j=0;j<this.Volunteer.length;j++){
-                  if(Volunteerlist[i]==this.Volunteer[j].VolId){
+                for (var j = 0; j < this.Volunteer.length; j++) {
+                  if (Volunteerlist[i] == this.Volunteer[j].VolId) {
                     console.log(this.Volunteer[j])
                     hvvlList.push(this.Volunteer[j]);
                   }
@@ -1156,44 +1224,65 @@ export class ModifyvisitPage extends AppBase {
               console.log(supportVolunteer)
               for (var i = 0; i < supportVolunteer.length; i++) {
                 console.log(supportVolunteer[i])
-                for(var j=0;j<this.Volunteer.length;j++){
-                  if(supportVolunteer[i]==this.Volunteer[j].VolId){
+                for (var j = 0; j < this.Volunteer.length; j++) {
+                  if (supportVolunteer[i] == this.Volunteer[j].VolId) {
                     hvvlList.push(this.Volunteer[j]);
                   }
                 }
               }
 
-              console.log('556',hvvlList);
+              console.log('556', hvvlList);
               var imgserver = new ImageServe();
               var visitId = this.LocalId;
               if (this.visit.VisitId > 0) {
                 visitId = this.visit.VisitId;
               }
-              imgserver.getImageList_web(visitId).then(e => {
-                console.log(Array.from(e.res.rows))
-                var ImgList = [];
-                ImgList = Array.from(e.res.rows);
-                this.imgList == Array.from(e.res.rows);
-                var hvImgKeepListStr = '';
-                for (var j = 0; j < ImgList.length; j++) {
-                  if (hvImgKeepListStr == '') {
-                    hvImgKeepListStr = ImgList[j].LocalId
-                  } else {
-                    hvImgKeepListStr = hvImgKeepListStr + ',' + ImgList[j].LocalId
-                  }
+
+              var hvImgKeepListStr = '';
+              for (var j = 0; j < this.imgList.length; j++) {
+                if (hvImgKeepListStr == '') {
+                  hvImgKeepListStr = this.imgList[j].LocalId
+                } else {
+                  hvImgKeepListStr = hvImgKeepListStr + ',' + this.imgList[j].LocalId
                 }
+              }
 
-                this.visit.hvImgKeepListStr = hvImgKeepListStr;
-                this.visit.hvNewImgQty = ImgList.length;
+              this.visit.hvImgKeepListStr = hvImgKeepListStr;
+              this.visit.hvNewImgQty = this.imgList.length;
 
-                var medicalRecord = new MedicalRecordServe();
-                medicalRecord.getAllMedicalRecordList(this.params.caseID).then((e) => {
-                  this.medicAppointLogList = Array.from(e.res.rows);
-                  console.log(this.medicAppointLogList)
-                  
-                  this.uploadVisitListWeb('1')
-                })
+              var medicalRecord = new MedicalRecordServe();
+              medicalRecord.getAllMedicalRecordList(this.params.caseID).then((e) => {
+                this.medicAppointLogList = Array.from(e.res.rows);
+                console.log(this.medicAppointLogList)
+
+                this.uploadVisitListWeb('1')
               })
+
+              // imgserver.getImageList_web(visitId).then(e => {
+              //   console.log(Array.from(e.res.rows))
+              //   var ImgList = [];
+              //   ImgList = Array.from(e.res.rows);
+              //   this.imgList == Array.from(e.res.rows);
+              //   var hvImgKeepListStr = '';
+              //   for (var j = 0; j < this.imgList.length; j++) {
+              //     if (hvImgKeepListStr == '') {
+              //       hvImgKeepListStr = this.imgList[j].LocalId
+              //     } else {
+              //       hvImgKeepListStr = hvImgKeepListStr + ',' + this.imgList[j].LocalId
+              //     }
+              //   }
+
+              //   this.visit.hvImgKeepListStr = hvImgKeepListStr;
+              //   this.visit.hvNewImgQty = this.imgList.length;
+
+              //   var medicalRecord = new MedicalRecordServe();
+              //   medicalRecord.getAllMedicalRecordList(this.params.caseID).then((e) => {
+              //     this.medicAppointLogList = Array.from(e.res.rows);
+              //     console.log(this.medicAppointLogList)
+
+              //     this.uploadVisitListWeb('1')
+              //   })
+              // })
               // this.uploadVisitListWeb('1')
 
 
@@ -1205,11 +1294,11 @@ export class ModifyvisitPage extends AppBase {
 
       })
 
-    this.ScheduleDate = '';
-    this.ScheduleTime = '';
-    this.VisitDate = '';
-    this.VisitStartTime = '';
-    this.VisitEndTime = '';
+    // this.ScheduleDate = '';
+    // this.ScheduleTime = '';
+    // this.VisitDate = '';
+    // this.VisitStartTime = '';
+    // this.VisitEndTime = '';
 
   }
 
@@ -1253,6 +1342,16 @@ export class ModifyvisitPage extends AppBase {
     this.navigate('weight', { caseid: this.params.caseID });
   }
 
+  saveMedicalRecord_SavedStatus(kv) {
+    var medicalRecord = new MedicalRecordServe();
+    var s = 0;
+    if (kv.SavedStatus == 1) {
+      medicalRecord.saveMedicalRecord_SavedStatus(s, kv.LocalId).then(e => {
+        console.log(e)
+      })
+    }
+  }
+
 
   uploadVisitListWeb(e) {
 
@@ -1273,29 +1372,21 @@ export class ModifyvisitPage extends AppBase {
       this.api.SaveAll(hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList, this.params.UserId, 'one').then((ret) => {
         console.log(ret)
         if (ret.Result == 'true') {
-          var AttachmentGroupLists = [];
           var AttchList = []
-          if (ret.AttachmentGroupLists) {
-            var listtype = typeof ret.AttachmentGroupLists;
-            if (listtype == 'object' && ret.AttachmentGroupLists.length == undefined) {
-              AttachmentGroupLists.push(ret.AttachmentGroupLists.AttchList);
+          if (ret.AttachmentGroupLists != '') {
+
+            var listtype2 = typeof ret.AttachmentGroupLists.AttchList;
+            if (listtype2 == 'object' && ret.AttachmentGroupLists.AttchList.length == undefined) {
+              AttchList.push(ret.AttachmentGroupLists.AttchList);
             } else {
-              AttachmentGroupLists = ret.AttachmentGroupLists.AttchList;
+              AttchList = ret.AttachmentGroupLists.AttchList;
             }
-            if (AttachmentGroupLists.length > 0) {
-              for (var i = 0; i < AttachmentGroupLists.length; i++) {
-                var listtype2 = typeof ret.AttachmentGroupLists.AttchList;
-                if (listtype2 == 'object' && ret.AttachmentGroupLists.AttchList.length == undefined) {
-                  AttchList.push(ret.AttachmentGroupLists.AttchList);
-                } else {
-                  AttchList = ret.AttachmentGroupLists.AttchList;
-                }
-              }
-            }
+
+            console.log('imgList', this.imgList)
 
             for (var j = 0; j < this.imgList.length; j++) {
               this.api.UploadImgPart('HomeVisit', this.imgList[j].VisitId, this.imgList[j].Base64ImgString).then(e => {
-                console.log(e)
+                console.log('UploadImgPart', e)
               })
             }
 
@@ -1304,8 +1395,12 @@ export class ModifyvisitPage extends AppBase {
               if (e.Result == 'true') {
                 var visit = new VisitServe();
                 visit.sevaVisitSavedStatus(this.LocalId).then(e => {
-
                 })
+
+                for (var j = 0; j < this.medicAppointLogList.length; j++) {
+                  this.saveMedicalRecord_SavedStatus(this.medicAppointLogList[j]);
+                }
+
                 this.toast('資料同步成功');
               }
             })
@@ -1318,6 +1413,9 @@ export class ModifyvisitPage extends AppBase {
                 visit.sevaVisitSavedStatus(this.LocalId).then(e => {
 
                 })
+                for (var j = 0; j < this.medicAppointLogList.length; j++) {
+                  this.saveMedicalRecord_SavedStatus(this.medicAppointLogList[j]);
+                }
                 this.toast('資料提交成功');
                 this.back();
               } else {

@@ -30,6 +30,8 @@ export class VisitRecordPage extends AppBase {
   list = [{}, {}]
   AppointmentDate = '';
   AppointmentTime = '';
+  AppointmentDate2 = '';
+  AppointmentTime2 = '';
   Description = '';
   Reason = '';
   Hosp = '';
@@ -38,7 +40,7 @@ export class VisitRecordPage extends AppBase {
   onMyLoad() {
     //参数
     this.params;
-    
+
   }
   onMyShow() {
     this.AppointmentDate = '';
@@ -75,12 +77,12 @@ export class VisitRecordPage extends AppBase {
       this.toast('你沒有填寫门诊');
       return;
     }
-    if (this.AppointmentDate != '') {
-      this.AppointmentDate = AppUtil.FormatDate2(new Date(this.AppointmentDate));
-    }
+    // if (this.AppointmentDate != '') {
+    //   this.AppointmentDate = AppUtil.FormatDate2(new Date(this.AppointmentDate2));
+    // }
 
-    if (this.AppointmentTime != '') {
-      this.AppointmentTime = AppUtil.FormatTime(new Date(this.AppointmentTime));
+    if (this.AppointmentTime2 != '') {
+      this.AppointmentTime = AppUtil.FormatTime(new Date(this.AppointmentTime2));
     }
 
 
@@ -88,9 +90,9 @@ export class VisitRecordPage extends AppBase {
     medicalRecord.addMedicalRecord(this.AppointmentDate, this.AppointmentTime, this.Description, this.Reason, this.Hosp, this.Specialty, this.params.caseid, this.Status).then((e) => {
       console.log(e)
       if (e.res.insertId) {
-        if(ret==2){
+        if (ret == 2) {
           this.addMedicalRecordHospSpecialty()
-        }else{
+        } else {
           this.toast('資料提交成功');
           this.back()
         }
@@ -102,23 +104,31 @@ export class VisitRecordPage extends AppBase {
     var medicalRecord = new MedicalRecordServe();
     this.LocalId = this.params.MedicalRecordId
     if (this.params.MedicalRecordId > 0) {
-      medicalRecord.getMedicalRecordId(this.params.MedicalRecordId).then((e) => {
+      medicalRecord.getMedicalRecordId(this.LocalId).then((e) => {
         console.log(e)
         var arr = null;
         arr = Array.from(e.res.rows)[0];
         console.log(arr)
         this.MedicalRecord = arr;
+        
+        this.AppointmentDate = this.MedicalRecord.AppointmentDate;
+        this.AppointmentTime = this.MedicalRecord.AppointmentTime;
+        this.Hosp = this.MedicalRecord.Hosp;
+        this.Specialty = this.MedicalRecord.Specialty;
+        this.Description = this.MedicalRecord.Description;
+        this.Reason = this.MedicalRecord.Reason;
+        this.Status =this.MedicalRecord.Status;
         this.getSpecialty()
         this.gethosiptal()
-        if(this.MedicalRecord){
-          if(this.MedicalRecord.AppointmentDate){
+        if (this.MedicalRecord) {
+          if (this.MedicalRecord.AppointmentDate) {
             var AppointmentDate_Display = AppUtil.FormatDate2(new Date(this.MedicalRecord.AppointmentDate));
             console.log(this.MedicalRecord)
             this.MedicalRecord.AppointmentDate_Display = AppointmentDate_Display
           }
         }
-       
-       
+
+
       })
     }
 
@@ -126,7 +136,7 @@ export class VisitRecordPage extends AppBase {
 
   getSpecialty() {
     var secialtyServe = new SpecialtyServe();
-    secialtyServe.getSpecialtyId(this.MedicalRecord.Specialty).then(e => {
+    secialtyServe.getSpecialtyId(this.Specialty).then(e => {
 
       var data = Array.from(e.res.rows)[0];
       this.MedicalRecord.Specialty_name = data['Name'];
@@ -135,7 +145,7 @@ export class VisitRecordPage extends AppBase {
 
   gethosiptal() {
     var hosiptalServe = new HosiptalServe()
-    hosiptalServe.getHosiptalId(this.MedicalRecord.Hosp).then(e => {
+    hosiptalServe.getHosiptalId(this.Hosp).then(e => {
 
       var data = Array.from(e.res.rows)[0];
       this.MedicalRecord.Hosp_name = data['Name'];
@@ -180,29 +190,36 @@ export class VisitRecordPage extends AppBase {
   saveMedicalRecord() {
     console.log(this.AppointmentDate, this.AppointmentTime, this.Description, this.Reason, this.Status, this.LocalId)
     // return;
-    if (!this.AppointmentDate) {
-      this.toast('你沒有填寫复诊探訪日期');
+    if(this.AppointmentTime2!=''){
+      this.AppointmentTime = AppUtil.FormatTime(new Date(this.AppointmentTime2));
+    }
+    // if (this.AppointmentDate=='') {
+    //   this.toast('你沒有填寫复诊探訪日期');
+    //   return;
+    // }
+    // if (this.AppointmentTime=='') {
+    //   this.toast('你沒有填寫复诊时间');
+    //   return;
+    // }
+    if (this.Hosp=='') {
+      this.toast('你沒有填寫醫院');
       return;
     }
-    if (!this.AppointmentTime) {
-      this.toast('你沒有填寫复诊时间');
-      return;
-    }
-    if (!this.Hosp) {
-      this.toast('你沒有填寫一样');
-      return;
-    }
-    if (!this.Specialty) {
-      this.toast('你沒有填寫门诊');
-      return;
-    }
-    if (!this.Status) {
+    // if (this.Specialty=='') {
+    //   this.toast('你沒有填寫门诊');
+    //   return;
+    // }
+    if (this.Status==0) {
       this.toast('你沒有填寫就诊状态');
       return;
     }
-
-    this.AppointmentDate = AppUtil.FormatDate(new Date(this.AppointmentDate));
-    this.AppointmentTime = AppUtil.FormatTime(new Date(this.AppointmentTime));
+    if (this.Status==3 && this.Reason=='') {
+      this.toast('你沒有填寫無覆診原因');
+      return;
+    }
+    // this.AppointmentDate = AppUtil.FormatDate(new Date(this.AppointmentDate));
+    
+    
     var medicalRecord = new MedicalRecordServe();
     medicalRecord.saveMedicalRecord(this.AppointmentDate, this.AppointmentTime, this.Hosp, this.Specialty, this.Description, this.Reason, this.Status, this.LocalId).then((e) => {
       console.log(e)
@@ -236,6 +253,6 @@ export class VisitRecordPage extends AppBase {
         })
       }
     })
-    
+
   }
 }

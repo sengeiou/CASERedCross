@@ -47,6 +47,10 @@ export class PhonePage extends AppBase {
   NextPhoneDate = ''
   NextPhoneTime = '';
   VolunteerName = '';
+
+  NextPhoneDate2 = '';
+  NextPhoneTime2 = '';
+
   PhoneID = 0;
   phone = null;
 
@@ -112,6 +116,8 @@ export class PhonePage extends AppBase {
       })
     }
   }
+
+  VisitDate=null;
   getAllVisitScheduleDate() {
     var visit = new VisitServe();
     visit.getAllVisitScheduleDate(this.params.caseID).then((e) => {
@@ -121,8 +127,11 @@ export class PhonePage extends AppBase {
         var arr = Array.from(e.res.rows)[0];
         // this.phone.ScheduleDate_show=AppUtil.FormatDate2(this.phone.VisitDate.ScheduleDate)
         this.phone.VisitDate = arr;
+        this.VisitDate=arr;
         console.log(arr);
       }
+      // alert(this.VisitDate)
+      console.log(this.VisitDate);
     });
   }
   Volunteer = [];
@@ -240,12 +249,12 @@ export class PhonePage extends AppBase {
           return;
         }
         if (this.DetailList[7].DetailType == true) {
-          if (this.NextPhoneDate == '') {
+          if (this.NextPhoneDate2 == '') {
             this.toast('你沒有輸入下次探訪日期');
             return;
           }
 
-          if (this.NextPhoneTime == '') {
+          if (this.NextPhoneTime2 == '') {
             this.toast('你沒有輸入下次探訪時間');
             return;
           }
@@ -272,6 +281,13 @@ export class PhonePage extends AppBase {
       this.CallEndTime = AppUtil.FormatTime(new Date(this.CallEndTime));
     }
 
+    if (this.NextPhoneDate2 != '') {
+      this.NextPhoneDate = AppUtil.FormatDate2(new Date(this.NextPhoneDate2));
+    }
+
+    if (this.NextPhoneTime2 != '') {
+      this.NextPhoneTime = AppUtil.FormatTime(new Date(this.NextPhoneTime2));
+    }
 
     this.PhoneID = this.params.PhoneID;
     phone.addPhone(this.PhoneID, this.params.caseID, this.CallDate, CallDate_Display, this.CallStartTime, this.CallEndTime, this.Detail, this.DetailOther, this.UserName, this.OtherRemark, this.CannotContact, this.NextPhoneDate, this.NextPhoneTime).then((e) => {
@@ -323,6 +339,9 @@ export class PhonePage extends AppBase {
               if (e.Result == 'true') {
                 this.toast('資料提交成功');
                 this.back();
+                phone.sevaPhoneSavedStatus(this.PhoneID).then((e) => {
+                  console.log(e)
+                })
               }
             })
           }

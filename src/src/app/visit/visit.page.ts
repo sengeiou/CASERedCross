@@ -42,7 +42,7 @@ export class VisitPage extends AppBase {
   VisitEndTime = '';//实际结束时间
 
   ScheduleTime2 = '';
-  VisitDate2 = ''; 
+  VisitDate2 = '';
   VisitStartTime2 = '';
   VisitEndTime2 = '';
 
@@ -76,7 +76,7 @@ export class VisitPage extends AppBase {
   Bmi = 0;
   Waist = null;
   Hip = null;
-  WHRatio =null;
+  WHRatio = 0;
   SYS1 = null;
   DlA1 = null;
   SYS2 = null;
@@ -125,6 +125,7 @@ export class VisitPage extends AppBase {
 
   saomiao_show = false;
   time_type = ''
+  visit_LocalId = 0;
 
   onMyLoad() {
     //参数
@@ -139,87 +140,6 @@ export class VisitPage extends AppBase {
       AppBase.LastQrcode = "";
       return;
     }
-
-    // this.ScheduleDate = '';//计划日期
-    // this.ScheduleTime = '';//计划时间
-    // this.VisitDate = ''; //实际日期
-    // this.VisitStartTime = '';//实际开始时间
-    // this.VisitEndTime = '';//实际结束时间
-    // this.Location = 0; //面见地点
-    // this.LocationRemarks = '';//其他地点输入
-    // this.VisitStatus = 0;//探访状况
-    // this.VisitStatusRemarks = '';//未能探访输入
-    // this.presentVolunteer = ''; //出席义工
-    // this.supportVolunteer = ''; //支援义工
-    // this.indoorActivities = '';//室内活动
-    // this.otherIndoorActivities = '';//其他室内活动输入
-    // this.outdoorActivities = '';//室外活动
-    // this.otherOutdoorActivities = '';//其他室外活动输入
-    // this.otherServe = '';//其他服务
-    // this.targetTitle1 = '';//目标标题
-    // this.targetTitle2 = '';//目标标题
-    // this.targetTitle3 = '';//目标标题
-
-    // this.VisitDetailIndoor = '';
-    // this.VisitDetailIndoorRemarks = '';
-    // this.VisitDetailOutdoor = '';
-    // this.VisitDetailOutdoorRemarks = '';
-    // this.VisitDetailOther = '';
-    // this.CategoryTopic1 = '';
-    // this.CategoryTopic2 = '';
-    // this.CategoryTopic3 = '';
-
-    // this.Height = 0;
-    // this.Weight = 0;
-    // this.Bmi = 0;
-    // this.Waist = 0;
-    // this.Hip = 0;
-    // this.WHRatio = 0;
-    // this.SYS1 = 0;
-    // this.DlA1 = 0;
-    // this.SYS2 = 0;
-    // this.DlA2 = 0;
-    // this.heartBeats1 = 0;
-    // this.heartBeats2 = 0;
-
-    // this.LifeStyleQuestion1 = 0;
-    // this.LifeStyleQuestion2 = 0;
-    // this.LifeStyleQuestion3 = 0;
-    // this.LifeStyleQuestion4 = 0;
-    // this.LifeStyleQuestion5 = 0;
-    // this.LifeStyleQuestion6 = 0;
-    // this.LifeStyleMeasureBloodSuger = 0;
-    // this.LifeStyleMeasureBsLocation = 0;
-    // this.LifeStyleMeasureBsPeriod = 0;
-    // this.LifeStyleMeasureBsNoOfTime = 0;
-    // this.LifeStyleMeasureBloodPressure = 0;
-    // this.LifeStyleMeasureBpLocation = 0;
-    // this.LifeStyleMeasureBpPeriod = 0;
-    // this.LifeStyleMeasureBpNoOfTime = 0;
-
-    // this.EmotionAssessment = '';
-    // this.EmotionAssessmentRemarks = '';
-
-    // this.OtherHospDisbete = 0;
-    // this.OtherHospDisbeteNoOfDay = 0;
-    // this.OtherHospHighBp = 0;
-    // this.OtherHospHighBpNoOfDay = 0;
-    // this.OtherHospOtherIllness = 0;
-    // this.OtherHospOtherIllnessNoOfDay = 0;
-    // this.OtherAccident = 0;
-    // this.OtherAccidentNoOfDay = 0;
-    // this.OtherSpecialNeed = 0;
-    // this.OtherSpecialNeedService = '';
-    // this.OtherRemarks = '';
-    // this.NeedsContent = '';
-
-    // this.DeletePicString = ''
-
-    // this.presentVolunteer_show = ''
-    // this.supportVolunteer_show = ''
-    // this.Volunteerlist_show = ''
-    // this.ScheduleDate_Display = ''
-
 
   }
 
@@ -365,13 +285,12 @@ export class VisitPage extends AppBase {
   ]
 
   medicAppointLogList = [];
-  imgList=[];
+  imgList = [];
   getVisitId() {
-    console.log(this.LocalId);
-
-    if (this.LocalId > 0) {
+    console.log(this.visit_LocalId);
+    if (this.visit_LocalId > 0) {
       var visit = new VisitServe();
-      visit.getVisitId(this.LocalId).then((e) => {
+      visit.getVisitId(this.visit_LocalId).then((e) => {
         console.log(e)
         var casedata = e.res.rows;
         var data = Array.from(casedata)[0]
@@ -383,7 +302,7 @@ export class VisitPage extends AppBase {
           console.log(Array.from(e.res.rows))
           var ImgList = [];
           ImgList = Array.from(e.res.rows);
-          this.imgList=Array.from(e.res.rows);
+          this.imgList = Array.from(e.res.rows);
           var hvImgKeepListStr = '';
           for (var j = 0; j < ImgList.length; j++) {
             if (hvImgKeepListStr = '') {
@@ -519,12 +438,13 @@ export class VisitPage extends AppBase {
     }
   }
 
+
   Volunteer = [];
   presentVolunteerList = [];
   supportVolunteerList = [];
   getVolunteerList() {
     var volunteerServr = new VolunteerServr();
-   
+
     volunteerServr.getAllVolunteerList_VolType('1').then((e) => {
       if (e.res.rows.length > 0) {
         console.log(Array.from(e.res.rows))
@@ -544,7 +464,7 @@ export class VisitPage extends AppBase {
   saveYuyue(visitId) {
 
     console.log(visitId, this.ScheduleDate, this.ScheduleTime, this.params.caseID)
-    
+
     this.addVisit('no')
 
   }
@@ -684,7 +604,7 @@ export class VisitPage extends AppBase {
   }
 
   saveVisit_Neurou(visitId) {
-   
+
     this.addVisit('no')
 
   }
@@ -699,7 +619,7 @@ export class VisitPage extends AppBase {
   }
 
   saveService_neurou(visitId) {
-    
+
     this.addVisit('no')
   }
 
@@ -710,7 +630,7 @@ export class VisitPage extends AppBase {
 
   getWaist(e) {
     this.Waist = e;
-   
+
   }
 
   getHip(e) {
@@ -719,7 +639,7 @@ export class VisitPage extends AppBase {
   }
 
   saveHeightWeight(visitId) {
-    
+
 
     this.addVisit('no')
   }
@@ -750,7 +670,7 @@ export class VisitPage extends AppBase {
   }
 
   saveLifeHabit(visitId) {
-   
+
     this.addVisit('no')
   }
 
@@ -760,7 +680,7 @@ export class VisitPage extends AppBase {
   }
 
   saveEmotion(visitId) {
-    
+
 
     this.addVisit('no')
 
@@ -792,7 +712,7 @@ export class VisitPage extends AppBase {
   }
 
   OtherSupplement(visitId) {
-    
+
     this.addVisit('no')
 
   }
@@ -861,70 +781,72 @@ export class VisitPage extends AppBase {
       this.VisitEndTime = AppUtil.FormatTime(new Date(this.VisitEndTime2));
     }
 
-    if (this.Weight != null ) {
+    if (this.Weight != null) {
       this.Bmi = this.Weight / (this.casedata.Height * this.casedata.Height);
-      this.Bmi=Math.floor(this.Bmi*100)/100;
+      this.Bmi = Math.floor(this.Bmi * 100) / 100;
     }
-    if (this.Waist != null && this.Hip != null) {
+
+    if (this.Waist != null && this.Hip != null && this.Waist != 0 && this.Hip != 0) {
+      console.log('66555')
       this.WHRatio = this.Waist / this.Hip;
-      this.WHRatio=Math.floor(this.WHRatio*100)/100;
+      this.WHRatio = Math.floor(this.WHRatio * 100) / 100;
     }
 
     var VisitId = 0;
     var Status = 1;
     var TaskId = 0;
 
-    
-    if(this.Weight == null){
+
+    if (this.Weight == null) {
       this.Weight = 0;
     }
-    if(this.Waist == null){
+    if (this.Waist == null) {
       this.Waist = 0;
     }
-    if(this.Hip == null){
+    if (this.Hip == null) {
       this.Hip = 0;
     }
-    if(this.WHRatio ==null){
-      this.WHRatio =0;
+    if (this.WHRatio == null) {
+      this.WHRatio = 0;
     }
-    if(this.SYS1 == null){
+    if (this.SYS1 == null) {
       this.SYS1 = 0;
     }
-    if(this.DlA1 == null){
+    if (this.DlA1 == null) {
       this.DlA1 = 0;
     }
-    if(this.SYS2 == null){
+    if (this.SYS2 == null) {
       this.SYS2 = 0
     }
-    if(this.DlA2 == null){
+    if (this.DlA2 == null) {
       this.DlA2 = 0;
     }
-    if(this.heartBeats1 == null){
+    if (this.heartBeats1 == null) {
       this.heartBeats1 = 0;
     }
-    if(this.heartBeats2 == null){
+    if (this.heartBeats2 == null) {
       this.heartBeats2 = 0;
     }
 
-    if(this.LifeStyleMeasureBsNoOfTime == null){
+    if (this.LifeStyleMeasureBsNoOfTime == null) {
       this.LifeStyleMeasureBsNoOfTime = 0;
     }
-    if(this.LifeStyleMeasureBpNoOfTime == null){
+    if (this.LifeStyleMeasureBpNoOfTime == null) {
       this.LifeStyleMeasureBpNoOfTime = 0
     }
-    if(this.OtherHospDisbeteNoOfDay == null){
+    if (this.OtherHospDisbeteNoOfDay == null) {
       this.OtherHospDisbeteNoOfDay = 0;
     }
-    if(this.OtherHospHighBpNoOfDay == null){
+    if (this.OtherHospHighBpNoOfDay == null) {
       this.OtherHospHighBpNoOfDay = 0;
     }
-    if(this.OtherHospOtherIllnessNoOfDay == null){
+    if (this.OtherHospOtherIllnessNoOfDay == null) {
       this.OtherHospOtherIllnessNoOfDay = 0;
     }
-    if(this.OtherAccidentNoOfDay == null){
+    if (this.OtherAccidentNoOfDay == null) {
       this.OtherAccidentNoOfDay = 0;
     }
-  
+
 
     if (this.ScheduleDate == '') {
       this.toast('你沒有選擇探訪日期');
@@ -1065,7 +987,7 @@ export class VisitPage extends AppBase {
           this.toast('你沒有填寫提出特別需要');
           return;
         }
-        if (this.OtherSpecialNeed == 1 && this.OtherSpecialNeedService == '' && this.NeedsContenttlist[3].type==true) {
+        if (this.OtherSpecialNeed == 1 && this.OtherSpecialNeedService == '' && this.NeedsContenttlist[3].type == true) {
           this.toast('你沒有填寫其他特別需要说明');
           return;
         }
@@ -1075,61 +997,125 @@ export class VisitPage extends AppBase {
         // }
       }
     }
-    visit.addVisit(this.Bmi, this.params.caseID, this.CategoryTopic1, this.CategoryTopic2, this.CategoryTopic3, this.EmotionAssessment, this.EmotionAssessmentRemarks,
-      this.Hip, this.LifeStyleMeasureBloodPressure, this.LifeStyleMeasureBloodSuger, this.LifeStyleMeasureBpLocation, this.LifeStyleMeasureBpNoOfTime,
-      this.LifeStyleMeasureBpPeriod, this.LifeStyleMeasureBsLocation, this.LifeStyleMeasureBsNoOfTime, this.LifeStyleMeasureBsPeriod, this.LifeStyleQuestion1,
-      this.LifeStyleQuestion2, this.LifeStyleQuestion3, this.LifeStyleQuestion4, this.LifeStyleQuestion5, this.LifeStyleQuestion6, this.Location, this.LocationRemarks,
-      this.OtherAccident, this.OtherAccidentNoOfDay, this.OtherHospDisbete, this.OtherHospDisbeteNoOfDay, this.OtherHospHighBp, this.OtherHospHighBpNoOfDay,
-      this.OtherHospOtherIllness, this.OtherHospOtherIllnessNoOfDay, this.OtherRemarks, this.OtherSpecialNeed, this.OtherSpecialNeedService, this.ScheduleDate,
-      this.ScheduleTime, Status, TaskId, this.VisitDate, this.VisitDetailIndoor, this.VisitDetailIndoorRemarks, this.VisitDetailOther, this.VisitDetailOutdoor,
-      this.VisitDetailOutdoorRemarks, this.VisitEndTime, VisitId, this.VisitStartTime, this.VisitStatus, this.VisitStatusRemarks, this.WHRatio, this.Waist, this.Weight,
-      this.NeedsContent, this.SYS1, this.DlA1, this.SYS2, this.DlA2, this.heartBeats1, this.heartBeats2, this.presentVolunteer, this.supportVolunteer, this.DeletePicString, this.ScheduleDate_Display).then(e => {
-        if (e) {
-          if (ret != 'web') {
-            this.toast('資料保存成功');
-            if(ret=='mm'){
-              this.back();
-            }
-          } else {
-            var visit = new VisitServe();
-            visit.getVisitId(e.res.insertId).then((e) => {
-              console.log(e)
-              var casedata = e.res.rows;
-              var data = Array.from(casedata)[0]
-              this.visit = data;
-              console.log(data);
-              // return;
-              var imgserver = new ImageServe();
-              imgserver.getImageList_web(this.visit.LocalId).then(e => {
-                console.log(Array.from(e.res.rows))
-                var ImgList = [];
-                ImgList = Array.from(e.res.rows);
-                var hvImgKeepListStr = '';
-                for (var j = 0; j < ImgList.length; j++) {
-                  if (hvImgKeepListStr = '') {
-                    hvImgKeepListStr = ImgList[j].LocalId
-                  } else {
-                    hvImgKeepListStr = hvImgKeepListStr + ',' + ImgList[j].LocalId
+
+    if (this.visit_LocalId > 0) {
+      console.log(this.WHRatio)
+      // return;
+      visit.saveVisit(this.visit_LocalId, this.Bmi, this.params.caseID, this.CategoryTopic1, this.CategoryTopic2, this.CategoryTopic3, this.EmotionAssessment, this.EmotionAssessmentRemarks,
+        this.Hip, this.LifeStyleMeasureBloodPressure, this.LifeStyleMeasureBloodSuger, this.LifeStyleMeasureBpLocation, this.LifeStyleMeasureBpNoOfTime,
+        this.LifeStyleMeasureBpPeriod, this.LifeStyleMeasureBsLocation, this.LifeStyleMeasureBsNoOfTime, this.LifeStyleMeasureBsPeriod, this.LifeStyleQuestion1,
+        this.LifeStyleQuestion2, this.LifeStyleQuestion3, this.LifeStyleQuestion4, this.LifeStyleQuestion5, this.LifeStyleQuestion6, this.Location, this.LocationRemarks,
+        this.OtherAccident, this.OtherAccidentNoOfDay, this.OtherHospDisbete, this.OtherHospDisbeteNoOfDay, this.OtherHospHighBp, this.OtherHospHighBpNoOfDay,
+        this.OtherHospOtherIllness, this.OtherHospOtherIllnessNoOfDay, this.OtherRemarks, this.OtherSpecialNeed, this.OtherSpecialNeedService, this.ScheduleDate,
+        this.ScheduleTime, Status, this.VisitDate, this.VisitDetailIndoor, this.VisitDetailIndoorRemarks, this.VisitDetailOther, this.VisitDetailOutdoor,
+        this.VisitDetailOutdoorRemarks, this.VisitEndTime, this.VisitStartTime, this.VisitStatus, this.VisitStatusRemarks, this.WHRatio, this.Waist, this.Weight,
+        this.NeedsContent, this.SYS1, this.DlA1, this.SYS2, this.DlA2, this.heartBeats1, this.heartBeats2, this.presentVolunteer, this.supportVolunteer, this.DeletePicString, this.ScheduleDate_Display).then(e => {
+          if (e.res.rows.length > 0) {
+            if (ret != 'web') {
+              this.toast('資料保存成功');
+              if (ret == 'mm') {
+                this.back();
+              }
+            } else {
+              var visit = new VisitServe();
+              visit.getVisitId(this.visit_LocalId).then((e) => {
+                console.log(e)
+                var casedata = e.res.rows;
+                var data = Array.from(casedata)[0]
+                this.visit = data;
+                console.log(data);
+                // return;
+                var imgserver = new ImageServe();
+                imgserver.getImageList_web(this.visit.LocalId).then(e => {
+                  console.log(Array.from(e.res.rows))
+                  var ImgList = [];
+                  ImgList = Array.from(e.res.rows);
+                  var hvImgKeepListStr = '';
+                  for (var j = 0; j < ImgList.length; j++) {
+                    if (hvImgKeepListStr = '') {
+                      hvImgKeepListStr = ImgList[j].LocalId
+                    } else {
+                      hvImgKeepListStr = hvImgKeepListStr + ',' + ImgList[j].LocalId
+                    }
                   }
-                }
-                this.visit.hvImgKeepListStr = hvImgKeepListStr;
-                this.visit.hvNewImgQty = ImgList.length;
+                  this.visit.hvImgKeepListStr = hvImgKeepListStr;
+                  this.visit.hvNewImgQty = ImgList.length;
 
-                // this.uploadVisitListWeb()
+                  // this.uploadVisitListWeb()
+                })
+
+                var medicalRecord = new MedicalRecordServe();
+                medicalRecord.getAllMedicalRecordList(this.params.caseid).then((e) => {
+                  this.medicAppointLogList = Array.from(e.res.rows);
+                })
+
+                this.uploadVisitListWeb()
               })
 
-              var medicalRecord = new MedicalRecordServe();
-              medicalRecord.getAllMedicalRecordList(this.params.caseid).then((e) => {
-                this.medicAppointLogList = Array.from(e.res.rows);
-              })
-
-              this.uploadVisitListWeb()
-            })
-
+            }
           }
-        }
+        })
+    }
+    if (this.visit_LocalId == 0) {
+      visit.addVisit(this.Bmi, this.params.caseID, this.CategoryTopic1, this.CategoryTopic2, this.CategoryTopic3, this.EmotionAssessment, this.EmotionAssessmentRemarks,
+        this.Hip, this.LifeStyleMeasureBloodPressure, this.LifeStyleMeasureBloodSuger, this.LifeStyleMeasureBpLocation, this.LifeStyleMeasureBpNoOfTime,
+        this.LifeStyleMeasureBpPeriod, this.LifeStyleMeasureBsLocation, this.LifeStyleMeasureBsNoOfTime, this.LifeStyleMeasureBsPeriod, this.LifeStyleQuestion1,
+        this.LifeStyleQuestion2, this.LifeStyleQuestion3, this.LifeStyleQuestion4, this.LifeStyleQuestion5, this.LifeStyleQuestion6, this.Location, this.LocationRemarks,
+        this.OtherAccident, this.OtherAccidentNoOfDay, this.OtherHospDisbete, this.OtherHospDisbeteNoOfDay, this.OtherHospHighBp, this.OtherHospHighBpNoOfDay,
+        this.OtherHospOtherIllness, this.OtherHospOtherIllnessNoOfDay, this.OtherRemarks, this.OtherSpecialNeed, this.OtherSpecialNeedService, this.ScheduleDate,
+        this.ScheduleTime, Status, TaskId, this.VisitDate, this.VisitDetailIndoor, this.VisitDetailIndoorRemarks, this.VisitDetailOther, this.VisitDetailOutdoor,
+        this.VisitDetailOutdoorRemarks, this.VisitEndTime, VisitId, this.VisitStartTime, this.VisitStatus, this.VisitStatusRemarks, this.WHRatio, this.Waist, this.Weight,
+        this.NeedsContent, this.SYS1, this.DlA1, this.SYS2, this.DlA2, this.heartBeats1, this.heartBeats2, this.presentVolunteer, this.supportVolunteer, this.DeletePicString, this.ScheduleDate_Display).then(e => {
+          if (e.res.insertId > 0) {
+            // console.log(e);
+            // return
+            this.visit_LocalId = e.res.insertId;
+            if (ret != 'web') {
+              this.toast('資料保存成功');
+              if (ret == 'mm') {
+                this.back();
+              }
+            } else {
+              var visit = new VisitServe();
+              visit.getVisitId(e.res.insertId).then((e) => {
+                console.log(e)
+                var casedata = e.res.rows;
+                var data = Array.from(casedata)[0]
+                this.visit = data;
+                console.log(data);
+                // return;
+                var imgserver = new ImageServe();
+                imgserver.getImageList_web(this.visit.LocalId).then(e => {
+                  console.log(Array.from(e.res.rows))
+                  var ImgList = [];
+                  ImgList = Array.from(e.res.rows);
+                  var hvImgKeepListStr = '';
+                  for (var j = 0; j < ImgList.length; j++) {
+                    if (hvImgKeepListStr = '') {
+                      hvImgKeepListStr = ImgList[j].LocalId
+                    } else {
+                      hvImgKeepListStr = hvImgKeepListStr + ',' + ImgList[j].LocalId
+                    }
+                  }
+                  this.visit.hvImgKeepListStr = hvImgKeepListStr;
+                  this.visit.hvNewImgQty = ImgList.length;
 
-      })
+                  // this.uploadVisitListWeb()
+                })
+
+                var medicalRecord = new MedicalRecordServe();
+                medicalRecord.getAllMedicalRecordList(this.params.caseid).then((e) => {
+                  this.medicAppointLogList = Array.from(e.res.rows);
+                })
+
+                this.uploadVisitListWeb()
+              })
+
+            }
+          }
+
+        })
+    }
   }
 
 

@@ -10,7 +10,8 @@
     width: 1rem;
     height: 1rem;
     margin-right: 0.6rem;
-   
+    background: #fff;
+    border-radius: 50%;
 }
 
 .bg-h{
@@ -25,3 +26,7 @@ ion-select .select-placeholder{
     opacity: 1;
 }
 
+.ion_select{
+    position: absolute;
+    // margin-top:10px;
+}

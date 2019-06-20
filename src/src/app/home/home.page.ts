@@ -56,6 +56,8 @@ export class HomePage extends AppBase {
   UserId = 0;
   imgList = [];
 
+  allImgList = [];
+
   onMyLoad() {
     //参数
     this.params;
@@ -66,6 +68,7 @@ export class HomePage extends AppBase {
 
     this.getActivityList()
     this.getCase()
+    this.getAllImg()
     this.wangluo = this.network.type;
     console.log(this.network.type)
 
@@ -81,8 +84,8 @@ export class HomePage extends AppBase {
         this.Volunteer = Array.from(e.res.rows)
       }
     })
-
   }
+
   visiltList_web = [];
   getSavedStatus() {
     var SavedStatus = 1;
@@ -124,7 +127,6 @@ export class HomePage extends AppBase {
     var medicalRecordServe = new MedicalRecordServe();
   }
 
-
   logout() { //退出登录
     this.showConfirm('你確定要登出嗎？', (e) => {
       if (e) {
@@ -149,6 +151,14 @@ export class HomePage extends AppBase {
 
   }
 
+  getAllImg() {
+    var imgserver = new ImageServe();
+    imgserver.getAllImageList().then(e => {
+      console.log(Array.from(e.res.rows));
+      this.allImgList = Array.from(e.res.rows);
+    })
+  }
+
   loading = null;
   async presentLoading() {
 
@@ -164,14 +174,13 @@ export class HomePage extends AppBase {
 
     console.log(this.caselist)
     for (var i = 0; i < this.caselist.length; i++) {
-      // this.SaveAll(this.caselist[i])
       visiltList = visiltList.concat(this.caselist[i].visitList)
       activityList = activityList.concat(this.caselist[i].activityList)
       phoneList = phoneList.concat(this.caselist[i].phoneList)
       medicAppointLogList = medicAppointLogList.concat(this.caselist[i].medicAppointLogList)
     }
     console.log(visiltList);
-    // return;
+
     this.SaveAll(visiltList, phoneList, activityList, medicAppointLogList);
     console.log(this.caselist)
     if (this.caselist.length == 0) {
@@ -182,7 +191,6 @@ export class HomePage extends AppBase {
 
   SaveAll(visitList, phoneList, activityList, medicAppointLogList) {
     console.log(visitList)
-
     this.api.SaveAll(visitList, phoneList, activityList, medicAppointLogList, this.UserId, 'all').then((ret) => {
       console.log(ret)
       // return
@@ -210,11 +218,12 @@ export class HomePage extends AppBase {
             }
           }
 
-          for (var j = 0; j < this.imgList.length; j++) {
-            this.api.UploadImgPart('HomeVisit', this.imgList[j].VisitId, this.imgList[j].Base64ImgString).then(e => {
+          for (var j = 0; j < this.allImgList.length; j++) {
+            this.api.UploadImgPart('HomeVisit', this.allImgList[j].VisitId, this.allImgList[j].Base64ImgString).then(e => {
               console.log(e)
             })
           }
+
           this.api.ExecuteWorkingSet(ret.WorkingSetID, 0, this.UserId).then(e => {
             console.log(e)
             if (e.Result == 'true') {
@@ -353,10 +362,21 @@ export class HomePage extends AppBase {
           }
 
           kv.visitList[i].hvvlList = hvvlList;
+          // var hvImgKeepListStr = '';
+          // for(var j=0;j<this.allImgList.length;j++){
+
+          //   if(visitId==this.allImgList[j].VisitId ){
+          //     if (hvImgKeepListStr == '') {
+          //       hvImgKeepListStr =this.allImgList[j].LocalId
+          //     } else {
+          //       hvImgKeepListStr = hvImgKeepListStr + ',' + this.allImgList[j].LocalId;
+          //     }
+          //   }
+          // }
 
           imgserver.getImageList_web(visitId).then(e => {
             console.log(Array.from(e.res.rows))
-            this.imgList = Array.from(e.res.rows);
+            // this.imgList = Array.from(e.res.rows);
             var ImgList = [];
             ImgList = Array.from(e.res.rows);
             var hvImgKeepListStr = '';
@@ -371,7 +391,6 @@ export class HomePage extends AppBase {
               kv.visitList[i].hvImgKeepListStr = hvImgKeepListStr;
               kv.visitList[i].hvNewImgQty = ImgList.length;
             }
-
           })
         }
       }
@@ -397,6 +416,20 @@ export class HomePage extends AppBase {
       if (e.res.rows.length > 0) {
         console.log(e.res.rows);
         kv.activityList = Array.from(e.res.rows);
+        for (var i = 0; i < kv.activityList.length; i++) {
+          var alvList=[];
+          var Volunteerlist=kv.activityList[i].PresentVolunteer.split(',');
+          for (var t = 0; t < Volunteerlist.length; t++) {
+            console.log(Volunteerlist[t])
+            for (var j = 0; j < this.Volunteer.length; j++) {
+              if (Volunteerlist[t] == this.Volunteer[j].VolId.toString()) {
+                alvList.push(this.Volunteer[j]);
+              }
+            }
+          }
+          kv.activityList[i].alvList=alvList;
+        }
+
       }
     });
   }

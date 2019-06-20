@@ -108,10 +108,11 @@
 
       <div class="flex-row margin-top-10 flex-center">
         <div class="title2">下次預約探訪:</div>
-        <div class=" radius-2 padding-left-5" *ngIf="phone.VisitDate" style="width:60%;">
-          {{phone.VisitDate.ScheduleDate_Display}}
-          {{phone.VisitDate.ScheduleTime==''?'時間未定':phone.VisitDate.ScheduleTime}}
+        <div class=" radius-2 padding-left-5" *ngIf="VisitDate!=null" style="width:60%;">
+          {{VisitDate.ScheduleDate_Display}}
+          {{VisitDate.ScheduleTime==''?'時間未定':VisitDate.ScheduleTime}}
         </div>
+        <div class=" radius-2 padding-left-5"  *ngIf="VisitDate==null">沒有預約日期</div>
       </div>
 
       <div class="margin-top-10">
@@ -174,7 +175,7 @@
           </div>
           <div class=" margin-top-10 flex-row flex-center">
             <ion-checkbox class="radio " color="secondary" [checked]='DetailList[7].DetailType==true'
-              (ionChange)='DetailList[7].DetailType=$event.detail.checked'
+              (ionChange)="DetailList[7].DetailType=$event.detail.checked"
               disabled='{{CannotContact==1?disabled:false}}'></ion-checkbox>提醒/預約下次探訪日期
           </div>
 
@@ -188,7 +189,7 @@
                   <div class="bg-white">
                     <ion-datetime placeholder="{{phone.CallDate}}" displayFormat="DD-MM-YYYY "
                       picker-format="DD MM YYYY " max="2050-12-09" style="height:25px;padding:2px;" done-text='确定'
-                      cancel-text='取消' [(ngModel)]="NextPhoneDate"></ion-datetime>
+                      cancel-text='取消' [(ngModel)]="NextPhoneDate2"></ion-datetime>
                   </div>
                 </div>
               </div>
@@ -204,7 +205,7 @@
                   <div class="bg-white">
                     <ion-datetime placeholder="{{phone.CallStartTime}}" displayFormat="HH：mm" picker-format="HH：mm"
                       max="2050-12-09" done-text='确定' style="height:25px;padding:2px;" cancel-text='取消'
-                      [(ngModel)]="NextPhoneTime"></ion-datetime>
+                      [(ngModel)]="NextPhoneTime2"></ion-datetime>
                   </div>
                 </div>
               </div>

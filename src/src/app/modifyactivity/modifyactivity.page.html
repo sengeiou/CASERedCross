@@ -63,7 +63,7 @@
           <div class="radius-2" style="width:100%; ">
             <div class="bg-white">
               <ion-datetime placeholder="{{activity.ActDate_Display}}" displayFormat="DD-MM-YYYY " picker-format="DD MM YYYY "
-                style="height:25px;padding:2px;" max="2050-12-09" done-text='确定' cancel-text='取消'
+                style="height:25px;padding:2px;--placeholder-color:#000;" max="2050-12-09" done-text='确定' cancel-text='取消'
                 [(ngModel)]="activityDate"></ion-datetime>
             </div>
             <!-- <div class="input_s radius-2 bg-white padding-left-5" *ngIf="activity.SavedStatus==0" style="width:100%;">
@@ -78,8 +78,8 @@
         <div class="flex-1">
           <div class="bg-white">
             <ion-datetime placeholder="{{activity.ActStartTime}}" displayFormat="hh：mm" picker-format="hh：mm"
-              style="height:25px;padding:2px;" max="2050-12-09" done-text='确定' cancel-text='取消'
-              [(ngModel)]="activityStartTime"></ion-datetime>
+              style="height:25px;padding:2px;--placeholder-color:#000;" max="2050-12-09" done-text='确定' cancel-text='取消'
+              [(ngModel)]="activityStartTime2"></ion-datetime>
           </div>
 
         </div>
@@ -87,8 +87,8 @@
         <div class="flex-1">
           <div class="bg-white">
             <ion-datetime placeholder="{{activity.ActEndTime}}" displayFormat="hh：mm" picker-format="hh：mm"
-              style="height:25px;padding:2px;" max="2050-12-09" done-text='确定' cancel-text='取消'
-              [(ngModel)]="activityEndTime"></ion-datetime>
+              style="height:25px;padding:2px;--placeholder-color:#000;" max="2050-12-09" done-text='确定' cancel-text='取消'
+              [(ngModel)]="activityEndTime2"></ion-datetime>
           </div>
 
         </div>
@@ -135,7 +135,7 @@
               <div class=" margin-top-10 flex-row flex-center" *ngIf="actDetailTypelist[0].actDetailType==true">活動地點:
                 <div class="flex-1">
                   <input  class="radius-2 other-input"
-                    placeholder="{{activity.Remarks1?activity.Remarks1:'輸入最多50字'}}" style=" width: 100%;" maxlength="50"
+                    placeholder="輸入最多50字" style=" width: 100%;" maxlength="50"
                     [(ngModel)]="remarks1" />
                 </div>
               </div>
@@ -151,7 +151,7 @@
               <div class=" margin-top-10 flex-row flex-center" *ngIf="actDetailTypelist[1].actDetailType==true">講座主題:
                 <div class="flex-1">
                   <input  class="radius-2 other-input"
-                    placeholder="{{activity.Remarks2?activity.Remarks2:'輸入最多50字'}}" style=" width: 100%;" maxlength="50"
+                    placeholder="輸入最多50字" style=" width: 100%;" maxlength="50"
                     [(ngModel)]="remarks2" />
                 </div>
               </div>
@@ -168,7 +168,7 @@
               <div class=" margin-top-10 flex-row flex-center" *ngIf="actDetailTypelist[2].actDetailType==true">活動主題:
                 <div class="flex-1">
                   <input  class="radius-2 other-input"
-                    placeholder="{{activity.Remarks3?activity.Remarks3:'輸入最多50字'}}" style=" width: 100%;" maxlength="50"
+                    placeholder="輸入最多50字" style=" width: 100%;" maxlength="50"
                     [(ngModel)]="remarks3" />
                 </div>
               </div>
@@ -191,7 +191,7 @@
                 *ngIf="actDetailTypelist[4].actDetailType==true">
                 <div class="flex-1">
                   <input class="radius-2 other-input"
-                    placeholder="{{activity.Remarks4?activity.Remarks4:'輸入最多50字'}}" maxlength="50" style=" width: 100%;"
+                    placeholder="輸入最多50字" maxlength="50" style=" width: 100%;"
                     [(ngModel)]="remarks4" />
                 </div>
               </div>
@@ -327,7 +327,7 @@
                   <!-- <input *ngIf="activity.SavedStatus!=0 " class="radius-2 other-input"
                     placeholder="{{activity.Remarks1?activity.Remarks1:'輸入最多50字'}}" style=" width: 100%;" maxlength="50"
                     [(ngModel)]="remarks1" /> -->
-                    <div class="radius-2 other-input" style=" width: 100%;">{{activity.Remarks1}}</div>
+                    <div class="radius-2 other-input bg-white" style=" width: 100%;">{{activity.Remarks1}}</div>
                 </div>
               </div>
             </div>
@@ -344,7 +344,7 @@
                   <!-- <input *ngIf="activity.SavedStatus!=0 " class="radius-2 other-input"
                     placeholder="{{activity.Remarks2?activity.Remarks2:'輸入最多50字'}}" style=" width: 100%;" maxlength="50"
                     [(ngModel)]="remarks2" /> -->
-                    <div class="radius-2 other-input" style=" width: 100%;">{{activity.Remarks2}}</div>
+                    <div class="radius-2 other-input bg-white" style=" width: 100%;">{{activity.Remarks2}}</div>
                 </div>
               </div>
             </div>
@@ -363,7 +363,7 @@
                   <!-- <input *ngIf="activity.SavedStatus!=0 " class="radius-2 other-input"
                     placeholder="{{activity.Remarks3?activity.Remarks3:'輸入最多50字'}}" style=" width: 100%;" maxlength="50"
                     [(ngModel)]="remarks3" /> -->
-                    <div class="radius-2 other-input" style=" width: 100%;">{{activity.Remarks3}}</div>
+                    <div class="radius-2 other-input bg-white" style=" width: 100%;">{{activity.Remarks3}}</div>
                 </div>
               </div>
             </div>

@@ -353,7 +353,7 @@ export class ServiceApi {
                 soapMessage += "<OtherSpecialNeed>" + hvLogList[i].OtherSpecialNeed + "</OtherSpecialNeed>";
                 soapMessage += "<OtherSpecialNeedService>" + hvLogList[i].OtherSpecialNeedService + "</OtherSpecialNeedService>";
                 soapMessage += "<OtherRemarks>" + hvLogList[i].OtherRemarks + "</OtherRemarks>";
-                if (type == 'one' && hvLogList[i].VisitId != 0) {
+                if (type == 'one') {
                     soapMessage += "<Status>2</Status>";
                 } else {
                     soapMessage += "<Status>" + hvLogList[i].Status + "</Status>";
@@ -439,13 +439,24 @@ export class ServiceApi {
                 soapMessage += "<Remarks4>" + activityLogList[i].Remarks4 + "</Remarks4>";
                 soapMessage += "<OtherActRemarks>" + activityLogList[i].OtherActRemarks + "</OtherActRemarks>";
                 soapMessage += "<Remarks>" + activityLogList[i].Remarks + "</Remarks>";
-                if (type == 'one' && activityLogList[i].ActivityId != 0) {
-                    soapMessage += "<Status>1</Status>";
+                if (type == 'one') {
+                    soapMessage += "<Status>0</Status>";
                 } else {
                     soapMessage += "<Status>" + activityLogList[i].Status + "</Status>";
                 }
 
-                soapMessage += "<alvList xsi:nil=\"true \"/>";
+                soapMessage += "<alvList>";
+                var alvList = activityLogList[i].alvList;
+                if (alvList) {
+                    for (var j = 0; j < alvList.length; j++) {
+                        soapMessage += "<tb_activity_vol_temp>";
+                        soapMessage += "<VolId>" + alvList[j].VolId + "</VolId>";
+                        soapMessage += "<VolGrpId>" + alvList[j].VolGrpId + "</VolGrpId>";
+                        soapMessage += "</tb_activity_vol_temp>";
+                    }
+                }
+                soapMessage += "</alvList>";
+                // soapMessage += "<alvList xsi:nil=\"true \"/>";
                 soapMessage += "</tb_acticve_log_temp>";
             }
         }
@@ -470,8 +481,8 @@ export class ServiceApi {
                 soapMessage += "<CannotContact>" + phoneSupportLogList[i].CannotContact + "</CannotContact>";
                 soapMessage += "<NextPhoneDate>" + phoneSupportLogList[i].NextPhoneDate + "</NextPhoneDate>";
                 soapMessage += "<NextPhoneTime>" + phoneSupportLogList[i].NextPhoneTime + "</NextPhoneTime>";
-                if (type == 'one' && phoneSupportLogList[i].SupportId != 0) {
-                    soapMessage += "<Status>1</Status>";
+                if (type == 'one') {
+                    soapMessage += "<Status>0</Status>";
                 } else {
                     soapMessage += "<Status>" + phoneSupportLogList[i].Status + "</Status>";
                 }
@@ -493,11 +504,6 @@ export class ServiceApi {
                 soapMessage += "<Description>" + medicAppointLogList[i].Description + "</Description>";
                 soapMessage += "<AppointmentDate>" + AppointmentDate + "</AppointmentDate>";
                 soapMessage += "<AppointmentTime>" + medicAppointLogList[i].AppointmentTime + "</AppointmentTime>";
-                // if (type == 'all' && medicAppointLogList[i].AppointmentId != 0) {
-                //     soapMessage += "<Status>1</Status>";
-                // } else {
-
-                // }
                 soapMessage += "<Status>" + medicAppointLogList[i].Status + "</Status>";
                 soapMessage += "<Reason>" + medicAppointLogList[i].Reason + "</Reason>";
                 soapMessage += "</tb_medical_appointment_log_temp>";

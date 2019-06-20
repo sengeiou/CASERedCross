@@ -21,7 +21,7 @@ export class ImageServe {
 
     getAllImageList() {
         var mgr = DBMgr.GetInstance();
-        var sql = "select * from tb_Image";
+        var sql = "select * from tb_Image where ImgId=0";
         return mgr.execSql(sql);
     }
 
