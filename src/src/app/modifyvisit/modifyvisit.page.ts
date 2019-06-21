@@ -289,6 +289,7 @@ export class ModifyvisitPage extends AppBase {
   LifeStyleMeasureBsPeriod_name = ''
   LifeStyleMeasureBpPeriod_name = ''
   LifeStyleMeasureBpLocation_name = ''
+  hvImgKeepListStr = '';
   getVisitId() {
     console.log(this.LocalId);
 
@@ -399,20 +400,20 @@ export class ModifyvisitPage extends AppBase {
           visitId = this.visit.VisitId;
         }
 
-        imgserver.getImageList_web(visitId).then(e => {
-          console.log('圖片' , Array.from(e.res.rows))
-
-          this.imgList == Array.from(e.res.rows);
+        imgserver.getImageList_old(visitId).then(e => {
+          console.log('圖片', Array.from(e.res.rows))
+          var oldList = [];
+          oldList = Array.from(e.res.rows);
           var hvImgKeepListStr = '';
-          for (var j = 0; j < this.imgList.length; j++) {
+          for (var j = 0; j < oldList.length; j++) {
             if (hvImgKeepListStr == '') {
-              hvImgKeepListStr = this.imgList[j].LocalId
+              hvImgKeepListStr = oldList[j].ImgId
             } else {
-              hvImgKeepListStr = hvImgKeepListStr + ',' + this.imgList[j].LocalId
+              hvImgKeepListStr = hvImgKeepListStr + ',' + oldList[j].ImgId
             }
           }
-          this.visit.hvImgKeepListStr = hvImgKeepListStr;
-          this.visit.hvNewImgQty = this.imgList.length;
+
+          this.hvImgKeepListStr = hvImgKeepListStr;
         })
 
         var medicalRecord = new MedicalRecordServe();
@@ -861,6 +862,8 @@ export class ModifyvisitPage extends AppBase {
     this.addVisit('no')
   }
 
+  visit_web = [];
+  imgList_web = [];
 
   addVisit(ret) {
     console.log('開始了')
@@ -1190,7 +1193,6 @@ export class ModifyvisitPage extends AppBase {
       this.VisitDetailOutdoorRemarks, this.VisitEndTime, this.VisitStartTime, this.VisitStatus, this.VisitStatusRemarks, this.WHRatio, this.Waist, this.Weight,
       this.NeedsContent, this.SYS1, this.DlA1, this.SYS2, this.DlA2, this.heartBeats1, this.heartBeats2, this.presentVolunteer, this.supportVolunteer, this.DeletePicString, ScheduleDate_Display).then(e => {
         if (e) {
-
           console.log('保存55')
           if (ret != 'web') {
             this.toast('資料保存成功');
@@ -1198,18 +1200,19 @@ export class ModifyvisitPage extends AppBase {
             if (ret != 'no') {
               this.back();
             }
-          } else {
-            this.getVisitId();
+          }
+          if (ret == 'web') {
+            // this.getVisitId();
             // return;
             var visit = new VisitServe();
             visit.getVisitId(this.LocalId).then((e) => {
               console.log(e)
               var casedata = e.res.rows;
-              var data = Array.from(casedata)[0]
-              this.visit = data;
+              var data = Array.from(casedata)
+              this.visit_web = data;
 
               var hvvlList = [];
-              var Volunteerlist = this.visit.presentVolunteer.split(',');
+              var Volunteerlist = this.visit_web[0].presentVolunteer.split(',');
               console.log(Volunteerlist)
               for (var i = 0; i < Volunteerlist.length; i++) {
                 console.log(Volunteerlist[i])
@@ -1220,7 +1223,7 @@ export class ModifyvisitPage extends AppBase {
                   }
                 }
               }
-              var supportVolunteer = this.visit.supportVolunteer.split(',');
+              var supportVolunteer = this.visit_web[0].supportVolunteer.split(',');
               console.log(supportVolunteer)
               for (var i = 0; i < supportVolunteer.length; i++) {
                 console.log(supportVolunteer[i])
@@ -1232,57 +1235,33 @@ export class ModifyvisitPage extends AppBase {
               }
 
               console.log('556', hvvlList);
+              this.visit_web[0].hvvlList = hvvlList;
+              // console.log('6388',this.imgList);
               var imgserver = new ImageServe();
               var visitId = this.LocalId;
               if (this.visit.VisitId > 0) {
                 visitId = this.visit.VisitId;
               }
 
-              var hvImgKeepListStr = '';
-              for (var j = 0; j < this.imgList.length; j++) {
-                if (hvImgKeepListStr == '') {
-                  hvImgKeepListStr = this.imgList[j].LocalId
-                } else {
-                  hvImgKeepListStr = hvImgKeepListStr + ',' + this.imgList[j].LocalId
-                }
-              }
+              console.log('visitId', visitId)
 
-              this.visit.hvImgKeepListStr = hvImgKeepListStr;
-              this.visit.hvNewImgQty = this.imgList.length;
+              imgserver.getImageList_web(visitId).then(t => {
 
-              var medicalRecord = new MedicalRecordServe();
-              medicalRecord.getAllMedicalRecordList(this.params.caseID).then((e) => {
-                this.medicAppointLogList = Array.from(e.res.rows);
-                console.log(this.medicAppointLogList)
+                console.log('new', Array.from(t.res.rows))
 
-                this.uploadVisitListWeb('1')
+                this.imgList_web = Array.from(t.res.rows);
+
+                console.log('new2', this.imgList_web)
+
+                var medicalRecord = new MedicalRecordServe();
+
+                medicalRecord.getAllMedicalRecordList(this.params.caseID).then((e) => {
+                  this.medicAppointLogList = Array.from(e.res.rows);
+                  console.log(this.medicAppointLogList)
+                  // return
+                  this.uploadVisitListWeb('1')
+                })
               })
-
-              // imgserver.getImageList_web(visitId).then(e => {
-              //   console.log(Array.from(e.res.rows))
-              //   var ImgList = [];
-              //   ImgList = Array.from(e.res.rows);
-              //   this.imgList == Array.from(e.res.rows);
-              //   var hvImgKeepListStr = '';
-              //   for (var j = 0; j < this.imgList.length; j++) {
-              //     if (hvImgKeepListStr == '') {
-              //       hvImgKeepListStr = this.imgList[j].LocalId
-              //     } else {
-              //       hvImgKeepListStr = hvImgKeepListStr + ',' + this.imgList[j].LocalId
-              //     }
-              //   }
-
-              //   this.visit.hvImgKeepListStr = hvImgKeepListStr;
-              //   this.visit.hvNewImgQty = this.imgList.length;
-
-              //   var medicalRecord = new MedicalRecordServe();
-              //   medicalRecord.getAllMedicalRecordList(this.params.caseID).then((e) => {
-              //     this.medicAppointLogList = Array.from(e.res.rows);
-              //     console.log(this.medicAppointLogList)
-
-              //     this.uploadVisitListWeb('1')
-              //   })
-              // })
               // this.uploadVisitListWeb('1')
 
 
@@ -1309,7 +1288,7 @@ export class ModifyvisitPage extends AppBase {
   uploadimg(visitid) {
     console.log(visitid)
     // return
-    if (visitid < 0) {
+    if (visitid <= 0) {
       this.toast('資料没有保存，请先保存!');
       return;
     }
@@ -1355,82 +1334,154 @@ export class ModifyvisitPage extends AppBase {
 
   uploadVisitListWeb(e) {
 
-    if (this.LocalId == 0 || this.LocalId == undefined) {
-      this.showConfirm('资料没有保存？请先保存', (e) => {
+    var hvLogList = [];
+    hvLogList = this.visit_web;
+    console.log(hvLogList);
+    // return;
+    hvLogList[0]['Height'] = this.casedata.Height;
+    hvLogList[0]['hvImgKeepListStr'] = this.hvImgKeepListStr;
+    if (this.imgList_web.length == undefined) {
+      hvLogList[0]['hvNewImgQty'] = 0;
+    }
+    if (this.imgList_web.length >= 0) {
+      hvLogList[0]['hvNewImgQty'] = this.imgList_web.length;
+    }
 
-      })
-    } else {
-      var hvLogList = [];
-      hvLogList.push(this.visit);
-      hvLogList[0]['Height'] = this.casedata.Height;
-      console.log(hvLogList)
+    console.log(hvLogList)
 
-      var activityLogList = [];
-      var phoneSupportLogList = [];
-      var medicAppointLogList = this.medicAppointLogList;
+    var activityLogList = [];
+    var phoneSupportLogList = [];
+    var medicAppointLogList = this.medicAppointLogList;
 
-      this.api.SaveAll(hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList, this.params.UserId, 'one').then((ret) => {
-        console.log(ret)
-        if (ret.Result == 'true') {
-          var AttchList = []
-          if (ret.AttachmentGroupLists != '') {
-
-            var listtype2 = typeof ret.AttachmentGroupLists.AttchList;
-            if (listtype2 == 'object' && ret.AttachmentGroupLists.AttchList.length == undefined) {
-              AttchList.push(ret.AttachmentGroupLists.AttchList);
-            } else {
-              AttchList = ret.AttachmentGroupLists.AttchList;
-            }
-
-            console.log('imgList', this.imgList)
-
-            for (var j = 0; j < this.imgList.length; j++) {
-              this.api.UploadImgPart('HomeVisit', this.imgList[j].VisitId, this.imgList[j].Base64ImgString).then(e => {
-                console.log('UploadImgPart', e)
-              })
-            }
-
-            this.api.ExecuteWorkingSet(ret.WorkingSetID, this.casedata.CaseId, this.params.UserId).then(e => {
-              console.log(e)
-              if (e.Result == 'true') {
-                var visit = new VisitServe();
-                visit.sevaVisitSavedStatus(this.LocalId).then(e => {
-                })
-
-                for (var j = 0; j < this.medicAppointLogList.length; j++) {
-                  this.saveMedicalRecord_SavedStatus(this.medicAppointLogList[j]);
-                }
-
-                this.toast('資料同步成功');
-              }
-            })
-
+    this.api.SaveAll(hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList, this.params.UserId, 'one').then((ret) => {
+      console.log(ret)
+      if (ret.Result == 'true') {
+        var AttchList = [];
+        if (ret.AttachmentGroupLists != '') {
+          console.log('上傳圖片')
+          var listtype2 = typeof ret.AttachmentGroupLists.AttchList;
+          if (listtype2 == 'object' && ret.AttachmentGroupLists.AttchList.length == undefined) {
+            AttchList.push(ret.AttachmentGroupLists.AttchList);
           } else {
-            this.api.ExecuteWorkingSet(ret.WorkingSetID, this.params.caseID, this.params.UserId).then(e => {
-              if (e.Result == 'true') {
+            AttchList = ret.AttachmentGroupLists.AttchList;
+          }
 
-                var visit = new VisitServe();
-                visit.sevaVisitSavedStatus(this.LocalId).then(e => {
+          for (var i = 0; i < this.imgList_web.length; i++) {
+            var AttachmentIdList = AttchList[i].AttachmentIDsStr.split(",");
+            this.saveImage_AttachmentId(parseInt(AttachmentIdList[i]), this.imgList_web[i]);
+          }
 
-                })
-                for (var j = 0; j < this.medicAppointLogList.length; j++) {
-                  this.saveMedicalRecord_SavedStatus(this.medicAppointLogList[j]);
+          console.log('imgList', this.imgList_web)
+          var w=0;
+          for (var j = 0; j < this.imgList_web.length; j++) {
+            console.log('上傳圖片、開始了');
+            var Base64ImgString = this.imgList_web[j].Base64ImgString.split(",");
+            console.log(Base64ImgString)
+            this.api.UploadImgPart('HomeVisit', this.imgList_web[j].VisitId, Base64ImgString[1], ret.WorkingSetID, AttachmentIdList[j], '201906211216').then(k => {
+              console.log('UploadImgPart', k);
+              if (k.Result == 'true') {
+                w ++;
+                if (w == this.imgList_web.length) {
+                  this.api.ExecuteWorkingSet(ret.WorkingSetID, this.casedata.CaseId, this.params.UserId).then(e => {
+                    console.log(e)
+                    if (e.Result == 'true') {
+                      var objWorkingSetAttachmentMap = []
+                      var listtype3 = typeof e.AttachmentsResult.objWorkingSetAttachmentMap;
+                      if (listtype3 == 'object' && e.AttachmentsResult.objWorkingSetAttachmentMap.length == undefined) {
+                        objWorkingSetAttachmentMap.push(e.AttachmentsResult.objWorkingSetAttachmentMap);
+                      } else {
+                        objWorkingSetAttachmentMap = e.AttachmentsResult.objWorkingSetAttachmentMap;
+                      }
+
+                      for (var i = 0; i < objWorkingSetAttachmentMap.length; i++) {
+                        this.saveImage_ImgId(objWorkingSetAttachmentMap[i].RecordID, objWorkingSetAttachmentMap[i].AttachmentId);
+                      }
+
+                      var visit = new VisitServe();
+                      visit.sevaVisitSavedStatus(this.LocalId).then(e => {
+                      })
+
+                      for (var t = 0; t < this.medicAppointLogList.length; t++) {
+                        this.saveMedicalRecord_SavedStatus(this.medicAppointLogList[t]);
+                      }
+                      // this.back();
+                      this.toast('資料同步成功');
+                    }
+                  })
                 }
-                this.toast('資料提交成功');
-                this.back();
-              } else {
-                this.toast('資料提交失敗');
               }
+
             })
           }
 
+          // return;
+          // this.api.ExecuteWorkingSet(ret.WorkingSetID, this.casedata.CaseId, this.params.UserId).then(e => {
+          //   console.log(e)
+          //   if (e.Result == 'true') {
+
+          //     var objWorkingSetAttachmentMap=[]
+          //     var listtype3 = typeof ret.AttachmentsResult.objWorkingSetAttachmentMap;
+          //     if (listtype3 == 'object' && ret.AttachmentsResult.objWorkingSetAttachmentMap.length == undefined) {
+          //       objWorkingSetAttachmentMap.push(ret.AttachmentsResult.objWorkingSetAttachmentMap);
+          //     } else {
+          //       objWorkingSetAttachmentMap = ret.AttachmentsResult.objWorkingSetAttachmentMap;
+          //     }
+
+          //     for(var i=0;i<objWorkingSetAttachmentMap.length;i++){
+          //       this.saveImage_ImgId(objWorkingSetAttachmentMap[i].RecordID,objWorkingSetAttachmentMap[i].AttachmentId);
+          //     }
+
+          //     var visit = new VisitServe();
+          //     visit.sevaVisitSavedStatus(this.LocalId).then(e => {
+          //     })
+
+          //     for (var j = 0; j < this.medicAppointLogList.length; j++) {
+          //       this.saveMedicalRecord_SavedStatus(this.medicAppointLogList[j]);
+          //     }
+
+          //     this.toast('資料同步成功');
+          //   }
+          // })
 
         }
+        else {
+          this.api.ExecuteWorkingSet(ret.WorkingSetID, this.params.caseID, this.params.UserId).then(e => {
+            if (e.Result == 'true') {
 
-      });
+              var visit = new VisitServe();
+              visit.sevaVisitSavedStatus(this.LocalId).then(e => {
+
+              })
+              for (var j = 0; j < this.medicAppointLogList.length; j++) {
+                this.saveMedicalRecord_SavedStatus(this.medicAppointLogList[j]);
+              }
+              this.toast('資料提交成功');
+              this.back();
+            } else {
+              this.toast('資料提交失敗');
+            }
+          })
+        }
+
+      }
+
+    });
 
 
-    }
+  }
+
+  saveImage_AttachmentId(AttachmentId, kv) {
+    var imgserve = new ImageServe();
+    imgserve.saveImage_AttachmentId(AttachmentId, kv.LocalId).then(e => {
+      console.log(e)
+    })
+  }
+
+  saveImage_ImgId(ImgId, AttachmentId) {
+    var imgserve = new ImageServe();
+    imgserve.saveImage_ImgId(ImgId, AttachmentId).then(e => {
+      console.log(e)
+    })
   }
 
 

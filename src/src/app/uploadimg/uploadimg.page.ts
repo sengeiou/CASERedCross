@@ -76,8 +76,8 @@ export class UploadimgPage extends AppBase {
     console.log(e)
     // this.list.splice(e,1);
     // console.log(this.list)
-    this.showConfirm('確定要刪除圖片', (e) => {
-      if(e){
+    this.showConfirm('確定要刪除圖片', (ret) => {
+      if(ret==true){
         var imgserver=new ImageServe();
         imgserver.deleteImage(e).then(e=>{
           this.onMyShow()
@@ -97,7 +97,7 @@ export class UploadimgPage extends AppBase {
           text: "立即自拍",
           handler: () => {
             let options: CameraOptions = {
-              quality: 10,
+              quality: 50,
               allowEdit: true,
               destinationType: this.camera.DestinationType.FILE_URI,
               sourceType: this.camera.PictureSourceType.CAMERA,
@@ -120,7 +120,7 @@ export class UploadimgPage extends AppBase {
           text: "从相册选择",
           handler: () => {
             let options: CameraOptions = {
-              quality: 10,
+              quality: 50,
 
               allowEdit: true,
               destinationType: this.camera.DestinationType.FILE_URI,
@@ -155,6 +155,13 @@ export class UploadimgPage extends AppBase {
     imgservice.getAllImageList().then((res)=>{
       console.log(res);
     });
+  }
+
+  kk(){
+    var imgserver=new ImageServe();
+    imgserver.addImage2(0,this.params.visitid,'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAMSURBVBhXY/j//z8ABf4C/qc1gYQAAAAASUVORK5CYII=').then(e=>{
+      console.log(e)
+  })
   }
 
 }

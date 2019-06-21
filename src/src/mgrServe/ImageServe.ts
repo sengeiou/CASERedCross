@@ -19,6 +19,12 @@ export class ImageServe {
         return mgr.execSql(sql, [AttachmentId,id]);
     }
 
+    saveImage_ImgId(ImgId,AttachmentId) {
+        var mgr = DBMgr.GetInstance();
+        var sql = "update tb_Image SET ImgId=? where AttachmentId=?";
+        return mgr.execSql(sql, [ImgId,AttachmentId]);
+    }
+
     getAllImageList() {
         var mgr = DBMgr.GetInstance();
         var sql = "select * from tb_Image where ImgId=0";
@@ -34,6 +40,12 @@ export class ImageServe {
     getImageList_web(VisitId) {
         var mgr = DBMgr.GetInstance();
         var sql = "select * from tb_Image where  ImgId=0 and VisitId = ? ";
+        return mgr.execSql(sql, [VisitId]);
+    }
+
+    getImageList_old(VisitId) {
+        var mgr = DBMgr.GetInstance();
+        var sql = "select * from tb_Image where  ImgId>0 and VisitId = ? ";
         return mgr.execSql(sql, [VisitId]);
     }
 

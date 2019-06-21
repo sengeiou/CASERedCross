@@ -101,24 +101,25 @@ export class HomePage extends AppBase {
         if (this.visiltList_web[i].VisitId > 0) {
           visitId = this.visiltList_web[i].VisitId;
         }
-        imgserver.getImageList_web(visitId).then(e => {
-          console.log(Array.from(e.res.rows));
-          this.imgList = Array.from(e.res.rows);
-          var ImgList = [];
-          ImgList = Array.from(e.res.rows);
-          var hvImgKeepListStr = '';
-          for (var j = 0; j < ImgList.length; j++) {
-            if (hvImgKeepListStr == '') {
-              hvImgKeepListStr = ImgList[j].LocalId
-            } else {
-              hvImgKeepListStr = hvImgKeepListStr + ',' + ImgList[j].LocalId;
-            }
-          }
-          if (hvImgKeepListStr.length > 0) {
-            this.visiltList_web[i].hvImgKeepListStr = hvImgKeepListStr;
-            this.visiltList_web[i].hvNewImgQty = ImgList.length;
-          }
-        })
+
+        // imgserver.getImageList_web(visitId).then(e => {
+        //   console.log(Array.from(e.res.rows));
+        //   this.imgList = Array.from(e.res.rows);
+        //   var ImgList = [];
+        //   ImgList = Array.from(e.res.rows);
+        //   var hvImgKeepListStr = '';
+        //   for (var j = 0; j < ImgList.length; j++) {
+        //     if (hvImgKeepListStr == '') {
+        //       hvImgKeepListStr = ImgList[j].LocalId
+        //     } else {
+        //       hvImgKeepListStr = hvImgKeepListStr + ',' + ImgList[j].LocalId;
+        //     }
+        //   }
+        //   if (hvImgKeepListStr.length > 0) {
+        //     this.visiltList_web[i].hvImgKeepListStr = hvImgKeepListStr;
+        //     this.visiltList_web[i].hvNewImgQty = ImgList.length;
+        //   }
+        // })
       }
     })
 
@@ -151,7 +152,7 @@ export class HomePage extends AppBase {
 
   }
 
-  getAllImg() {
+  getAllImg() { //全部新的圖片
     var imgserver = new ImageServe();
     imgserver.getAllImageList().then(e => {
       console.log(Array.from(e.res.rows));
@@ -195,38 +196,45 @@ export class HomePage extends AppBase {
       console.log(ret)
       // return
       if (ret.Result == 'true') {
-        var AttachmentGroupLists = [];
+
         var AttchList = []
-        if (ret.AttachmentGroupLists) {
-          var listtype = typeof ret.AttachmentGroupLists;
-          if (listtype == 'object' && ret.AttachmentGroupLists.length == undefined) {
-            AttachmentGroupLists.push(ret.AttachmentGroupLists.AttchList);
+        if (ret.AttachmentGroupLists != '') {
+          var listtype2 = typeof ret.AttachmentGroupLists.AttchList;
+          if (listtype2 == 'object' && ret.AttachmentGroupLists.AttchList.length == undefined) {
+            AttchList.push(ret.AttachmentGroupLists.AttchList);
           } else {
-            AttachmentGroupLists = ret.AttachmentGroupLists.AttchList;
+            AttchList = ret.AttachmentGroupLists.AttchList;
           }
-          if (AttachmentGroupLists.length > 0) {
-            for (var i = 0; i < AttachmentGroupLists.length; i++) {
-              var listtype2 = typeof ret.AttachmentGroupLists.AttchList;
-              if (listtype2 == 'object' && ret.AttachmentGroupLists.AttchList.length == undefined) {
-                AttchList.push(ret.AttachmentGroupLists.AttchList);
-              } else {
-                AttchList = ret.AttachmentGroupLists.AttchList;
-              }
-
-              // this.saveImage_AttachmentId();
-
-            }
+          
+          for (var i = 0; i < this.allImgList.length; i++) {
+            var AttachmentIdList = AttchList[i].AttachmentIDsStr.split(",");
+            this.saveImage_AttachmentId(parseInt(AttachmentIdList[i]), this.allImgList[i]);
           }
 
           for (var j = 0; j < this.allImgList.length; j++) {
-            this.api.UploadImgPart('HomeVisit', this.allImgList[j].VisitId, this.allImgList[j].Base64ImgString).then(e => {
-              console.log(e)
+            console.log('上傳圖片、開始了');
+            var Base64ImgString = this.allImgList[j].Base64ImgString.split(",");
+            console.log(Base64ImgString)
+            this.api.UploadImgPart('HomeVisit', this.allImgList[j].VisitId, Base64ImgString[1], ret.WorkingSetID, AttachmentIdList[j], '201906211216').then(e => {
+              console.log('UploadImgPart', e)
             })
           }
 
           this.api.ExecuteWorkingSet(ret.WorkingSetID, 0, this.UserId).then(e => {
             console.log(e)
             if (e.Result == 'true') {
+
+              var objWorkingSetAttachmentMap = []
+              var listtype3 = typeof ret.AttachmentsResult.objWorkingSetAttachmentMap;
+              if (listtype3 == 'object' && ret.AttachmentsResult.objWorkingSetAttachmentMap.length == undefined) {
+                objWorkingSetAttachmentMap.push(ret.AttachmentsResult.objWorkingSetAttachmentMap);
+              } else {
+                objWorkingSetAttachmentMap = ret.AttachmentsResult.objWorkingSetAttachmentMap;
+              }
+
+              for (var i = 0; i < objWorkingSetAttachmentMap.length; i++) {
+                this.saveImage_ImgId(objWorkingSetAttachmentMap[i].RecordID, objWorkingSetAttachmentMap[i].AttachmentId);
+              }
               this.SysnAllWeb();
               this.toast('資料同步成功');
             }
@@ -362,35 +370,29 @@ export class HomePage extends AppBase {
           }
 
           kv.visitList[i].hvvlList = hvvlList;
-          // var hvImgKeepListStr = '';
-          // for(var j=0;j<this.allImgList.length;j++){
 
-          //   if(visitId==this.allImgList[j].VisitId ){
-          //     if (hvImgKeepListStr == '') {
-          //       hvImgKeepListStr =this.allImgList[j].LocalId
-          //     } else {
-          //       hvImgKeepListStr = hvImgKeepListStr + ',' + this.allImgList[j].LocalId;
-          //     }
-          //   }
-          // }
-
-          imgserver.getImageList_web(visitId).then(e => {
-            console.log(Array.from(e.res.rows))
-            // this.imgList = Array.from(e.res.rows);
-            var ImgList = [];
-            ImgList = Array.from(e.res.rows);
+    
+          
+          imgserver.getImageList_old(visitId).then(e => { //舊的圖片
+            console.log('圖片', Array.from(e.res.rows))
+            var oldList = [];
+            oldList = Array.from(e.res.rows);
             var hvImgKeepListStr = '';
-            for (var j = 0; j < ImgList.length; j++) {
+            for (var j = 0; j < oldList.length; j++) {
               if (hvImgKeepListStr == '') {
-                hvImgKeepListStr = ImgList[j].LocalId
+                hvImgKeepListStr = oldList[j].ImgId
               } else {
-                hvImgKeepListStr = hvImgKeepListStr + ',' + ImgList[j].LocalId;
+                hvImgKeepListStr = hvImgKeepListStr + ',' + oldList[j].ImgId
               }
             }
-            if (ImgList.length > 0) {
-              kv.visitList[i].hvImgKeepListStr = hvImgKeepListStr;
-              kv.visitList[i].hvNewImgQty = ImgList.length;
-            }
+            kv.visitList[i].hvImgKeepListStr = hvImgKeepListStr;
+          })
+
+          imgserver.getImageList_web(visitId).then(e => { //新的圖片
+            console.log(Array.from(e.res.rows))
+            var ImgList = [];
+            ImgList = Array.from(e.res.rows);
+            kv.visitList[i].hvNewImgQty = ImgList.length;
           })
         }
       }
@@ -417,8 +419,8 @@ export class HomePage extends AppBase {
         console.log(e.res.rows);
         kv.activityList = Array.from(e.res.rows);
         for (var i = 0; i < kv.activityList.length; i++) {
-          var alvList=[];
-          var Volunteerlist=kv.activityList[i].PresentVolunteer.split(',');
+          var alvList = [];
+          var Volunteerlist = kv.activityList[i].PresentVolunteer.split(',');
           for (var t = 0; t < Volunteerlist.length; t++) {
             console.log(Volunteerlist[t])
             for (var j = 0; j < this.Volunteer.length; j++) {
@@ -427,7 +429,7 @@ export class HomePage extends AppBase {
               }
             }
           }
-          kv.activityList[i].alvList=alvList;
+          kv.activityList[i].alvList = alvList;
         }
 
       }
@@ -968,9 +970,16 @@ export class HomePage extends AppBase {
     })
   }
 
-  saveImage_AttachmentId(kv) {
+  saveImage_AttachmentId(AttachmentId, kv) {
     var imgserve = new ImageServe();
-    imgserve.saveImage_AttachmentId(kv.AttachmentId, kv.LocalId).then(e => {
+    imgserve.saveImage_AttachmentId(AttachmentId, kv.LocalId).then(e => {
+      console.log(e)
+    })
+  }
+
+  saveImage_ImgId(ImgId, AttachmentId) {
+    var imgserve = new ImageServe();
+    imgserve.saveImage_ImgId(ImgId, AttachmentId).then(e => {
       console.log(e)
     })
   }

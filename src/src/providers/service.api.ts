@@ -539,23 +539,40 @@ export class ServiceApi {
             });
     }
 
-    public UploadImgPart(section, ClientID, ImgDataBase64) {
+    public UploadImgPart(section, ClientID, ImgDataBase64,WorkingSetId,AttachmentId,Filename) {
         var url = ApiConfig.getApiUrl();
         var data = { section, ClientID, ImgDataBase64 };
         var headers = ApiConfig.GetHeader(url, data);
         let options = new RequestOptions({ headers: headers });
+
         var soapMessage = "<?xml version='1.0' encoding='utf-8'?>";
-        soapMessage += "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">";
-        soapMessage += "<soap:Body>";
+        soapMessage += "<soap12:Envelope xmlns:xsi =\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd =\"http://www.w3.org/2001/XMLSchema\" xmlns:soap12 =\"http://www.w3.org/2003/05/soap-envelope\">";
+        soapMessage += "<soap12:Body>";
         soapMessage += "<UploadImgPart xmlns=\"http://tempuri.org/\">";
         soapMessage += "<attachment>";
-        soapMessage += "<section>string</section>";
-        soapMessage += "<ClientID>string</ClientID>";
-        soapMessage += "<ImgDataBase64>string</ImgDataBase64>";
+        soapMessage += "<section>" + section + "</section>";
+        soapMessage += "<ClientID>" + ClientID + "</ClientID>";
+        soapMessage += "<ImgDataBase64>" + ImgDataBase64 + "</ImgDataBase64>";
+        soapMessage += "<WorkingSetId>" + WorkingSetId + "</WorkingSetId>";
+        soapMessage += "<AttachmentId>" + AttachmentId + "</AttachmentId>";
+        soapMessage += "<Filename>" + Filename + "</Filename>";
         soapMessage += "</attachment>";
         soapMessage += "</UploadImgPart>";
-        soapMessage += "</soap:Body>";
-        soapMessage += "</soap:Envelope>";
+        soapMessage += "</soap12:Body>";
+        soapMessage += "</soap12:Envelope>";
+
+        // var soapMessage = "<?xml version='1.0' encoding='utf-8'?>";
+        // soapMessage += "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">";
+        // soapMessage += "<soap:Body>";
+        // soapMessage += "<UploadImgPart xmlns=\"http://tempuri.org/\">";
+        // soapMessage += "<attachment>";
+        // soapMessage += "<section>" + section + "</section>";
+        // soapMessage += "<ClientID>" + ClientID + "</ClientID>";
+        // soapMessage += "<ImgDataBase64>" + ImgDataBase64 + "</ImgDataBase64>";
+        // soapMessage += "</attachment>";
+        // soapMessage += "</UploadImgPart>soapMessage += "
+        // soapMessage += "</soap:Body>";
+        // soapMessage += "</soap:Envelope>";
 
         let body = soapMessage;
         console.log(body);
