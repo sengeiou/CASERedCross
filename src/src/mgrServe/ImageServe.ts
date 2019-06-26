@@ -13,21 +13,21 @@ export class ImageServe {
         return mgr.execSql(sql, [id]);
     }
 
-    saveImage_AttachmentId(AttachmentId,id) {
+    saveImage_AttachmentId(AttachmentId, id) {
         var mgr = DBMgr.GetInstance();
         var sql = "update tb_Image SET AttachmentId=? where LocalId=?";
-        return mgr.execSql(sql, [AttachmentId,id]);
+        return mgr.execSql(sql, [AttachmentId, id]);
     }
 
-    saveImage_ImgId(ImgId,AttachmentId) {
+    saveImage_ImgId(ImgId, AttachmentId) {
         var mgr = DBMgr.GetInstance();
         var sql = "update tb_Image SET ImgId=? where AttachmentId=?";
-        return mgr.execSql(sql, [ImgId,AttachmentId]);
+        return mgr.execSql(sql, [ImgId, AttachmentId]);
     }
 
     getAllImageList() {
         var mgr = DBMgr.GetInstance();
-        var sql = "select * from tb_Image where ImgId=0";
+        var sql = "select i.* from tb_Image as i left outer join tb_home_visit as h where i.ImgId=0 and i.VisitId=h.VisitId and h.SavedStatus=1 ";
         return mgr.execSql(sql);
     }
 
@@ -39,7 +39,7 @@ export class ImageServe {
 
     getImageList_web(VisitId) {
         var mgr = DBMgr.GetInstance();
-        var sql = "select * from tb_Image where  ImgId=0 and VisitId = ? ";
+        var sql = "select * from tb_Image as i left outer join tb_home_visit as h  where i.ImgId=0 and h.SavedStatus=1 and i.VisitId=h.VisitId  and i.VisitId = ? ";
         return mgr.execSql(sql, [VisitId]);
     }
 
@@ -51,6 +51,14 @@ export class ImageServe {
 
     addImage(ImgId, VisitId, ImgPath, transfer: FileTransfer, file: File, base64Mgr: Base64) {
         var mgr = DBMgr.GetInstance();
+        var myDate = new Date();
+        if (myDate.getMonth() + 1 < 10) {
+            var Month = "0" + (myDate.getMonth() + 1)
+        } else {
+            Month = "" + (myDate.getMonth() + 1)
+        }
+        var ImgName=myDate.getFullYear() + "" + Month + "" + myDate.getDate() + "" + myDate.getHours() + "" + myDate.getMinutes();
+  
         mgr.execSql("select * from tb_Image where ImgId=? ", [ImgId]).then((e) => {
             var list = Array.from(e.res.rows);
             if (list.length > 0) {
@@ -74,7 +82,7 @@ export class ImageServe {
                 base64Mgr.encodeFile(file.dataDirectory + 'f' + ImgId + ".jpg").then((base64File: string) => {
                     //alert(base64File);
                     var sql = "insert into tb_Image(ImgId,VisitId,ImgName,Base64ImgString) values (?,?,?,?)";
-                    return mgr.execSql(sql, [ImgId, VisitId, '', base64File]);
+                    return mgr.execSql(sql, [ImgId, VisitId, ImgName, base64File]);
                 });
 
             }, (error) => {
@@ -86,25 +94,16 @@ export class ImageServe {
 
     addImage2(ImgId, VisitId, base64File) {
         var mgr = DBMgr.GetInstance();
-        // var uploadpath = ApiConfig.getUploadPath();
-        // var fileurl = uploadpath + ImgPath;
-        // var fileTransfer: FileTransferObject = transfer.create();
-
-        // fileTransfer.download(fileurl, file.dataDirectory + 'f' + ImgId + ".jpg").then((entry) => {
-        //     base64Mgr.encodeFile(file.dataDirectory + 'f' + ImgId + ".jpg").then((base64File: string) => {
-        //         //alert(base64File);
+ 
+        var myDate = new Date();
+        if (myDate.getMonth() + 1 < 10) {
+            var Month = "0" + (myDate.getMonth() + 1)
+        } else {
+            Month = "" + (myDate.getMonth() + 1)
+        }
+        var ImgName=myDate.getFullYear() + "" + Month + "" + myDate.getDate() + "" + myDate.getHours() + "" + myDate.getMinutes();
         var sql = "insert into tb_Image(ImgId,VisitId,ImgName,Base64ImgString) values (?,?,?,?)";
-        return mgr.execSql(sql, [ImgId, VisitId, '', base64File]);
-        //     });
-
-        // }, (error) => {
-        //     // handle error
-
-        // });
-
-
-
-
+        return mgr.execSql(sql, [ImgId, VisitId, ImgName, base64File]); 
     }
 
 
@@ -113,5 +112,11 @@ export class ImageServe {
         var mgr = DBMgr.GetInstance();
         var sql = "DELETE FROM tb_Image where LocalId=?";
         return mgr.execSql(sql, [id]);
+    }
+
+    deleteImage2() {
+        var mgr = DBMgr.GetInstance();
+        var sql = "DELETE FROM tb_Image ";
+        return mgr.execSql(sql);
     }
 }

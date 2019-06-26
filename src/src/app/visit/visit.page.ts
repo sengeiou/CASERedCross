@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { AppBase } from '../AppBase';
 import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
-import { NavController, ModalController, ToastController, AlertController, NavParams, IonSlides } from '@ionic/angular';
+import { NavController, ModalController, ToastController, AlertController, NavParams, IonSlides,LoadingController } from '@ionic/angular';
 import { AppUtil } from '../app.util';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CaseServe } from 'src/mgrServe/CaseServe';
@@ -27,6 +27,7 @@ export class VisitPage extends AppBase {
     public alertCtrl: AlertController,
     public api: ServiceApi,
     public activeRoute: ActivatedRoute,
+    public loadingController: LoadingController,
     public sanitizer: DomSanitizer) {
     super(router, navCtrl, modalCtrl, toastCtrl, alertCtrl, activeRoute);
     this.headerscroptshow = 480;
@@ -833,22 +834,22 @@ export class VisitPage extends AppBase {
       this.heartBeats2 = 0;
     }
 
-    if (this.LifeStyleMeasureBsNoOfTime == null) {
+    if (this.LifeStyleMeasureBsNoOfTime == null || this.LifeStyleMeasureBsNoOfTime == '') {
       this.LifeStyleMeasureBsNoOfTime = 0;
     }
-    if (this.LifeStyleMeasureBpNoOfTime == null) {
+    if (this.LifeStyleMeasureBpNoOfTime == null || this.LifeStyleMeasureBpNoOfTime == '')  {
       this.LifeStyleMeasureBpNoOfTime = 0
     }
-    if (this.OtherHospDisbeteNoOfDay == null) {
+    if (this.OtherHospDisbeteNoOfDay == null || this.OtherHospDisbeteNoOfDay == '') {
       this.OtherHospDisbeteNoOfDay = 0;
     }
-    if (this.OtherHospHighBpNoOfDay == null) {
+    if (this.OtherHospHighBpNoOfDay == null || this.OtherHospHighBpNoOfDay == '') {
       this.OtherHospHighBpNoOfDay = 0;
     }
-    if (this.OtherHospOtherIllnessNoOfDay == null) {
+    if (this.OtherHospOtherIllnessNoOfDay == null || this.OtherHospOtherIllnessNoOfDay == '') {
       this.OtherHospOtherIllnessNoOfDay = 0;
     }
-    if (this.OtherAccidentNoOfDay == null) {
+    if (this.OtherAccidentNoOfDay == null || this.OtherAccidentNoOfDay == '') {
       this.OtherAccidentNoOfDay = 0;
     }
 
@@ -862,9 +863,26 @@ export class VisitPage extends AppBase {
       return;
     }
     if (ret == 'web') {
-      if (!this.VisitStartTime || !this.VisitEndTime) {
-        this.toast('你沒有填寫實際探訪時間');
+      if (this.VisitStartTime == '') {
+        this.toast('你沒有輸入開始時間');
         return;
+      }
+      if (this.VisitEndTime == '') {
+        this.toast('你沒有輸入結束時間');
+        return;
+      }
+      
+      if (this.VisitStartTime2 != '' && this.VisitEndTime2 != '') {
+        var oDate1 = new Date(this.VisitStartTime2);
+        var oDate2 = new Date(this.VisitEndTime2);
+        if (oDate1.getTime() > oDate2.getTime()) {
+          this.toast('開始時間不能遲於結束時間');
+          return;
+        }
+        if (oDate1.getTime() == oDate2.getTime()) {
+          this.toast('開始和結束時間不能一樣');
+          return;
+        }
       }
       if (this.Location == 0) {
         this.toast('你沒有填寫面見地點');
@@ -933,8 +951,35 @@ export class VisitPage extends AppBase {
           this.toast('在家/外出(醫院／診所除外)*量度血糖');
           return;
         }
+        if (this.LifeStyleMeasureBloodSuger == 1 && this.LifeStyleMeasureBsLocation==0) {
+          this.toast('你沒有填寫在家/外出(醫院／診所除外)*量度血糖 地點');
+          return;
+        }
+
+        if (this.LifeStyleMeasureBloodSuger == 1 && this.LifeStyleMeasureBsPeriod==0) {
+          this.toast('你沒有填寫在家/外出(醫院／診所除外)*量度血糖 頻率');
+          return;
+        }
+
+        if (this.LifeStyleMeasureBloodSuger == 1 && this.LifeStyleMeasureBsNoOfTime==0) {
+          this.toast('你沒有填寫在家/外出(醫院／診所除外)*量度血糖 次數');
+          return;
+        }
         if (this.LifeStyleMeasureBloodPressure == 0) {
           this.toast('你沒有填寫在家/外出(醫院／診所除外)*量度血壓');
+          return;
+        }
+
+        if (this.LifeStyleMeasureBloodPressure == 1 && this.LifeStyleMeasureBpLocation==0) {
+          this.toast('你沒有填寫在家/外出(醫院／診所除外)*量度血壓 地點');
+          return;
+        }
+        if (this.LifeStyleMeasureBloodPressure == 1 && this.LifeStyleMeasureBpPeriod==0) {
+          this.toast('你沒有填寫在家/外出(醫院／診所除外)*量度血壓 頻率');
+          return;
+        }
+        if (this.LifeStyleMeasureBloodPressure == 1 && this.LifeStyleMeasureBpNoOfTime==0) {
+          this.toast('你沒有填寫在家/外出(醫院／診所除外)*量度血壓 次數');
           return;
         }
 
@@ -1219,9 +1264,12 @@ export class VisitPage extends AppBase {
     this.navigate('weight', { caseid: this.params.caseID });
   }
 
-
-  uploadVisitListWeb() {
-
+  loading = null;
+  async uploadVisitListWeb() {
+    this.loading = await this.loadingController.create({
+      message: '上傳中'
+    });
+    await this.loading.present();
     // if (this.LocalId == 0 || this.LocalId == undefined) {
     //   this.showConfirm('资料没有保存？请先保存', (e) => {
 
@@ -1246,7 +1294,7 @@ export class VisitPage extends AppBase {
     this.api.SaveAll(hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList, this.params.UserId, 'one').then((ret) => {
       console.log(ret)
       if (ret.Result == 'true') {
-        // var AttachmentGroupLists = [];
+
         var AttchList = []
         if (ret.AttachmentGroupLists!='') {
           var listtype2 = typeof ret.AttachmentGroupLists.AttchList;
@@ -1264,12 +1312,17 @@ export class VisitPage extends AppBase {
 
           let w=0;
           for (var j = 0; j < this.imgList.length; j++) {
-            this.api.UploadImgPart('HomeVisit', this.imgList[j].VisitId, this.imgList[j].Base64ImgString,ret.WorkingSetID,AttachmentIdList[j],'201906211216').then(k => {
+            this.api.UploadImgPart('HomeVisit', this.imgList[j].VisitId, this.imgList[j].Base64ImgString,ret.WorkingSetID,AttachmentIdList[j],this.imgList[j].ImgName).then(k => {
               console.log(k)
+              
               if (k.Result == 'true') {
                 w ++;
                 if (w == this.imgList.length) {
                   this.api.ExecuteWorkingSet(ret.WorkingSetID, this.casedata.CaseId, this.params.UserId).then(e => {
+                    if (e == undefined) {
+                      this.loading.dismiss();
+                      this.toast('資料上傳失败');
+                    }
                     console.log(e)
                     if (e.Result == 'true') {
                       var objWorkingSetAttachmentMap = []
@@ -1291,7 +1344,8 @@ export class VisitPage extends AppBase {
                       for (var t = 0; t < this.medicAppointLogList.length; t++) {
                         this.saveMedicalRecord_SavedStatus(this.medicAppointLogList[t]);
                       }
-                      // this.back();
+                      this.loading.dismiss();
+                      this.back();
                       this.toast('資料同步成功');
                     }
                   })
@@ -1299,43 +1353,23 @@ export class VisitPage extends AppBase {
               }
             })
           }
-          // this.api.ExecuteWorkingSet(ret.WorkingSetID, this.casedata.CaseId, this.params.UserId).then(e => {
-          //   console.log(e)
-          //   if (e.Result == 'true') {
-          //     var visit = new VisitServe();
-              
-          //     var objWorkingSetAttachmentMap=[]
-          //     var listtype3 = typeof ret.AttachmentsResult.objWorkingSetAttachmentMap;
-          //     if (listtype3 == 'object' && ret.AttachmentsResult.objWorkingSetAttachmentMap.length == undefined) {
-          //       objWorkingSetAttachmentMap.push(ret.AttachmentsResult.objWorkingSetAttachmentMap);
-          //     } else {
-          //       objWorkingSetAttachmentMap = ret.AttachmentsResult.objWorkingSetAttachmentMap;
-          //     }
-
-          //     for(var i=0;i<objWorkingSetAttachmentMap.length;i++){
-          //       this.saveImage_ImgId(objWorkingSetAttachmentMap[i].RecordID,objWorkingSetAttachmentMap[i].AttachmentId);
-          //     }
-
-          //     visit.sevaVisitSavedStatus(this.LocalId).then(e => {
-
-          //     })
-          //     this.toast('資料同步成功');
-          //   }
-          // })
 
         } else {
           this.api.ExecuteWorkingSet(ret.WorkingSetID, this.params.caseID, this.params.UserId).then(e => {
+            if (e == undefined) {
+              this.loading.dismiss();
+              this.toast('資料上傳失败');
+            }
             if (e.Result == 'true') {
 
               var visit = new VisitServe();
               visit.sevaVisitSavedStatus(this.LocalId).then(e => {
 
               })
+              this.loading.dismiss();
               this.toast('資料提交成功');
               this.back();
-            } else {
-              this.toast('資料提交失敗');
-            }
+            } 
           })
         }
       }

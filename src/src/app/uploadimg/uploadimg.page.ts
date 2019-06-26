@@ -105,8 +105,7 @@ export class UploadimgPage extends AppBase {
             };
             this.camera.getPicture(options).then((imagepath) => {
               this.base64.encodeFile(imagepath).then((code)=>{
-                // alert(code);
-                // alert("调用addImage的接口加到本地数据库");
+               
                 imgserver.addImage2(0,this.params.visitid,code).then(e=>{
                     console.log(e)
                 })

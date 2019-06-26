@@ -72,11 +72,15 @@ export class HomePage extends AppBase {
     this.wangluo = this.network.type;
     console.log(this.network.type)
 
+    // var imgserver = new ImageServe();
+    // imgserver.deleteImage2();
+
     // window.onload = function () {
     //   var seewid = document.documentElement.clientWidth;
     //   var seehei = document.documentElement.clientHeight;
     //   console.log('可视区高' + seehei + '可视区宽' + seewid);
     // }
+
     var volunteerServr = new VolunteerServr();
     volunteerServr.getAllVolunteerList().then((e) => {
       if (e.res.rows.length > 0) {
@@ -101,25 +105,6 @@ export class HomePage extends AppBase {
         if (this.visiltList_web[i].VisitId > 0) {
           visitId = this.visiltList_web[i].VisitId;
         }
-
-        // imgserver.getImageList_web(visitId).then(e => {
-        //   console.log(Array.from(e.res.rows));
-        //   this.imgList = Array.from(e.res.rows);
-        //   var ImgList = [];
-        //   ImgList = Array.from(e.res.rows);
-        //   var hvImgKeepListStr = '';
-        //   for (var j = 0; j < ImgList.length; j++) {
-        //     if (hvImgKeepListStr == '') {
-        //       hvImgKeepListStr = ImgList[j].LocalId
-        //     } else {
-        //       hvImgKeepListStr = hvImgKeepListStr + ',' + ImgList[j].LocalId;
-        //     }
-        //   }
-        //   if (hvImgKeepListStr.length > 0) {
-        //     this.visiltList_web[i].hvImgKeepListStr = hvImgKeepListStr;
-        //     this.visiltList_web[i].hvNewImgQty = ImgList.length;
-        //   }
-        // })
       }
     })
 
@@ -144,18 +129,31 @@ export class HomePage extends AppBase {
     }
 
     this.showConfirm('你確定要同步資料嗎？', (e) => {
-      if (e) {
+      if (e == true) {
         this.presentLoading();
+
+        // this.countDown(this, 180)
       }
     })
+  }
 
+  countDown(that, count) { //倒计时
+    if (count == 0) {
+      this.loading.dismiss();
+      this.toast('資料同步失败');
+      return;
+    }
+    setTimeout(function () {
+      count--;
+      that.countDown(that, count);
+    }, 1000);
 
   }
 
   getAllImg() { //全部新的圖片
     var imgserver = new ImageServe();
     imgserver.getAllImageList().then(e => {
-      console.log(Array.from(e.res.rows));
+      console.log('全部新的圖片', Array.from(e.res.rows));
       this.allImgList = Array.from(e.res.rows);
     })
   }
@@ -183,6 +181,7 @@ export class HomePage extends AppBase {
     console.log(visiltList);
 
     this.SaveAll(visiltList, phoneList, activityList, medicAppointLogList);
+
     console.log(this.caselist)
     if (this.caselist.length == 0) {
       console.log('565')
@@ -205,43 +204,58 @@ export class HomePage extends AppBase {
           } else {
             AttchList = ret.AttachmentGroupLists.AttchList;
           }
-          
-          for (var i = 0; i < this.allImgList.length; i++) {
-            var AttachmentIdList = AttchList[i].AttachmentIDsStr.split(",");
+
+          for (let i = 0; i < this.allImgList.length; i++) {
+            var AttachmentIdList = AttchList[0].AttachmentIDsStr.split(",");
             this.saveImage_AttachmentId(parseInt(AttachmentIdList[i]), this.allImgList[i]);
           }
 
+          var w = 0;
           for (var j = 0; j < this.allImgList.length; j++) {
             console.log('上傳圖片、開始了');
+
             var Base64ImgString = this.allImgList[j].Base64ImgString.split(",");
             console.log(Base64ImgString)
-            this.api.UploadImgPart('HomeVisit', this.allImgList[j].VisitId, Base64ImgString[1], ret.WorkingSetID, AttachmentIdList[j], '201906211216').then(e => {
-              console.log('UploadImgPart', e)
+
+            this.api.UploadImgPart('HomeVisit', this.allImgList[j].VisitId, Base64ImgString[1], ret.WorkingSetID, AttachmentIdList[j], this.allImgList[j].ImgName).then(k => {
+              console.log('UploadImgPart', k)
+              if (k.Result == 'true') {
+                w++;
+                if (w == this.allImgList.length) {
+                  this.api.ExecuteWorkingSet(ret.WorkingSetID, 0, this.UserId).then(e => {
+                    console.log(e)
+                    if (e == undefined) {
+                      this.loading.dismiss();
+                      this.toast('資料同步失败');
+                    }
+                    if (e.Result == 'true') {
+                      var objWorkingSetAttachmentMap = []
+                      var listtype3 = typeof e.AttachmentsResult.objWorkingSetAttachmentMap;
+                      if (listtype3 == 'object' && e.AttachmentsResult.objWorkingSetAttachmentMap.length == undefined) {
+                        objWorkingSetAttachmentMap.push(e.AttachmentsResult.objWorkingSetAttachmentMap);
+                      } else {
+                        objWorkingSetAttachmentMap = e.AttachmentsResult.objWorkingSetAttachmentMap;
+                      }
+
+                      for (var i = 0; i < objWorkingSetAttachmentMap.length; i++) {
+                        this.saveImage_ImgId(objWorkingSetAttachmentMap[i].RecordID, objWorkingSetAttachmentMap[i].AttachmentId);
+                      }
+                      this.SysnAllWeb();
+                      this.toast('資料同步成功');
+                    }
+                  })
+                }
+              }
             })
           }
 
-          this.api.ExecuteWorkingSet(ret.WorkingSetID, 0, this.UserId).then(e => {
-            console.log(e)
-            if (e.Result == 'true') {
-
-              var objWorkingSetAttachmentMap = []
-              var listtype3 = typeof ret.AttachmentsResult.objWorkingSetAttachmentMap;
-              if (listtype3 == 'object' && ret.AttachmentsResult.objWorkingSetAttachmentMap.length == undefined) {
-                objWorkingSetAttachmentMap.push(ret.AttachmentsResult.objWorkingSetAttachmentMap);
-              } else {
-                objWorkingSetAttachmentMap = ret.AttachmentsResult.objWorkingSetAttachmentMap;
-              }
-
-              for (var i = 0; i < objWorkingSetAttachmentMap.length; i++) {
-                this.saveImage_ImgId(objWorkingSetAttachmentMap[i].RecordID, objWorkingSetAttachmentMap[i].AttachmentId);
-              }
-              this.SysnAllWeb();
-              this.toast('資料同步成功');
-            }
-          })
         } else {
           this.api.ExecuteWorkingSet(ret.WorkingSetID, 0, this.UserId).then(e => {
             console.log(e)
+            if (e == undefined) {
+              this.loading.dismiss();
+              this.toast('資料同步失败');
+            }
             if (e.Result == 'true') {
               this.SysnAllWeb();
               this.toast('資料同步成功');
@@ -371,10 +385,10 @@ export class HomePage extends AppBase {
 
           kv.visitList[i].hvvlList = hvvlList;
 
-    
-          
+          let visitListdd = kv.visitList[i]
+
           imgserver.getImageList_old(visitId).then(e => { //舊的圖片
-            console.log('圖片', Array.from(e.res.rows))
+            console.log('旧圖片', Array.from(e.res.rows))
             var oldList = [];
             oldList = Array.from(e.res.rows);
             var hvImgKeepListStr = '';
@@ -385,14 +399,14 @@ export class HomePage extends AppBase {
                 hvImgKeepListStr = hvImgKeepListStr + ',' + oldList[j].ImgId
               }
             }
-            kv.visitList[i].hvImgKeepListStr = hvImgKeepListStr;
+            visitListdd['hvImgKeepListStr'] = hvImgKeepListStr;
           })
 
           imgserver.getImageList_web(visitId).then(e => { //新的圖片
-            console.log(Array.from(e.res.rows))
+            console.log('有新的图片', Array.from(e.res.rows))
             var ImgList = [];
             ImgList = Array.from(e.res.rows);
-            kv.visitList[i].hvNewImgQty = ImgList.length;
+            visitListdd['hvNewImgQty'] = ImgList.length;
           })
         }
       }
@@ -481,9 +495,9 @@ export class HomePage extends AppBase {
 
         this.updateData(); //同步数据到本地数据库
 
-        this.loading.dismiss();;
+        // this.loading.dismiss();
       } else {
-        alert("失败:" + ret.strMsg);
+        // alert("失败:" + ret.strMsg);
         this.toast('未能連線，無法登入');
       }
     });
@@ -515,10 +529,14 @@ export class HomePage extends AppBase {
     whr.deleteWHR()
 
     var bloodPressureServe = new BloodPressureServe();
-    bloodPressureServe.deleteBloodPressure()
+    bloodPressureServe.deleteBloodPressure();
 
     var medicalRecordServe = new MedicalRecordServe();
-    medicalRecordServe.deleteMedicalRecord()
+    medicalRecordServe.deleteMedicalRecord();
+
+    // var imgserver = new ImageServe();
+    // imgserver.deleteImage2();
+
 
     for (var i = 0; i < this.Specialty.length; i++) {
       this.setSpecialty(this.Specialty[i]);
@@ -737,6 +755,7 @@ export class HomePage extends AppBase {
 
     this.getCase();
 
+    this.loading.dismiss();
   }
 
   setVolunteer_s(kv) {

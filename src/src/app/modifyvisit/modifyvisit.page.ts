@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { AppBase } from '../AppBase';
 import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
-import { NavController, ModalController, ToastController, AlertController, NavParams, IonSlides } from '@ionic/angular';
+import { NavController, ModalController, ToastController, AlertController, NavParams, IonSlides,LoadingController } from '@ionic/angular';
 import { AppUtil } from '../app.util';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CaseServe } from 'src/mgrServe/CaseServe';
@@ -27,6 +27,7 @@ export class ModifyvisitPage extends AppBase {
     public alertCtrl: AlertController,
     public api: ServiceApi,
     public activeRoute: ActivatedRoute,
+    public loadingController: LoadingController,
     public sanitizer: DomSanitizer) {
     super(router, navCtrl, modalCtrl, toastCtrl, alertCtrl, activeRoute);
     this.headerscroptshow = 480;
@@ -1041,12 +1042,28 @@ export class ModifyvisitPage extends AppBase {
     if (this.ScheduleDate != '') {
       ScheduleDate_Display = AppUtil.FormatDate2(new Date(this.ScheduleDate));
     }
-
+ 
     if (ret == 'web') {
-
-      if (!this.VisitStartTime || !this.VisitEndTime) {
-        this.toast('你沒有填寫實際探訪時間');
+      if (this.VisitStartTime == '') {
+        this.toast('你沒有輸入開始時間');
         return;
+      }
+      if (this.VisitEndTime == '') {
+        this.toast('你沒有輸入結束時間');
+        return;
+      }
+      
+      if (this.VisitStartTime != '' && this.VisitEndTime != '') {
+        // var oDate1 = new Date(this.VisitStartTime);
+        // var oDate2 = new Date(this.VisitEndTime);
+        if (this.VisitStartTime > this.VisitEndTime) {
+          this.toast('開始時間不能遲於結束時間');
+          return;
+        }
+        if (this.VisitStartTime == this.VisitEndTime) {
+          this.toast('開始和結束時間不能一樣');
+          return;
+        }
       }
       if (this.Location == 0) {
         this.toast('你沒有填寫面見地點');
@@ -1079,7 +1096,8 @@ export class ModifyvisitPage extends AppBase {
           this.toast('你沒有填寫室內活動的其他項目');
           return;
         }
-        if (this.VisitDetailOutdoor == '') {
+
+        if (this.VisitDetailIndoor == '' && this.VisitDetailOutdoor == '') {
           this.toast('你沒有填寫室外活動選項');
           return;
         }
@@ -1113,13 +1131,42 @@ export class ModifyvisitPage extends AppBase {
           return;
         }
         if (this.LifeStyleMeasureBloodSuger == 0) {
-          this.toast('在家/外出(醫院／診所除外)*量度血糖');
+          this.toast('你沒有填寫在家/外出(醫院／診所除外)*量度血糖');
           return;
         }
+
+        if (this.LifeStyleMeasureBloodSuger == 1 && this.LifeStyleMeasureBsLocation==0) {
+          this.toast('你沒有填寫在家/外出(醫院／診所除外)*量度血糖 地點');
+          return;
+        }
+
+        if (this.LifeStyleMeasureBloodSuger == 1 && this.LifeStyleMeasureBsPeriod==0) {
+          this.toast('你沒有填寫在家/外出(醫院／診所除外)*量度血糖 頻率');
+          return;
+        }
+
+        if (this.LifeStyleMeasureBloodSuger == 1 && this.LifeStyleMeasureBsNoOfTime==0) {
+          this.toast('你沒有填寫在家/外出(醫院／診所除外)*量度血糖 次數');
+          return;
+        }
+
         if (this.LifeStyleMeasureBloodPressure == 0) {
           this.toast('你沒有填寫在家/外出(醫院／診所除外)*量度血壓');
           return;
         }
+        if (this.LifeStyleMeasureBloodPressure == 1 && this.LifeStyleMeasureBpLocation==0) {
+          this.toast('你沒有填寫在家/外出(醫院／診所除外)*量度血壓 地點');
+          return;
+        }
+        if (this.LifeStyleMeasureBloodPressure == 1 && this.LifeStyleMeasureBpPeriod==0) {
+          this.toast('你沒有填寫在家/外出(醫院／診所除外)*量度血壓 頻率');
+          return;
+        }
+        if (this.LifeStyleMeasureBloodPressure == 1 && this.LifeStyleMeasureBpNoOfTime==0) {
+          this.toast('你沒有填寫在家/外出(醫院／診所除外)*量度血壓 次數');
+          return;
+        }
+        
 
         if (this.EmotionAssessment == '') {
           this.toast('你沒有填寫情緒評估');
@@ -1264,8 +1311,6 @@ export class ModifyvisitPage extends AppBase {
               })
               // this.uploadVisitListWeb('1')
 
-
-
             })
 
           }
@@ -1331,9 +1376,12 @@ export class ModifyvisitPage extends AppBase {
     }
   }
 
-
-  uploadVisitListWeb(e) {
-
+  loading = null;
+  async uploadVisitListWeb(e) {
+    this.loading = await this.loadingController.create({
+      message: '上傳中'
+    });
+    await this.loading.present();
     var hvLogList = [];
     hvLogList = this.visit_web;
     console.log(hvLogList);
@@ -1355,6 +1403,10 @@ export class ModifyvisitPage extends AppBase {
 
     this.api.SaveAll(hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList, this.params.UserId, 'one').then((ret) => {
       console.log(ret)
+      if (e == undefined) {
+        this.loading.dismiss();
+        this.toast('資料上傳失败');
+      }
       if (ret.Result == 'true') {
         var AttchList = [];
         if (ret.AttachmentGroupLists != '') {
@@ -1367,7 +1419,7 @@ export class ModifyvisitPage extends AppBase {
           }
 
           for (var i = 0; i < this.imgList_web.length; i++) {
-            var AttachmentIdList = AttchList[i].AttachmentIDsStr.split(",");
+            var AttachmentIdList = AttchList[0].AttachmentIDsStr.split(",");
             this.saveImage_AttachmentId(parseInt(AttachmentIdList[i]), this.imgList_web[i]);
           }
 
@@ -1377,13 +1429,14 @@ export class ModifyvisitPage extends AppBase {
             console.log('上傳圖片、開始了');
             var Base64ImgString = this.imgList_web[j].Base64ImgString.split(",");
             console.log(Base64ImgString)
-            this.api.UploadImgPart('HomeVisit', this.imgList_web[j].VisitId, Base64ImgString[1], ret.WorkingSetID, AttachmentIdList[j], '201906211216').then(k => {
+            this.api.UploadImgPart('HomeVisit', this.imgList_web[j].VisitId, Base64ImgString[1], ret.WorkingSetID, AttachmentIdList[j], this.imgList_web[j].ImgName).then(k => {
               console.log('UploadImgPart', k);
               if (k.Result == 'true') {
                 w ++;
                 if (w == this.imgList_web.length) {
                   this.api.ExecuteWorkingSet(ret.WorkingSetID, this.casedata.CaseId, this.params.UserId).then(e => {
                     console.log(e)
+                    this.loading.dismiss();
                     if (e.Result == 'true') {
                       var objWorkingSetAttachmentMap = []
                       var listtype3 = typeof e.AttachmentsResult.objWorkingSetAttachmentMap;
@@ -1404,7 +1457,7 @@ export class ModifyvisitPage extends AppBase {
                       for (var t = 0; t < this.medicAppointLogList.length; t++) {
                         this.saveMedicalRecord_SavedStatus(this.medicAppointLogList[t]);
                       }
-                      // this.back();
+                      this.back();
                       this.toast('資料同步成功');
                     }
                   })
@@ -1446,6 +1499,10 @@ export class ModifyvisitPage extends AppBase {
         }
         else {
           this.api.ExecuteWorkingSet(ret.WorkingSetID, this.params.caseID, this.params.UserId).then(e => {
+            if (e == undefined) {
+              this.loading.dismiss();
+              this.toast('資料上傳失败');
+            }
             if (e.Result == 'true') {
 
               var visit = new VisitServe();
@@ -1455,6 +1512,7 @@ export class ModifyvisitPage extends AppBase {
               for (var j = 0; j < this.medicAppointLogList.length; j++) {
                 this.saveMedicalRecord_SavedStatus(this.medicAppointLogList[j]);
               }
+              this.loading.dismiss();
               this.toast('資料提交成功');
               this.back();
             } else {

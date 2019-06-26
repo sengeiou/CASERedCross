@@ -743,7 +743,7 @@
           <div>是否因其他疾病曾經入院?</div>
           <div class=" margin-top-5 flex-row flex-center">
             <div class="flex-row flex-center">
-              <ion-radio type="radio" name="Other3" value="male" class="radio " checked="{{OtherHospOtherIllness==1?true:false}}"
+              <ion-radio type="radio" name="Other3" value="male" class="radio "  disabled='{{VisitStatus==2?disabled:false}}' checked="{{OtherHospOtherIllness==1?true:false}}"
                  (click)='getOtherHospOtherIllness(1)' ></ion-radio>是</div>
 
             <div class="flex-row h7-5 flex-1 margin-left-30 flex-center" *ngIf='OtherHospOtherIllness==1'>
