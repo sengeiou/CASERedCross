@@ -35,7 +35,7 @@ export class DBMgr {
         +"OtherSpecialNeed int,OtherAccidentNoOfDay int,OtherSpecialNeedService nvarchar(100),OtherRemarks nvarchar(500),DeletePicString nvarchar(100),Status int,"
         +"SavedStatus int DEFAULT '1',NeedsContent nvarchar(50),img1 BLOB,img2 BLOB,img3 BLOB,img4 BLOB,img5 BLOB,img6 BLOB,img7 BLOB, img8 BLOB,img9 BLOB,img10 BLOB);";
  
-        let CreateImgSQL = "CREATE TABLE IF NOT EXISTS tb_Image (LocalId integer primary key autoincrement not null, ImgId int DEFAULT '0', VisitId int, ImgName nvarchar(100), Base64ImgString BLOB,AttachmentId int)";
+        let CreateImgSQL = "CREATE TABLE IF NOT EXISTS tb_Image (LocalId integer primary key autoincrement not null, ImgId int DEFAULT '0', VisitId int, ImgName nvarchar(100), Base64ImgString BLOB,AttachmentId int,Status int DEFAULT '0')";
 
         let recordSQL = "CREATE TABLE IF NOT EXISTS tb_Record (appointmentId int, medId integer primary key autoincrement not null, caseId int, medicalLocation int, kinds int, medicalStatus int, content text,  medicalDate text, medicalStatusRemark text, save int, medicalTime text, canDelete int)";
 
@@ -65,7 +65,7 @@ export class DBMgr {
             //alert(1);
             this.type = 0;
             sqlite.create({
-                name: 'appdata40.db',
+                name: 'appdata43.db',
                 location: 'default'
             }).then((db) => {
                 this._db = db;
@@ -92,7 +92,7 @@ export class DBMgr {
         } else {
             this.type = 1;
             //alert(2);
-            this._db = this.win.openDatabase("appdata40.db", '1.0', 'database', 5 * 1024 * 1024);
+            this._db = this.win.openDatabase("appdata43.db", '1.0', 'database', 5 * 1024 * 1024);
             this.execSql(dbcreateUSERsql);
             this.execSql(createActivityTableSQL);
             this.execSql(createPhoneTableSQL);

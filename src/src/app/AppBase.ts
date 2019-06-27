@@ -13,10 +13,10 @@ import { OnInit } from '@angular/core';
 export class AppBase implements OnInit {
     public needlogin = false;
 
-    static LastQrcode="";
+    static LastQrcode = "";
 
     public static TABName = "";
-    public static LASTTAB=null;
+    public static LASTTAB = null;
     public static CurrentRoute: Router = null;
     public static CurrentNav: NavController = null;
 
@@ -34,17 +34,17 @@ export class AppBase implements OnInit {
     public static MYBABY = [];
     public mybaby = [];
     public options = null;
-    public params: Params=null;
+    public params: Params = null;
 
     public firseonshow = true;
     public scrolltop = 0;
     public headerscroptshow = 0;
 
-    public static operationTimg_start=0; //开始操作页面时间
-    public operationTimg_start=0; //开始操作页面时间
+    public static operationTimg_start = 0; //开始操作页面时间
+    public operationTimg_start = 0; //开始操作页面时间
 
-    public static operationTimg_end=0; //闲着后时间
-    public operationTimg_end=0; //闲着后时间
+    public static operationTimg_end = 0; //闲着后时间
+    public operationTimg_end = 0; //闲着后时间
 
     public constructor(
         public router: Router,
@@ -56,7 +56,7 @@ export class AppBase implements OnInit {
 
         this.activeRoute.queryParams.subscribe((params: Params) => {
             console.log(params);
-            this.params=params;
+            this.params = params;
         });
 
 
@@ -65,45 +65,45 @@ export class AppBase implements OnInit {
     setStatusBar() {
         //  this.statusBar.styleLightContent();
     }
-    needcheck=true;
-     timer=null;
-     opmin=0;
+    needcheck = true;
+    timer = null;
+    opmin = 0;
     ngOnInit() {
 
-        
+
 
         ApiConfig.SetUnicode(AppBase.UNICODE);
         this.onMyLoad();
         this.setStatusBar();
 
-        if(this.needcheck){
-            this.timer=setInterval(()=>{
+        if (this.needcheck) {
+            this.timer = setInterval(() => {
                 this.opmin++;
-                if(this.opmin>30){
+                if (this.opmin > 30) {
                     this.router.navigateByUrl("/test");
                     clearInterval(this.timer);
                 }
-            },60*1000);
+            }, 60 * 1000);
         }
     }
 
-    ionViewDidLeave(){
-        if(this.timer!=null){
+    ionViewDidLeave() {
+        if (this.timer != null) {
             clearInterval(this.timer);
         }
     }
     onMyLoad() {
     }
-    
+
     ionViewDidEnter() {
 
         AppBase.CurrentRoute = this.router;
         AppBase.CurrentNav = this.navCtrl;
 
-        document.addEventListener("backbutton",function(e) {
+        document.addEventListener("backbutton", function (e) {
             //alert(1);
             console.log("disable back button")
-          }, false);
+        }, false);
 
         this.onMyShow();
 
@@ -134,20 +134,20 @@ export class AppBase implements OnInit {
         //   infiniteScroll.complete();
         // }, 1000);
     }
-    isbacking=false;
+    isbacking = false;
     back() {
-        if(this.isbacking==true){
+        if (this.isbacking == true) {
             return;
         }
-        this.isbacking=false;
+        this.isbacking = true;
         //alert(this.Params.fromtab);
-        if(this.params.fromtab!=undefined){
-            this.navCtrl.navigateBack('tabs/'+this.params.fromtab);
-        }else{
+        if (this.params.fromtab != undefined) {
+            this.navCtrl.navigateBack('tabs/' + this.params.fromtab);
+        } else {
             this.navCtrl.back();
         }
     }
-    backToUrl(url){
+    backToUrl(url) {
         this.navCtrl.navigateBack(url);
     }
     close(data) {
@@ -182,7 +182,7 @@ export class AppBase implements OnInit {
     }
 
     showContent(title, key) {
-        this.navigate("content",{ title, key });
+        this.navigate("content", { title, key });
         //this.showModal("ContentPage", { title, key });
     }
 
@@ -210,12 +210,19 @@ export class AppBase implements OnInit {
         });
         toast.present();
     }
-    async showAlert(msg) {
+    async showAlert(msg, confirmcallback = undefined) {
 
         const alert = await this.alertCtrl.create({
             header: "提示",
             subHeader: msg,
-            buttons: ["知道了"]
+            buttons: [{
+                text: "确定",
+                handler: () => {
+                    if(confirmcallback != undefined){
+                        confirmcallback();
+                    }
+                }
+            }]
         });
         alert.present();
     }
@@ -232,7 +239,7 @@ export class AppBase implements OnInit {
                     confirmcallback(false);
                 }
             }, {
-                text: "好的",
+                text: "确定",
                 handler: () => {
                     confirmcallback(true);
                 }
@@ -244,19 +251,19 @@ export class AppBase implements OnInit {
 
     }
 
-  async showActionSheet(actionSheetController,header,buttons) {
-    const actionSheet = await actionSheetController.create({
-      header: header,
-      buttons: buttons
-    });
-    await actionSheet.present();
-  }
+    async showActionSheet(actionSheetController, header, buttons) {
+        const actionSheet = await actionSheetController.create({
+            header: header,
+            buttons: buttons
+        });
+        await actionSheet.present();
+    }
     hasLogin() {
         return this.MemberInfo != null;
     }
-    logout(){
+    logout() {
         window.localStorage.removeItem("UserToken");
-        this.MemberInfo=null;
+        this.MemberInfo = null;
     }
     store(name, value = null) {
         if (value == null) {
@@ -284,7 +291,7 @@ export class AppBase implements OnInit {
                 // error
             })
     }
-    splitRow(content){
+    splitRow(content) {
         return content.split("\n");
     }
 
@@ -311,28 +318,31 @@ export class AppBase implements OnInit {
         target.scrollIntoView();
     }
 
-    tryLogin(){
+    tryLogin() {
         this.showModal("MobileloginPage", {});
     }
 
 
 
 
-    getHeader(url,data){
+    getHeader(url, data) {
         var headers = new Headers({
             type: "POST",
             'Content-Type': 'application/json',
-            url:url,
-            data:data,
+            url: url,
+            data: data,
             dataType: 'json',
         });
         return headers;
     }
 
-    idle(){
-        var time=this.operationTimg_end-this.operationTimg_start;
-        if(time>30*60*1000){
-            this.navigate('test')
+    idle() {
+        var time = this.operationTimg_end - this.operationTimg_start;
+        if (time > 30 * 60 * 1000) {
+            this.showAlert('將會進入登入頁面',true).then(e=>{
+                this.navigate('test')
+            })
+            
         }
     }
 

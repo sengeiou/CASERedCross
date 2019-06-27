@@ -155,7 +155,17 @@ export class HomePage extends AppBase {
     imgserver.getAllImageList().then(e => {
       console.log('全部新的圖片', Array.from(e.res.rows));
       this.allImgList = Array.from(e.res.rows);
+
+      imgserver.getAllImageList2().then(k => {
+        console.log('全部新的圖片2', Array.from(k.res.rows));
+        var img=[];
+        img=Array.from(k.res.rows)
+        this.allImgList=this.allImgList.concat(img) ;
+        console.log('全部新的圖片3', this.allImgList);
+      })
     })
+
+    
   }
 
   loading = null;
@@ -204,9 +214,9 @@ export class HomePage extends AppBase {
           } else {
             AttchList = ret.AttachmentGroupLists.AttchList;
           }
-
+          var AttachmentIdList = AttchList[0].AttachmentIDsStr.split(",");
           for (let i = 0; i < this.allImgList.length; i++) {
-            var AttachmentIdList = AttchList[0].AttachmentIDsStr.split(",");
+            
             this.saveImage_AttachmentId(parseInt(AttachmentIdList[i]), this.allImgList[i]);
           }
 
@@ -242,7 +252,11 @@ export class HomePage extends AppBase {
                       }
                       this.SysnAllWeb();
                       this.toast('資料同步成功');
+                    }else{
+                      this.loading.dismiss();
+                      this.toast('資料同步失败');
                     }
+
                   })
                 }
               }
@@ -259,6 +273,9 @@ export class HomePage extends AppBase {
             if (e.Result == 'true') {
               this.SysnAllWeb();
               this.toast('資料同步成功');
+            }else{
+              this.loading.dismiss();
+              this.toast('資料同步失败');
             }
           })
         }
@@ -337,6 +354,8 @@ export class HomePage extends AppBase {
         this.getAllMedicalRecordList(this.caselist[i]);
       }
       console.log(this.caselist)
+
+      this.loading.dismiss();
     })
   }
 
@@ -407,11 +426,24 @@ export class HomePage extends AppBase {
             var ImgList = [];
             ImgList = Array.from(e.res.rows);
             visitListdd['hvNewImgQty'] = ImgList.length;
+            
+            
           })
+
+          if(visitListdd.VisitId==0){
+            imgserver.getImageList_web2(visitId).then(k => { //新的圖片
+              console.log('有新的图片2', Array.from(k.res.rows))
+              var ImgList2 = [];
+              ImgList2 = Array.from(k.res.rows);
+              visitListdd['hvNewImgQty'] = ImgList2.length;
+            })
+          }
         }
       }
     });
   }
+
+
 
   setPhnoe(kv) {
     var phone = new PhoneServe();
@@ -534,8 +566,8 @@ export class HomePage extends AppBase {
     var medicalRecordServe = new MedicalRecordServe();
     medicalRecordServe.deleteMedicalRecord();
 
-    // var imgserver = new ImageServe();
-    // imgserver.deleteImage2();
+    var imgserver = new ImageServe();
+    imgserver.deleteImage2();
 
 
     for (var i = 0; i < this.Specialty.length; i++) {
@@ -755,7 +787,7 @@ export class HomePage extends AppBase {
 
     this.getCase();
 
-    this.loading.dismiss();
+    // this.loading.dismiss();
   }
 
   setVolunteer_s(kv) {

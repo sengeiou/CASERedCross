@@ -31,6 +31,12 @@ export class ImageServe {
         return mgr.execSql(sql);
     }
 
+    getAllImageList2() {
+        var mgr = DBMgr.GetInstance();
+        var sql = "select i.* from tb_Image as i left outer join tb_home_visit as h where i.ImgId=0 and i.VisitId=h.LocalId and h.SavedStatus=1 ";
+        return mgr.execSql(sql);
+    }
+
     getImageList(VisitId) {
         var mgr = DBMgr.GetInstance();
         var sql = "select * from tb_Image where VisitId = ? ";
@@ -40,6 +46,12 @@ export class ImageServe {
     getImageList_web(VisitId) {
         var mgr = DBMgr.GetInstance();
         var sql = "select * from tb_Image as i left outer join tb_home_visit as h  where i.ImgId=0 and h.SavedStatus=1 and i.VisitId=h.VisitId  and i.VisitId = ? ";
+        return mgr.execSql(sql, [VisitId]);
+    }
+
+    getImageList_web2(VisitId) {
+        var mgr = DBMgr.GetInstance();
+        var sql = "select * from tb_Image as i left outer join tb_home_visit as h  where i.ImgId=0 and h.SavedStatus=1 and i.VisitId=h.LocalId  and i.VisitId = ? ";
         return mgr.execSql(sql, [VisitId]);
     }
 
@@ -81,7 +93,7 @@ export class ImageServe {
             fileTransfer.download(fileurl, file.dataDirectory + 'f' + ImgId + ".jpg").then((entry) => {
                 base64Mgr.encodeFile(file.dataDirectory + 'f' + ImgId + ".jpg").then((base64File: string) => {
                     //alert(base64File);
-                    var sql = "insert into tb_Image(ImgId,VisitId,ImgName,Base64ImgString) values (?,?,?,?)";
+                    var sql = "insert into tb_Image(ImgId,VisitId,ImgName,Base64ImgString,Status) values (?,?,?,?,1)";
                     return mgr.execSql(sql, [ImgId, VisitId, ImgName, base64File]);
                 });
 
@@ -94,7 +106,7 @@ export class ImageServe {
 
     addImage2(ImgId, VisitId, base64File) {
         var mgr = DBMgr.GetInstance();
- 
+
         var myDate = new Date();
         if (myDate.getMonth() + 1 < 10) {
             var Month = "0" + (myDate.getMonth() + 1)
@@ -116,7 +128,7 @@ export class ImageServe {
 
     deleteImage2() {
         var mgr = DBMgr.GetInstance();
-        var sql = "DELETE FROM tb_Image ";
+        var sql = "DELETE FROM tb_Image where Status=0";
         return mgr.execSql(sql);
     }
 }

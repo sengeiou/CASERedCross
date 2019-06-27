@@ -97,9 +97,9 @@
         <div class="title2">出席義工:</div>
         <div><img src="../assets/icon/plus_icon.png" class="icon-15 margin-left-30" /></div>
         <div style="position:absolute;margin-left:76px;background:transparent" class="aaa">
-          <ion-select multiple="true"  (ionChange)="aas()"
+          <ion-select multiple="true"  (ionChange)="aas()" 
             style="position:absolute;background:transparent;opacity: 0;" [(ngModel)]="presentVolunteer">
-            <ion-select-option *ngFor="let item of Volunteer;let idx=index;" value="{{item.VolId}}">
+            <ion-select-option *ngFor="let item of Volunteer;let idx=index;" value="{{item.VolId}}" checked='{{true}}'>
               {{item.VolunteerName}}</ion-select-option>
           </ion-select>
         </div>
@@ -236,11 +236,7 @@
         <div class="title2">活動日期:</div>
         <div class="flex-1">
           <div class="radius-2" style="width:100%; ">
-            <!-- <div class="bg-white" *ngIf="activity.SavedStatus!=0">
-              <ion-datetime placeholder="{{activity.ActDate}}" displayFormat="YYYY/MM/DD " picker-format="YYYY MM DD "
-                style="height:25px;padding:2px;" max="2050-12-09" done-text='确定' cancel-text='取消'
-                [(ngModel)]="activityDate"></ion-datetime>
-            </div> -->
+        
             <div class="input_s radius-2 bg-white padding-left-5" *ngIf="activity.SavedStatus==0" style="width:100%;">
               {{activity.ActDate_Display}}
             </div>
@@ -252,35 +248,20 @@
       <div class="flex-row margin-top-10  flex-center">
         <div class="title2">活動時間:</div>
         <div class="flex-1">
-          <!-- <div class="bg-white" *ngIf="activity.SavedStatus!=0">
-            <ion-datetime placeholder="{{activity.ActStartTime}}" displayFormat="hh：mm" picker-format="hh：mm"
-              style="height:25px;padding:2px;" max="2050-12-09" done-text='确定' cancel-text='取消'
-              [(ngModel)]="activityStartTime"></ion-datetime>
-          </div> -->
+   
           <div class="input_s radius-2 bg-white padding-left-5" *ngIf="activity.SavedStatus==0" style="width:100%;">
             {{activity.ActStartTime}}</div>
         </div>
         <div class="margin-5">至</div>
         <div class="flex-1">
-          <!-- <div class="bg-white" *ngIf="activity.SavedStatus!=0">
-            <ion-datetime placeholder="{{activity.ActEndTime}}" displayFormat="hh：mm" picker-format="hh：mm"
-              style="height:25px;padding:2px;" max="2050-12-09" done-text='确定' cancel-text='取消'
-              [(ngModel)]="activityEndTime"></ion-datetime>
-          </div> -->
+        
           <div class="input_s radius-2 bg-white padding-left-5" *ngIf="activity.SavedStatus==0" style="width:100%;">
             {{activity.ActEndTime}}</div>
         </div>
       </div>
       <div class="flex-row margin-top-10">
         <div class="title2">出席義工:</div>
-        <!-- <div><img src="../assets/icon/plus_icon.png" class="icon-15 margin-left-30" /></div> -->
-        <!-- <div style="position:absolute;margin-left:76px;background:transparent" class="aaa">
-          <ion-select multiple="true" *ngIf="activity.SavedStatus!=0 "
-            style="position:absolute;background:transparent;opacity: 0;" [(ngModel)]="presentVolunteer">
-            <ion-select-option *ngFor="let item of Volunteer;let idx=index;" value="{{item.VolunteerName}}">
-              {{item.VolunteerName}}</ion-select-option>
-          </ion-select>
-        </div> -->
+   
       </div>
 
       <div class=" margin-top-10">
@@ -289,9 +270,6 @@
             {{Volunteerlist_show}}
           </div>
 
-          <!-- <div class="textarea2 radius-2 bg-white h7-5 padding-5" style="width:100%;" *ngIf="activity.SavedStatus!=0 ">
-            {{presentVolunteer}}
-          </div> -->
 
         </div>
 
@@ -308,8 +286,6 @@
               checked="{{activity.ActType==1?'true':'false'}}" disabled="{{activity.ActType==1?'false':'true'}}">
             </ion-radio>
 
-            <!-- <ion-radio *ngIf="activity.SavedStatus!=0 " name="activity" value="male" class="radio "
-              (click)="getActtype('1')" checked="{{actType=='1'?'true':'false'}}"></ion-radio> -->
             活動
 
           </div>
@@ -324,9 +300,7 @@
               </div>
               <div class=" margin-top-10 flex-row flex-center" *ngIf="actDetailTypelist[0].actDetailType==true">活動地點:
                 <div class="flex-1">
-                  <!-- <input *ngIf="activity.SavedStatus!=0 " class="radius-2 other-input"
-                    placeholder="{{activity.Remarks1?activity.Remarks1:'輸入最多50字'}}" style=" width: 100%;" maxlength="50"
-                    [(ngModel)]="remarks1" /> -->
+           
                     <div class="radius-2 other-input bg-white" style=" width: 100%;">{{activity.Remarks1}}</div>
                 </div>
               </div>
@@ -341,9 +315,7 @@
               </div>
               <div class=" margin-top-10 flex-row flex-center" *ngIf="actDetailTypelist[1].actDetailType==true">講座主題:
                 <div class="flex-1">
-                  <!-- <input *ngIf="activity.SavedStatus!=0 " class="radius-2 other-input"
-                    placeholder="{{activity.Remarks2?activity.Remarks2:'輸入最多50字'}}" style=" width: 100%;" maxlength="50"
-                    [(ngModel)]="remarks2" /> -->
+         
                     <div class="radius-2 other-input bg-white" style=" width: 100%;">{{activity.Remarks2}}</div>
                 </div>
               </div>
@@ -360,9 +332,7 @@
               </div>
               <div class=" margin-top-10 flex-row flex-center" *ngIf="actDetailTypelist[2].actDetailType==true">活動主題:
                 <div class="flex-1">
-                  <!-- <input *ngIf="activity.SavedStatus!=0 " class="radius-2 other-input"
-                    placeholder="{{activity.Remarks3?activity.Remarks3:'輸入最多50字'}}" style=" width: 100%;" maxlength="50"
-                    [(ngModel)]="remarks3" /> -->
+        
                     <div class="radius-2 other-input bg-white" style=" width: 100%;">{{activity.Remarks3}}</div>
                 </div>
               </div>
@@ -387,9 +357,7 @@
                 *ngIf="actDetailTypelist[4].actDetailType==true">
                 <div class="flex-1">
                   <div class="bg-white h7-5 radius-2 padding-5" style=" width: 100%;">{{activity.Remarks4}}</div>
-                  <!-- <input *ngIf="activity.SavedStatus!=0 " class="radius-2 other-input"
-                    placeholder="{{activity.Remarks4?activity.Remarks4:'輸入最多50字'}}" maxlength="50" style=" width: 100%;"
-                    [(ngModel)]="remarks4" /> -->
+            
                 </div>
               </div>
             </div>
@@ -405,9 +373,7 @@
           <div class=" margin-top-10 flex-row flex-center  margin-right-20" *ngIf='activity.ActType==2'>
             <div class="flex-1">
                 <div class="bg-white h7-5 radius-2 padding-5" style=" width: 100%;height: 1.5rem;">{{activity.OtherActRemarks}}</div>
-              <!-- <input *ngIf="activity.SavedStatus!=0 " class="radius-2 other-input"
-                placeholder="{{activity.OtherActRemarks?activity.OtherActRemarks:'輸入最多250字'}}" maxlength="250"
-                style=" width: 100%;" [(ngModel)]="otherContent" /> -->
+          
             </div>
           </div>
         </ion-radio-group>
@@ -436,13 +402,6 @@
     <div class="flex-1"></div>
   </div>
 
-  <!-- <div class="flex-row padding-15 flex-center" *ngIf="activity.SavedStatus==0">
-    <div class="flex-1"></div>
-    <div class="flex-row">
-      <div class="txt-blue margin-right-40">保存</div>
-      <div class="txt-blue">上傳</div>
-    </div>
-    <div class="flex-1"></div>
-  </div> -->
+
 
 </ion-content>

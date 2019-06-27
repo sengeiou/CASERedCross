@@ -139,6 +139,17 @@ export class ModifyvisitPage extends AppBase {
       return;
     }
   }
+  signOut(){
+    if(this.visit.Status==1){
+      this.showConfirm('资料还没有保存，你確定要退出吗？', (e) => {
+        if (e == true) {
+          this.back();
+        }
+      })
+    }else{
+      this.back();
+    }
+  }
 
   saomiao() {
     if (this.visit.Status == 1) {
@@ -901,7 +912,7 @@ export class ModifyvisitPage extends AppBase {
       }
     }
 
-
+    this.NeedsContent = '';
     for (var i = 0; i < this.NeedsContenttlist.length; i++) {
       if (this.NeedsContenttlist[i].type == true) {
         if (this.NeedsContent == '') {
@@ -939,20 +950,6 @@ export class ModifyvisitPage extends AppBase {
     console.log(this.VisitStartTime)
     console.log(this.VisitEndTime)
 
-    // this.Weight = null;
-
-    // this.Waist = null;
-    // this.Hip = null;
-    // this.WHRatio =null;
-    // this.SYS1 = null;
-    // this.DlA1 = null;
-    // this.SYS2 = null;
-    // this.DlA2 = null;
-    // this.heartBeats1 = null;
-    // this.heartBeats2 = null;
-
-    // return
-
     var VisitId = 0;
     var Status = 1;
 
@@ -965,66 +962,58 @@ export class ModifyvisitPage extends AppBase {
       this.WHRatio = Math.floor(this.WHRatio * 100) / 100;
     }
 
+    if (this.Bmi == null) {
+      this.Bmi = 0;
+    }
+    if (this.Weight == null) {
+      this.Weight = 0;
+    }
+    if (this.Waist == null) {
+      this.Waist = 0;
+    }
+    if (this.Hip == null) {
+      this.Hip = 0;
+    }
+    if (this.WHRatio == null) {
+      this.WHRatio = 0;
+    }
+    if (this.SYS1 == null || this.SYS1 =='') {
+      this.SYS1 = 0;
+    }
+    if (this.DlA1 == null || this.DlA1 =='') {
+      this.DlA1 = 0;
+    }
+    if (this.SYS2 == null || this.SYS2 =='') {
+      this.SYS2 = 0
+    }
+    if (this.DlA2 == null || this.DlA2 =='') {
+      this.DlA2 = 0;
+    }
+    if (this.heartBeats1 == null || this.heartBeats1 =='') {
+      this.heartBeats1 = 0;
+    }
+    if (this.heartBeats2 == null || this.heartBeats2 =='') {
+      this.heartBeats2 = 0;
+    }
 
-    // this.Bmi = this.Bmi > 0 ? this.Bmi : this.visit.Bmi
-    // this.CategoryTopic1 = this.CategoryTopic1 != '' ? this.CategoryTopic1 : this.visit.CategoryTopic1
-    // this.CategoryTopic2 = this.CategoryTopic2 != '' ? this.CategoryTopic2 : this.visit.CategoryTopic2
-    // this.CategoryTopic3 = this.CategoryTopic3 != '' ? this.CategoryTopic3 : this.visit.CategoryTopic3
-    // this.EmotionAssessment = this.EmotionAssessment != '' ? this.EmotionAssessment : this.visit.EmotionAssessment
-    // this.EmotionAssessmentRemarks = this.EmotionAssessmentRemarks != '' ? this.EmotionAssessmentRemarks : this.visit.EmotionAssessmentRemarks
-    // this.Hip = this.Hip != null ? this.Hip : this.visit.Hip
-    // this.LifeStyleMeasureBpPeriod = this.LifeStyleMeasureBpPeriod != 0 ? this.LifeStyleMeasureBpPeriod : this.visit.LifeStyleMeasureBpPeriod
-    // this.LifeStyleMeasureBloodSuger = this.LifeStyleMeasureBloodSuger != 0 ? this.LifeStyleMeasureBloodSuger : this.visit.LifeStyleMeasureBloodSuger
-    // this.LifeStyleMeasureBpLocation = this.LifeStyleMeasureBpLocation != 0 ? this.LifeStyleMeasureBpLocation : this.visit.LifeStyleMeasureBpLocation
-    // this.LifeStyleMeasureBpNoOfTime = this.LifeStyleMeasureBpNoOfTime != null ? this.LifeStyleMeasureBpNoOfTime : this.visit.LifeStyleMeasureBpNoOfTime
-    // this.LifeStyleMeasureBloodPressure = this.LifeStyleMeasureBloodPressure != 0 ? this.LifeStyleMeasureBloodPressure : this.visit.LifeStyleMeasureBloodPressure
-    // this.LifeStyleMeasureBsLocation = this.LifeStyleMeasureBsLocation != 0 ? this.LifeStyleMeasureBsLocation : this.visit.LifeStyleMeasureBsLocation
-    // this.LifeStyleMeasureBsNoOfTime = this.LifeStyleMeasureBsNoOfTime != null ? this.LifeStyleMeasureBsNoOfTime : this.visit.LifeStyleMeasureBsNoOfTime
-    // this.LifeStyleMeasureBsPeriod = this.LifeStyleMeasureBsPeriod != 0 ? this.LifeStyleMeasureBsPeriod : this.visit.LifeStyleMeasureBsPeriod
-    // this.LifeStyleQuestion1 = this.LifeStyleQuestion1 != 0 ? this.LifeStyleQuestion1 : this.visit.LifeStyleQuestion1
-    // this.LifeStyleQuestion2 = this.LifeStyleQuestion2 != 0 ? this.LifeStyleQuestion2 : this.visit.LifeStyleQuestion2
-    // this.LifeStyleQuestion3 = this.LifeStyleQuestion3 != 0 ? this.LifeStyleQuestion3 : this.visit.LifeStyleQuestion3
-    // this.LifeStyleQuestion4 = this.LifeStyleQuestion4 != 0 ? this.LifeStyleQuestion4 : this.visit.LifeStyleQuestion4
-    // this.LifeStyleQuestion5 = this.LifeStyleQuestion5 != 0 ? this.LifeStyleQuestion5 : this.visit.LifeStyleQuestion5
-    // this.LifeStyleQuestion6 = this.LifeStyleQuestion6 != 0 ? this.LifeStyleQuestion6 : this.visit.LifeStyleQuestion6
-    // this.Location = this.Location != 0 ? this.Location : this.visit.Location
-    // this.LocationRemarks = this.LocationRemarks != '' ? this.LocationRemarks : this.visit.LocationRemarks
-    // this.OtherAccident = this.OtherAccident != 0 ? this.OtherAccident : this.visit.OtherAccident
-    // this.OtherAccidentNoOfDay = this.OtherAccidentNoOfDay != null ? this.OtherAccidentNoOfDay : this.visit.OtherAccidentNoOfDay
-    // this.OtherHospDisbete = this.OtherHospDisbete != 0 ? this.OtherHospDisbete : this.visit.OtherHospDisbete
-    // this.OtherHospDisbeteNoOfDay = this.OtherHospDisbeteNoOfDay != null ? this.OtherHospDisbeteNoOfDay : this.visit.OtherHospDisbeteNoOfDay
-    // this.OtherHospHighBp = this.OtherHospHighBp != 0 ? this.OtherHospHighBp : this.visit.OtherHospHighBp
-    // this.OtherHospHighBpNoOfDay = this.OtherHospHighBpNoOfDay != null ? this.OtherHospHighBpNoOfDay : this.visit.OtherHospHighBpNoOfDay
-    // this.OtherHospOtherIllness = this.OtherHospOtherIllness != 0 ? this.OtherHospOtherIllness : this.visit.OtherHospOtherIllness
-    // this.OtherRemarks = this.OtherRemarks != '' ? this.OtherRemarks : this.visit.OtherRemarks
-    // this.OtherSpecialNeed = this.OtherSpecialNeed != 0 ? this.OtherSpecialNeed : this.visit.OtherSpecialNeed
-    // this.OtherSpecialNeedService = this.OtherSpecialNeedService != '' ? this.OtherSpecialNeedService : this.visit.OtherSpecialNeedService
-    // this.ScheduleDate = this.ScheduleDate != '' ? this.ScheduleDate : this.visit.ScheduleDate
-    // this.ScheduleTime = this.ScheduleTime != '' ? this.ScheduleTime : this.visit.ScheduleTime
-    // this.VisitDate = this.VisitDate != '' ? this.VisitDate : this.visit.VisitDate
-    // this.VisitDetailIndoor = this.VisitDetailIndoor != '' ? this.VisitDetailIndoor : this.visit.VisitDetailIndoor
-    // this.VisitDetailIndoorRemarks = this.VisitDetailIndoorRemarks != '' ? this.VisitDetailIndoorRemarks : this.visit.VisitDetailIndoorRemarks
-    // this.VisitDetailOther = this.VisitDetailOther != '' ? this.VisitDetailOther : this.visit.VisitDetailOther
-    // this.VisitDetailOutdoor = this.VisitDetailOutdoor != '' ? this.VisitDetailOutdoor : this.visit.VisitDetailOutdoor
-    // this.VisitDetailOutdoorRemarks = this.VisitDetailOutdoorRemarks != '' ? this.VisitDetailOutdoorRemarks : this.visit.VisitDetailOutdoorRemarks
-    // this.VisitEndTime = this.VisitEndTime != '' ? this.VisitEndTime : this.visit.VisitEndTime
-    // this.VisitStartTime = this.VisitStartTime != '' ? this.VisitStartTime : this.visit.VisitStartTime
-    // this.VisitStatus = this.VisitStatus != 0 ? this.VisitStatus : this.visit.VisitStatus
-    // this.VisitStatusRemarks = this.VisitStatusRemarks != '' ? this.VisitStatusRemarks : this.visit.VisitStatusRemarks
-    // this.WHRatio = this.WHRatio > 0 ? this.WHRatio : this.visit.WHRatio
-    // this.Waist = this.Waist != null ? this.Waist : this.visit.Waist
-    // this.Weight = this.Weight != null ? this.Weight : this.visit.Weight
-    // this.NeedsContent = this.NeedsContent != '' ? this.NeedsContent : this.visit.NeedsContent
-    // this.SYS1 = this.SYS1 != null ? this.SYS1 : this.visit.SYS1
-    // this.DlA1 = this.DlA1 != null ? this.DlA1 : this.visit.DlA1
-    // this.SYS2 = this.SYS2 != null ? this.SYS2 : this.visit.SYS2
-    // this.DlA2 = this.DlA2 != null ? this.DlA2 : this.visit.DlA2
-    // this.heartBeats1 = this.heartBeats1 != null ? this.heartBeats1 : this.visit.heartBeats1
-    // this.heartBeats2 = this.heartBeats2 != null ? this.heartBeats2 : this.visit.heartBeats2
-    // this.presentVolunteer = this.presentVolunteer != '' ? this.presentVolunteer : this.visit.presentVolunteer
-    // this.supportVolunteer = this.supportVolunteer != '' ? this.supportVolunteer : this.visit.supportVolunteer
-
-    // this.OtherHospOtherIllnessNoOfDay = this.OtherHospOtherIllnessNoOfDay != null ? this.OtherHospOtherIllnessNoOfDay : this.visit.OtherHospOtherIllnessNoOfDay
+    if (this.LifeStyleMeasureBsNoOfTime == null || this.LifeStyleMeasureBsNoOfTime =='') {
+      this.LifeStyleMeasureBsNoOfTime = 0;
+    }
+    if (this.LifeStyleMeasureBpNoOfTime == null || this.LifeStyleMeasureBpNoOfTime =='') {
+      this.LifeStyleMeasureBpNoOfTime = 0;
+    }
+    if (this.OtherHospDisbeteNoOfDay == null || this.OtherHospDisbeteNoOfDay =='') {
+      this.OtherHospDisbeteNoOfDay = 0;
+    }
+    if (this.OtherHospHighBpNoOfDay == null || this.OtherHospHighBpNoOfDay =='') {
+      this.OtherHospHighBpNoOfDay = 0;
+    }
+    if (this.OtherHospOtherIllnessNoOfDay == null || this.OtherHospOtherIllnessNoOfDay =='') {
+      this.OtherHospOtherIllnessNoOfDay = 0;
+    }
+    if (this.OtherAccidentNoOfDay == null || this.OtherAccidentNoOfDay == '') {
+      this.OtherAccidentNoOfDay = 0;
+    }
 
     console.log(this.VisitDetailOutdoor)
 
@@ -1054,8 +1043,7 @@ export class ModifyvisitPage extends AppBase {
       }
       
       if (this.VisitStartTime != '' && this.VisitEndTime != '') {
-        // var oDate1 = new Date(this.VisitStartTime);
-        // var oDate2 = new Date(this.VisitEndTime);
+
         if (this.VisitStartTime > this.VisitEndTime) {
           this.toast('開始時間不能遲於結束時間');
           return;
@@ -1332,16 +1320,26 @@ export class ModifyvisitPage extends AppBase {
 
   uploadimg(visitid) {
     console.log(visitid)
-    // return
-    if (visitid <= 0) {
-      this.toast('資料没有保存，请先保存!');
-      return;
+    if(this.visit.Status==1){
+      this.showConfirm('请先保存资料，在上传图片', (e) => {
+        if (e == true) {
+          this.addVisit('no');
+          if (this.visit.VisitId != 0) {
+            this.navigate('uploadimg', { visitid: this.visit.VisitId });
+          } else {
+            this.navigate('uploadimg', { visitid: visitid });
+          }
+        }
+      })
+    }else{
+      if (this.visit.VisitId != 0) {
+        this.navigate('uploadimg', { visitid: this.visit.VisitId });
+      } else {
+        this.navigate('uploadimg', { visitid: visitid });
+      }
     }
-    if (this.visit.VisitId != 0) {
-      this.navigate('uploadimg', { visitid: this.visit.VisitId });
-    } else {
-      this.navigate('uploadimg', { visitid: visitid });
-    }
+    
+    
   }
 
   aa() {

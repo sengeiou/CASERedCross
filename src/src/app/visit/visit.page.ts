@@ -802,7 +802,9 @@ export class VisitPage extends AppBase {
     var Status = 1;
     var TaskId = 0;
 
-
+    if (this.Bmi == null) {
+      this.Bmi = 0;
+    }
     if (this.Weight == null) {
       this.Weight = 0;
     }
@@ -815,24 +817,26 @@ export class VisitPage extends AppBase {
     if (this.WHRatio == null) {
       this.WHRatio = 0;
     }
-    if (this.SYS1 == null) {
+    
+    if (this.SYS1 == null || this.SYS1 =='') {
       this.SYS1 = 0;
     }
-    if (this.DlA1 == null) {
+    if (this.DlA1 == null || this.DlA1 =='') {
       this.DlA1 = 0;
     }
-    if (this.SYS2 == null) {
+    if (this.SYS2 == null || this.SYS2 =='') {
       this.SYS2 = 0
     }
-    if (this.DlA2 == null) {
+    if (this.DlA2 == null || this.DlA2 =='') {
       this.DlA2 = 0;
     }
-    if (this.heartBeats1 == null) {
+    if (this.heartBeats1 == null || this.heartBeats1 =='') {
       this.heartBeats1 = 0;
     }
-    if (this.heartBeats2 == null) {
+    if (this.heartBeats2 == null || this.heartBeats2 =='') {
       this.heartBeats2 = 0;
     }
+
 
     if (this.LifeStyleMeasureBsNoOfTime == null || this.LifeStyleMeasureBsNoOfTime == '') {
       this.LifeStyleMeasureBsNoOfTime = 0;
