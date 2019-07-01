@@ -866,6 +866,7 @@ export class VisitPage extends AppBase {
       this.toast('你沒有填寫實際探訪日期');
       return;
     }
+    
     if (ret == 'web') {
       if (this.VisitStartTime == '') {
         this.toast('你沒有輸入開始時間');
@@ -966,7 +967,7 @@ export class VisitPage extends AppBase {
         }
 
         if (this.LifeStyleMeasureBloodSuger == 1 && this.LifeStyleMeasureBsNoOfTime==0) {
-          this.toast('你沒有填寫在家/外出(醫院／診所除外)*量度血糖 次數');
+          this.toast('在家/外出(醫院／診所除外)*量度血糖次數必需大於0');
           return;
         }
         if (this.LifeStyleMeasureBloodPressure == 0) {
@@ -983,7 +984,7 @@ export class VisitPage extends AppBase {
           return;
         }
         if (this.LifeStyleMeasureBloodPressure == 1 && this.LifeStyleMeasureBpNoOfTime==0) {
-          this.toast('你沒有填寫在家/外出(醫院／診所除外)*量度血壓 次數');
+          this.toast('在家/外出(醫院／診所除外)*量度血壓次數必需大於0');
           return;
         }
 
@@ -1002,7 +1003,7 @@ export class VisitPage extends AppBase {
           return;
         }
         if (this.OtherHospDisbete == 1 && this.OtherHospDisbeteNoOfDay == 0) {
-          this.toast('你沒有填寫糖尿病曾經入院日數');
+          this.toast('因糖尿病曾經入院日數必需大於0');
           return;
         }
 
@@ -1011,7 +1012,7 @@ export class VisitPage extends AppBase {
           return;
         }
         if (this.OtherHospHighBp == 1 && this.OtherHospHighBpNoOfDay == 0) {
-          this.toast('你沒有填寫長者因高血壓曾經入院日數');
+          this.toast('因高血壓曾經入院日數必需大於0');
           return;
         }
 
@@ -1020,7 +1021,7 @@ export class VisitPage extends AppBase {
           return;
         }
         if (this.OtherHospOtherIllness == 1 && this.OtherHospOtherIllnessNoOfDay == 0) {
-          this.toast('你沒有填寫是否因其他疾病曾經入院日數');
+          this.toast('因其他疾病曾經入院日數必需大於0');
           return;
         }
 

@@ -222,13 +222,14 @@ export class PhonePage extends AppBase {
       this.toast('你沒有輸入電話慰問日期');
       return;
     }
+    
     if (ret == 'web') {
       if (this.CallStartTime == '' || this.CallEndTime == '') {
         this.toast('你沒有輸入電話慰問時間');
         return;
       }
 
-      if (this.CallStartTime == this.CallEndTime) {
+      if (oDate1 == oDate2) {
         this.toast('開始和結束時間不能一樣');
         return;
       }

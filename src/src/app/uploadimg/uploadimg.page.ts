@@ -11,7 +11,7 @@ import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-nati
 import { File } from '@ionic-native/file/ngx';
 import { ImageServe } from 'src/mgrServe/ImageServe';
 import { Base64 } from '@ionic-native/base64/ngx';
-
+import { VisitServe } from 'src/mgrServe/VisitServe';
 
 
 @Component({
@@ -78,8 +78,22 @@ export class UploadimgPage extends AppBase {
     // console.log(this.list)
     this.showConfirm('確定要刪除圖片', (ret) => {
       if(ret==true){
+        if(this.params.uploadtype=='Y'){
+          let DeletePicString=this.params.DeletePicString;
+          if(DeletePicString==null){
+            DeletePicString='';
+          }
+          if(e.ImgId!=0){
+            DeletePicString=DeletePicString+','+e.ImgId
+          }
+          var visit = new VisitServe();
+          visit.saveDeletePicString(this.params.visitid,DeletePicString).then(k=>{
+            console.log(k);
+          })
+        }
+        
         var imgserver=new ImageServe();
-        imgserver.deleteImage(e).then(e=>{
+        imgserver.deleteImage(e.LocalId).then(e=>{
           this.onMyShow()
         })
       }
@@ -94,11 +108,11 @@ export class UploadimgPage extends AppBase {
       // header: "选择头像",
       buttons: [
         {
-          text: "立即自拍",
+          text: "即時拍照",
           handler: () => {
             let options: CameraOptions = {
               quality: 50,
-              allowEdit: true,
+              allowEdit: false,
               destinationType: this.camera.DestinationType.FILE_URI,
               sourceType: this.camera.PictureSourceType.CAMERA,
               encodingType: this.camera.EncodingType.JPEG
@@ -116,12 +130,11 @@ export class UploadimgPage extends AppBase {
             });
           }
         }, {
-          text: "从相册选择",
+          text: "照片庫",
           handler: () => {
             let options: CameraOptions = {
               quality: 50,
-
-              allowEdit: true,
+              allowEdit: false,
               destinationType: this.camera.DestinationType.FILE_URI,
               sourceType: this.camera.PictureSourceType.SAVEDPHOTOALBUM,
               encodingType: this.camera.EncodingType.JPEG,

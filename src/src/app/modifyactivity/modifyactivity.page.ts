@@ -40,6 +40,7 @@ export class ModifyactivityPage extends AppBase {
   activityEndTime2 = '';
 
   presentVolunteer = '';
+  PresentVolunteerList = [];
   actType = 0;
   activityDetailType = '';
   actDetailType1 = false;
@@ -87,10 +88,11 @@ export class ModifyactivityPage extends AppBase {
   }
 
   aas() {
-    console.log(this.presentVolunteer);
+    console.log(this.PresentVolunteerList);
     // return;
     this.Volunteerlist_show = ''
-    var Volunteerlist = this.presentVolunteer;
+    var Volunteerlist = this.PresentVolunteerList;
+
     console.log(Volunteerlist)
     var volunteerServr = new VolunteerServr();
     for (var i = 0; i < Volunteerlist.length; i++) {
@@ -149,6 +151,7 @@ export class ModifyactivityPage extends AppBase {
         this.otherContent = this.activity.Remarks
 
         var Volunteerlist = this.activity.PresentVolunteer.split(',');
+        this.PresentVolunteerList = this.activity.PresentVolunteer.split(',');
         console.log(Volunteerlist)
         var volunteerServr = new VolunteerServr();
         for (var i = 0; i < Volunteerlist.length; i++) {
@@ -277,9 +280,6 @@ export class ModifyactivityPage extends AppBase {
   }
 
   saveActivity(ret) {
-    // alert(this.actDetailTypelist[0].actDetailType1);
-    // return;
-
     if (this.activityStartTime2 != '') {
       this.activityStartTime = AppUtil.FormatTime(new Date(this.activityStartTime2));
     }
@@ -287,21 +287,15 @@ export class ModifyactivityPage extends AppBase {
       this.activityEndTime = AppUtil.FormatTime(new Date(this.activityEndTime2));
     }
 
-    console.log(this.activityStartTime)
-    console.log(this.activityEndTime)
-    // return
-    // this.activityDate = this.activityDate ? this.activityDate : this.activity.ActDate
-    // this.activityStartTime = this.activityStartTime ? this.activityStartTime : this.activity.ActStartTime
-    // this.activityEndTime = this.activityEndTime ? this.activityEndTime : this.activity.ActEndTime
-    // this.presentVolunteer = this.presentVolunteer ? this.presentVolunteer : this.activity.ActDetailType
-    // this.actType = this.actType ? this.actType : this.activity.ActType
+    this.presentVolunteer = '';
+    for (var j = 0; j < this.PresentVolunteerList.length; j++) {
+      if (this.presentVolunteer == '') {
+        this.presentVolunteer = this.PresentVolunteerList[j];
+      } else {
+        this.presentVolunteer = this.presentVolunteer + ',' + this.PresentVolunteerList[j]
+      }
+    }
 
-    // this.remarks1 = this.remarks1 ? this.remarks1 : this.activity.Remarks1
-    // this.remarks2 = this.remarks2 ? this.remarks2 : this.activity.remarks2
-    // this.remarks3 = this.remarks3 ? this.remarks3 : this.activity.Remarks3
-    // this.remarks4 = this.remarks4 ? this.remarks4 : this.activity.Remarks4
-    // this.otherActRemarks = this.otherActRemarks ? this.otherActRemarks : this.activity.OtherActRemarks
-    // this.otherContent = this.otherContent ? this.otherContent : this.activity.Remarks
 
     var activity = new ActivityServe();
     if (this.activityDate == '') {
@@ -335,6 +329,7 @@ export class ModifyactivityPage extends AppBase {
       this.remarks3 = ''
       this.remarks4 = ''
     }
+
     if (ret == 'web') {
       if (this.activityStartTime == '') {
         this.toast('你沒有輸入開始時間');
@@ -347,11 +342,11 @@ export class ModifyactivityPage extends AppBase {
       if (this.activityStartTime != '' && this.activityEndTime != '') {
         var oDate1 = new Date(this.activityStartTime);
         var oDate2 = new Date(this.activityEndTime);
-        if (oDate1.getTime() > oDate2.getTime()) {
+        if (this.activityStartTime > this.activityEndTime) {
           this.toast('開始時間不能遲於結束時間');
           return;
         }
-        if (oDate1.getTime() == oDate2.getTime()) {
+        if (this.activityStartTime == this.activityEndTime) {
           this.toast('開始和結束時間不能一樣');
           return;
         }

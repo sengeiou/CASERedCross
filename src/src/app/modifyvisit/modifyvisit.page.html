@@ -188,7 +188,7 @@
             <div><img src="../assets/icon/plus_icon.png" class="icon-15 margin-left-30" />
               <div style="position:absolute;margin-top:-30px;background:transparent" class="aaa">
                 <ion-select multiple="true" style="position:absolute;background:transparent;opacity: 0;"
-                  [(ngModel)]="presentVolunteer" (ionChange)="aas()">
+                  [(ngModel)]="presentVolunteerList_show" (ionChange)="aas()">
                   <ion-select-option *ngFor="let item of presentVolunteerList;let idx=index;" value="{{item.VolId}}">
                     {{item.VolunteerName}}</ion-select-option>
                 </ion-select>
@@ -215,7 +215,7 @@
 
               <div style="position:absolute;margin-top:-30px;background:transparent;opacity: 0;" class="aaa">
                 <ion-select multiple="true" style="position:absolute;background:transparent"
-                  [(ngModel)]="supportVolunteer" (ionChange)="aab()">
+                  [(ngModel)]="supportVolunteerList_show" (ionChange)="aab()">
                   <ion-select-option *ngFor="let item of supportVolunteerList;let idx=index;" value="{{item.VolId}}">
                     {{item.VolunteerName}}</ion-select-option>
                 </ion-select>

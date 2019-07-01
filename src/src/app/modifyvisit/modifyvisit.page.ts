@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { AppBase } from '../AppBase';
 import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
-import { NavController, ModalController, ToastController, AlertController, NavParams, IonSlides,LoadingController } from '@ionic/angular';
+import { NavController, ModalController, ToastController, AlertController, NavParams, IonSlides, LoadingController } from '@ionic/angular';
 import { AppUtil } from '../app.util';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CaseServe } from 'src/mgrServe/CaseServe';
@@ -116,37 +116,42 @@ export class ModifyvisitPage extends AppBase {
   OtherRemarks = '';
   NeedsContent = '';
 
-  DeletePicString = ''
+  DeletePicString = '';
 
-  presentVolunteer_show = ''
-  supportVolunteer_show = ''
-  Volunteerlist_show = ''
+  presentVolunteer_show = '';
+
+  supportVolunteer_show = '';
+  Volunteerlist_show = '';
 
   saomiao_show = false;
   time_type = ''
 
+  presentVolunteerList_show = [];
+  supportVolunteerList_show = [];
   onMyLoad() {
     //参数
     this.params;
     this.getVolunteerList()
-  }
-  onMyShow() {
     this.getCase()
     this.getVisitId()
+  }
+  onMyShow() {
+    // this.getCase()
+    // this.getVisitId()
     if (AppBase.LastQrcode != '') {
       this.qrcodeHandle(AppBase.LastQrcode);
       AppBase.LastQrcode = "";
       return;
     }
   }
-  signOut(){
-    if(this.visit.Status==1){
+  signOut() {
+    if (this.visit.Status == 1) {
       this.showConfirm('资料还没有保存，你確定要退出吗？', (e) => {
         if (e == true) {
           this.back();
         }
       })
-    }else{
+    } else {
       this.back();
     }
   }
@@ -166,7 +171,7 @@ export class ModifyvisitPage extends AppBase {
     console.log(this.presentVolunteer);
     // return;
     this.presentVolunteer_show = ''
-    var Volunteerlist = this.presentVolunteer;
+    var Volunteerlist = this.presentVolunteerList_show;
     console.log(Volunteerlist)
     var volunteerServr = new VolunteerServr();
     for (var i = 0; i < Volunteerlist.length; i++) {
@@ -190,7 +195,7 @@ export class ModifyvisitPage extends AppBase {
     console.log(this.supportVolunteer);
     // return;
     this.supportVolunteer_show = ''
-    var Volunteerlist = this.supportVolunteer;
+    var Volunteerlist = this.supportVolunteerList_show;
     console.log(Volunteerlist)
     var volunteerServr = new VolunteerServr();
     for (var i = 0; i < Volunteerlist.length; i++) {
@@ -436,6 +441,7 @@ export class ModifyvisitPage extends AppBase {
         })
 
         var Volunteerlist = this.visit.presentVolunteer.split(',');
+        this.presentVolunteerList_show = this.visit.presentVolunteer.split(',');
         console.log(Volunteerlist)
         var volunteerServr = new VolunteerServr();
         for (var i = 0; i < Volunteerlist.length; i++) {
@@ -455,6 +461,7 @@ export class ModifyvisitPage extends AppBase {
         }
 
         var supportVolunteer = this.visit.supportVolunteer.split(',');
+        this.supportVolunteerList_show = this.visit.supportVolunteer.split(',');
         console.log(supportVolunteer)
         for (var i = 0; i < supportVolunteer.length; i++) {
           console.log(supportVolunteer[i])
@@ -718,6 +725,7 @@ export class ModifyvisitPage extends AppBase {
         } else {
           this.VisitStatus = 1;
           this.visit.VisitStatus = 1;
+          this.VisitStatusRemarks = '';
         }
       })
     }
@@ -880,6 +888,7 @@ export class ModifyvisitPage extends AppBase {
   addVisit(ret) {
     console.log('開始了')
     console.log(this.VisitDetailOutdoorlist)
+    this.VisitDetailIndoor = '';
     for (var i = 0; i < this.VisitDetailIndoorlist.length; i++) {
       if (this.VisitDetailIndoorlist[i].type == true) {
         if (this.VisitDetailIndoor == '') {
@@ -889,7 +898,7 @@ export class ModifyvisitPage extends AppBase {
         }
       }
     }
-
+    this.VisitDetailOutdoor = '';
     for (var j = 0; j < this.VisitDetailOutdoorlist.length; j++) {
       if (this.VisitDetailOutdoorlist[j].type == true) {
         if (this.VisitDetailOutdoor == '') {
@@ -901,7 +910,7 @@ export class ModifyvisitPage extends AppBase {
     }
 
     console.log(this.VisitDetailOutdoor)
-
+    this.EmotionAssessment = ''
     for (var i = 0; i < this.EmotionAssessmentlist.length; i++) {
       if (this.EmotionAssessmentlist[i].type == true) {
         if (this.EmotionAssessment == '') {
@@ -922,6 +931,26 @@ export class ModifyvisitPage extends AppBase {
         }
       }
     }
+
+    this.supportVolunteer = '';
+    for (var j = 0; j < this.supportVolunteerList_show.length; j++) {
+      if (this.supportVolunteer == '') {
+        this.supportVolunteer = this.supportVolunteerList_show[j];
+      } else {
+        this.supportVolunteer = this.supportVolunteer + ',' + this.supportVolunteerList_show[j]
+      }
+    }
+
+
+    this.presentVolunteer = '';
+    for (var j = 0; j < this.presentVolunteerList_show.length; j++) {
+      if (this.presentVolunteer == '') {
+        this.presentVolunteer = this.presentVolunteerList_show[j];
+      } else {
+        this.presentVolunteer = this.presentVolunteer + ',' + this.presentVolunteerList_show[j]
+      }
+    }
+
 
 
 
@@ -977,38 +1006,38 @@ export class ModifyvisitPage extends AppBase {
     if (this.WHRatio == null) {
       this.WHRatio = 0;
     }
-    if (this.SYS1 == null || this.SYS1 =='') {
+    if (this.SYS1 == null || this.SYS1 == '') {
       this.SYS1 = 0;
     }
-    if (this.DlA1 == null || this.DlA1 =='') {
+    if (this.DlA1 == null || this.DlA1 == '') {
       this.DlA1 = 0;
     }
-    if (this.SYS2 == null || this.SYS2 =='') {
+    if (this.SYS2 == null || this.SYS2 == '') {
       this.SYS2 = 0
     }
-    if (this.DlA2 == null || this.DlA2 =='') {
+    if (this.DlA2 == null || this.DlA2 == '') {
       this.DlA2 = 0;
     }
-    if (this.heartBeats1 == null || this.heartBeats1 =='') {
+    if (this.heartBeats1 == null || this.heartBeats1 == '') {
       this.heartBeats1 = 0;
     }
-    if (this.heartBeats2 == null || this.heartBeats2 =='') {
+    if (this.heartBeats2 == null || this.heartBeats2 == '') {
       this.heartBeats2 = 0;
     }
 
-    if (this.LifeStyleMeasureBsNoOfTime == null || this.LifeStyleMeasureBsNoOfTime =='') {
+    if (this.LifeStyleMeasureBsNoOfTime == null || this.LifeStyleMeasureBsNoOfTime == '') {
       this.LifeStyleMeasureBsNoOfTime = 0;
     }
-    if (this.LifeStyleMeasureBpNoOfTime == null || this.LifeStyleMeasureBpNoOfTime =='') {
+    if (this.LifeStyleMeasureBpNoOfTime == null || this.LifeStyleMeasureBpNoOfTime == '') {
       this.LifeStyleMeasureBpNoOfTime = 0;
     }
-    if (this.OtherHospDisbeteNoOfDay == null || this.OtherHospDisbeteNoOfDay =='') {
+    if (this.OtherHospDisbeteNoOfDay == null || this.OtherHospDisbeteNoOfDay == '') {
       this.OtherHospDisbeteNoOfDay = 0;
     }
-    if (this.OtherHospHighBpNoOfDay == null || this.OtherHospHighBpNoOfDay =='') {
+    if (this.OtherHospHighBpNoOfDay == null || this.OtherHospHighBpNoOfDay == '') {
       this.OtherHospHighBpNoOfDay = 0;
     }
-    if (this.OtherHospOtherIllnessNoOfDay == null || this.OtherHospOtherIllnessNoOfDay =='') {
+    if (this.OtherHospOtherIllnessNoOfDay == null || this.OtherHospOtherIllnessNoOfDay == '') {
       this.OtherHospOtherIllnessNoOfDay = 0;
     }
     if (this.OtherAccidentNoOfDay == null || this.OtherAccidentNoOfDay == '') {
@@ -1031,7 +1060,7 @@ export class ModifyvisitPage extends AppBase {
     if (this.ScheduleDate != '') {
       ScheduleDate_Display = AppUtil.FormatDate2(new Date(this.ScheduleDate));
     }
- 
+
     if (ret == 'web') {
       if (this.VisitStartTime == '') {
         this.toast('你沒有輸入開始時間');
@@ -1041,7 +1070,7 @@ export class ModifyvisitPage extends AppBase {
         this.toast('你沒有輸入結束時間');
         return;
       }
-      
+
       if (this.VisitStartTime != '' && this.VisitEndTime != '') {
 
         if (this.VisitStartTime > this.VisitEndTime) {
@@ -1123,18 +1152,18 @@ export class ModifyvisitPage extends AppBase {
           return;
         }
 
-        if (this.LifeStyleMeasureBloodSuger == 1 && this.LifeStyleMeasureBsLocation==0) {
+        if (this.LifeStyleMeasureBloodSuger == 1 && this.LifeStyleMeasureBsLocation == 0) {
           this.toast('你沒有填寫在家/外出(醫院／診所除外)*量度血糖 地點');
           return;
         }
 
-        if (this.LifeStyleMeasureBloodSuger == 1 && this.LifeStyleMeasureBsPeriod==0) {
+        if (this.LifeStyleMeasureBloodSuger == 1 && this.LifeStyleMeasureBsPeriod == 0) {
           this.toast('你沒有填寫在家/外出(醫院／診所除外)*量度血糖 頻率');
           return;
         }
 
-        if (this.LifeStyleMeasureBloodSuger == 1 && this.LifeStyleMeasureBsNoOfTime==0) {
-          this.toast('你沒有填寫在家/外出(醫院／診所除外)*量度血糖 次數');
+        if (this.LifeStyleMeasureBloodSuger == 1 && this.LifeStyleMeasureBsNoOfTime == 0) {
+          this.toast('在家/外出(醫院／診所除外)*量度血糖次數必需大於0');
           return;
         }
 
@@ -1142,19 +1171,19 @@ export class ModifyvisitPage extends AppBase {
           this.toast('你沒有填寫在家/外出(醫院／診所除外)*量度血壓');
           return;
         }
-        if (this.LifeStyleMeasureBloodPressure == 1 && this.LifeStyleMeasureBpLocation==0) {
+        if (this.LifeStyleMeasureBloodPressure == 1 && this.LifeStyleMeasureBpLocation == 0) {
           this.toast('你沒有填寫在家/外出(醫院／診所除外)*量度血壓 地點');
           return;
         }
-        if (this.LifeStyleMeasureBloodPressure == 1 && this.LifeStyleMeasureBpPeriod==0) {
+        if (this.LifeStyleMeasureBloodPressure == 1 && this.LifeStyleMeasureBpPeriod == 0) {
           this.toast('你沒有填寫在家/外出(醫院／診所除外)*量度血壓 頻率');
           return;
         }
-        if (this.LifeStyleMeasureBloodPressure == 1 && this.LifeStyleMeasureBpNoOfTime==0) {
-          this.toast('你沒有填寫在家/外出(醫院／診所除外)*量度血壓 次數');
+        if (this.LifeStyleMeasureBloodPressure == 1 && this.LifeStyleMeasureBpNoOfTime == 0) {
+          this.toast('在家/外出(醫院／診所除外)*量度血壓次數必需大於0');
           return;
         }
-        
+
 
         if (this.EmotionAssessment == '') {
           this.toast('你沒有填寫情緒評估');
@@ -1171,7 +1200,7 @@ export class ModifyvisitPage extends AppBase {
           return;
         }
         if (this.OtherHospDisbete == 1 && this.OtherHospDisbeteNoOfDay == 0) {
-          this.toast('你沒有填寫糖尿病曾經入院日數');
+          this.toast('因糖尿病曾經入院日數必需大於0');
           return;
         }
 
@@ -1180,7 +1209,7 @@ export class ModifyvisitPage extends AppBase {
           return;
         }
         if (this.OtherHospHighBp == 1 && this.OtherHospHighBpNoOfDay == 0) {
-          this.toast('你沒有填寫長者因高血壓曾經入院日數');
+          this.toast('因高血壓曾經入院日數必需大於0');
           return;
         }
 
@@ -1189,7 +1218,7 @@ export class ModifyvisitPage extends AppBase {
           return;
         }
         if (this.OtherHospOtherIllness == 1 && this.OtherHospOtherIllnessNoOfDay == 0) {
-          this.toast('你沒有填寫是否因其他疾病曾經入院日數');
+          this.toast('因其他疾病曾經入院日數必需大於0');
           return;
         }
 
@@ -1320,26 +1349,26 @@ export class ModifyvisitPage extends AppBase {
 
   uploadimg(visitid) {
     console.log(visitid)
-    if(this.visit.Status==1){
-      this.showConfirm('请先保存资料，在上传图片', (e) => {
-        if (e == true) {
-          this.addVisit('no');
-          if (this.visit.VisitId != 0) {
-            this.navigate('uploadimg', { visitid: this.visit.VisitId });
-          } else {
-            this.navigate('uploadimg', { visitid: visitid });
-          }
-        }
-      })
-    }else{
-      if (this.visit.VisitId != 0) {
-        this.navigate('uploadimg', { visitid: this.visit.VisitId });
-      } else {
-        this.navigate('uploadimg', { visitid: visitid });
-      }
+    // if(this.visit.Status==1){
+    //   this.showConfirm('请先保存资料，在上传图片', (e) => {
+    //     if (e == true) {
+    //       this.addVisit('no');
+    //       if (this.visit.VisitId != 0) {
+    //         this.navigate('uploadimg', { visitid: this.visit.VisitId });
+    //       } else {
+    //         this.navigate('uploadimg', { visitid: visitid });
+    //       }
+    //     }
+    //   })
+    // }else{
+    if (this.visit.VisitId != 0) {
+      this.navigate('uploadimg', { visitid: this.visit.VisitId, uploadtype: 'Y', DeletePicString: this.visit.DeletePicString });
+    } else {
+      this.navigate('uploadimg', { visitid: visitid, uploadtype: 'N' });
     }
-    
-    
+    // }
+
+
   }
 
   aa() {
@@ -1422,7 +1451,7 @@ export class ModifyvisitPage extends AppBase {
           }
 
           console.log('imgList', this.imgList_web)
-          var w=0;
+          var w = 0;
           for (var j = 0; j < this.imgList_web.length; j++) {
             console.log('上傳圖片、開始了');
             var Base64ImgString = this.imgList_web[j].Base64ImgString.split(",");
@@ -1430,7 +1459,7 @@ export class ModifyvisitPage extends AppBase {
             this.api.UploadImgPart('HomeVisit', this.imgList_web[j].VisitId, Base64ImgString[1], ret.WorkingSetID, AttachmentIdList[j], this.imgList_web[j].ImgName).then(k => {
               console.log('UploadImgPart', k);
               if (k.Result == 'true') {
-                w ++;
+                w++;
                 if (w == this.imgList_web.length) {
                   this.api.ExecuteWorkingSet(ret.WorkingSetID, this.casedata.CaseId, this.params.UserId).then(e => {
                     console.log(e)

@@ -32,7 +32,7 @@ export class TestPage extends AppBase {
     super(router, navCtrl, modalCtrl, toastCtrl, alertCtrl, activeRoute);
     this.headerscroptshow = 480;
 
-    this.needcheck=false;
+    this.needcheck = false;
   }
 
   myname = "";
@@ -49,10 +49,14 @@ export class TestPage extends AppBase {
     let connectSubscription = this.network.onConnect().subscribe(() => {
       this.connected = true;
     });
-    
+
 
 
   }
+  number = '';
+  password = '';
+  data = [];
+
   onMyShow() {
     this.number = '91001';
     this.password = 'carman';
@@ -62,20 +66,20 @@ export class TestPage extends AppBase {
     this.wangluo = this.network.type;
     console.log(this.network.type)
 
-    if(AppBase.LastQrcode!=''){
+    if (AppBase.LastQrcode != '') {
       this.qrcodeHandle(AppBase.LastQrcode);
-      AppBase.LastQrcode="";
+      AppBase.LastQrcode = "";
       return;
     }
   }
-  number = '';
-  password = '';
-  data = [];
- 
+
+
   insert() {
     var dbmgr = DBMgr.GetInstance();
-    dbmgr.execSql("insert into USER (number,password,sdate,VolId) values (?,?,?,?)", [this.number, this.password, new Date().getTime(),this.VolId]).then((ret) => {
+    dbmgr.execSql("insert into USER (number,password,sdate,VolId) values (?,?,?,?)", [this.number, this.password, new Date().getTime(), this.VolId]).then((ret) => {
       // this.showAlert("影响了"+ret.res.rowsAffected+"行数据");
+      this.number = "";
+      this.password = "";
     });
   }
 
@@ -83,6 +87,8 @@ export class TestPage extends AppBase {
     var dbmgr = DBMgr.GetInstance();
     dbmgr.execSql("update  USER SET sdate=" + new Date().getTime() + ' where id=' + this.data[0]['id']).then((ret) => {
       // this.showAlert("影响了"+ret.res.rowsAffected+"行数据");
+      this.number = "";
+      this.password = "";
     });
   }
 
@@ -93,7 +99,7 @@ export class TestPage extends AppBase {
       this.toast('義工編號不能留空');
       return;
     }
-    if (this.password=='') {
+    if (this.password == '') {
       this.toast('密碼不能留空');
       return;
     }
@@ -103,16 +109,16 @@ export class TestPage extends AppBase {
     if (this.wangluo == 'none') {
       var lastlogininfo = null;
       lastlogininfo = window.localStorage.getItem("lastlogininfo");
-      if (lastlogininfo == null) {
-        var userServe=new UserServe()
-        userServe.getAllUserList().then(e=>{
-          console.log(e);
-        })
-        userServe.getUser(this.number, this.password).then(ret=>{
+      // if (lastlogininfo == null) {
+        var userServe = new UserServe();
+        // userServe.getAllUserList().then(e => {
+        //   console.log(e);
+        // })
+        userServe.getUser(this.number, this.password).then(ret => {
           var rows = ret.res.rows;
           console.log(rows);
           this.data = rows;
-         
+
           if (this.data) {
             var time = new Date().getTime() - this.data[0]['sdate'];
             if (time < 24 * 60 * 60 * 1000) {
@@ -125,23 +131,23 @@ export class TestPage extends AppBase {
 
           } else {
             this.toast('你的義工編號或密碼不正確');
-            
+
           }
         })
-        
-      } else {
-        lastlogininfo = JSON.parse(lastlogininfo);
-        var logintime = parseInt(lastlogininfo.logintime);
-        var now = (new Date()).getTime();
-        if ((now - logintime) > 1 * 60 * 1000) {
-          if (this.number == lastlogininfo.number && this.password == lastlogininfo.password) {
-            this.VolId = lastlogininfo.VolId;
-            this.navigate('home', { id: this.VolId });
-          } else {
-            this.toast('你的義工編號或密碼不正確');
-          }
-        }
-      }
+
+      // } else {
+      //   lastlogininfo = JSON.parse(lastlogininfo);
+      //   var logintime = parseInt(lastlogininfo.logintime);
+      //   var now = (new Date()).getTime();
+      //   if ((now - logintime) > 1 * 60 * 1000) {
+      //     if (this.number == lastlogininfo.number && this.password == lastlogininfo.password) {
+      //       this.VolId = lastlogininfo.VolId;
+      //       this.navigate('home', { id: this.VolId });
+      //     } else {
+      //       this.toast('你的義工編號或密碼不正確');
+      //     }
+      //   }
+      // }
     } else {
       // alert('在线登录')
       var userServe = new UserServe();
@@ -155,26 +161,26 @@ export class TestPage extends AppBase {
           };
 
           window.localStorage.setItem("lastlogininfo", JSON.stringify(lastlogininfo));
-          this.number = "";
-          this.password = "";
 
           this.VolId = ret.objUser.VolId;
           this.navigate('home', { id: this.VolId });
-          
           userServe.getUserNumber(this.number).then((e) => {
-            this.update();
             console.log(e)
             if (e.res.rows.length == 0) {
               this.insert()
+            } else {
+              this.update();
             }
           })
+
+
         } else {
 
           this.toast('你的義工編號或密碼不正確');
         }
       })
     }
-  
+
   }
 
 
@@ -187,7 +193,7 @@ export class TestPage extends AppBase {
       this.toast('密碼不能留空');
       return;
     }
- 
+
     var userServe = new UserServe();
     userServe.getUserNumber(this.number).then((e) => {
       console.log(e)
@@ -291,10 +297,10 @@ export class TestPage extends AppBase {
     }
   }
 
-  scan(){
+  scan() {
     this.navigate("qrcodescan");
   }
-  qrcodeHandle(code){
+  qrcodeHandle(code) {
     alert(code);
   }
 }

@@ -40,7 +40,7 @@ export class VisitRecordPage extends AppBase {
   onMyLoad() {
     //参数
     this.params;
-
+    this.LocalId = this.params.MedicalRecordId
   }
   onMyShow() {
     this.AppointmentDate = '';
@@ -51,7 +51,7 @@ export class VisitRecordPage extends AppBase {
     this.Specialty = '';
     this.Status = 1;
     // this.MedicalRecord = null;
-    console.log(this.params.MedicalRecordId)
+
     this.getMedicalRecord()
     this.getAllHosiptalList()
     this.getAllSpecialtylList()
@@ -77,9 +77,6 @@ export class VisitRecordPage extends AppBase {
       this.toast('你沒有填寫门诊');
       return;
     }
-    // if (this.AppointmentDate != '') {
-    //   this.AppointmentDate = AppUtil.FormatDate2(new Date(this.AppointmentDate2));
-    // }
 
     if (this.AppointmentTime2 != '') {
       this.AppointmentTime = AppUtil.FormatTime(new Date(this.AppointmentTime2));
@@ -102,22 +99,22 @@ export class VisitRecordPage extends AppBase {
 
   getMedicalRecord() {
     var medicalRecord = new MedicalRecordServe();
-    this.LocalId = this.params.MedicalRecordId
-    if (this.params.MedicalRecordId > 0) {
+    
+    if (this.LocalId > 0) {
       medicalRecord.getMedicalRecordId(this.LocalId).then((e) => {
         console.log(e)
         var arr = null;
         arr = Array.from(e.res.rows)[0];
         console.log(arr)
         this.MedicalRecord = arr;
-        
+
         this.AppointmentDate = this.MedicalRecord.AppointmentDate;
         this.AppointmentTime = this.MedicalRecord.AppointmentTime;
         this.Hosp = this.MedicalRecord.Hosp;
         this.Specialty = this.MedicalRecord.Specialty;
         this.Description = this.MedicalRecord.Description;
         this.Reason = this.MedicalRecord.Reason;
-        this.Status =this.MedicalRecord.Status;
+        this.Status = this.MedicalRecord.Status;
         this.getSpecialty()
         this.gethosiptal()
         if (this.MedicalRecord) {
@@ -181,27 +178,26 @@ export class VisitRecordPage extends AppBase {
     medicalRecord.addMedicalRecordHospSpecialty(this.MedicalRecord.Hosp, this.MedicalRecord.Specialty, this.params.caseid).then((e) => {
       console.log(e)
       if (e.res.insertId) {
-        this.navigate("visit-record", { MedicalRecordId: e.res.insertId, caseid: this.params.caseid });
+        // this.back()
+        
+        // this.navigate("visit-record", { MedicalRecordId: e.res.insertId, caseid: this.params.caseid });
         this.toast('保存成功');
+        this.LocalId=e.res.insertId;
+        this.onMyShow();
+        
+
       }
     })
   }
 
-  saveMedicalRecord() {
+  saveMedicalRecord(ret) {
     console.log(this.AppointmentDate, this.AppointmentTime, this.Description, this.Reason, this.Status, this.LocalId)
     // return;
-    if(this.AppointmentTime2!=''){
+    if (this.AppointmentTime2 != '') {
       this.AppointmentTime = AppUtil.FormatTime(new Date(this.AppointmentTime2));
     }
-    // if (this.AppointmentDate=='') {
-    //   this.toast('你沒有填寫复诊探訪日期');
-    //   return;
-    // }
-    // if (this.AppointmentTime=='') {
-    //   this.toast('你沒有填寫复诊时间');
-    //   return;
-    // }
-    if (this.Hosp=='') {
+   
+    if (this.Hosp == '') {
       this.toast('你沒有填寫醫院');
       return;
     }
@@ -209,32 +205,38 @@ export class VisitRecordPage extends AppBase {
     //   this.toast('你沒有填寫门诊');
     //   return;
     // }
-    if (this.Status==0) {
+    if (this.Status == 0) {
       this.toast('你沒有填寫就诊状态');
       return;
     }
-    if (this.Status==3 && this.Reason=='') {
+    if (this.Status == 3 && this.Reason == '') {
       this.toast('你沒有填寫無覆診原因');
       return;
     }
-    // this.AppointmentDate = AppUtil.FormatDate(new Date(this.AppointmentDate));
-    
-    
+
     var medicalRecord = new MedicalRecordServe();
     medicalRecord.saveMedicalRecord(this.AppointmentDate, this.AppointmentTime, this.Hosp, this.Specialty, this.Description, this.Reason, this.Status, this.LocalId).then((e) => {
       console.log(e)
-      this.back()
+      if(ret!=2){
+        this.back()
+      }
       this.toast('保存成功');
     })
   }
 
   preserve(e) {
     if (e == 2) {
-      this.addMedicalRecord(e)
-      // this.addMedicalRecordHospSpecialty()
+      if(this.LocalId != 0){
+        this.saveMedicalRecord(2)
+      }else{
+        this.addMedicalRecord(e)
+      }
+      
+      this.addMedicalRecordHospSpecialty()
+     
     } else {
       if (this.LocalId != 0) {
-        this.saveMedicalRecord()
+        this.saveMedicalRecord(1)
       } else {
         this.addMedicalRecord(e)
       }

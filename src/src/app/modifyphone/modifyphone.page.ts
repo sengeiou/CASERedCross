@@ -305,23 +305,20 @@ export class ModifyphonePage extends AppBase {
       return;
     }
 
+
     if (ret == 'web') {
       if (this.CallStartTime == '' || this.CallEndTime == '') {
         this.toast('你沒有輸入電話慰問時間');
         return;
       }
 
-      
-      var oDate1 = new Date(this.CallStartTime);
-      var oDate2 = new Date(this.CallEndTime);
-
-      if (oDate1.getTime() == oDate2.getTime()) {
+      if (this.CallStartTime == this.CallEndTime) {
         this.toast('開始和結束時間不能一樣');
         return;
       }
 
-      if (oDate1.getTime() > oDate2.getTime()) {
-        this.toast('開始時間不能遲於結束時間');
+      if (this.CallStartTime > this.CallEndTime) {
+        this.toast('開始和結束時間不能一樣');
         return;
       }
       if (this.CannotContact == 0) {

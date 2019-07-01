@@ -273,36 +273,27 @@ export class ServiceApi {
 
         for (var i = 0; i < hvLogList.length; i++) {
             if (hvLogList[i].SavedStatus == 1 || type == 'one') {
-                // if (hvLogList[i].VisitDate) {
-                //     var VisitDate = AppUtil.FormatDate2(new Date(hvLogList[i].VisitDate));
-                // } else {
-                //     var VisitDate = ''
-                // }
 
-                if (hvLogList[i].ScheduleDate) {
-                    var ScheduleDate = AppUtil.FormatDate2(new Date(hvLogList[i].ScheduleDate));
-                } else {
-                    var ScheduleDate = ''
-                }
-
-                // console.log(VisitDate)
                 var UlnarLength = 0;
                 var DeletePicString = '';
-                // var hvImgKeepListStr = ''
-                // var hvNewImgQty = 0
+                if(hvLogList[i].DeletePicString==null){
+                    DeletePicString=''
+                }else{
+                    DeletePicString=hvLogList[i].DeletePicString;
+                }
+
                 var ServHrs = 0;
                 var hvuilList = []
                 soapMessage += "<objAppHomeVisit>";
                 soapMessage += "<tobj>";
                 soapMessage += "<TaskId>" + hvLogList[i].TaskId + "</TaskId>";
-                soapMessage += "<Schedule_Date>" + ScheduleDate + "</Schedule_Date>";
+                soapMessage += "<Schedule_Date>" + hvLogList[i].ScheduleDate_Display + "</Schedule_Date>";
                 soapMessage += "<Schedule_Time>" + hvLogList[i].ScheduleTime + "</Schedule_Time>";
                 soapMessage += "</tobj>";
                 soapMessage += "<ClientId>" + userId + "</ClientId>";
                 soapMessage += "<CaseId>" + hvLogList[i].CaseId + "</CaseId>";
                 soapMessage += "<TaskId>" + hvLogList[i].TaskId + "</TaskId>";
                 soapMessage += "<VisitId>" + hvLogList[i].VisitId + "</VisitId>";
-                // soapMessage += "<VisitDate>" + hvLogList[i].VisitDate + "</VisitDate>";
                 soapMessage += "<VisitDate>" + hvLogList[i].VisitDate + "</VisitDate>";
                 soapMessage += "<VisitStartTime>" + hvLogList[i].VisitStartTime + "</VisitStartTime>";
                 soapMessage += "<VisitEndTime>" + hvLogList[i].VisitEndTime + "</VisitEndTime>";
@@ -427,7 +418,6 @@ export class ServiceApi {
                 soapMessage += "<tb_acticve_log_temp>";
                 soapMessage += "<ActivityId>" + activityLogList[i].ActivityId + "</ActivityId>";
                 soapMessage += "<CaseId>" + activityLogList[i].CaseId + "</CaseId>";
-                // soapMessage += "<ActDate>" + activityLogList[i].ActDate + "</ActDate>";
                 soapMessage += "<ActDate>" + ActDate + "</ActDate>";
                 soapMessage += "<ActStartTime>" + activityLogList[i].ActStartTime + "</ActStartTime>";
                 soapMessage += "<ActEndTime>" + activityLogList[i].ActEndTime + "</ActEndTime>";
