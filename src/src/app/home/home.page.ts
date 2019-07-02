@@ -150,22 +150,21 @@ export class HomePage extends AppBase {
 
   }
 
-  getAllImg() { //全部新的圖片
-    var imgserver = new ImageServe();
-    imgserver.getAllImageList().then(e => {
-      console.log('全部新的圖片', Array.from(e.res.rows));
-      this.allImgList = Array.from(e.res.rows);
+  // getAllImg() { //全部新的圖片
+  //   var imgserver = new ImageServe();
+  //   imgserver.getAllImageList().then(e => {
+  //     console.log('全部新的圖片', Array.from(e.res.rows));
+  //     this.allImgList = Array.from(e.res.rows);
 
-      imgserver.getAllImageList2().then(k => {
-        console.log('全部新的圖片2', Array.from(k.res.rows));
-        var img = [];
-        img = Array.from(k.res.rows)
-        this.allImgList = this.allImgList.concat(img);
-        console.log('全部新的圖片3', this.allImgList);
-      })
-    })
-
-  }
+  //     imgserver.getAllImageList2().then(k => {
+  //       console.log('全部新的圖片2', Array.from(k.res.rows));
+  //       var img = [];
+  //       img = Array.from(k.res.rows)
+  //       this.allImgList = this.allImgList.concat(img);
+  //       console.log('全部新的圖片3', this.allImgList);
+  //     })
+  //   })
+  // }
 
   loading = null;
   async presentLoading() {
@@ -263,6 +262,7 @@ export class HomePage extends AppBase {
           }
         }
       }
+
       var phone = new PhoneServe();  //电话
       phone.getPhone_SavedStatus(SavedStatus).then((e) => {
         console.log(e);
@@ -345,7 +345,6 @@ export class HomePage extends AppBase {
       console.log(ret)
       // return
       if (ret.Result == 'true') {
-
         var AttchList = []
         if (ret.AttachmentGroupLists != '') {
           var listtype2 = typeof ret.AttachmentGroupLists.AttchList;
@@ -354,21 +353,41 @@ export class HomePage extends AppBase {
           } else {
             AttchList = ret.AttachmentGroupLists.AttchList;
           }
-          var AttachmentIdList = AttchList[0].AttachmentIDsStr.split(",");
-          for (let i = 0; i < this.allImgList.length; i++) {
+          // var imgserver = new ImageServe();
+          for (let i = 0; i < AttchList.length; i++) {
+            // this.getImageId(AttchList[i].ClientID,AttchList[i].AttachmentIDs);
+            var imgList = [];
+            for (let k = 0; k < this.allImgList.length; k++) {
+              if (AttchList[i].ClientID == this.allImgList[k].VisitLocalId) {
+                imgList.push(this.allImgList[k])
+              }
+            }
+            console.log(imgList)
 
-            this.saveImage_AttachmentId(parseInt(AttachmentIdList[i]), this.allImgList[i]);
+            var AttachmentIdList = AttchList[i].AttachmentIDsStr.split(",");
+            console.log(AttachmentIdList)
+            for (var t = 0; t < imgList.length; t++) {
+              imgList[t].AttachmentId = AttachmentIdList[t];
+            }
           }
+          console.log(this.allImgList)
+          // return;
 
           var w = 0;
           for (var j = 0; j < this.allImgList.length; j++) {
             console.log('上傳圖片、開始了');
 
             var Base64ImgString = this.allImgList[j].Base64ImgString.split(",");
-            console.log(Base64ImgString)
-
-            this.api.UploadImgPart('HomeVisit', this.allImgList[j].VisitId, Base64ImgString[1], ret.WorkingSetID, AttachmentIdList[j], this.allImgList[j].ImgName).then(k => {
+            console.log(Base64ImgString);
+            // setTimeout(() => {
+            this.api.UploadImgPart('HomeVisit', this.allImgList[j].VisitId, Base64ImgString[1], ret.WorkingSetID, this.allImgList[j].AttachmentId, this.allImgList[j].ImgName).then(k => {
               console.log('UploadImgPart', k)
+              if (k.Result == 'false') {
+                this.loading.dismiss();
+                this.toast('圖片上傳失败');
+                return;
+              }
+
               if (k.Result == 'true') {
                 w++;
                 if (w == this.allImgList.length) {
@@ -379,14 +398,13 @@ export class HomePage extends AppBase {
                       this.toast('資料同步失败');
                     }
                     if (e.Result == 'true') {
-                      var objWorkingSetAttachmentMap = []
+                      var objWorkingSetAttachmentMap = [];
                       var listtype3 = typeof e.AttachmentsResult.objWorkingSetAttachmentMap;
                       if (listtype3 == 'object' && e.AttachmentsResult.objWorkingSetAttachmentMap.length == undefined) {
                         objWorkingSetAttachmentMap.push(e.AttachmentsResult.objWorkingSetAttachmentMap);
                       } else {
                         objWorkingSetAttachmentMap = e.AttachmentsResult.objWorkingSetAttachmentMap;
                       }
-
                       for (var i = 0; i < objWorkingSetAttachmentMap.length; i++) {
                         this.saveImage_ImgId(objWorkingSetAttachmentMap[i].RecordID, objWorkingSetAttachmentMap[i].AttachmentId);
                       }
@@ -396,11 +414,12 @@ export class HomePage extends AppBase {
                       this.loading.dismiss();
                       this.toast('資料同步失败');
                     }
-
                   })
                 }
               }
             })
+
+            // }, j * 100);
           }
 
         } else {
@@ -424,7 +443,12 @@ export class HomePage extends AppBase {
     })
   }
 
+  getImageId(ClientID, AttachmentIDsList) {
+    var imgserver = new ImageServe();
+    imgserver.getImageId(ClientID).then(img => {
 
+    })
+  }
 
   phone(caseID, LocalId) {
     console.log(caseID, LocalId)
@@ -1165,6 +1189,5 @@ export class HomePage extends AppBase {
       console.log(e)
     })
   }
-
 
 }

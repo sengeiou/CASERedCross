@@ -104,9 +104,8 @@ export class ImageServe {
         });
     }
 
-    addImage2(ImgId, VisitId, base64File) {
+    addImage2(ImgId, VisitId, base64File,VisitLocalId) {
         var mgr = DBMgr.GetInstance();
-
         var myDate = new Date();
         if (myDate.getMonth() + 1 < 10) {
             var Month = "0" + (myDate.getMonth() + 1)
@@ -114,11 +113,9 @@ export class ImageServe {
             Month = "" + (myDate.getMonth() + 1)
         }
         var ImgName=myDate.getFullYear() + "" + Month + "" + myDate.getDate() + "" + myDate.getHours() + "" + myDate.getMinutes();
-        var sql = "insert into tb_Image(ImgId,VisitId,ImgName,Base64ImgString) values (?,?,?,?)";
-        return mgr.execSql(sql, [ImgId, VisitId, ImgName, base64File]); 
+        var sql = "insert into tb_Image(ImgId,VisitId,ImgName,Base64ImgString,VisitLocalId) values (?,?,?,?,?)";
+        return mgr.execSql(sql, [ImgId, VisitId, ImgName, base64File,VisitLocalId]); 
     }
-
-
 
     deleteImage(id) {
         var mgr = DBMgr.GetInstance();
@@ -129,6 +126,25 @@ export class ImageServe {
     deleteImage2() {
         var mgr = DBMgr.GetInstance();
         var sql = "DELETE FROM tb_Image where Status=0";
+        return mgr.execSql(sql);
+    }
+
+
+    getImage_linshi() {
+        var mgr = DBMgr.GetInstance();
+        var sql = "select * from tb_Image2 ";
+        return mgr.execSql(sql);
+    }
+
+    addImage2_linshi(base64File) {
+        var mgr = DBMgr.GetInstance();
+        var sql = "insert into tb_Image2(Base64ImgString) values (?)";
+        return mgr.execSql(sql, [base64File]); 
+    }
+
+    deleteImage2_linshi() {
+        var mgr = DBMgr.GetInstance();
+        var sql = "DELETE FROM tb_Image2 ";
         return mgr.execSql(sql);
     }
 }

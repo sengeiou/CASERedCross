@@ -218,7 +218,9 @@ export class ModifyvisitPage extends AppBase {
   qrcodeHandle(code) {
     // var time=new Date(); 
     if (code == this.casedata.QRCode) {
-      this.showAlert('掃描成功');
+      this.showAlert('掃描成功', (e) => {
+
+      });
       this.VisitDate = AppUtil.FormatDate2(new Date())
       if (this.time_type == 'ss') {
         this.VisitStartTime = AppUtil.FormatTime(new Date());//实际开始时间
@@ -227,7 +229,7 @@ export class ModifyvisitPage extends AppBase {
         this.VisitEndTime = AppUtil.FormatTime(new Date());//实际结束时间
       }
     } else {
-      this.showAlert('你掃描的二維碼和你的探訪對象並不符合').then(e => {
+      this.showAlert('你掃描的二維碼和你的探訪對象並不符合', (e) => {
 
       })
     }
@@ -1305,29 +1307,47 @@ export class ModifyvisitPage extends AppBase {
               var visitId = this.LocalId;
               if (this.visit.VisitId > 0) {
                 visitId = this.visit.VisitId;
+
+                imgserver.getImageList_web(visitId).then(t => {
+
+                  console.log('new', Array.from(t.res.rows))
+
+                  this.imgList_web = Array.from(t.res.rows);
+
+                  console.log('new2', this.imgList_web)
+
+                  var medicalRecord = new MedicalRecordServe();
+
+                  medicalRecord.getAllMedicalRecordList(this.params.caseID).then((e) => {
+                    this.medicAppointLogList = Array.from(e.res.rows);
+                    console.log(this.medicAppointLogList)
+                    // return
+                    this.uploadVisitListWeb('1')
+                  })
+                })
               }
 
               console.log('visitId', visitId)
+              if (this.visit.VisitId == 0) {
+                imgserver.getImageList_web2(visitId).then(t => {
 
-              imgserver.getImageList_web(visitId).then(t => {
+                  console.log('new', Array.from(t.res.rows))
 
-                console.log('new', Array.from(t.res.rows))
+                  this.imgList_web = Array.from(t.res.rows);
 
-                this.imgList_web = Array.from(t.res.rows);
+                  console.log('new2', this.imgList_web)
 
-                console.log('new2', this.imgList_web)
+                  var medicalRecord = new MedicalRecordServe();
 
-                var medicalRecord = new MedicalRecordServe();
-
-                medicalRecord.getAllMedicalRecordList(this.params.caseID).then((e) => {
-                  this.medicAppointLogList = Array.from(e.res.rows);
-                  console.log(this.medicAppointLogList)
-                  // return
-                  this.uploadVisitListWeb('1')
+                  medicalRecord.getAllMedicalRecordList(this.params.caseID).then((e) => {
+                    this.medicAppointLogList = Array.from(e.res.rows);
+                    console.log(this.medicAppointLogList)
+                    // return
+                    this.uploadVisitListWeb('1')
+                  })
                 })
-              })
-              // this.uploadVisitListWeb('1')
-
+                // this.uploadVisitListWeb('1')
+              }
             })
 
           }
@@ -1362,9 +1382,9 @@ export class ModifyvisitPage extends AppBase {
     //   })
     // }else{
     if (this.visit.VisitId != 0) {
-      this.navigate('uploadimg', { visitid: this.visit.VisitId, uploadtype: 'Y', DeletePicString: this.visit.DeletePicString });
+      this.navigate('uploadimg', { VisitLocalId: visitid, visitid: this.visit.VisitId, uploadtype: 'Y', DeletePicString: this.visit.DeletePicString });
     } else {
-      this.navigate('uploadimg', { visitid: visitid, uploadtype: 'N' });
+      this.navigate('uploadimg', { VisitLocalId: visitid, visitid: 0, uploadtype: 'N' });
     }
     // }
 
@@ -1444,9 +1464,8 @@ export class ModifyvisitPage extends AppBase {
           } else {
             AttchList = ret.AttachmentGroupLists.AttchList;
           }
-
+          var AttachmentIdList = AttchList[0].AttachmentIDsStr.split(",");
           for (var i = 0; i < this.imgList_web.length; i++) {
-            var AttachmentIdList = AttchList[0].AttachmentIDsStr.split(",");
             this.saveImage_AttachmentId(parseInt(AttachmentIdList[i]), this.imgList_web[i]);
           }
 

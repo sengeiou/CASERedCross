@@ -18,7 +18,7 @@ import { VisitServe } from 'src/mgrServe/VisitServe';
   selector: 'app-uploadimg',
   templateUrl: './uploadimg.page.html',
   styleUrls: ['./uploadimg.page.scss'],
-  providers: [Camera,FileTransfer,File,Base64]
+  providers: [Camera, FileTransfer, File, Base64]
 })
 export class UploadimgPage extends AppBase {
 
@@ -29,81 +29,105 @@ export class UploadimgPage extends AppBase {
     public alertCtrl: AlertController,
     public activeRoute: ActivatedRoute,
     public actionSheetController: ActionSheetController,
-    public camera:Camera,
-    public transfer:FileTransfer,
+    public camera: Camera,
+    public transfer: FileTransfer,
     public sanitizer: DomSanitizer,
-    public base64:Base64
-    ) {
+    public base64: Base64
+  ) {
     super(router, navCtrl, modalCtrl, toastCtrl, alertCtrl, activeRoute);
-    
+
     this.headerscroptshow = 480;
 
   }
-  list = []
+  list = [];
+  VisitLocalId = 0;
+  visitid = 0;
   onMyLoad() {
     //参数
     this.params;
+    this.VisitLocalId = this.params.VisitLocalId
+    this.visitid = this.params.visitid
   }
   onMyShow() {
     console.log(this.params.visitid)
-    var imgserver=new ImageServe();
-    imgserver.getAllImageList().then(e=>{
-      console.log(Array.from(e.res.rows))
-    })
-    
-    imgserver.getImageList(this.params.visitid).then(e=>{
-      var list = Array.from(e.res.rows);
-      console.log(list)
-      for(var i=0;i<list.length;i++){
-        var item=null;
-        item=list[i];
-        // if(i==0){
-        //   alert(item.Base64ImgString);
-        // }
-        item.Base64ImgString=this.sanitizer.bypassSecurityTrustUrl(item.Base64ImgString);
+    var imgserver = new ImageServe();
+    // imgserver.getAllImageList().then(e => {
+    //   console.log(Array.from(e.res.rows))
+    // })
+    var visitid = 0;
+    if (this.visitid > 0) {
+      visitid = this.visitid;
+    } else {
+      visitid = this.VisitLocalId;
+    }
+    if (visitid > 0) {
+      imgserver.getImageList(visitid).then(e => {
+        var list = Array.from(e.res.rows);
+        console.log(list)
+        for (var i = 0; i < list.length; i++) {
+          var item = null;
+          item = list[i];
+          item.Base64ImgString = this.sanitizer.bypassSecurityTrustUrl(item.Base64ImgString);
 
-        list[i]=item;
-      }
-      this.list=list;
-    });
+          list[i] = item;
+        }
+        this.list = list;
+      });
+    }
+    if (this.VisitLocalId == 0) {
+      imgserver.getImage_linshi().then(img => {
+        console.log(img)
+        var list = Array.from(img.res.rows);
+        console.log(list)
+        for (var i = 0; i < list.length; i++) {
+          var item = null;
+          item = list[i];
+          item.Base64ImgString = this.sanitizer.bypassSecurityTrustUrl(item.Base64ImgString);
+
+          list[i] = item;
+        }
+        this.list = list;
+      })
+    }
+
   }
 
   uploadimg() {
     this.selectPhoto();
   }
 
-  delimg(e){
+  delimg(e) {
     console.log(e)
     // this.list.splice(e,1);
     // console.log(this.list)
     this.showConfirm('確定要刪除圖片', (ret) => {
-      if(ret==true){
-        if(this.params.uploadtype=='Y'){
-          let DeletePicString=this.params.DeletePicString;
-          if(DeletePicString==null){
-            DeletePicString='';
+      if (ret == true) {
+        if (this.params.uploadtype == 'Y') {
+          let DeletePicString = this.params.DeletePicString;
+          if (DeletePicString == null) {
+            DeletePicString = '';
           }
-          if(e.ImgId!=0){
-            DeletePicString=DeletePicString+','+e.ImgId
+          if (e.ImgId != 0) {
+            DeletePicString = DeletePicString + ',' + e.ImgId
           }
           var visit = new VisitServe();
-          visit.saveDeletePicString(this.params.visitid,DeletePicString).then(k=>{
+          visit.saveDeletePicString(this.params.visitid, DeletePicString).then(k => {
             console.log(k);
           })
         }
-        
-        var imgserver=new ImageServe();
-        imgserver.deleteImage(e.LocalId).then(e=>{
+
+        var imgserver = new ImageServe();
+        imgserver.deleteImage(e.LocalId).then(e => {
           this.onMyShow()
         })
       }
-      
+
     })
-    
+
   }
 
   async selectPhoto() {
-    var imgserver=new ImageServe();
+    var imgserver = new ImageServe();
     const actionSheet = await this.actionSheetController.create({
       // header: "选择头像",
       buttons: [
@@ -118,11 +142,23 @@ export class UploadimgPage extends AppBase {
               encodingType: this.camera.EncodingType.JPEG
             };
             this.camera.getPicture(options).then((imagepath) => {
-              this.base64.encodeFile(imagepath).then((code)=>{
-               
-                imgserver.addImage2(0,this.params.visitid,code).then(e=>{
+              this.base64.encodeFile(imagepath).then((code) => {
+
+                if (this.VisitLocalId != 0) {
+                  if (this.visitid == 0) {
+                    this.visitid = this.VisitLocalId
+                  }
+                  imgserver.addImage2(0, this.visitid, code, this.VisitLocalId).then(e => {
                     console.log(e)
-                })
+                  })
+                }
+
+                if (this.visitid == 0 && this.VisitLocalId == 0) {
+                  imgserver.addImage2_linshi(code).then(img => {
+                    console.log(img)
+                  })
+                }
+
                 this.onMyShow();
               });
             }, (err) => {
@@ -142,16 +178,27 @@ export class UploadimgPage extends AppBase {
             };
 
             this.camera.getPicture(options).then((imagepath) => {
-              
-              this.base64.encodeFile(imagepath).then((code)=>{
-                // alert(code);
-                // alert("调用addImage的接口加到本地数据库");
-                imgserver.addImage2(0,this.params.visitid,code).then(e=>{
-                  console.log(e)
-              })
+
+              this.base64.encodeFile(imagepath).then((code) => {
+
+                if (this.VisitLocalId != 0) {
+                  if (this.visitid == 0) {
+                    this.visitid = this.VisitLocalId
+                  }
+                  imgserver.addImage2(0, this.visitid, code, this.VisitLocalId).then(e => {
+                    console.log(e)
+                  })
+                }
+
+                if (this.visitid == 0 && this.VisitLocalId == 0) {
+                  imgserver.addImage2_linshi(code).then(img => {
+                    console.log(img)
+                  })
+                }
+
                 this.onMyShow();
               });
-              
+
             }, (err) => {
               // Handle error
             });
@@ -162,18 +209,32 @@ export class UploadimgPage extends AppBase {
     await actionSheet.present();
   }
 
-  checkdata(){
-    var imgservice=new ImageServe();
-    imgservice.getAllImageList().then((res)=>{
+  checkdata() {
+    var imgservice = new ImageServe();
+    imgservice.getAllImageList().then((res) => {
       console.log(res);
     });
   }
 
-  kk(){
-    var imgserver=new ImageServe();
-    imgserver.addImage2(0,this.params.visitid,'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAMSURBVBhXY/j//z8ABf4C/qc1gYQAAAAASUVORK5CYII=').then(e=>{
-      console.log(e)
-  })
+  kk() {
+
+    console.log(this.VisitLocalId);
+    // return
+    var imgserver = new ImageServe();
+    if (this.VisitLocalId != 0) {
+      if (this.visitid == 0) {
+        this.visitid = this.VisitLocalId
+      }
+      imgserver.addImage2(0, this.visitid, 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAMSURBVBhXY/j//z8ABf4C/qc1gYQAAAAASUVORK5CYII=', this.params.VisitLocalId).then(e => {
+        console.log(e)
+      })
+    }
+
+    if (this.visitid == 0 && this.VisitLocalId == 0) {
+      imgserver.addImage2_linshi('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAMSURBVBhXY/j//z8ABf4C/qc1gYQAAAAASUVORK5CYII=').then(img => {
+        console.log(img)
+      })
+    }
   }
 
 }

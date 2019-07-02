@@ -290,7 +290,7 @@ export class ServiceApi {
                 soapMessage += "<Schedule_Date>" + hvLogList[i].ScheduleDate_Display + "</Schedule_Date>";
                 soapMessage += "<Schedule_Time>" + hvLogList[i].ScheduleTime + "</Schedule_Time>";
                 soapMessage += "</tobj>";
-                soapMessage += "<ClientId>" + userId + "</ClientId>";
+                soapMessage += "<ClientId>" + hvLogList[i].LocalId + "</ClientId>";
                 soapMessage += "<CaseId>" + hvLogList[i].CaseId + "</CaseId>";
                 soapMessage += "<TaskId>" + hvLogList[i].TaskId + "</TaskId>";
                 soapMessage += "<VisitId>" + hvLogList[i].VisitId + "</VisitId>";

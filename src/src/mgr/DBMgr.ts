@@ -35,7 +35,9 @@ export class DBMgr {
         +"OtherSpecialNeed int,OtherAccidentNoOfDay int,OtherSpecialNeedService nvarchar(100),OtherRemarks nvarchar(500),DeletePicString nvarchar(100),Status int,"
         +"SavedStatus int DEFAULT '1',NeedsContent nvarchar(50),img1 BLOB,img2 BLOB,img3 BLOB,img4 BLOB,img5 BLOB,img6 BLOB,img7 BLOB, img8 BLOB,img9 BLOB,img10 BLOB,Height double);";
  
-        let CreateImgSQL = "CREATE TABLE IF NOT EXISTS tb_Image (LocalId integer primary key autoincrement not null, ImgId int DEFAULT '0', VisitId int, ImgName nvarchar(100), Base64ImgString BLOB,AttachmentId int,Status int DEFAULT '0')";
+        let CreateImgSQL = "CREATE TABLE IF NOT EXISTS tb_Image (LocalId integer primary key autoincrement not null, ImgId int DEFAULT '0', VisitLocalId int, VisitId int, ImgName nvarchar(100), Base64ImgString BLOB,AttachmentId int,Status int DEFAULT '0')";
+
+        let CreateImgSQL2 = "CREATE TABLE IF NOT EXISTS tb_Image2 (LocalId integer primary key autoincrement not null, Base64ImgString BLOB)";
 
         let recordSQL = "CREATE TABLE IF NOT EXISTS tb_Record (appointmentId int, medId integer primary key autoincrement not null, caseId int, medicalLocation int, kinds int, medicalStatus int, content text,  medicalDate text, medicalStatusRemark text, save int, medicalTime text, canDelete int)";
 
@@ -65,7 +67,7 @@ export class DBMgr {
             //alert(1);
             this.type = 0;
             sqlite.create({
-                name: 'appdata46.db',
+                name: 'appdata54.db',
                 location: 'default'
             }).then((db) => {
                 this._db = db;
@@ -76,6 +78,7 @@ export class DBMgr {
                 this.execSql(createSpecality);
                 this.execSql(createVisittableSQL);
                 this.execSql(CreateImgSQL);
+                this.execSql(CreateImgSQL2);
                 this.execSql(recordSQL);
                 this.execSql(HeartRateSQL);
                 this.execSql(createClientSQL);
@@ -92,7 +95,7 @@ export class DBMgr {
         } else {
             this.type = 1;
             //alert(2);
-            this._db = this.win.openDatabase("appdata46.db", '1.0', 'database', 5 * 1024 * 1024);
+            this._db = this.win.openDatabase("appdata54.db", '1.0', 'database', 5 * 1024 * 1024);
             this.execSql(dbcreateUSERsql);
             this.execSql(createActivityTableSQL);
             this.execSql(createPhoneTableSQL);
@@ -100,6 +103,7 @@ export class DBMgr {
             this.execSql(createSpecality);
             this.execSql(createVisittableSQL);
             this.execSql(CreateImgSQL);
+            this.execSql(CreateImgSQL2);
             this.execSql(recordSQL);
             this.execSql(HeartRateSQL);
             this.execSql(createClientSQL);

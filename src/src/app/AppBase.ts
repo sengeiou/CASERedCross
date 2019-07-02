@@ -70,8 +70,6 @@ export class AppBase implements OnInit {
     opmin = 0;
     ngOnInit() {
 
-
-
         ApiConfig.SetUnicode(AppBase.UNICODE);
         this.onMyLoad();
         this.setStatusBar();
@@ -79,8 +77,12 @@ export class AppBase implements OnInit {
         if (this.needcheck) {
             this.timer = setInterval(() => {
                 this.opmin++;
-                if (this.opmin > 30) {
-                    this.router.navigateByUrl("/test");
+                if (this.opmin > 5) {
+                    this.showAlert('將會進入登入頁面', (e) => {
+                        if (e == true) {
+                            this.router.navigateByUrl("/test");
+                        }
+                    })
                     clearInterval(this.timer);
                 }
             }, 60 * 1000);
@@ -210,7 +212,7 @@ export class AppBase implements OnInit {
         });
         toast.present();
     }
-    async showAlert(msg, confirmcallback = undefined) {
+    async showAlert(msg, confirmcallback) {
 
         const alert = await this.alertCtrl.create({
             header: "提示",
@@ -218,9 +220,9 @@ export class AppBase implements OnInit {
             buttons: [{
                 text: "确定",
                 handler: () => {
-                    if(confirmcallback != undefined){
-                        confirmcallback();
-                    }
+                    // if(confirmcallback != undefined){
+                    confirmcallback(true);
+                    // }
                 }
             }]
         });
@@ -338,10 +340,7 @@ export class AppBase implements OnInit {
 
     idle() {
         var time = this.operationTimg_end - this.operationTimg_start;
-        if (time > 30 * 60 * 1000) {
-            this.showAlert('將會進入登入頁面',true).then(e=>{
-                this.navigate('test')
-            })
+        if (time > 5 * 60 * 1000) {
             
         }
     }

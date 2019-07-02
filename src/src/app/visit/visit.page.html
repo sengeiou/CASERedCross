@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button (click)='back()'>
+      <ion-button (click)='signOut()'>
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -14,7 +14,7 @@
   <div class="bg-l padding-bottom-5">
     <div class="text-center padding-top-20 txt-black txt-bold">個案資料</div>
     <div class="text-center padding-top-10">
-      <img src="../assets/icon/camera.png" class="icon-25 margin-3" (click)='uploadimg(visit.LocalId);' />
+      <img src="../assets/icon/camera.png" class="icon-25 margin-3" (click)='uploadimg();' />
       <img src="../assets/icon/scan.png" class="icon-25 margin-3" (click)='saomiao();' />
       <img src="../assets/icon/booking.png" class="icon-25 margin-3" (click)="visitList();" />
       <img src="../assets/icon/HEART-BEAT-.png" class="icon-25 margin-3" (click)='aa()' />
@@ -86,7 +86,7 @@
           <div class="flex-1">
             <div class="radius-2" style="width:100%; " class="bg-white">
               <div>
-                <ion-datetime displayFormat="DD-MM-YYYY" placeholder="{{visit.ScheduleDate_Display}}"
+                <ion-datetime displayFormat="DD-MM-YYYY" placeholder="{{ScheduleDate_Display}}"
                   picker-format="DD MM YYYY  " max="2050-12-09" done-text='确定' style="height:25px;padding:2px;"
                   cancel-text='取消' [(ngModel)]="ScheduleDate"></ion-datetime>
               </div>
@@ -99,7 +99,7 @@
           <div class="title2">預約探訪時間:</div>
           <div class="flex-1">
             <div class="bg-white">
-              <ion-datetime placeholder="{{visit.ScheduleTime}}" displayFormat="HH:mm" picker-format="hh:mm A"
+              <ion-datetime placeholder="{{ScheduleTime}}" displayFormat="HH:mm" picker-format="hh:mm A"
                 style="height:25px;padding:2px;" max="2050-12-09" done-text='确定' cancel-text='取消'
                 [(ngModel)]="ScheduleTime2"></ion-datetime>
             </div>
@@ -162,7 +162,7 @@
               (click)="getLocation(2)" ></ion-radio>其他
             <div class="flex-1 margin-left-20">
               <input *ngIf=" Location==2" class="input_s radius-2"
-                placeholder="{{visit.LocationRemarks?visit.LocationRemarks:'輸入最多50字'}}" [(ngModel)]="LocationRemarks"
+                placeholder="輸入最多50字" [(ngModel)]="LocationRemarks"
                 maxlength="50" style="width:100%;" />
 
             </div>
@@ -389,18 +389,18 @@
             <div>1.</div>
             <div class="flex-row text-center">
               <div class="flex-1">
-                <input class="radius-2 margin-left-5" style=" width: 90%;" placeholder="{{visit.SYS1?visit.SYS1:''}}"
+                <input class="radius-2 margin-left-5" style=" width: 90%;" 
                   disabled='{{VisitStatus==2?disabled:false}}' [(ngModel)]="SYS1" name='upperBloodPressure1'
                   type="number" />
               </div>
               <div class="flex-1">
-                <input class="radius-2 margin-left-10" style=" width: 90%;" placeholder="{{visit.DlA1?visit.DlA1:''}}"
+                <input class="radius-2 margin-left-10" style=" width: 90%;" 
                   disabled='{{VisitStatus==2?disabled:false}}' [(ngModel)]="DlA1" name='lowerBloodPressure1'
                   type="number" />
               </div>
               <div class="flex-1">
                 <input class="radius-2 margin-left-10" style=" width: 90%;" disabled='{{VisitStatus==2?disabled:false}}'
-                  placeholder="{{visit.heartBeats1?visit.heartBeats1:''}}" [(ngModel)]="heartBeats1" type="number"
+                   [(ngModel)]="heartBeats1" type="number"
                   name='MeasurementDate1' />
               </div>
             </div>
@@ -409,18 +409,18 @@
             <div>2.</div>
             <div class="flex-row text-center">
               <div class="flex-1">
-                <input class="radius-2 margin-left-5" style=" width: 90%;" placeholder="{{visit.SYS2?visit.SYS2:''}}"
+                <input class="radius-2 margin-left-5" style=" width: 90%;" 
                   disabled='{{VisitStatus==2?disabled:false}}' [(ngModel)]="SYS2" name='upperBloodPressure2'
                   type="number" />
               </div>
               <div class="flex-1">
                 <input class="radius-2  margin-left-10" style=" width: 90%;"
-                  disabled='{{VisitStatus==2?disabled:false}}' placeholder="{{visit.DlA2?visit.DlA2:''}}"
+                  disabled='{{VisitStatus==2?disabled:false}}' 
                   [(ngModel)]="DlA2" name='lowerBloodPressure2' type="number" />
               </div>
               <div class="flex-1">
                 <input class="radius-2 margin-left-10" style=" width: 90%;" disabled='{{VisitStatus==2?disabled:false}}'
-                  placeholder="{{visit.heartBeats2?visit.heartBeats2:''}}" [(ngModel)]="heartBeats2" type="number"
+                   [(ngModel)]="heartBeats2" type="number"
                   name='MeasurementDate2' />
               </div>
             </div>
@@ -437,7 +437,7 @@
             <div>體重</div>
             <!-- <ion-input  class="radius-2 margin-left-20 margin-right-20 bg-white" style=" width:30%;" name='Weight' ionBlur></ion-input> -->
             <input class="radius-2 margin-left-20 margin-right-20" style=" width: 30%;" [(ngModel)]="Weight"
-              disabled='{{VisitStatus==2?disabled:false}}' placeholder="{{visit.Weight?visit.Weight:''}}"
+              disabled='{{VisitStatus==2?disabled:false}}' 
               type="number" />
             <div>公斤</div>
           </div>
@@ -453,13 +453,13 @@
           <div class="flex-row margin-top-10">
             <div>腰圍</div>
             <input class="radius-2 margin-left-20 margin-right-20" style=" width: 30%;" [(ngModel)]="Waist"
-              type="number" disabled='{{VisitStatus==2?disabled:false}}' placeholder="{{visit.Waist?visit.Waist:''}}" />
+              type="number" disabled='{{VisitStatus==2?disabled:false}}'  />
             <div>厘米</div>
           </div>
           <div class="flex-row margin-top-5">
             <div>臀圍</div>
             <input class="radius-2 margin-left-20 margin-right-20" style=" width: 30%;" [(ngModel)]="Hip" type="number"
-              disabled='{{VisitStatus==2?disabled:false}}' placeholder="{{visit.Hip?visit.Hip:''}}" />
+              disabled='{{VisitStatus==2?disabled:false}}'  />
             <div>厘米</div>
           </div>
           <div class="flex-row margin-top-5">
@@ -748,7 +748,7 @@
 
             <div class="flex-row h7-5 flex-1 margin-left-30 flex-center" *ngIf='OtherHospOtherIllness==1'>
               <input class="input_s radius-2" style="width:35%;" type="number" disabled='{{VisitStatus==2?disabled:false}}'
-                placeholder="{{visit.OtherHospOtherIllnessNoOfDay?visit.OtherHospOtherIllnessNoOfDay:''}}"
+                
                 [(ngModel)]='OtherHospOtherIllnessNoOfDay' />
               <div class="margin-5" style="width:3.6rem;">日數</div>
             </div>
@@ -768,7 +768,7 @@
 
             <div class="flex-row h7-5 flex-1 margin-left-30 flex-center" *ngIf='OtherAccident==1'>
               <input class="input_s radius-2" style="width:35%;" type="number"
-                placeholder="{{visit.OtherAccidentNoOfDay?visit.OtherAccidentNoOfDay:''}}"
+               
                 [(ngModel)]='OtherAccidentNoOfDay' />
               <div class="margin-5" style="width:3.6rem;">次數</div>
             </div>
@@ -824,7 +824,7 @@
         <div class="margin-top-10">
           <div>其他狀況:</div>
           <div class="margin-top-5 h7-5">
-            <input class="input_s radius-2" placeholder="{{visit.OtherRemarks?visit.OtherRemarks:'輸入最多250字'}}"
+            <input class="input_s radius-2" placeholder="輸入最多250字"
               disabled='{{VisitStatus==2?disabled:false}}' maxlength="250" style="width:100%;"
               [(ngModel)]='OtherRemarks' />
           </div>

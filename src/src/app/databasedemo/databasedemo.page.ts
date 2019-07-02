@@ -44,7 +44,7 @@ export class DatabasedemoPage extends AppBase {
   insert(){
     var dbmgr=DBMgr.GetInstance();
     dbmgr.execSql("insert into TEST (sdate) values (?)",[Date()]).then((ret)=>{
-      this.showAlert("影响了"+ret.res.rowsAffected+"行数据");
+      // this.showAlert("影响了"+ret.res.rowsAffected+"行数据");
     });
   }
   select(){
