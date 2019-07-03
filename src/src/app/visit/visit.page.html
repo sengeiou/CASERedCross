@@ -123,7 +123,7 @@
           <div class="flex-1">
             <div class="radius-2" style="width:100%; ">
               <div class="bg-white">
-                <ion-datetime placeholder="{{VisitDate}}" style="height:25px;padding:2px;"
+                <ion-datetime  style="height:25px;padding:2px;"
                   displayFormat="DD-MM-YYYY " picker-format="DD MM YYYY" max="2050-12-09" done-text='确定'
                   cancel-text='取消' [(ngModel)]="VisitDate2"></ion-datetime>
               </div>
@@ -135,7 +135,7 @@
           <div class="title2">實際探訪時間:</div>
           <div class="flex-1">
             <div class="bg-white">
-              <ion-datetime placeholder="{{VisitStartTime}}" style="height:25px;padding:2px;" displayFormat="HH:mm"
+              <ion-datetime  style="height:25px;padding:2px;" displayFormat="HH:mm"
                 picker-format="hh：mm A" max="2050-12-09" done-text='确定' cancel-text='取消' [(ngModel)]="VisitStartTime2">
               </ion-datetime>
             </div>
@@ -145,7 +145,7 @@
           <div class="margin-5">至</div>
           <div class="flex-1">
             <div class="bg-white">
-              <ion-datetime placeholder="{{VisitEndTime}}" style="height:25px;padding:2px;" displayFormat="HH:mm"
+              <ion-datetime  style="height:25px;padding:2px;" displayFormat="HH:mm"
                 picker-format="hh：mm A" max="2050-12-09" done-text='确定' cancel-text='取消' [(ngModel)]="VisitEndTime2">
               </ion-datetime>
             </div>
@@ -420,8 +420,7 @@
               </div>
               <div class="flex-1">
                 <input class="radius-2 margin-left-10" style=" width: 90%;" disabled='{{VisitStatus==2?disabled:false}}'
-                   [(ngModel)]="heartBeats2" type="number"
-                  name='MeasurementDate2' />
+                   [(ngModel)]="heartBeats2" type="number" name='MeasurementDate2' />
               </div>
             </div>
           </div>
@@ -437,14 +436,13 @@
             <div>體重</div>
             <!-- <ion-input  class="radius-2 margin-left-20 margin-right-20 bg-white" style=" width:30%;" name='Weight' ionBlur></ion-input> -->
             <input class="radius-2 margin-left-20 margin-right-20" style=" width: 30%;" [(ngModel)]="Weight"
-              disabled='{{VisitStatus==2?disabled:false}}' 
-              type="number" />
+              disabled='{{VisitStatus==2?disabled:false}}' type="number" />
             <div>公斤</div>
           </div>
           <div class="flex-row margin-top-5">
             <div>BMI</div>
-            <div class="margin-left-20" *ngIf="Weight!=null && Weight!=0" >{{(Weight/(casedata.Height*casedata.Height)).toFixed(2)}}</div>
-            <div class="margin-left-20" *ngIf="Weight==null || Weight==0">0</div>
+            <div class="margin-left-20" *ngIf="Weight!=null && Weight!=0 && casedata.Height!=0" >{{(Weight/(casedata.Height*casedata.Height)).toFixed(2)}}</div>
+            <div class="margin-left-20" *ngIf="(Weight==null || Weight==0) || casedata.Height==0">0</div>
 
           </div>
         </div>

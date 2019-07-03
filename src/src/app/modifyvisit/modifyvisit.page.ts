@@ -146,7 +146,7 @@ export class ModifyvisitPage extends AppBase {
   }
   signOut() {
     if (this.visit.Status == 1) {
-      this.showConfirm('资料还没有保存，你確定要退出吗？', (e) => {
+      this.showConfirm('未經保存的資料將會遺失，你確定要離開嗎？', (e) => {
         if (e == true) {
           this.back();
         }
@@ -675,7 +675,7 @@ export class ModifyvisitPage extends AppBase {
           this.OtherRemarks = '';
           this.NeedsContent = '';
 
-          this.DeletePicString = ''
+          // this.DeletePicString = ''
 
           this.VisitDetailIndoorlist = [{
             type: false, value: 1
@@ -993,7 +993,7 @@ export class ModifyvisitPage extends AppBase {
       this.WHRatio = Math.floor(this.WHRatio * 100) / 100;
     }
 
-    if (this.Bmi == null) {
+    if (this.Bmi == null || this.Bmi == Infinity) {
       this.Bmi = 0;
     }
     if (this.Weight == null) {
@@ -1061,6 +1061,18 @@ export class ModifyvisitPage extends AppBase {
     var ScheduleDate_Display = ''
     if (this.ScheduleDate != '') {
       ScheduleDate_Display = AppUtil.FormatDate2(new Date(this.ScheduleDate));
+    }
+
+    if (this.VisitStartTime != '' && this.VisitEndTime != '') {
+
+      if (this.VisitStartTime > this.VisitEndTime) {
+        this.toast('開始時間不能遲於結束時間');
+        return;
+      }
+      if (this.VisitStartTime == this.VisitEndTime) {
+        this.toast('開始和結束時間不能一樣');
+        return;
+      }
     }
 
     if (ret == 'web') {
@@ -1229,7 +1241,7 @@ export class ModifyvisitPage extends AppBase {
           return;
         }
         if (this.OtherAccident == 1 && this.OtherAccidentNoOfDay == 0) {
-          this.toast('你沒有填寫曾發生突發事件');
+          this.toast('曾發生突發事件次數必需大於0');
           return;
         }
 
@@ -1257,7 +1269,7 @@ export class ModifyvisitPage extends AppBase {
       this.OtherHospOtherIllness, this.OtherHospOtherIllnessNoOfDay, this.OtherRemarks, this.OtherSpecialNeed, this.OtherSpecialNeedService, this.ScheduleDate,
       this.ScheduleTime, Status, this.VisitDate, this.VisitDetailIndoor, this.VisitDetailIndoorRemarks, this.VisitDetailOther, this.VisitDetailOutdoor,
       this.VisitDetailOutdoorRemarks, this.VisitEndTime, this.VisitStartTime, this.VisitStatus, this.VisitStatusRemarks, this.WHRatio, this.Waist, this.Weight,
-      this.NeedsContent, this.SYS1, this.DlA1, this.SYS2, this.DlA2, this.heartBeats1, this.heartBeats2, this.presentVolunteer, this.supportVolunteer, this.DeletePicString, ScheduleDate_Display).then(e => {
+      this.NeedsContent, this.SYS1, this.DlA1, this.SYS2, this.DlA2, this.heartBeats1, this.heartBeats2, this.presentVolunteer, this.supportVolunteer, ScheduleDate_Display).then(e => {
         if (e) {
           console.log('保存55')
           if (ret != 'web') {
@@ -1450,9 +1462,9 @@ export class ModifyvisitPage extends AppBase {
 
     this.api.SaveAll(hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList, this.params.UserId, 'one').then((ret) => {
       console.log(ret)
-      if (e == undefined) {
+      if (ret == undefined) {
         this.loading.dismiss();
-        this.toast('資料上傳失败');
+        this.toast('未能傳送資料到數據庫');
       }
       if (ret.Result == 'true') {
         var AttchList = [];
@@ -1477,6 +1489,11 @@ export class ModifyvisitPage extends AppBase {
             console.log(Base64ImgString)
             this.api.UploadImgPart('HomeVisit', this.imgList_web[j].VisitId, Base64ImgString[1], ret.WorkingSetID, AttachmentIdList[j], this.imgList_web[j].ImgName).then(k => {
               console.log('UploadImgPart', k);
+              if (k.Result == 'false') {
+                this.loading.dismiss();
+                this.toast('圖片上傳失败');
+                return;
+              }
               if (k.Result == 'true') {
                 w++;
                 if (w == this.imgList_web.length) {

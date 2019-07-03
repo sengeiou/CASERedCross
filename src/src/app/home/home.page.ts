@@ -333,16 +333,21 @@ export class HomePage extends AppBase {
     // this.SaveAll(visiltList, phoneList, activityList, medicAppointLogList);
 
 
-    if (this.caselist.length == 0) {
-      console.log('565')
-      this.SysnAllWeb();
-    }
+    // if (this.caselist.length == 0) {
+    //   console.log('565')
+    //   this.SysnAllWeb();
+    // }
   }
+  w = 0;  //用于判断图片是否全部上传成功
 
   SaveAll(visitList, phoneList, activityList, medicAppointLogList) {
     console.log(visitList)
     this.api.SaveAll(visitList, phoneList, activityList, medicAppointLogList, this.UserId, 'all').then((ret) => {
       console.log(ret)
+      if (ret == undefined) {
+        this.loading.dismiss();
+        this.toast('未能傳送資料到數據庫');
+      }
       // return
       if (ret.Result == 'true') {
         var AttchList = []
@@ -353,9 +358,8 @@ export class HomePage extends AppBase {
           } else {
             AttchList = ret.AttachmentGroupLists.AttchList;
           }
-          // var imgserver = new ImageServe();
+        
           for (let i = 0; i < AttchList.length; i++) {
-            // this.getImageId(AttchList[i].ClientID,AttchList[i].AttachmentIDs);
             var imgList = [];
             for (let k = 0; k < this.allImgList.length; k++) {
               if (AttchList[i].ClientID == this.allImgList[k].VisitLocalId) {
@@ -379,45 +383,46 @@ export class HomePage extends AppBase {
 
             var Base64ImgString = this.allImgList[j].Base64ImgString.split(",");
             console.log(Base64ImgString);
+              this.callupload(this.allImgList,j,ret.WorkingSetID);
             // setTimeout(() => {
-            this.api.UploadImgPart('HomeVisit', this.allImgList[j].VisitId, Base64ImgString[1], ret.WorkingSetID, this.allImgList[j].AttachmentId, this.allImgList[j].ImgName).then(k => {
-              console.log('UploadImgPart', k)
-              if (k.Result == 'false') {
-                this.loading.dismiss();
-                this.toast('圖片上傳失败');
-                return;
-              }
+            // this.api.UploadImgPart('HomeVisit', this.allImgList[j].VisitId, Base64ImgString[1], ret.WorkingSetID, this.allImgList[j].AttachmentId, this.allImgList[j].ImgName).then(k => {
+            //   console.log('UploadImgPart', k)
+            //   if (k.Result == 'false') {
+            //     this.loading.dismiss();
+            //     this.toast('圖片上傳失败');
+            //     return;
+            //   }
 
-              if (k.Result == 'true') {
-                w++;
-                if (w == this.allImgList.length) {
-                  this.api.ExecuteWorkingSet(ret.WorkingSetID, 0, this.UserId).then(e => {
-                    console.log(e)
-                    if (e == undefined) {
-                      this.loading.dismiss();
-                      this.toast('資料同步失败');
-                    }
-                    if (e.Result == 'true') {
-                      var objWorkingSetAttachmentMap = [];
-                      var listtype3 = typeof e.AttachmentsResult.objWorkingSetAttachmentMap;
-                      if (listtype3 == 'object' && e.AttachmentsResult.objWorkingSetAttachmentMap.length == undefined) {
-                        objWorkingSetAttachmentMap.push(e.AttachmentsResult.objWorkingSetAttachmentMap);
-                      } else {
-                        objWorkingSetAttachmentMap = e.AttachmentsResult.objWorkingSetAttachmentMap;
-                      }
-                      for (var i = 0; i < objWorkingSetAttachmentMap.length; i++) {
-                        this.saveImage_ImgId(objWorkingSetAttachmentMap[i].RecordID, objWorkingSetAttachmentMap[i].AttachmentId);
-                      }
-                      this.SysnAllWeb();
-                      this.toast('資料同步成功');
-                    } else {
-                      this.loading.dismiss();
-                      this.toast('資料同步失败');
-                    }
-                  })
-                }
-              }
-            })
+            //   if (k.Result == 'true') {
+            //     w++;
+            //     if (w == this.allImgList.length) {
+            //       this.api.ExecuteWorkingSet(ret.WorkingSetID, 0, this.UserId).then(e => {
+            //         console.log(e)
+            //         if (e == undefined) {
+            //           this.loading.dismiss();
+            //           this.toast('資料同步失败');
+            //         }
+            //         if (e.Result == 'true') {
+            //           var objWorkingSetAttachmentMap = [];
+            //           var listtype3 = typeof e.AttachmentsResult.objWorkingSetAttachmentMap;
+            //           if (listtype3 == 'object' && e.AttachmentsResult.objWorkingSetAttachmentMap.length == undefined) {
+            //             objWorkingSetAttachmentMap.push(e.AttachmentsResult.objWorkingSetAttachmentMap);
+            //           } else {
+            //             objWorkingSetAttachmentMap = e.AttachmentsResult.objWorkingSetAttachmentMap;
+            //           }
+            //           for (var i = 0; i < objWorkingSetAttachmentMap.length; i++) {
+            //             this.saveImage_ImgId(objWorkingSetAttachmentMap[i].RecordID, objWorkingSetAttachmentMap[i].AttachmentId);
+            //           }
+            //           this.SysnAllWeb();
+            //           this.toast('資料同步成功');
+            //         } else {
+            //           this.loading.dismiss();
+            //           this.toast('資料同步失败');
+            //         }
+            //       })
+            //     }
+            //   }
+            // })
 
             // }, j * 100);
           }
@@ -427,14 +432,14 @@ export class HomePage extends AppBase {
             console.log(e)
             if (e == undefined) {
               this.loading.dismiss();
-              this.toast('資料同步失败');
+              this.toast('未能傳送資料到數據庫');
             }
             if (e.Result == 'true') {
               this.SysnAllWeb();
               this.toast('資料同步成功');
             } else {
               this.loading.dismiss();
-              this.toast('資料同步失败');
+              this.toast('未能傳送資料到數據庫');
             }
           })
         }
@@ -443,11 +448,51 @@ export class HomePage extends AppBase {
     })
   }
 
-  getImageId(ClientID, AttachmentIDsList) {
-    var imgserver = new ImageServe();
-    imgserver.getImageId(ClientID).then(img => {
 
-    })
+  callupload(img, j, WorkingSetID) {
+    setTimeout(() => {
+    
+      var Base64ImgString = img[j].Base64ImgString.split(",");
+      this.api.UploadImgPart('HomeVisit', img[j].VisitId, Base64ImgString[1], WorkingSetID, img[j].AttachmentId, img[j].ImgName).then(k => {
+        console.log('UploadImgPart', k)
+        if (k.Result == 'false') {
+          this.loading.dismiss();
+          this.toast('圖片上傳失败');
+          return;
+        }
+        if (k.Result == 'true') {
+          this.w++;
+          if (this.w === this.allImgList.length) {
+            this.api.ExecuteWorkingSet(WorkingSetID, 0, this.UserId).then(e => {
+              console.log(e)
+              if (e == undefined) {
+                this.loading.dismiss();
+                this.toast('未能傳送資料到數據庫');
+              }
+              if (e.Result == 'true') {
+                var objWorkingSetAttachmentMap = [];
+                var listtype3 = typeof e.AttachmentsResult.objWorkingSetAttachmentMap;
+                if (listtype3 == 'object' && e.AttachmentsResult.objWorkingSetAttachmentMap.length == undefined) {
+                  objWorkingSetAttachmentMap.push(e.AttachmentsResult.objWorkingSetAttachmentMap);
+                } else {
+                  objWorkingSetAttachmentMap = e.AttachmentsResult.objWorkingSetAttachmentMap;
+                }
+                for (var i = 0; i < objWorkingSetAttachmentMap.length; i++) {
+                  this.saveImage_ImgId(objWorkingSetAttachmentMap[i].RecordID, objWorkingSetAttachmentMap[i].AttachmentId);
+                }
+                this.SysnAllWeb();
+                this.toast('資料同步成功');
+                this.w=0;
+              } else {
+                this.loading.dismiss();
+                this.toast('未能傳送資料到數據庫');
+              }
+            })
+          }
+        }
+      })
+
+    }, j * 1000);
   }
 
   phone(caseID, LocalId) {

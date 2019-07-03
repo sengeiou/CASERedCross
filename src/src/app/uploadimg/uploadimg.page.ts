@@ -98,8 +98,6 @@ export class UploadimgPage extends AppBase {
 
   delimg(e) {
     console.log(e)
-    // this.list.splice(e,1);
-    // console.log(this.list)
     this.showConfirm('確定要刪除圖片', (ret) => {
       if (ret == true) {
         if (this.params.uploadtype == 'Y') {
@@ -108,10 +106,15 @@ export class UploadimgPage extends AppBase {
             DeletePicString = '';
           }
           if (e.ImgId != 0) {
-            DeletePicString = DeletePicString + ',' + e.ImgId
+            if(DeletePicString==''){
+              DeletePicString =  e.ImgId
+            }else{
+              DeletePicString = DeletePicString + ',' + e.ImgId
+            }
+           
           }
           var visit = new VisitServe();
-          visit.saveDeletePicString(this.params.visitid, DeletePicString).then(k => {
+          visit.saveDeletePicString(this.visitid, DeletePicString).then(k => {
             console.log(k);
           })
         }
@@ -127,6 +130,9 @@ export class UploadimgPage extends AppBase {
   }
 
   async selectPhoto() {
+    if(this.list.length==10){
+      return;
+    }
     var imgserver = new ImageServe();
     const actionSheet = await this.actionSheetController.create({
       // header: "选择头像",
@@ -170,7 +176,7 @@ export class UploadimgPage extends AppBase {
           handler: () => {
             let options: CameraOptions = {
               quality: 50,
-              allowEdit: false,
+              allowEdit: true,
               destinationType: this.camera.DestinationType.FILE_URI,
               sourceType: this.camera.PictureSourceType.SAVEDPHOTOALBUM,
               encodingType: this.camera.EncodingType.JPEG,
@@ -178,7 +184,7 @@ export class UploadimgPage extends AppBase {
             };
 
             this.camera.getPicture(options).then((imagepath) => {
-
+                // alert(imagepath)
               this.base64.encodeFile(imagepath).then((code) => {
 
                 if (this.VisitLocalId != 0) {

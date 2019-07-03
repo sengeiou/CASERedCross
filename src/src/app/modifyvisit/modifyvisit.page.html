@@ -453,9 +453,9 @@
           </div>
           <div class="flex-row margin-top-5">
             <div>BMI</div>
-            <div class="margin-left-20" *ngIf="(Weight!=null && Weight!=0) || VisitStatus==2">
+            <div class="margin-left-20" *ngIf="(Weight!=null && Weight!=0) && VisitStatus!=2 && casedata.Height!=0">
               {{(Weight/(casedata.Height*casedata.Height)).toFixed(2)}}</div>
-            <div class="margin-left-20" *ngIf="(Weight==null || Weight==0) && VisitStatus!=2">{{visit.Bmi}}</div>
+            <div class="margin-left-20" *ngIf="Weight==null || Weight==0">{{visit.Bmi}}</div>
 
 
           </div>
@@ -477,10 +477,10 @@
           </div>
           <div class="flex-row margin-top-5">
             <div>腰臀比例</div>
-            <div class="margin-left-20" *ngIf="Waist!=null && Waist!=0 && Hip!=null && Hip!=0 && VisitStatus==2">
+            <div class="margin-left-20" *ngIf="Waist!=null && Waist!=0 && Hip!=null && Hip!=0 && VisitStatus!=2">
               {{(Waist/Hip).toFixed(2)}}</div>
-            <div class="margin-left-20" *ngIf="(Waist==null || Waist==0)&& VisitStatus!=2 ">{{visit.WHRatio}}</div>
-            <div class="margin-left-20" *ngIf=" Waist==0 &&  Hip==0 && VisitStatus==2 && visit.WHRatio==0">0.00</div>
+            <div class="margin-left-20" *ngIf="(Waist==null || Waist==0 )&& VisitStatus!=2 ">{{visit.WHRatio}}</div>
+            <!-- <div class="margin-left-20" *ngIf=" Waist==0 &&  Hip==0  && visit.WHRatio==0">0.00</div> -->
           </div>
         </div>
 

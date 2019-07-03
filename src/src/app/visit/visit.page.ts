@@ -131,11 +131,12 @@ export class VisitPage extends AppBase {
   onMyLoad() {
     //参数
     this.params;
-    this.getVolunteerList()
+    this.getVolunteerList();
+    this.getCase();
   }
   onMyShow() {
-    this.getCase()
-    this.getVisitId()
+    // this.getCase()
+    // this.getVisitId()
     if (AppBase.LastQrcode != '') {
       this.qrcodeHandle(AppBase.LastQrcode);
       AppBase.LastQrcode = "";
@@ -145,9 +146,9 @@ export class VisitPage extends AppBase {
   }
 
   signOut() {
-    this.showConfirm('资料还没有保存，你確定要退出吗？', (e) => {
+    this.showConfirm('未經保存的資料將會遺失，你確定要離開嗎？', (e) => {
       if (e == true) {
-        if(this.visit_LocalId==0){
+        if (this.visit_LocalId == 0) {
           var imgserver = new ImageServe();
           imgserver.deleteImage2_linshi();
         }
@@ -730,7 +731,20 @@ export class VisitPage extends AppBase {
 
   getOtherSpecialNeed(e) {
     console.log(e)
-    this.OtherSpecialNeed = e
+    this.OtherSpecialNeed = e;
+    if (e == 2) {
+      this.NeedsContenttlist = [{
+        type: false, value: 1
+      }, {
+        type: false, value: 2
+      }, {
+        type: false, value: 3
+      }, {
+        type: false, value: 4
+      }
+      ]
+      this.OtherSpecialNeedService = '';
+    }
   }
 
   OtherSupplement(visitId) {
@@ -817,7 +831,7 @@ export class VisitPage extends AppBase {
     var Status = 1;
     var TaskId = 0;
 
-    if (this.Bmi == null) {
+    if (this.Bmi == null || this.Bmi == Infinity) {
       this.Bmi = 0;
     }
     if (this.Weight == null) {
@@ -880,6 +894,19 @@ export class VisitPage extends AppBase {
     if (!this.VisitDate) {
       this.toast('你沒有填寫實際探訪日期');
       return;
+    }
+
+    if (this.VisitStartTime2 != '' && this.VisitEndTime2 != '') {
+      var oDate1 = new Date(this.VisitStartTime2);
+      var oDate2 = new Date(this.VisitEndTime2);
+      if (oDate1.getTime() > oDate2.getTime()) {
+        this.toast('開始時間不能遲於結束時間');
+        return;
+      }
+      if (oDate1.getTime() == oDate2.getTime()) {
+        this.toast('開始和結束時間不能一樣');
+        return;
+      }
     }
 
     if (ret == 'web') {
@@ -1045,7 +1072,7 @@ export class VisitPage extends AppBase {
           return;
         }
         if (this.OtherAccident == 1 && this.OtherAccidentNoOfDay == 0) {
-          this.toast('你沒有填寫曾發生突發事件');
+          this.toast('曾發生突發事件次數必需大於0');
           return;
         }
 
@@ -1053,7 +1080,7 @@ export class VisitPage extends AppBase {
           this.toast('你沒有填寫有否提出特別需要');
           return;
         }
-        if (this.OtherSpecialNeed == 1 && this.OtherSpecialNeedService == '') {
+        if (this.OtherSpecialNeed == 2 && this.OtherSpecialNeedService == '') {
           this.toast('你沒有填寫提出特別需要');
           return;
         }
@@ -1079,7 +1106,7 @@ export class VisitPage extends AppBase {
         this.OtherHospOtherIllness, this.OtherHospOtherIllnessNoOfDay, this.OtherRemarks, this.OtherSpecialNeed, this.OtherSpecialNeedService, this.ScheduleDate,
         this.ScheduleTime, Status, this.VisitDate, this.VisitDetailIndoor, this.VisitDetailIndoorRemarks, this.VisitDetailOther, this.VisitDetailOutdoor,
         this.VisitDetailOutdoorRemarks, this.VisitEndTime, this.VisitStartTime, this.VisitStatus, this.VisitStatusRemarks, this.WHRatio, this.Waist, this.Weight,
-        this.NeedsContent, this.SYS1, this.DlA1, this.SYS2, this.DlA2, this.heartBeats1, this.heartBeats2, this.presentVolunteer, this.supportVolunteer, this.DeletePicString, this.ScheduleDate_Display).then(e => {
+        this.NeedsContent, this.SYS1, this.DlA1, this.SYS2, this.DlA2, this.heartBeats1, this.heartBeats2, this.presentVolunteer, this.supportVolunteer, this.ScheduleDate_Display).then(e => {
           console.log(e)
           if (e.res.rowsAffected == 1) {
             if (ret != 'web') {
@@ -1163,7 +1190,7 @@ export class VisitPage extends AppBase {
         this.OtherHospOtherIllness, this.OtherHospOtherIllnessNoOfDay, this.OtherRemarks, this.OtherSpecialNeed, this.OtherSpecialNeedService, this.ScheduleDate,
         this.ScheduleTime, Status, TaskId, this.VisitDate, this.VisitDetailIndoor, this.VisitDetailIndoorRemarks, this.VisitDetailOther, this.VisitDetailOutdoor,
         this.VisitDetailOutdoorRemarks, this.VisitEndTime, VisitId, this.VisitStartTime, this.VisitStatus, this.VisitStatusRemarks, this.WHRatio, this.Waist, this.Weight,
-        this.NeedsContent, this.SYS1, this.DlA1, this.SYS2, this.DlA2, this.heartBeats1, this.heartBeats2, this.presentVolunteer, this.supportVolunteer, this.DeletePicString, this.ScheduleDate_Display,this.casedata.Height).then(e => {
+        this.NeedsContent, this.SYS1, this.DlA1, this.SYS2, this.DlA2, this.heartBeats1, this.heartBeats2, this.presentVolunteer, this.supportVolunteer, this.DeletePicString, this.ScheduleDate_Display, this.casedata.Height).then(e => {
           if (e.res.insertId > 0) {
             this.visit_LocalId = e.res.insertId;
             var imgserver = new ImageServe();
@@ -1171,11 +1198,11 @@ export class VisitPage extends AppBase {
               console.log(img)
               var imgList_linshi = [];
               imgList_linshi = Array.from(img.res.rows);
-              var imgsun=0;
+              var imgsun = 0;
               for (var k = 0; k < imgList_linshi.length; k++) {
                 imgserver.addImage2(0, this.visit_LocalId, imgList_linshi[k].Base64ImgString, this.visit_LocalId).then(e => {
                   console.log(e);
-                  imgsun++
+                  imgsun++;
                   if (imgsun == imgList_linshi.length) {
                     imgserver.deleteImage2_linshi();
 
@@ -1188,13 +1215,16 @@ export class VisitPage extends AppBase {
                       var visit = new VisitServe();
                       visit.getVisitId(this.visit_LocalId).then((e) => {
                         console.log(e)
-                        var casedata = e.res.rows;
-                        var data = Array.from(casedata)[0]
+                        var visitdata = e.res.rows;
+                        var data = Array.from(visitdata)[0];
                         this.visit = data;
                         console.log(data);
-        
+                        
+                        var dd=[];
+                        dd=Array.from(visitdata);
+
                         var hvvlList = [];
-                        var Volunteerlist = this.visit.presentVolunteer.split(',');
+                        var Volunteerlist = dd[0].presentVolunteer.split(',');
                         console.log(Volunteerlist)
                         for (var i = 0; i < Volunteerlist.length; i++) {
                           console.log(Volunteerlist[i])
@@ -1205,7 +1235,7 @@ export class VisitPage extends AppBase {
                             }
                           }
                         }
-                        var supportVolunteer = this.visit.supportVolunteer.split(',');
+                        var supportVolunteer =  dd[0].supportVolunteer.split(',');
                         console.log(supportVolunteer)
                         for (var i = 0; i < supportVolunteer.length; i++) {
                           console.log(supportVolunteer[i])
@@ -1217,7 +1247,7 @@ export class VisitPage extends AppBase {
                         }
                         // return;
                         this.visit.hvvlList = hvvlList;
-        
+
                         var visitId = this.visit_LocalId;
                         if (this.visit.VisitId > 0) {
                           visitId = this.visit.VisitId;
@@ -1236,15 +1266,15 @@ export class VisitPage extends AppBase {
                             this.uploadVisitListWeb()
                           })
                         })
-        
+
                         // var medicalRecord = new MedicalRecordServe();
                         // medicalRecord.getAllMedicalRecordList(this.params.caseid).then((e) => {
                         //   this.medicAppointLogList = Array.from(e.res.rows);
                         // })
-        
+
                         // this.uploadVisitListWeb()
                       })
-        
+
                     }
 
 
@@ -1253,8 +1283,8 @@ export class VisitPage extends AppBase {
               }
             })
 
-            
-            
+
+
           }
 
         })
@@ -1269,9 +1299,9 @@ export class VisitPage extends AppBase {
   }
 
   uploadimg() {
-    
+
     // return
-    this.navigate('uploadimg', { VisitLocalId: this.visit_LocalId,visitid: 0 });
+    this.navigate('uploadimg', { VisitLocalId: this.visit_LocalId, visitid: 0 });
     // if (this.visit_LocalId <= 0) {
     //   this.toast('資料没有保存，请先保存!');
     //   return;
@@ -1335,7 +1365,11 @@ export class VisitPage extends AppBase {
     console.log(hvLogList)
 
     this.api.SaveAll(hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList, this.params.UserId, 'one').then((ret) => {
-      console.log(ret)
+      console.log(ret);
+      if (ret==undefined) {
+        this.loading.dismiss();
+        this.toast('未能傳送資料到數據庫');
+      }
       if (ret.Result == 'true') {
 
         var AttchList = []
@@ -1356,14 +1390,18 @@ export class VisitPage extends AppBase {
             var Base64ImgString = this.imgList[j].Base64ImgString.split(",");
             this.api.UploadImgPart('HomeVisit', this.imgList[j].VisitId, Base64ImgString[1], ret.WorkingSetID, AttachmentIdList[j], this.imgList[j].ImgName).then(k => {
               console.log(k)
-
+              if (k.Result == 'false') {
+                this.loading.dismiss();
+                this.toast('圖片上傳失败');
+                return;
+              }
               if (k.Result == 'true') {
                 w++;
                 if (w == this.imgList.length) {
                   this.api.ExecuteWorkingSet(ret.WorkingSetID, this.casedata.CaseId, this.params.UserId).then(e => {
                     if (e == undefined) {
                       this.loading.dismiss();
-                      this.toast('資料上傳失败');
+                      this.toast('未能傳送資料到數據庫');
                     }
                     console.log(e)
                     if (e.Result == 'true') {
@@ -1380,7 +1418,7 @@ export class VisitPage extends AppBase {
                       }
 
                       var visit = new VisitServe();
-                      visit.sevaVisitSavedStatus(this.LocalId).then(e => {
+                      visit.sevaVisitSavedStatus(this.visit_LocalId).then(e => {
                       })
 
                       for (var t = 0; t < this.medicAppointLogList.length; t++) {
