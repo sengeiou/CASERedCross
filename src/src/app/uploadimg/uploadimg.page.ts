@@ -42,11 +42,13 @@ export class UploadimgPage extends AppBase {
   list = [];
   VisitLocalId = 0;
   visitid = 0;
+  DeletePicString=''
   onMyLoad() {
     //参数
     this.params;
-    this.VisitLocalId = this.params.VisitLocalId
-    this.visitid = this.params.visitid
+    this.VisitLocalId = this.params.VisitLocalId;
+    this.visitid = this.params.visitid;
+    this.DeletePicString = this.params.DeletePicString;
   }
   onMyShow() {
     console.log(this.params.visitid)
@@ -101,20 +103,20 @@ export class UploadimgPage extends AppBase {
     this.showConfirm('確定要刪除圖片', (ret) => {
       if (ret == true) {
         if (this.params.uploadtype == 'Y') {
-          let DeletePicString = this.params.DeletePicString;
-          if (DeletePicString == null) {
-            DeletePicString = '';
+         
+          if (this.DeletePicString == null) {
+            this.DeletePicString = '';
           }
           if (e.ImgId != 0) {
-            if(DeletePicString==''){
-              DeletePicString =  e.ImgId
+            if(this.DeletePicString==''){
+              this.DeletePicString =  e.ImgId
             }else{
-              DeletePicString = DeletePicString + ',' + e.ImgId
+              this.DeletePicString = this.DeletePicString + ',' + e.ImgId
             }
            
           }
           var visit = new VisitServe();
-          visit.saveDeletePicString(this.visitid, DeletePicString).then(k => {
+          visit.saveDeletePicString(this.visitid, this.DeletePicString).then(k => {
             console.log(k);
           })
         }

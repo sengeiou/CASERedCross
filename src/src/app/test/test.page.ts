@@ -58,10 +58,10 @@ export class TestPage extends AppBase {
   data = [];
 
   onMyShow() {
-    this.number = '91001';
-    this.password = 'carman';
-    // this.number = '';
-    // this.password = '';
+    // this.number = '91001';
+    // this.password = 'carman';
+    this.number = '';
+    this.password = '';
 
     this.wangluo = this.network.type;
     console.log(this.network.type)
@@ -95,6 +95,7 @@ export class TestPage extends AppBase {
   VolId = 0;
 
   login() {
+    this.wangluo = this.network.type;
     if (this.number.trim() == "") {
       this.toast('義工編號不能留空');
       return;
@@ -124,9 +125,9 @@ export class TestPage extends AppBase {
             if (time < 24 * 60 * 60 * 1000) {
               this.navigate('home', { id: rows[0].VolId })
               this.update()
-              this.toast('登录成功');
+              this.toast('登錄成功');
             } else {
-              this.toast('你当前处于离线状态，不可登录');
+              this.toast('你当前处于离线状态，不可登錄');
             }
 
           } else {
@@ -135,21 +136,7 @@ export class TestPage extends AppBase {
           }
         })
 
-      // } else {
-      //   lastlogininfo = JSON.parse(lastlogininfo);
-      //   var logintime = parseInt(lastlogininfo.logintime);
-      //   var now = (new Date()).getTime();
-      //   if ((now - logintime) > 1 * 60 * 1000) {
-      //     if (this.number == lastlogininfo.number && this.password == lastlogininfo.password) {
-      //       this.VolId = lastlogininfo.VolId;
-      //       this.navigate('home', { id: this.VolId });
-      //     } else {
-      //       this.toast('你的義工編號或密碼不正確');
-      //     }
-      //   }
-      // }
     } else {
-      // alert('在线登录')
       var userServe = new UserServe();
       this.api.VolunteerLogin(this.number, this.password).then((ret) => {
         if (ret.Result == "true") {

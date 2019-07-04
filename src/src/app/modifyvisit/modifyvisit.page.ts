@@ -116,7 +116,7 @@ export class ModifyvisitPage extends AppBase {
   OtherRemarks = '';
   NeedsContent = '';
 
-  DeletePicString = '';
+  // DeletePicString = '';
 
   presentVolunteer_show = '';
 
@@ -160,7 +160,6 @@ export class ModifyvisitPage extends AppBase {
     if (this.visit.Status == 1) {
       this.saomiao_show = true;
     }
-
   }
 
   saomiao2() {
@@ -413,27 +412,27 @@ export class ModifyvisitPage extends AppBase {
 
 
 
-        var imgserver = new ImageServe();
-        var visitId = this.LocalId;
-        if (this.visit.VisitId > 0) {
-          visitId = this.visit.VisitId;
-        }
+        // var imgserver = new ImageServe();
+        // var visitId = this.LocalId;
+        // if (this.visit.VisitId > 0) {
+        //   visitId = this.visit.VisitId;
+        // }
 
-        imgserver.getImageList_old(visitId).then(e => {
-          console.log('圖片', Array.from(e.res.rows))
-          var oldList = [];
-          oldList = Array.from(e.res.rows);
-          var hvImgKeepListStr = '';
-          for (var j = 0; j < oldList.length; j++) {
-            if (hvImgKeepListStr == '') {
-              hvImgKeepListStr = oldList[j].ImgId
-            } else {
-              hvImgKeepListStr = hvImgKeepListStr + ',' + oldList[j].ImgId
-            }
-          }
+        // imgserver.getImageList_old(visitId).then(e => {
+        //   console.log('圖片', Array.from(e.res.rows))
+        //   var oldList = [];
+        //   oldList = Array.from(e.res.rows);
+        //   var hvImgKeepListStr = '';
+        //   for (var j = 0; j < oldList.length; j++) {
+        //     if (hvImgKeepListStr == '') {
+        //       hvImgKeepListStr = oldList[j].ImgId
+        //     } else {
+        //       hvImgKeepListStr = hvImgKeepListStr + ',' + oldList[j].ImgId
+        //     }
+        //   }
 
-          this.hvImgKeepListStr = hvImgKeepListStr;
-        })
+        //   this.hvImgKeepListStr = hvImgKeepListStr;
+        // })
 
         var medicalRecord = new MedicalRecordServe();
         var SavedStatus = 1;
@@ -734,8 +733,7 @@ export class ModifyvisitPage extends AppBase {
   }
 
   saveVisit_Neurou(visitId) {
-    console.log(visitId, this.VisitDate, this.VisitStartTime, this.VisitEndTime, this.presentVolunteer, this.supportVolunteer, this.Location, this.LocationRemarks, this.VisitStatus, this.VisitStatusRemarks, this.params.caseID)
-
+   
     this.addVisit('no')
 
   }
@@ -757,7 +755,7 @@ export class ModifyvisitPage extends AppBase {
   getWeight(e) {
     console.log(e)
     this.Weight = e;
-    this.Bmi = this.Weight / (1.72 * 1.72)
+    // this.Bmi = this.Weight / (1.72 * 1.72)
   }
 
   getWaist(e) {
@@ -952,7 +950,6 @@ export class ModifyvisitPage extends AppBase {
         this.presentVolunteer = this.presentVolunteer + ',' + this.presentVolunteerList_show[j]
       }
     }
-
 
 
 
@@ -1334,7 +1331,25 @@ export class ModifyvisitPage extends AppBase {
                     this.medicAppointLogList = Array.from(e.res.rows);
                     console.log(this.medicAppointLogList)
                     // return
-                    this.uploadVisitListWeb('1')
+
+                    imgserver.getImageList_old(visitId).then(e => {
+                      console.log('圖片', Array.from(e.res.rows))
+                      var oldList = [];
+                      oldList = Array.from(e.res.rows);
+                      var hvImgKeepListStr = '';
+                      for (var j = 0; j < oldList.length; j++) {
+                        if (hvImgKeepListStr == '') {
+                          hvImgKeepListStr = oldList[j].ImgId
+                        } else {
+                          hvImgKeepListStr = hvImgKeepListStr + ',' + oldList[j].ImgId
+                        }
+                      }
+            
+                      this.hvImgKeepListStr = hvImgKeepListStr;
+
+                      this.uploadVisitListWeb('1')
+                    })
+                    
                   })
                 })
               }

@@ -304,6 +304,18 @@ export class ModifyphonePage extends AppBase {
       this.toast('你沒有輸入電話慰問日期');
       return;
     }
+    if (this.CallStartTime != '' && this.CallEndTime != '') {
+      if (this.CallStartTime == this.CallEndTime) {
+        this.toast('開始和結束時間不能一樣');
+        return;
+      }
+
+      if (this.CallStartTime > this.CallEndTime) {
+        this.toast('開始時間不能遲於結束時間');
+        return;
+      }
+    }
+
 
 
     if (ret == 'web') {
@@ -318,7 +330,7 @@ export class ModifyphonePage extends AppBase {
       }
 
       if (this.CallStartTime > this.CallEndTime) {
-        this.toast('開始和結束時間不能一樣');
+        this.toast('開始時間不能遲於結束時間');
         return;
       }
       if (this.CannotContact == 0) {

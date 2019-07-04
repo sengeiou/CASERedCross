@@ -117,7 +117,7 @@ export class PhonePage extends AppBase {
     }
   }
 
-  VisitDate=null;
+  VisitDate = null;
   getAllVisitScheduleDate() {
     var visit = new VisitServe();
     visit.getAllVisitScheduleDate(this.params.caseID).then((e) => {
@@ -127,7 +127,7 @@ export class PhonePage extends AppBase {
         var arr = Array.from(e.res.rows)[0];
         // this.phone.ScheduleDate_show=AppUtil.FormatDate2(this.phone.VisitDate.ScheduleDate)
         this.phone.VisitDate = arr;
-        this.VisitDate=arr;
+        this.VisitDate = arr;
         console.log(arr);
       }
       // alert(this.VisitDate)
@@ -222,19 +222,34 @@ export class PhonePage extends AppBase {
       this.toast('你沒有輸入電話慰問日期');
       return;
     }
+
+    if(this.CallStartTime != '' && this.CallEndTime != ''){
+      var oDate1 = new Date(this.CallStartTime);
+      var oDate2 = new Date(this.CallEndTime);
+      if (oDate1.getTime() == oDate2.getTime()) {
+        this.toast('開始和結束時間不能一樣');
+        return;
+      }
+  
+      if (oDate1.getTime() > oDate2.getTime()) {
+        this.toast('開始時間不能遲於結束時間');
+        return;
+      }
+    }
     
+
     if (ret == 'web') {
       if (this.CallStartTime == '' || this.CallEndTime == '') {
         this.toast('你沒有輸入電話慰問時間');
         return;
       }
-
+      var oDate1 = new Date(this.CallStartTime);
+      var oDate2 = new Date(this.CallEndTime);
       if (oDate1 == oDate2) {
         this.toast('開始和結束時間不能一樣');
         return;
       }
-      var oDate1 = new Date(this.CallStartTime);
-      var oDate2 = new Date(this.CallEndTime);
+
       if (oDate1.getTime() > oDate2.getTime()) {
         this.toast('開始時間不能遲於結束時間');
         return;
@@ -243,7 +258,7 @@ export class PhonePage extends AppBase {
         this.toast('你沒有輸入聯絡状态');
         return;
       }
-      
+
       if (this.CannotContact == 2) {
         if (this.Detail == '') {
           this.toast('你沒有輸入慰問內容');

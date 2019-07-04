@@ -341,7 +341,7 @@ export class AppBase implements OnInit {
     idle() {
         var time = this.operationTimg_end - this.operationTimg_start;
         if (time > 5 * 60 * 1000) {
-            
+
         }
     }
 

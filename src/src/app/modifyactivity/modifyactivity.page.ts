@@ -330,6 +330,17 @@ export class ModifyactivityPage extends AppBase {
       this.remarks4 = ''
     }
 
+    if (this.activityStartTime != '' && this.activityEndTime != '') {
+      if (this.activityStartTime > this.activityEndTime) {
+        this.toast('開始時間不能遲於結束時間');
+        return;
+      }
+      if (this.activityStartTime == this.activityEndTime) {
+        this.toast('開始和結束時間不能一樣');
+        return;
+      }
+    }
+
     if (ret == 'web') {
       if (this.activityStartTime == '') {
         this.toast('你沒有輸入開始時間');
