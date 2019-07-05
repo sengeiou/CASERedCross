@@ -58,10 +58,10 @@ export class TestPage extends AppBase {
   data = [];
 
   onMyShow() {
-    this.number = '91001';
-    this.password = 'carman';
-    // this.number = '';
-    // this.password = '';
+    // this.number = '91001';
+    // this.password = 'carman';
+    this.number = '';
+    this.password = '';
 
     this.wangluo = this.network.type;
     console.log(this.network.type)

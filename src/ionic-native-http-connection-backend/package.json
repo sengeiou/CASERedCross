@@ -1,0 +1,116 @@
+{
+  "name": "ionic-native-http-connection-backend",
+  "version": "6.0.0",
+  "description": "A solution to CORS problem with Ionic and WKWebView",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "commit": "git-cz",
+    "test": "jest",
+    "semantic-release": "semantic-release",
+    "build": "rimraf aot dist && ngc",
+    "precommit": "lint-staged"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sneas/ionic-native-http-connection-backend.git"
+  },
+  "keywords": [
+    "ionic",
+    "ionic3",
+    "wk-web-view",
+    "cors"
+  ],
+  "author": "Dima Snisarenko",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sneas/ionic-native-http-connection-backend/issues"
+  },
+  "homepage": "https://github.com/sneas/ionic-native-http-connection-backend#readme",
+  "devDependencies": {
+    "@angular/common": "^8.0.2",
+    "@angular/compiler": "^8.0.2",
+    "@angular/compiler-cli": "^8.0.2",
+    "@angular/core": "^8.0.2",
+    "@angular/forms": "^8.0.2",
+    "@angular/platform-browser": "^8.0.2",
+    "@ionic-native/core": "^5.8.0",
+    "@ionic-native/http": "^5.8.0",
+    "@ionic/angular": "^4.5.0",
+    "@ionic/core": "^4.5.0",
+    "@semantic-release/git": "^7.0.12",
+    "@types/jest": "^24.0.15",
+    "babel-jest": "^24.8.0",
+    "commitizen": "^3.1.1",
+    "core-js": "^3.1.4",
+    "cz-conventional-changelog": "^2.1.0",
+    "husky": "^2.5.0",
+    "jest": "^24.8.0",
+    "jest-config": "^24.8.0",
+    "lint-staged": "^8.2.1",
+    "prettier": "^1.18.2",
+    "rimraf": "^2.6.3",
+    "rxjs": "~6.5.2",
+    "semantic-release": "^15.13.16",
+    "ts-jest": "^24.0.2",
+    "typescript": "~3.4.5",
+    "zone.js": "^0.9.1"
+  },
+  "peerDependencies": {
+    "@ionic-native/http": "^5.0.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.(ts|js|html)$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "html",
+      "json"
+    ],
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "tsconfig.test.json"
+      }
+    },
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.init.ts"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!@ionic)"
+    ]
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "publishConfig": {
+    "tag": "next"
+  },
+  "release": {
+    "branch": "master",
+    "prepare": [
+      "@semantic-release/npm",
+      {
+        "path": "@semantic-release/git",
+        "assets": [
+          "package.json",
+          "package-lock.json"
+        ],
+        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+      }
+    ]
+  },
+  "dependencies": {
+    "@angular/router": "^8.0.2"
+  }
+}

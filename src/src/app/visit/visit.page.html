@@ -161,7 +161,7 @@
             <ion-radio type="radio" name='location' checked="{{Location==2?true:false}}" class="radio "
               (click)="getLocation(2)" ></ion-radio>其他
             <div class="flex-1 margin-left-20">
-              <input *ngIf=" Location==2" class="input_s radius-2"
+              <input *ngIf=" Location==2" class="input_s radius-2" autofocus='{{autofocus}}'
                 placeholder="輸入最多50字" [(ngModel)]="LocationRemarks"
                 maxlength="50" style="width:100%;" />
 
@@ -228,8 +228,7 @@
               (click)="getVisitStatus(2)" ></ion-radio>未能
           </div>
           <div class="flex-1 margin-top-10" *ngIf=' VisitStatus==2'>
-            <input class="input_s radius-2"
-              placeholder="{{VisitStatusRemarks?VisitStatusRemarks:'輸入最多50字'}}"
+            <input class="input_s radius-2" autofocus='{{autofocus}}' placeholder="輸入最多50字"
               [(ngModel)]="VisitStatusRemarks" name='VisitStatusRemarks' style="width:100%;" />
           </div>
         </div>
@@ -285,7 +284,7 @@
                 disabled='{{VisitStatus==2?disabled:false}}'></ion-checkbox>
               其他
               <div class="flex-1" *ngIf='VisitDetailIndoorlist[5].type==true'>
-                <input class="radius-2 other-input" maxlength="50" placeholder="輸入最多50字"
+                <input class="radius-2 other-input" maxlength="50" placeholder="輸入最多50字" 
                   [(ngModel)]="VisitDetailIndoorRemarks" name='otherIndoorActivities' style="width: 100%;" />
               </div>
 

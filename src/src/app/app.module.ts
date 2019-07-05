@@ -15,11 +15,14 @@ import { Network } from '@ionic-native/network/ngx';
 import { DNS } from '@ionic-native/dns/ngx';
 import { QRScanner } from '@ionic-native/qr-scanner/ngx';
 import { ImagemaxPage } from './imagemax/imagemax.page';
+import { HttpBackend, HttpXhrBackend } from '@angular/common/http';
+import { NativeHttpModule, NativeHttpBackend, NativeHttpFallback } from 'ionic-native-http-connection-backend';
+import { Platform } from '@ionic/angular';
 
 @NgModule({
   declarations: [AppComponent,ImagemaxPage],
   entryComponents: [ImagemaxPage],
-  imports: [BrowserModule, IonicModule.forRoot( {
+  imports: [BrowserModule,NativeHttpModule, IonicModule.forRoot( {
     mode: 'ios',
     swipeBackEnabled:false,
     hardwareBackButton: false
@@ -32,7 +35,8 @@ import { ImagemaxPage } from './imagemax/imagemax.page';
     SQLite,
     Network,
     DNS,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    {provide: HttpBackend, useClass: NativeHttpFallback, deps: [Platform, NativeHttpBackend, HttpXhrBackend]},
   ],
   bootstrap: [AppComponent]
 })

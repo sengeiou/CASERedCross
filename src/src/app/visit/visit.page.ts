@@ -128,6 +128,8 @@ export class VisitPage extends AppBase {
   time_type = ''
   visit_LocalId = 0;
 
+  autofocus='';//自动聚焦
+
   onMyLoad() {
     //参数
     this.params;
@@ -495,15 +497,22 @@ export class VisitPage extends AppBase {
   getLocation(e) {
     console.log(e)
     this.Location = e;
-
+    this.autofocus=''
+    if(e==2){
+      this.autofocus='autofocus';
+    }
   }
 
   getVisitStatus(e) {
     console.log(e)
     this.VisitStatus = e;
+    this.autofocus=''
     if (e == 2) {
       this.showConfirm('一旦按選，在這按鈕以下的資料將會清空，你確定要按選嗎？', (e) => {
-        if (e) {
+        if (e==true) {
+          if(e==2){
+            this.autofocus='autofocus';
+          }
           this.otherIndoorActivities = '';//其他室内活动输入
           this.outdoorActivities = '';//室外活动
           this.otherOutdoorActivities = '';//其他室外活动输入
@@ -834,16 +843,16 @@ export class VisitPage extends AppBase {
     if (this.Bmi == null || this.Bmi == Infinity) {
       this.Bmi = 0;
     }
-    if (this.Weight == null) {
+    if (this.Weight == null || this.Weight == '') {
       this.Weight = 0;
     }
-    if (this.Waist == null) {
+    if (this.Waist == null || this.Waist == '') {
       this.Waist = 0;
     }
-    if (this.Hip == null) {
+    if (this.Hip == null || this.Hip == '') {
       this.Hip = 0;
     }
-    if (this.WHRatio == null) {
+    if (this.WHRatio == null || this.WHRatio == Infinity) {
       this.WHRatio = 0;
     }
 

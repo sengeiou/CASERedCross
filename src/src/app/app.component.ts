@@ -28,7 +28,7 @@ export class AppComponent {
       DBMgr.GetInstance().Init(this.http, this.sqlite);
 
 
-      this.statusBar.styleDefault();
+      // this.statusBar.styleDefault();
       this.splashScreen.hide();
 
       const sub = this.platform.backButton.subscribeWithPriority(9999, () => {

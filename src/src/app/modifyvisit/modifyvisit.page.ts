@@ -380,6 +380,33 @@ export class ModifyvisitPage extends AppBase {
         this.OtherHospOtherIllnessNoOfDay = this.visit.OtherHospOtherIllnessNoOfDay
 
 
+        if (this.Weight == 0) {
+          this.Weight = null;
+        }
+        if (this.Waist == 0) {
+          this.Waist = null;
+        }
+        if (this.Hip == 0) {
+          this.Hip = null;
+        }
+        if (this.SYS1 == 0 ) {
+          this.SYS1 = null;
+        }
+        if (this.DlA1 == 0 ) {
+          this.DlA1 = null;
+        }
+        if (this.SYS2 == 0 ) {
+          this.SYS2 = null;
+        }
+        if (this.DlA2 == 0 ) {
+          this.DlA2 = null;
+        }
+        if (this.heartBeats1 == 0 ) {
+          this.heartBeats1 = null;
+        }
+        if (this.heartBeats2 == 0 ) {
+          this.heartBeats2 = null;
+        }
 
 
         if (this.visit.LifeStyleMeasureBsLocation == 1) {
@@ -409,30 +436,6 @@ export class ModifyvisitPage extends AppBase {
         } else if (this.visit.LifeStyleMeasureBpPeriod == 3) {
           this.LifeStyleMeasureBpPeriod_name = '每月'
         }
-
-
-
-        // var imgserver = new ImageServe();
-        // var visitId = this.LocalId;
-        // if (this.visit.VisitId > 0) {
-        //   visitId = this.visit.VisitId;
-        // }
-
-        // imgserver.getImageList_old(visitId).then(e => {
-        //   console.log('圖片', Array.from(e.res.rows))
-        //   var oldList = [];
-        //   oldList = Array.from(e.res.rows);
-        //   var hvImgKeepListStr = '';
-        //   for (var j = 0; j < oldList.length; j++) {
-        //     if (hvImgKeepListStr == '') {
-        //       hvImgKeepListStr = oldList[j].ImgId
-        //     } else {
-        //       hvImgKeepListStr = hvImgKeepListStr + ',' + oldList[j].ImgId
-        //     }
-        //   }
-
-        //   this.hvImgKeepListStr = hvImgKeepListStr;
-        // })
 
         var medicalRecord = new MedicalRecordServe();
         var SavedStatus = 1;
@@ -594,8 +597,6 @@ export class ModifyvisitPage extends AppBase {
 
   saveYuyue(visitId) {
 
-    console.log(visitId, this.ScheduleDate, this.ScheduleTime, this.params.caseID)
-
     this.addVisit('no')
 
   }
@@ -755,7 +756,7 @@ export class ModifyvisitPage extends AppBase {
   getWeight(e) {
     console.log(e)
     this.Weight = e;
-    // this.Bmi = this.Weight / (1.72 * 1.72)
+
   }
 
   getWaist(e) {
@@ -993,16 +994,16 @@ export class ModifyvisitPage extends AppBase {
     if (this.Bmi == null || this.Bmi == Infinity) {
       this.Bmi = 0;
     }
-    if (this.Weight == null) {
+    if (this.Weight == null || this.Weight == '') {
       this.Weight = 0;
     }
-    if (this.Waist == null) {
+    if (this.Waist == null || this.Waist == '') {
       this.Waist = 0;
     }
-    if (this.Hip == null) {
+    if (this.Hip == null || this.Hip == '') {
       this.Hip = 0;
     }
-    if (this.WHRatio == null) {
+    if (this.WHRatio == null || this.WHRatio == Infinity) {
       this.WHRatio = 0;
     }
     if (this.SYS1 == null || this.SYS1 == '') {
