@@ -73,11 +73,15 @@ export class AppBase implements OnInit {
         ApiConfig.SetUnicode(AppBase.UNICODE);
         this.onMyLoad();
         this.setStatusBar();
-
+        //开始时间
+        var timesstart = (new Date()).getTime();
         if (this.needcheck) {
             this.timer = setInterval(() => {
                 this.opmin++;
-                if (this.opmin > 5) {
+                var timesend = (new Date()).getTime();
+                var dd=(timesend-timesstart)/1000/60;
+                // if (this.opmin > 5)
+                if (dd > 30) {
                     this.showAlert('將會進入登入頁面', (e) => {
                         if (e == true) {
                             this.router.navigateByUrl("/test");

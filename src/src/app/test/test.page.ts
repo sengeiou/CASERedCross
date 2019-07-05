@@ -58,10 +58,10 @@ export class TestPage extends AppBase {
   data = [];
 
   onMyShow() {
-    // this.number = '91001';
-    // this.password = 'carman';
-    this.number = '';
-    this.password = '';
+    this.number = '91001';
+    this.password = 'carman';
+    // this.number = '';
+    // this.password = '';
 
     this.wangluo = this.network.type;
     console.log(this.network.type)
@@ -137,8 +137,12 @@ export class TestPage extends AppBase {
         })
 
     } else {
+      
       var userServe = new UserServe();
       this.api.VolunteerLogin(this.number, this.password).then((ret) => {
+        if(ret==undefined){
+          this.toast('系統沒有回應');
+        }
         if (ret.Result == "true") {
           var lastlogininfo = {
             user: ret.objUser,
