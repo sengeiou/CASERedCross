@@ -16,7 +16,7 @@
 <ion-content>
   <div class="flex-row flex-wrap spacebetween">
     <div class="margin-10" style=" width: 45%;" *ngFor="let item of list;let idx=index;">
-      <img class="img" [src]="item.Base64ImgString" />
+      <img class="img" [src]="item.Base64ImgString" (click)="imagemax(item.Base64ImgString);"/>
       <!-- <div>VisitId={{item.VisitId}}</div> -->
       <div class="text-center del txt-blue padding-5" (click)='delimg(item)' id='idx'>删除圖片</div>
     </div>

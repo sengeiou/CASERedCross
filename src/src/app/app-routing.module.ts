@@ -22,6 +22,8 @@ const routes: Routes = [
   { path: 'whr', loadChildren: './whr/whr.module#WhrPageModule' },
   { path: 'weight', loadChildren: './weight/weight.module#WeightPageModule' },
   { path: 'modifyvisit', loadChildren: './modifyvisit/modifyvisit.module#ModifyvisitPageModule' },
+ 
+
 
 ];
 

@@ -8,6 +8,7 @@ import { ReturnStatement } from "@angular/compiler";
 import { ViewController } from '@ionic/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
+import { ImagemaxPage } from './imagemax/imagemax.page';
 import { OnInit } from '@angular/core';
 
 export class AppBase implements OnInit {
@@ -347,6 +348,16 @@ export class AppBase implements OnInit {
         if (time > 5 * 60 * 1000) {
 
         }
+    }
+
+    imagemax(url) {
+        console.log(123123);
+        console.log(url);
+        this.showModal(ImagemaxPage, { url: url }, (data) => {
+
+        });
+
+
     }
 
 

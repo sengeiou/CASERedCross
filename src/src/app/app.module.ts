@@ -14,10 +14,11 @@ import { HTTP } from '@ionic-native/http/ngx';
 import { Network } from '@ionic-native/network/ngx';
 import { DNS } from '@ionic-native/dns/ngx';
 import { QRScanner } from '@ionic-native/qr-scanner/ngx';
+import { ImagemaxPage } from './imagemax/imagemax.page';
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
+  declarations: [AppComponent,ImagemaxPage],
+  entryComponents: [ImagemaxPage],
   imports: [BrowserModule, IonicModule.forRoot( {
     mode: 'ios',
     swipeBackEnabled:false,
