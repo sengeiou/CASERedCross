@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { AppBase } from '../AppBase';
 import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -27,6 +27,7 @@ export class ModifyphonePage extends AppBase {
     public alertCtrl: AlertController,
     public activeRoute: ActivatedRoute,
     public api: ServiceApi,
+    public elementref:ElementRef,
     public sanitizer: DomSanitizer) {
     super(router, navCtrl, modalCtrl, toastCtrl, alertCtrl, activeRoute);
     this.headerscroptshow = 480;
@@ -89,6 +90,17 @@ export class ModifyphonePage extends AppBase {
     this.getVolunteerList()
 
     this.getVolunteer()
+  }
+
+  inputfocus(hh){
+    setTimeout(()=>{
+      var obj = this.elementref.nativeElement.querySelector('#'+hh);
+      console.log(obj);
+      if(obj!=null){
+        obj.focus();
+      }
+      
+    },100);
   }
 
   casedata = null;

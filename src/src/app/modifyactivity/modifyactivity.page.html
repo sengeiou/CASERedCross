@@ -129,12 +129,12 @@
               <div class=" margin-top-10 flex-row flex-center">
                 <ion-checkbox class="radio " color="secondary" name="sex"
                   [checked]='actDetailTypelist[0].actDetailType==true'
-                  (ionChange)='actDetailTypelist[0].actDetailType=$event.detail.checked'
+                  (ionChange)='actDetailTypelist[0].actDetailType=$event.detail.checked;inputfocus("remarks1")'
                   disabled='{{activity.ActType==2?disabled:false}}'></ion-checkbox> 參觀病人資源中心
               </div>
               <div class=" margin-top-10 flex-row flex-center" *ngIf="actDetailTypelist[0].actDetailType==true">活動地點:
                 <div class="flex-1">
-                  <input class="radius-2 other-input" placeholder="輸入最多50字" style=" width: 100%;" maxlength="50"
+                  <input class="radius-2 other-input" placeholder="輸入最多50字" style=" width: 100%;" maxlength="50" id='remarks1'
                     [(ngModel)]="remarks1" />
                 </div>
               </div>
@@ -144,13 +144,13 @@
 
                 <ion-checkbox class="radio " color="secondary" name="sex"
                   [checked]='actDetailTypelist[1].actDetailType==true'
-                  (ionChange)='actDetailTypelist[1].actDetailType=$event.detail.checked'
+                  (ionChange)='actDetailTypelist[1].actDetailType=$event.detail.checked;inputfocus("remarks2")'
                   disabled='{{activity.ActType==2?disabled:false}}'>
                 </ion-checkbox>出席健康講座
               </div>
               <div class=" margin-top-10 flex-row flex-center" *ngIf="actDetailTypelist[1].actDetailType==true">講座主題:
                 <div class="flex-1">
-                  <input class="radius-2 other-input" placeholder="輸入最多50字" style=" width: 100%;" maxlength="50"
+                  <input class="radius-2 other-input" placeholder="輸入最多50字" style=" width: 100%;" maxlength="50" id='remarks2'
                     [(ngModel)]="remarks2" />
                 </div>
               </div>
@@ -160,14 +160,14 @@
               <div class=" margin-top-10 flex-row flex-center">
                 <ion-checkbox class="radio " color="secondary" name="sex"
                   [checked]='actDetailTypelist[2].actDetailType==true'
-                  (ionChange)='actDetailTypelist[2].actDetailType=$event.detail.checked'
+                  (ionChange)='actDetailTypelist[2].actDetailType=$event.detail.checked;inputfocus("remarks3")'
                   disabled='{{activity.ActType==2?disabled:false}}'>
                 </ion-checkbox>出席與運動有關活動
 
               </div>
               <div class=" margin-top-10 flex-row flex-center" *ngIf="actDetailTypelist[2].actDetailType==true">活動主題:
                 <div class="flex-1">
-                  <input class="radius-2 other-input" placeholder="輸入最多50字" style=" width: 100%;" maxlength="50"
+                  <input class="radius-2 other-input" placeholder="輸入最多50字" style=" width: 100%;" maxlength="50" id='remarks3'
                     [(ngModel)]="remarks3" />
                 </div>
               </div>
@@ -184,14 +184,14 @@
               <div class=" margin-top-10 flex-row flex-center">
                 <ion-checkbox class="radio " color="secondary" name="sex"
                   [checked]='actDetailTypelist[4].actDetailType==true'
-                  (ionChange)='actDetailTypelist[4].actDetailType=$event.detail.checked'
+                  (ionChange)='actDetailTypelist[4].actDetailType=$event.detail.checked;inputfocus("remarks4")'
                   disabled='{{activity.ActType==2?disabled:false}}'>
                 </ion-checkbox>其他
               </div>
               <div class=" margin-top-10 flex-row flex-center margin-left-20"
                 *ngIf="actDetailTypelist[4].actDetailType==true">
                 <div class="flex-1">
-                  <input class="radius-2 other-input" placeholder="輸入最多50字" maxlength="50" style=" width: 100%;"
+                  <input class="radius-2 other-input" placeholder="輸入最多50字" maxlength="50" style=" width: 100%;" id='remarks4'
                     [(ngModel)]="remarks4" />
                 </div>
               </div>
@@ -210,8 +210,9 @@
           <div class=" margin-top-10 flex-row flex-center  margin-right-20" *ngIf='actType==2'>
             <div class="flex-1">
               <input class="radius-2 other-input"
-                placeholder="{{activity.OtherActRemarks?activity.OtherActRemarks:'輸入最多250字'}}" maxlength="250"
-                style=" width: 100%;" [(ngModel)]="otherContent" />
+                placeholder="輸入最多250字" maxlength="250" autofocus='{{actType==2
+                  ?"autofocus":""}}'
+                style=" width: 100%;" [(ngModel)]="OtherActRemarks" />
             </div>
           </div>
         </ion-radio-group>
@@ -220,7 +221,7 @@
         <div class=" margin-top-10 margin-right-20">
 
           <div class="flex-1">
-            <input class="radius-2 other-input" placeholder="{{activity.Remarks?activity.Remarks:'輸入最多250字'}}"
+            <input class="radius-2 other-input" placeholder="輸入最多250字"
               maxlength="250" style=" width: 100%;" [(ngModel)]="Remarks" />
           </div>
         </div>

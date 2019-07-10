@@ -16,7 +16,7 @@
     <div class="text-center padding-top-10">
       <img src="../assets/icon/camera.png" class="icon-25 margin-3" (click)='uploadimg(visit.LocalId);' />
       <!-- <div> -->
-      <img src="../assets/icon/scan.png" class="icon-25 margin-3" (click)='saomiao();' />
+      <img src="../assets/icon/scan.png" class="icon-25 margin-3 {{visit.Status==1?'':'hd'}}"  (click)='saomiao();' />
 
       <!-- </div> -->
       <img src="../assets/icon/booking.png" class="icon-25 margin-3" (click)="visitList();" />
@@ -173,9 +173,9 @@
           </div>
           <div class=" margin-top-10 flex-row flex-center">
             <ion-radio type="radio" name='location' checked="{{visit.Location=='2'?true:false}}" class="radio "
-              (click)="getLocation(2)"></ion-radio>其他
+              (click)="getLocation(2);inputfocus('LocationRemarks')"></ion-radio>其他
             <div class="flex-1 margin-left-20">
-              <input *ngIf="visit.Location==2 || Location==2" class="input_s radius-2" placeholder="輸入最多50字"
+              <input *ngIf="visit.Location==2 || Location==2" class="input_s radius-2" placeholder="輸入最多50字"  id='LocationRemarks'
                 [(ngModel)]="LocationRemarks" maxlength="50" style="width:100%;--placeholder-color:#000;" />
 
             </div>
@@ -245,10 +245,10 @@
           </div>
           <div class=" margin-top-10 flex-row flex-center">
             <ion-radio type="radio" value="2" name='visitState' class="radio "
-              checked="{{visit.VisitStatus==2?true:false}}" (click)="getVisitStatus(2)"></ion-radio>未能
+              checked="{{visit.VisitStatus==2?true:false}}" (click)="getVisitStatus(2);inputfocus('VisitStatusRemarks')"></ion-radio>未能
           </div>
           <div class="flex-1 margin-top-10" *ngIf='visit.VisitStatus==2 || VisitStatus==2'>
-            <input class="input_s radius-2" placeholder="輸入最多50字" [(ngModel)]="VisitStatusRemarks"
+            <input class="input_s radius-2" placeholder="輸入最多50字" [(ngModel)]="VisitStatusRemarks"  id='VisitStatusRemarks'
               name='VisitStatusRemarks' style="width:100%;--placeholder-color:#000;" />
           </div>
         </div>
@@ -300,11 +300,11 @@
 
             <div class=" margin-top-5 flex-row flex-center">
               <ion-checkbox class="radio " [checked]='VisitDetailIndoorlist[5].type==true'
-                (ionChange)='VisitDetailIndoorlist[5].type=$event.detail.checked'
+                (ionChange)='VisitDetailIndoorlist[5].type=$event.detail.checked;inputfocus("VisitDetailIndoorRemarks")'
                 disabled='{{VisitStatus==2?disabled:false}}'></ion-checkbox>
               其他
               <div class="flex-1" *ngIf='VisitDetailIndoorlist[5].type==true'>
-                <input class="radius-2 other-input" placeholder="輸入最多50字" [(ngModel)]="VisitDetailIndoorRemarks"
+                <input class="radius-2 other-input" placeholder="輸入最多50字" [(ngModel)]="VisitDetailIndoorRemarks" id='VisitDetailIndoorRemarks'
                   name='otherIndoorActivities' style="width: 100%;--placeholder-color:#000;" />
               </div>
 
@@ -337,12 +337,12 @@
 
             <div class=" margin-top-5 flex-row flex-center">
               <ion-checkbox class="radio " [checked]='VisitDetailOutdoorlist[3].type==true'
-                (ionChange)='VisitDetailOutdoorlist[3].type=$event.detail.checked'
+                (ionChange)='VisitDetailOutdoorlist[3].type=$event.detail.checked;inputfocus("VisitDetailOutdoorRemarks")'
                 disabled='{{VisitStatus==2?disabled:false}}'></ion-checkbox>
               其他
 
               <div class="flex-1" *ngIf='VisitDetailOutdoorlist[3].type==true'>
-                <input class="radius-2  other-input" placeholder="輸入最多50字" [(ngModel)]="VisitDetailOutdoorRemarks"
+                <input class="radius-2  other-input" placeholder="輸入最多50字" [(ngModel)]="VisitDetailOutdoorRemarks" id='VisitDetailOutdoorRemarks'
                   name='VisitDetailOutdoorRemarks' style=" width: 100%;--placeholder-color:#000;" />
               </div>
             </div>
@@ -696,25 +696,25 @@
           <div class=" margin-top-5 flex-row flex-center">
             <ion-checkbox class="radio " [checked]='EmotionAssessmentlist[1].type==true'
               (ionChange)='EmotionAssessmentlist[1].type=$event.detail.checked'
-              disabled='{{VisitStatus==2?disabled:false}}'></ion-checkbox>
+              disabled='{{VisitStatus==2||EmotionAssessmentlist[0].type==true?disabled:false}}'></ion-checkbox>
             焦慮
           </div>
 
           <div class=" margin-top-5 flex-row flex-center">
             <ion-checkbox class="radio " [checked]='EmotionAssessmentlist[2].type==true'
               (ionChange)='EmotionAssessmentlist[2].type=$event.detail.checked'
-              disabled='{{VisitStatus==2?disabled:false}}'></ion-checkbox>
+              disabled='{{VisitStatus==2||EmotionAssessmentlist[0].type==true?disabled:false}}'></ion-checkbox>
             抑鬱
           </div>
 
           <div class=" margin-top-5 flex-row flex-center">
             <ion-checkbox class="radio " [checked]='EmotionAssessmentlist[3].type==true'
-              (ionChange)='EmotionAssessmentlist[3].type=$event.detail.checked'
-              disabled='{{VisitStatus==2?disabled:false}}'></ion-checkbox>
+              (ionChange)='EmotionAssessmentlist[3].type=$event.detail.checked;inputfocus("EmotionAssessmentRemarks")'
+              disabled='{{VisitStatus==2||EmotionAssessmentlist[0].type==true?disabled:false}}'></ion-checkbox>
             其他
 
             <div class="flex-1" *ngIf='EmotionAssessmentlist[3].type==true'>
-              <input class="radius-2 other-input" placeholder="輸入最多50字" [(ngModel)]='EmotionAssessmentRemarks'
+              <input class="radius-2 other-input" placeholder="輸入最多50字" [(ngModel)]='EmotionAssessmentRemarks' id='EmotionAssessmentRemarks'
                 style=" width: 100%;--placeholder-color:#000;" />
             </div>
           </div>
@@ -735,11 +735,11 @@
           <div class=" margin-top-5 flex-row flex-center">
             <div class="flex-row flex-center">
               <ion-radio type="radio" name="Other1" class="radio " disabled='{{VisitStatus==2?disabled:false}}'
-                checked="{{OtherHospDisbete=='1'?true:false}}" (click)='getOtherHospDisbete(1)'></ion-radio>是
+                checked="{{OtherHospDisbete=='1'?true:false}}" (click)='getOtherHospDisbete(1);inputfocus("OtherHospDisbeteNoOfDay")'></ion-radio>是
             </div>
 
             <div class="flex-row h7-5 flex-1 margin-left-30 flex-center" *ngIf='visit.OtherHospDisbete==1'>
-              <input class="input_s radius-2" style="width:35%;" type="number"
+              <input class="input_s radius-2" style="width:35%;" type="number" id='OtherHospDisbeteNoOfDay'
                 placeholder="{{OtherHospDisbeteNoOfDay}}" [(ngModel)]='OtherHospDisbeteNoOfDay' />
               <div class="margin-5" style="width:3.6rem;">日數 </div>
             </div>
@@ -755,11 +755,11 @@
           <div class=" margin-top-5 flex-row flex-center">
             <div class="flex-row flex-center">
               <ion-radio type="radio" name="Other2" class="radio " disabled='{{VisitStatus==2?disabled:false}}'
-                checked="{{OtherHospHighBp=='1'?true:false}}" (click)='getOtherHospHighBp(1)'></ion-radio>是
+                checked="{{OtherHospHighBp=='1'?true:false}}" (click)='getOtherHospHighBp(1);inputfocus("OtherHospHighBpNoOfDay")'></ion-radio>是
             </div>
 
             <div class="flex-row h7-5 flex-1 margin-left-30 flex-center" *ngIf='visit.OtherHospHighBp==1'>
-              <input class="input_s radius-2" style="width:35%;--placeholder-color:#000;" type="number"
+              <input class="input_s radius-2" style="width:35%;--placeholder-color:#000;" type="number" id='OtherHospHighBpNoOfDay'
                 
                 [(ngModel)]='OtherHospHighBpNoOfDay' />
               <div class="margin-5" style="width:3.6rem;">日數</div>
@@ -776,12 +776,12 @@
           <div class=" margin-top-5 flex-row flex-center">
             <div class="flex-row flex-center">
               <ion-radio type="radio" name="Other3" class="radio " disabled='{{VisitStatus==2?disabled:false}}'
-                checked="{{OtherHospOtherIllness=='1'?true:false}}" (click)='getOtherHospOtherIllness(1)'>
+                checked="{{OtherHospOtherIllness=='1'?true:false}}" (click)='getOtherHospOtherIllness(1);inputfocus("OtherHospOtherIllnessNoOfDay")'>
               </ion-radio>是
             </div>
 
             <div class="flex-row h7-5 flex-1 margin-left-30 flex-center" *ngIf='visit.OtherHospOtherIllness==1'>
-              <input class="input_s radius-2" style="width:35%;--placeholder-color:#000;" type="number"
+              <input class="input_s radius-2" style="width:35%;--placeholder-color:#000;" type="number" id='OtherHospOtherIllnessNoOfDay'
                 disabled='{{VisitStatus==2?disabled:false}}'
                
                 [(ngModel)]='OtherHospOtherIllnessNoOfDay' />
@@ -800,11 +800,11 @@
           <div class=" margin-top-5 flex-row flex-center">
             <div class="flex-row flex-center">
               <ion-radio type="radio" name="Other4" class="radio " disabled='{{VisitStatus==2?disabled:false}}'
-                checked="{{OtherAccident=='1'?true:false}}" (click)='getOtherAccident(1)'></ion-radio>是
+                checked="{{OtherAccident=='1'?true:false}}" (click)='getOtherAccident(1);inputfocus("OtherAccidentNoOfDay")'></ion-radio>是
             </div>
 
             <div class="flex-row h7-5 flex-1 margin-left-30 flex-center" *ngIf='visit.OtherAccident==1'>
-              <input class="input_s radius-2" style="width:35%;--placeholder-color:#000;" type="number"
+              <input class="input_s radius-2" style="width:35%;--placeholder-color:#000;" type="number" id='OtherAccidentNoOfDay'
                
                 [(ngModel)]='OtherAccidentNoOfDay' />
               <div class="margin-5" style="width:3.6rem;">次數</div>
@@ -827,29 +827,29 @@
               <div class="margin-top-5">
                 <ion-checkbox class="radio " [checked]='NeedsContenttlist[0].type==true'
                   (ionChange)='NeedsContenttlist[0].type=$event.detail.checked'
-                  disabled='{{VisitStatus==2 || OtherSpecialNeed==2 || visit.OtherSpecialNeed==2?disabled:false}}'>
+                  disabled='{{VisitStatus==2 || OtherSpecialNeed!=1 || visit.OtherSpecialNeed==2?disabled:false}}'>
                 </ion-checkbox> 送飯
               </div>
               <div class="margin-top-5">
                 <ion-checkbox class="radio " [checked]='NeedsContenttlist[1].type==true'
                   (ionChange)='NeedsContenttlist[1].type=$event.detail.checked'
-                  disabled='{{VisitStatus==2 || OtherSpecialNeed==2 || visit.OtherSpecialNeed==2?disabled:false}}'>
+                  disabled='{{VisitStatus==2 || OtherSpecialNeed!=1 || visit.OtherSpecialNeed==2?disabled:false}}'>
                 </ion-checkbox> 入住老人院
               </div>
               <div class="margin-top-5">
                 <ion-checkbox class="radio " [checked]='NeedsContenttlist[2].type==true'
                   (ionChange)='NeedsContenttlist[2].type=$event.detail.checked'
-                  disabled='{{VisitStatus==2 || OtherSpecialNeed==2 || visit.OtherSpecialNeed==2?disabled:false}}'>
+                  disabled='{{VisitStatus==2 || OtherSpecialNeed!=1 || visit.OtherSpecialNeed==2?disabled:false}}'>
                 </ion-checkbox> 家居維修
               </div>
               <div class="margin-top-5 flex-row flex-center">
                 <ion-checkbox class="radio " [checked]='NeedsContenttlist[3].type==true'
-                  (ionChange)='NeedsContenttlist[3].type=$event.detail.checked'
-                  disabled='{{VisitStatus==2 || OtherSpecialNeed==2 || visit.OtherSpecialNeed==2?disabled:false}}'>
+                  (ionChange)='NeedsContenttlist[3].type=$event.detail.checked;inputfocus("OtherSpecialNeedService")'
+                  disabled='{{VisitStatus==2 || OtherSpecialNeed!=1 || visit.OtherSpecialNeed==2?disabled:false}}'>
                 </ion-checkbox> 其他
 
                 <div class="flex-1 margin-left-5" *ngIf='NeedsContenttlist[3].type==true'>
-                  <input class="input_s radius-2" placeholder="輸入最多50字" style="width:100%;--placeholder-color:#000;"
+                  <input class="input_s radius-2" placeholder="輸入最多50字" style="width:100%;--placeholder-color:#000;" id='OtherSpecialNeedService'
                     maxlength="50" [(ngModel)]='OtherSpecialNeedService' />
                 </div>
               </div>

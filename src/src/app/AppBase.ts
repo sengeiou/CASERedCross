@@ -223,7 +223,7 @@ export class AppBase implements OnInit {
             header: "提示",
             subHeader: msg,
             buttons: [{
-                text: "确定",
+                text: "確定",
                 handler: () => {
                     // if(confirmcallback != undefined){
                     confirmcallback(true);
@@ -246,7 +246,7 @@ export class AppBase implements OnInit {
                     confirmcallback(false);
                 }
             }, {
-                text: "确定",
+                text: "確定",
                 handler: () => {
                     confirmcallback(true);
                 }

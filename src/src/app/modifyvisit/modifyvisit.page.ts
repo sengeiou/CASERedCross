@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { AppBase } from '../AppBase';
 import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -26,6 +26,7 @@ export class ModifyvisitPage extends AppBase {
     public toastCtrl: ToastController,
     public alertCtrl: AlertController,
     public api: ServiceApi,
+    public elementref:ElementRef,
     public activeRoute: ActivatedRoute,
     public loadingController: LoadingController,
     public sanitizer: DomSanitizer) {
@@ -144,6 +145,17 @@ export class ModifyvisitPage extends AppBase {
       return;
     }
   }
+
+  inputfocus(hh){
+    setTimeout(()=>{
+      var obj = this.elementref.nativeElement.querySelector('#'+hh);
+      console.log(obj);
+      if(obj!=null){
+        obj.focus();
+      }
+    },100);
+  }
+
   signOut() {
     if (this.visit.Status == 1) {
       this.showConfirm('未經保存的資料將會遺失，你確定要離開嗎？', (e) => {

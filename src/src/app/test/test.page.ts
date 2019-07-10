@@ -59,7 +59,7 @@ export class TestPage extends AppBase {
 
   onMyShow() {
     // this.number = '91001';
-    // this.password = 'carman';
+    // this.password = 'a29543949';
     this.number = '';
     this.password = '';
 
@@ -143,6 +143,10 @@ export class TestPage extends AppBase {
         if(ret==undefined){
           this.toast('系統沒有回應');
         }
+        if(ret.Result == "Locked"){
+          this.toast('不能登入。請聯絡管理員');
+          return
+        }
         if (ret.Result == "true") {
           var lastlogininfo = {
             user: ret.objUser,
@@ -163,8 +167,6 @@ export class TestPage extends AppBase {
               this.update();
             }
           })
-
-
         } else {
 
           this.toast('你的義工編號或密碼不正確');

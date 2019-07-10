@@ -59,7 +59,7 @@ export class WeightPage extends AppBase {
               data: xdata
           },
           yAxis: {
-              name: '',
+              name: '體重(kg)',
               type: 'value',
               axisLabel: {
                   formatter: '{value}'
@@ -68,7 +68,7 @@ export class WeightPage extends AppBase {
           },
           series: [
               {
-                  name: '',
+                  name: '體重',
                   type: 'line',
                   data: ydata,
                   label: {

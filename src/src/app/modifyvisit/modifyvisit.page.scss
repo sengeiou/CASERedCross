@@ -20,17 +20,17 @@
 
 .textarea {
     width: 15rem;
-    height: 4rem;
+    min-height: 4rem;
 }
 
 .textarea1 {
     width: 15rem;
-    height: 6.5rem;
+    min-height: 6.5rem;
 }
 
 .textarea2 {
     width: 20rem;
-    height: 4rem;
+    min-height: 4rem;
 }
 
 .input_s {
@@ -95,9 +95,13 @@
 
 .text-blue {
     color: blue;
-    
 }
 
 .f-10 {
     font-size: 10px;
+}
+
+.hd {
+    -webkit-filter: grayscale(1);
+    filter: grayscale(1);
 }

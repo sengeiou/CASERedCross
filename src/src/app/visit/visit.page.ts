@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { AppBase } from '../AppBase';
 import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -26,6 +26,7 @@ export class VisitPage extends AppBase {
     public toastCtrl: ToastController,
     public alertCtrl: AlertController,
     public api: ServiceApi,
+    public elementref:ElementRef,
     public activeRoute: ActivatedRoute,
     public loadingController: LoadingController,
     public sanitizer: DomSanitizer) {
@@ -128,8 +129,8 @@ export class VisitPage extends AppBase {
   time_type = ''
   visit_LocalId = 0;
 
-  autofocus='';//自动聚焦
-
+  autofocus='true';//自动聚焦
+  autofocus2='true';//自动聚焦
   onMyLoad() {
     //参数
     this.params;
@@ -137,6 +138,7 @@ export class VisitPage extends AppBase {
     this.getCase();
   }
   onMyShow() {
+
     // this.getCase()
     // this.getVisitId()
     if (AppBase.LastQrcode != '') {
@@ -144,7 +146,16 @@ export class VisitPage extends AppBase {
       AppBase.LastQrcode = "";
       return;
     }
+  }
 
+  inputfocus(hh){
+    setTimeout(()=>{
+      var obj = this.elementref.nativeElement.querySelector('#'+hh);
+      console.log(obj);
+      if(obj!=null){
+        obj.focus();
+      }
+    },100);
   }
 
   signOut() {
@@ -630,6 +641,7 @@ export class VisitPage extends AppBase {
           ]
         } else {
           this.VisitStatus = 1;
+          this.VisitStatusRemarks='';
         }
       })
     }

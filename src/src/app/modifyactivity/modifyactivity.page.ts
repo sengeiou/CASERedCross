@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { AppBase } from '../AppBase';
 import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -25,6 +25,7 @@ export class ModifyactivityPage extends AppBase {
     public alertCtrl: AlertController,
     public activeRoute: ActivatedRoute,
     public api: ServiceApi,
+    public elementref:ElementRef,
     public sanitizer: DomSanitizer) {
     super(router, navCtrl, modalCtrl, toastCtrl, alertCtrl, activeRoute);
     this.headerscroptshow = 480;
@@ -53,7 +54,7 @@ export class ModifyactivityPage extends AppBase {
   remarks3 = '';
   remarks4 = '';
   otherActRemarks = '';
-  otherContent = '';
+  OtherActRemarks = '';
   Remarks = '';
   ActTypes = '';
 
@@ -85,6 +86,16 @@ export class ModifyactivityPage extends AppBase {
     this.getCase()
     this.getActivity()
     this.getVolunteerList()
+  }
+
+  inputfocus(hh){
+    setTimeout(()=>{
+      var obj = this.elementref.nativeElement.querySelector('#'+hh);
+      console.log(obj);
+      if(obj!=null){
+        obj.focus();
+      }
+    },100);
   }
 
   aas() {
@@ -147,8 +158,8 @@ export class ModifyactivityPage extends AppBase {
         this.remarks2 = this.activity.Remarks2
         this.remarks3 = this.activity.Remarks3
         this.remarks4 = this.activity.Remarks4
-        this.otherActRemarks = this.activity.OtherActRemarks
-        this.otherContent = this.activity.Remarks
+        this.OtherActRemarks = this.activity.OtherActRemarks
+        this.Remarks= this.activity.Remarks
 
         var Volunteerlist = this.activity.PresentVolunteer.split(',');
         this.PresentVolunteerList = this.activity.PresentVolunteer.split(',');
@@ -211,7 +222,7 @@ export class ModifyactivityPage extends AppBase {
     console.log(e)
     if (e == 1) {
       this.disabled = false;
-      this.otherContent = '';
+      this.OtherActRemarks = '';
     }
     if (e == 2) {
       this.activity.ActType = e;
@@ -320,7 +331,7 @@ export class ModifyactivityPage extends AppBase {
       }
       console.log(this.activityDetailType)
       this.activityDetailType = this.activityDetailType ? this.activityDetailType : this.activity.ActDetailType
-      this.otherActRemarks = ''
+      this.OtherActRemarks = ''
       // return;
     } else {
       this.activityDetailType = '';
@@ -388,14 +399,14 @@ export class ModifyactivityPage extends AppBase {
           return;
         }
       }
-      if (this.actType == 2 && this.otherActRemarks == '') {
+      if (this.actType == 2 && this.OtherActRemarks == '') {
         this.toast('你沒有填寫其他的活動內容');
         return;
       }
     }
 
     this.LocalId = this.params.LocalId;
-    activity.saveActivity(this.LocalId, this.params.caseID, this.activityDate, this.activityStartTime, this.activityEndTime, this.presentVolunteer, this.actType, this.activityDetailType, this.remarks1, this.remarks2, this.remarks3, this.remarks4, this.otherActRemarks, this.Remarks, ActDate_Display).then((e) => {
+    activity.saveActivity(this.LocalId, this.params.caseID, this.activityDate, this.activityStartTime, this.activityEndTime, this.presentVolunteer, this.actType, this.activityDetailType, this.remarks1, this.remarks2, this.remarks3, this.remarks4, this.OtherActRemarks, this.Remarks, ActDate_Display).then((e) => {
       console.log(e)
       if (e) {
         if (ret == 'no') {
