@@ -97,7 +97,7 @@
             <div class="radius-2" style="width:100%; " class="bg-white">
               <div>
                 <ion-datetime displayFormat="DD-MM-YYYY" placeholder="{{visit.ScheduleDate_Display}}"
-                  picker-format="DD/MM/YYYY  " max="2050-12-09" done-text='确定'
+                  picker-format="DD/MM/YYYY  " max="2050-12-09" done-text='確定'
                   style="height:25px;padding:2px;--placeholder-color:#000;" cancel-text='取消' [(ngModel)]="ScheduleDate">
                 </ion-datetime>
               </div>
@@ -111,7 +111,7 @@
           <div class="flex-1">
             <div class="bg-white">
               <ion-datetime placeholder="{{visit.ScheduleTime}}" displayFormat="HH:mm" picker-format="hh：mm A"
-                style="height:25px;padding:2px;--placeholder-color:#000;" max="2050-12-09" done-text='确定'
+                style="height:25px;padding:2px;--placeholder-color:#000;" max="2050-12-09" done-text='確定'
                 cancel-text='取消' [(ngModel)]="ScheduleTime2"></ion-datetime>
             </div>
 
@@ -136,7 +136,7 @@
               <div class="bg-white">
                 <ion-datetime placeholder="{{visit.VisitDate}}"
                   style="height:25px;padding:2px;--placeholder-color:#000;" displayFormat="DD-MM-YYYY "
-                  picker-format="DD MM YYYY" max="2050-12-09" done-text='确定' cancel-text='取消' [(ngModel)]="VisitDate2">
+                  picker-format="DD MM YYYY" max="2050-12-09" done-text='確定' cancel-text='取消' [(ngModel)]="VisitDate2">
                 </ion-datetime>
               </div>
 
@@ -149,7 +149,7 @@
             <div class="bg-white">
               <ion-datetime placeholder="{{VisitStartTime==''?visit.VisitStartTime:VisitStartTime}}"
                 style="height:25px;padding:2px;--placeholder-color:#000;" displayFormat="HH:mm" picker-format="hh:mm A"
-                max="2050-12-09" done-text='确定' cancel-text='取消' [(ngModel)]="VisitStartTime2">
+                max="2050-12-09" done-text='確定' cancel-text='取消' [(ngModel)]="VisitStartTime2">
               </ion-datetime>
             </div>
 
@@ -160,7 +160,7 @@
             <div class="bg-white">
               <ion-datetime placeholder="{{VisitEndTime==''?visit.VisitEndTime:VisitEndTime}}"
                 style="height:25px;padding:2px;--placeholder-color:#000;" displayFormat="HH:mm" picker-format="hh:mm A"
-                max="2050-12-09" done-text='确定' cancel-text='取消' [(ngModel)]="VisitEndTime2">
+                max="2050-12-09" done-text='確定' cancel-text='取消' [(ngModel)]="VisitEndTime2">
               </ion-datetime>
             </div>
           </div>
@@ -687,30 +687,30 @@
         <div class="">
           <div>情緒評估:</div>
           <div class=" margin-top-5 flex-row flex-center">
-            <ion-checkbox class="radio " [checked]='EmotionAssessmentlist[0].type==true'
+            <ion-checkbox class="radio " [checked]='EmotionAssessmentlist[0].type==true' (click)='xuanzheqingxu("z")'
               (ionChange)='EmotionAssessmentlist[0].type=$event.detail.checked'
               disabled='{{VisitStatus==2?disabled:false}}'></ion-checkbox>
             正常
           </div>
 
           <div class=" margin-top-5 flex-row flex-center">
-            <ion-checkbox class="radio " [checked]='EmotionAssessmentlist[1].type==true'
+            <ion-checkbox class="radio " [checked]='EmotionAssessmentlist[1].type==true' (click)='xuanzheqingxu(1)'
               (ionChange)='EmotionAssessmentlist[1].type=$event.detail.checked'
-              disabled='{{VisitStatus==2||EmotionAssessmentlist[0].type==true?disabled:false}}'></ion-checkbox>
+              disabled='{{VisitStatus==2?disabled:false}}'></ion-checkbox>
             焦慮
           </div>
 
           <div class=" margin-top-5 flex-row flex-center">
-            <ion-checkbox class="radio " [checked]='EmotionAssessmentlist[2].type==true'
+            <ion-checkbox class="radio " [checked]='EmotionAssessmentlist[2].type==true' (click)='xuanzheqingxu(1)'
               (ionChange)='EmotionAssessmentlist[2].type=$event.detail.checked'
-              disabled='{{VisitStatus==2||EmotionAssessmentlist[0].type==true?disabled:false}}'></ion-checkbox>
+              disabled='{{VisitStatus==2?disabled:false}}'></ion-checkbox>
             抑鬱
           </div>
 
           <div class=" margin-top-5 flex-row flex-center">
-            <ion-checkbox class="radio " [checked]='EmotionAssessmentlist[3].type==true'
+            <ion-checkbox class="radio " [checked]='EmotionAssessmentlist[3].type==true' (click)='xuanzheqingxu(1)'
               (ionChange)='EmotionAssessmentlist[3].type=$event.detail.checked;inputfocus("EmotionAssessmentRemarks")'
-              disabled='{{VisitStatus==2||EmotionAssessmentlist[0].type==true?disabled:false}}'></ion-checkbox>
+              disabled='{{VisitStatus==2?disabled:false}}'></ion-checkbox>
             其他
 
             <div class="flex-1" *ngIf='EmotionAssessmentlist[3].type==true'>

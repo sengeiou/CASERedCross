@@ -67,7 +67,7 @@ export class HeartRatPage extends AppBase {
             },
             series: [
                 {
-                    name: '心率数据',
+                    name: '心率數據',
                     type: 'line',
                     data: ydata,
                     label: {

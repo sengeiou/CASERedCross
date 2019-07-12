@@ -26,7 +26,7 @@ export class VisitPage extends AppBase {
     public toastCtrl: ToastController,
     public alertCtrl: AlertController,
     public api: ServiceApi,
-    public elementref:ElementRef,
+    public elementref: ElementRef,
     public activeRoute: ActivatedRoute,
     public loadingController: LoadingController,
     public sanitizer: DomSanitizer) {
@@ -129,8 +129,8 @@ export class VisitPage extends AppBase {
   time_type = ''
   visit_LocalId = 0;
 
-  autofocus='true';//自动聚焦
-  autofocus2='true';//自动聚焦
+  autofocus = 'true';//自动聚焦
+  autofocus2 = 'true';//自动聚焦
   onMyLoad() {
     //参数
     this.params;
@@ -148,14 +148,37 @@ export class VisitPage extends AppBase {
     }
   }
 
-  inputfocus(hh){
-    setTimeout(()=>{
-      var obj = this.elementref.nativeElement.querySelector('#'+hh);
+  xuanzheqingxu(e) {
+    if (e == 'z') {
+      if (this.EmotionAssessmentlist[1].type == true) {
+        this.EmotionAssessmentlist[1].type = false;
+      }
+      if (this.EmotionAssessmentlist[2].type == true) {
+        this.EmotionAssessmentlist[2].type = false;
+      }
+      if (this.EmotionAssessmentlist[3].type = true) {
+        this.EmotionAssessmentlist[3].type = false;
+      }
+      this.EmotionAssessmentRemarks = ''
+      console.log("1", this.EmotionAssessmentlist)
+    } else {
+      if (this.EmotionAssessmentlist[0].type == true) {
+        this.EmotionAssessmentlist[0].type = false;
+      }
+      console.log("2", this.EmotionAssessmentlist)
+    }
+
+  }
+
+
+  inputfocus(hh) {
+    setTimeout(() => {
+      var obj = this.elementref.nativeElement.querySelector('#' + hh);
       console.log(obj);
-      if(obj!=null){
+      if (obj != null) {
         obj.focus();
       }
-    },100);
+    }, 100);
   }
 
   signOut() {
@@ -508,21 +531,21 @@ export class VisitPage extends AppBase {
   getLocation(e) {
     console.log(e)
     this.Location = e;
-    this.autofocus=''
-    if(e==2){
-      this.autofocus='autofocus';
+    this.autofocus = ''
+    if (e == 2) {
+      this.autofocus = 'autofocus';
     }
   }
 
   getVisitStatus(e) {
     console.log(e)
     this.VisitStatus = e;
-    this.autofocus=''
+    this.autofocus = ''
     if (e == 2) {
       this.showConfirm('一旦按選，在這按鈕以下的資料將會清空，你確定要按選嗎？', (e) => {
-        if (e==true) {
-          if(e==2){
-            this.autofocus='autofocus';
+        if (e == true) {
+          if (e == 2) {
+            this.autofocus = 'autofocus';
           }
           this.otherIndoorActivities = '';//其他室内活动输入
           this.outdoorActivities = '';//室外活动
@@ -641,7 +664,7 @@ export class VisitPage extends AppBase {
           ]
         } else {
           this.VisitStatus = 1;
-          this.VisitStatusRemarks='';
+          this.VisitStatusRemarks = '';
         }
       })
     }
@@ -774,7 +797,13 @@ export class VisitPage extends AppBase {
 
   }
 
-  addVisit(ret) {
+  async addVisit(ret) {
+
+    this.loading = await this.loadingController.create({
+      message: '資料保存中'
+    });
+    await this.loading.present();
+
     for (var i = 0; i < this.VisitDetailIndoorlist.length; i++) {
       if (this.VisitDetailIndoorlist[i].type == true) {
         if (this.VisitDetailIndoor == '') {
@@ -1131,7 +1160,9 @@ export class VisitPage extends AppBase {
           console.log(e)
           if (e.res.rowsAffected == 1) {
             if (ret != 'web') {
+
               this.toast('資料保存成功');
+              this.loading.dismiss();
               if (ret == 'mm') {
                 this.back();
               }
@@ -1190,12 +1221,12 @@ export class VisitPage extends AppBase {
                   medicalRecord.getAllMedicalRecordList(this.params.caseID).then((e) => {
                     this.medicAppointLogList = Array.from(e.res.rows);
                     console.log(this.medicAppointLogList)
-                    // return
+
+                    this.loading.dismiss();
                     this.uploadVisitListWeb()
                   })
                 })
 
-                // this.uploadVisitListWeb()
               })
 
             }
@@ -1220,87 +1251,149 @@ export class VisitPage extends AppBase {
               var imgList_linshi = [];
               imgList_linshi = Array.from(img.res.rows);
               var imgsun = 0;
-              for (var k = 0; k < imgList_linshi.length; k++) {
-                imgserver.addImage2(0, this.visit_LocalId, imgList_linshi[k].Base64ImgString, this.visit_LocalId).then(e => {
-                  console.log(e);
-                  imgsun++;
-                  if (imgsun == imgList_linshi.length) {
-                    imgserver.deleteImage2_linshi();
+              if (imgList_linshi.length > 0) {
+                for (var k = 0; k < imgList_linshi.length; k++) {
+                  imgserver.addImage2(0, this.visit_LocalId, imgList_linshi[k].Base64ImgString, this.visit_LocalId).then(e => {
+                    console.log(e);
+                    imgsun++;
+                    if (imgsun == imgList_linshi.length) {
+                      imgserver.deleteImage2_linshi();
 
-                    if (ret != 'web') {
-                      this.toast('資料保存成功');
-                      if (ret == 'mm') {
-                        this.back();
-                      }
-                    } else {
-                      var visit = new VisitServe();
-                      visit.getVisitId(this.visit_LocalId).then((e) => {
-                        console.log(e)
-                        var visitdata = e.res.rows;
-                        var data = Array.from(visitdata)[0];
-                        this.visit = data;
-                        console.log(data);
-                        
-                        var dd=[];
-                        dd=Array.from(visitdata);
+                      if (ret != 'web') {
 
-                        var hvvlList = [];
-                        var Volunteerlist = dd[0].presentVolunteer.split(',');
-                        console.log(Volunteerlist)
-                        for (var i = 0; i < Volunteerlist.length; i++) {
-                          console.log(Volunteerlist[i])
-                          for (var j = 0; j < this.Volunteer.length; j++) {
-                            if (Volunteerlist[i] == this.Volunteer[j].VolId) {
-                              console.log(this.Volunteer[j])
-                              hvvlList.push(this.Volunteer[j]);
+                        this.toast('資料保存成功');
+                        this.loading.dismiss();
+                        if (ret == 'mm') {
+                          this.back();
+                        }
+                      } else {
+                        var visit = new VisitServe();
+                        visit.getVisitId(this.visit_LocalId).then((e) => {
+                          console.log(e)
+                          var visitdata = e.res.rows;
+                          var data = Array.from(visitdata)[0];
+                          this.visit = data;
+                          console.log(data);
+
+                          var dd = [];
+                          dd = Array.from(visitdata);
+
+                          var hvvlList = [];
+                          var Volunteerlist = dd[0].presentVolunteer.split(',');
+                          console.log(Volunteerlist)
+                          for (var i = 0; i < Volunteerlist.length; i++) {
+                            console.log(Volunteerlist[i])
+                            for (var j = 0; j < this.Volunteer.length; j++) {
+                              if (Volunteerlist[i] == this.Volunteer[j].VolId) {
+                                console.log(this.Volunteer[j])
+                                hvvlList.push(this.Volunteer[j]);
+                              }
                             }
                           }
-                        }
-                        var supportVolunteer =  dd[0].supportVolunteer.split(',');
-                        console.log(supportVolunteer)
-                        for (var i = 0; i < supportVolunteer.length; i++) {
-                          console.log(supportVolunteer[i])
-                          for (var j = 0; j < this.Volunteer.length; j++) {
-                            if (supportVolunteer[i] == this.Volunteer[j].VolId) {
-                              hvvlList.push(this.Volunteer[j]);
+                          var supportVolunteer = dd[0].supportVolunteer.split(',');
+                          console.log(supportVolunteer)
+                          for (var i = 0; i < supportVolunteer.length; i++) {
+                            console.log(supportVolunteer[i])
+                            for (var j = 0; j < this.Volunteer.length; j++) {
+                              if (supportVolunteer[i] == this.Volunteer[j].VolId) {
+                                hvvlList.push(this.Volunteer[j]);
+                              }
                             }
                           }
-                        }
-                        // return;
-                        this.visit.hvvlList = hvvlList;
+                          // return;
+                          this.visit.hvvlList = hvvlList;
 
-                        var visitId = this.visit_LocalId;
-                        if (this.visit.VisitId > 0) {
-                          visitId = this.visit.VisitId;
-                        }
+                          var visitId = this.visit_LocalId;
+                          if (this.visit.VisitId > 0) {
+                            visitId = this.visit.VisitId;
+                          }
 
-                        imgserver.getImageList_web2(visitId).then(t => {
-                          console.log('new', Array.from(t.res.rows))
-                          this.imgList = Array.from(t.res.rows);
-                          console.log('new2', this.imgList)
+                          imgserver.getImageList_web2(visitId).then(t => {
+                            console.log('new', Array.from(t.res.rows))
+                            this.imgList = Array.from(t.res.rows);
+                            console.log('new2', this.imgList)
 
-                          var medicalRecord = new MedicalRecordServe();
-                          medicalRecord.getAllMedicalRecordList(this.params.caseID).then((e) => {
-                            this.medicAppointLogList = Array.from(e.res.rows);
-                            console.log(this.medicAppointLogList)
-                            // return
-                            this.uploadVisitListWeb()
+                            var medicalRecord = new MedicalRecordServe();
+                            medicalRecord.getAllMedicalRecordList(this.params.caseID).then((e) => {
+                              this.medicAppointLogList = Array.from(e.res.rows);
+                              console.log(this.medicAppointLogList)
+                              // return
+                              this.loading.dismiss();
+                              this.uploadVisitListWeb()
+                            })
                           })
                         })
 
-                        // var medicalRecord = new MedicalRecordServe();
-                        // medicalRecord.getAllMedicalRecordList(this.params.caseid).then((e) => {
-                        //   this.medicAppointLogList = Array.from(e.res.rows);
-                        // })
+                      }
+                    }
+                  })
+                }
+              } else {
+                if (ret != 'web') {
+                  this.toast('資料保存成功');
+                  this.loading.dismiss();
+                  if (ret == 'mm') {
+                    this.back();
+                  }
+                } else {
+                  var visit = new VisitServe();
+                  visit.getVisitId(this.visit_LocalId).then((e) => {
+                    console.log(e)
+                    var visitdata = e.res.rows;
+                    var data = Array.from(visitdata)[0];
+                    this.visit = data;
+                    console.log(data);
 
-                        // this.uploadVisitListWeb()
-                      })
+                    var dd = [];
+                    dd = Array.from(visitdata);
 
+                    var hvvlList = [];
+                    var Volunteerlist = dd[0].presentVolunteer.split(',');
+                    console.log(Volunteerlist)
+                    for (var i = 0; i < Volunteerlist.length; i++) {
+                      console.log(Volunteerlist[i])
+                      for (var j = 0; j < this.Volunteer.length; j++) {
+                        if (Volunteerlist[i] == this.Volunteer[j].VolId) {
+                          console.log(this.Volunteer[j])
+                          hvvlList.push(this.Volunteer[j]);
+                        }
+                      }
+                    }
+                    var supportVolunteer = dd[0].supportVolunteer.split(',');
+                    console.log(supportVolunteer)
+                    for (var i = 0; i < supportVolunteer.length; i++) {
+                      console.log(supportVolunteer[i])
+                      for (var j = 0; j < this.Volunteer.length; j++) {
+                        if (supportVolunteer[i] == this.Volunteer[j].VolId) {
+                          hvvlList.push(this.Volunteer[j]);
+                        }
+                      }
+                    }
+                    // return;
+                    this.visit.hvvlList = hvvlList;
+
+                    var visitId = this.visit_LocalId;
+                    if (this.visit.VisitId > 0) {
+                      visitId = this.visit.VisitId;
                     }
 
+                    imgserver.getImageList_web2(visitId).then(t => {
+                      console.log('new', Array.from(t.res.rows))
+                      this.imgList = Array.from(t.res.rows);
+                      console.log('new2', this.imgList)
 
-                  }
-                })
+                      var medicalRecord = new MedicalRecordServe();
+                      medicalRecord.getAllMedicalRecordList(this.params.caseID).then((e) => {
+                        this.medicAppointLogList = Array.from(e.res.rows);
+                        console.log(this.medicAppointLogList)
+                        // return
+                        this.loading.dismiss();
+                        this.uploadVisitListWeb()
+                      })
+                    })
+                  })
+
+                }
               }
             })
 
@@ -1387,7 +1480,7 @@ export class VisitPage extends AppBase {
 
     this.api.SaveAll(hvLogList, phoneSupportLogList, activityLogList, medicAppointLogList, this.params.UserId, 'one').then((ret) => {
       console.log(ret);
-      if (ret==undefined) {
+      if (ret == undefined) {
         this.loading.dismiss();
         this.toast('未能傳送資料到數據庫');
       }

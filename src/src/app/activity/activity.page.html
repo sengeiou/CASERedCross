@@ -62,7 +62,7 @@
           <div class="radius-2" style="width:100%; ">
             <div class="bg-white" *ngIf="activity.SavedStatus!=0">
               <ion-datetime placeholder="{{activity.ActDate_Display}}" displayFormat="DD-MM-YYYY " picker-format="DD MM YYYY "
-                style="height:25px;padding:2px;" max="2050-12-09" done-text='确定' cancel-text='取消'
+                style="height:25px;padding:2px;" max="2050-12-09" done-text='確定' cancel-text='取消'
                 [(ngModel)]="activityDate"></ion-datetime>
             </div>
             <div class="input_s radius-2 bg-white padding-left-5" *ngIf="activity.SavedStatus==0" style="width:100%;">
@@ -78,7 +78,7 @@
         <div class="flex-1">
           <div class="bg-white" *ngIf="activity.SavedStatus!=0">
             <ion-datetime placeholder="{{activity.ActStartTime}}" displayFormat="hh：mm" picker-format="hh：mm"
-              style="height:25px;padding:2px;" max="2050-12-09" done-text='确定' cancel-text='取消'
+              style="height:25px;padding:2px;" max="2050-12-09" done-text='確定' cancel-text='取消'
               [(ngModel)]="activityStartTime"></ion-datetime>
           </div>
           <div class="input_s radius-2 bg-white padding-left-5" *ngIf="activity.SavedStatus==0" style="width:100%;">
@@ -88,7 +88,7 @@
         <div class="flex-1">
           <div class="bg-white" *ngIf="activity.SavedStatus!=0">
             <ion-datetime placeholder="{{activity.ActEndTime}}" displayFormat="hh：mm" picker-format="hh：mm"
-              style="height:25px;padding:2px;" max="2050-12-09" done-text='确定' cancel-text='取消'
+              style="height:25px;padding:2px;" max="2050-12-09" done-text='確定' cancel-text='取消'
               [(ngModel)]="activityEndTime"></ion-datetime>
           </div>
           <div class="input_s radius-2 bg-white padding-left-5" *ngIf="activity.SavedStatus==0" style="width:100%;">

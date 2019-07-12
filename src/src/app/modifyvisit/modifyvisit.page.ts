@@ -146,6 +146,28 @@ export class ModifyvisitPage extends AppBase {
     }
   }
 
+  xuanzheqingxu(e) {
+    if (e == 'z') {
+      if (this.EmotionAssessmentlist[1].type == true) {
+        this.EmotionAssessmentlist[1].type = false;
+      }
+      if (this.EmotionAssessmentlist[2].type == true) {
+        this.EmotionAssessmentlist[2].type = false;
+      }
+      if (this.EmotionAssessmentlist[3].type = true) {
+        this.EmotionAssessmentlist[3].type = false;
+      }
+      this.EmotionAssessmentRemarks=''
+      console.log("1", this.EmotionAssessmentlist)
+    } else {
+      if (this.EmotionAssessmentlist[0].type == true) {
+        this.EmotionAssessmentlist[0].type = false;
+      }
+      console.log("2", this.EmotionAssessmentlist)
+    }
+
+  }
+
   inputfocus(hh){
     setTimeout(()=>{
       var obj = this.elementref.nativeElement.querySelector('#'+hh);
@@ -1409,25 +1431,12 @@ export class ModifyvisitPage extends AppBase {
 
   uploadimg(visitid) {
     console.log(visitid)
-    // if(this.visit.Status==1){
-    //   this.showConfirm('请先保存资料，在上传图片', (e) => {
-    //     if (e == true) {
-    //       this.addVisit('no');
-    //       if (this.visit.VisitId != 0) {
-    //         this.navigate('uploadimg', { visitid: this.visit.VisitId });
-    //       } else {
-    //         this.navigate('uploadimg', { visitid: visitid });
-    //       }
-    //     }
-    //   })
-    // }else{
+ 
     if (this.visit.VisitId != 0) {
       this.navigate('uploadimg', { VisitLocalId: visitid, visitid: this.visit.VisitId, uploadtype: 'Y', DeletePicString: this.visit.DeletePicString });
     } else {
       this.navigate('uploadimg', { VisitLocalId: visitid, visitid: 0, uploadtype: 'N' });
     }
-    // }
-
 
   }
 
